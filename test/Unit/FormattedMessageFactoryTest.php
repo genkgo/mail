@@ -38,7 +38,7 @@ final class FormattedMessageFactoryTest extends AbstractTestCase
         ;
 
         $this->assertEquals(
-            file_get_contents(__DIR__ . '/../Stubs/FormattedMessageFactoryTest/html-only.txt'),
+            file_get_contents(__DIR__ . '/../Stub/FormattedMessageFactoryTest/html-only.eml'),
             (string) $message
         );
     }
@@ -75,7 +75,7 @@ final class FormattedMessageFactoryTest extends AbstractTestCase
 
         $this->assertEquals(
             $this->replaceBoundaries(
-                file_get_contents(__DIR__ . '/../Stubs/FormattedMessageFactoryTest/full-formatted-message.txt'),
+                file_get_contents(__DIR__ . '/../Stub/FormattedMessageFactoryTest/full-formatted-message.eml'),
                 'boundary'
             ),
             $this->replaceBoundaries(

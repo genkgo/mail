@@ -7,14 +7,14 @@ use Genkgo\Mail\Exception\EmptyQueueException;
 use Genkgo\Mail\Exception\QueueStoreException;
 use Genkgo\Mail\GenericMessage;
 use Genkgo\Mail\MessageInterface;
-use Predis\Client;
+use Predis\ClientInterface;
 use Predis\Connection\ConnectionException;
 
 final class RedisQueue implements QueueInterface
 {
 
     /**
-     * @var Client
+     * @var ClientInterface
      */
     private $client;
     /**
@@ -24,10 +24,10 @@ final class RedisQueue implements QueueInterface
 
     /**
      * RedisQueue constructor.
-     * @param Client $client
+     * @param ClientInterface $client
      * @param string $key
      */
-    public function __construct(Client $client, string $key)
+    public function __construct(ClientInterface $client, string $key)
     {
         $this->client = $client;
         $this->key = $key;

@@ -7,7 +7,7 @@ use Genkgo\Mail\Exception\EmptyQueueException;
 use Genkgo\Mail\GenericMessage;
 use Genkgo\Mail\Header\Date;
 use Genkgo\Mail\Queue\RedisQueue;
-use Predis\Client;
+use Predis\ClientInterface;
 
 final class RedisQueueTest extends AbstractTestCase
 {
@@ -19,14 +19,15 @@ final class RedisQueueTest extends AbstractTestCase
         $message = (new GenericMessage())
             ->withHeader(new Date(new \DateTimeImmutable('2017-01-01 18:15:00')));
 
-        $client = new Client();
+        $client = $this->createMock(ClientInterface::class);
+
+        $client
+            ->expects($this->once())
+            ->method('__call')
+            ->with('rpush', ['queue', (string)$message]);
+
         $queue = new RedisQueue($client, 'queue');
         $queue->store($message);
-
-        $this->assertEquals(
-            (string) $message,
-            $client->lpop('queue')
-        );
     }
 
     /**
@@ -37,7 +38,19 @@ final class RedisQueueTest extends AbstractTestCase
         $message = (new GenericMessage())
             ->withHeader(new Date(new \DateTimeImmutable('2017-01-01 18:15:00')));
 
-        $client = new Client();
+        $client = $this->createMock(ClientInterface::class);
+
+        $client
+            ->expects($this->at(0))
+            ->method('__call')
+            ->with('rpush', ['queue', (string)$message]);
+
+        $client
+            ->expects($this->at(1))
+            ->method('__call')
+            ->with('lpop', ['queue'])
+            ->willReturn((string)$message);
+
         $queue = new RedisQueue($client, 'queue');
         $queue->store($message);
 
@@ -57,7 +70,24 @@ final class RedisQueueTest extends AbstractTestCase
         $message = (new GenericMessage())
             ->withHeader(new Date(new \DateTimeImmutable('2017-01-01 18:15:00')));
 
-        $client = new Client();
+        $client = $this->createMock(ClientInterface::class);
+
+        $client
+            ->expects($this->at(0))
+            ->method('__call')
+            ->with('rpush', ['queue', (string)$message]);
+
+        $client
+            ->expects($this->at(1))
+            ->method('__call')
+            ->with('lpop', ['queue'])
+            ->willReturn((string)$message);
+
+        $client
+            ->expects($this->at(2))
+            ->method('__call')
+            ->with('lpop', ['queue'])
+            ->willThrowException(new EmptyQueueException());
 
         $queue = new RedisQueue($client, 'queue');
         $queue->store($message);

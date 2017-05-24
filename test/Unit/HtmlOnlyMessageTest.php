@@ -26,7 +26,7 @@ final class HtmlOnlyMessageTest extends AbstractTestCase
         ;
 
         $this->assertEquals(
-            file_get_contents(__DIR__ . '/../Stubs/HtmlOnlyMessageTest/message.txt'),
+            file_get_contents(__DIR__ . '/../Stub/HtmlOnlyMessageTest/message.eml'),
             (string) $message
         );
     }
