@@ -1,0 +1,45 @@
+Subject: Hello World
+To: me <me@example.com>
+Cc: other <other@example.com>
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="_part_6d41f369b545"
+
+This is a multipart message in MIME format.
+
+--_part_6d41f369b545
+Content-Type: multipart/related; boundary="_part_ecbe5baa2673"
+
+
+--_part_ecbe5baa2673
+Content-Type: multipart/alternative; boundary="_part_8c6b95fae17e"
+
+
+--_part_8c6b95fae17e
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+
+Hello World
+
+--_part_8c6b95fae17e
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+
+<html><body><p>Hello World</p></body></html>
+--_part_8c6b95fae17e--
+
+--_part_ecbe5baa2673
+Content-Transfer-Encoding: base64
+Content-Disposition: inline; filename="pixel.gif"
+Content-Type: image/gif; charset="UTF-8"
+Content-ID: 123456
+
+R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==
+--_part_ecbe5baa2673--
+
+--_part_6d41f369b545
+Content-Type: plain/text; charset="UTF-8"
+Content-Disposition: attachment; filename="attachment.txt"
+Content-Transfer-Encoding: base64
+
+QXR0YWNobWVudCB0ZXh0
+--_part_6d41f369b545--

@@ -1,0 +1,32 @@
+{
+    "name": "genkgo/mail",
+    "description": "Library to send e-mails over different transports and protocols using immutable messages and streams",
+    "license": "MIT License",
+    "require": {
+        "php": "^7.1"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~6",
+        "predis/predis": "~1.0",
+        "phpstan/phpstan": "^0.7.0"
+    },
+    "authors": [
+        {
+            "name": "frederik",
+            "email": "f.bosch@genkgo.nl"
+        }
+    ],
+    "suggest": {
+        "predis/predis": "Use redis to queue messages"
+    },
+    "autoload": {
+        "psr-4": {
+            "Genkgo\\Mail\\": ["src"]
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Genkgo\\Mail\\": ["test"]
+        }
+    }
+}

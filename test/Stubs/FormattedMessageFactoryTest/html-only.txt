@@ -1,0 +1,8 @@
+Subject: Hello World
+To: me <me@example.com>
+Cc: other <other@example.com>
+MIME-Version: 1.0
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+
+<html><body><p>Hello World</p></body></html>
