@@ -15,10 +15,10 @@ Use this if you want to send e-mails over different transports and protocols usi
 $message = (new FormattedMessageFactory())
     ->withHtml('<html><body><p>Hello World</p></body></html>')
     ->createMessage()
-    ->withHeader((new From(new Address(new EmailAddress('from@example.com'), 'name'))))
+    ->withHeader(new From(new Address(new EmailAddress('from@example.com'), 'name')))
     ->withHeader(new Subject('Hello World'))
-    ->withHeader((new To([new Address(new EmailAddress('to@example.com'), 'name')])))
-    ->withHeader((new Cc([new Address(new EmailAddress('cc@example.com'), 'name')])));
+    ->withHeader(new To([new Address(new EmailAddress('to@example.com'), 'name')]))
+    ->withHeader(new Cc([new Address(new EmailAddress('cc@example.com'), 'name')]));
 
 $transport = new NullTransport();
 $transport->send($message);
