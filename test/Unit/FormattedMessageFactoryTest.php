@@ -11,7 +11,7 @@ use Genkgo\Mail\Header\ContentID;
 use Genkgo\Mail\Header\ContentType;
 use Genkgo\Mail\Header\Subject;
 use Genkgo\Mail\Header\To;
-use Genkgo\Mail\Mime\EmbeddedImagePart;
+use Genkgo\Mail\Mime\EmbeddedImage;
 use Genkgo\Mail\Mime\StringAttachment;
 use Genkgo\Mail\Stream\StringStream;
 
@@ -58,7 +58,7 @@ final class FormattedMessageFactoryTest extends AbstractTestCase
                 )
             )
             ->withEmbeddedImage(
-                new EmbeddedImagePart(
+                new EmbeddedImage(
                     new StringStream(
                         base64_decode('R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==')
                     ),

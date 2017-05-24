@@ -11,7 +11,7 @@ use Genkgo\Mail\HeaderInterface;
 use Genkgo\Mail\Stream\Base64EncodedStream;
 use Genkgo\Mail\StreamInterface;
 
-final class EmbeddedImagePart implements PartInterface
+final class EmbeddedImage implements PartInterface
 {
     /**
      * @var PartInterface
