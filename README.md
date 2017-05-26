@@ -1,6 +1,8 @@
 # Genkgo/Mail - PHP Mail Library
 
 [![Build Status](https://travis-ci.org/genkgo/mail.svg)](https://travis-ci.org/genkgo/mail)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/genkgo/mail/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/genkgo/mail/)
+[![Code Coverage](https://scrutinizer-ci.com/g/genkgo/mail/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/genkgo/mail/)
 
 While analyzing what mail library to use when refactoring a code base, we discovered that the available ones are mostly
 legacy libraries. Some do not use namespaces and every library we encountered were merely a collection of scalar
