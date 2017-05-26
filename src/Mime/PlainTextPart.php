@@ -6,7 +6,7 @@ namespace Genkgo\Mail\Mime;
 use Genkgo\Mail\Header\ContentTransferEncoding;
 use Genkgo\Mail\Header\ContentType;
 use Genkgo\Mail\HeaderInterface;
-use Genkgo\Mail\Stream\StringStream;
+use Genkgo\Mail\Stream\OptimalTransferEncodedTextStream;
 use Genkgo\Mail\StreamInterface;
 
 final class PlainTextPart implements PartInterface
@@ -20,27 +20,13 @@ final class PlainTextPart implements PartInterface
      * @param string $text
      */
     public function __construct(string $text) {
+        $stream = new OptimalTransferEncodedTextStream($text);
+        $encoding = $stream->getMetadata(['transfer-encoding'])['transfer-encoding'];
+
         $this->decoratedPart = (new GenericPart())
-            ->withBody(new StringStream($text))
-            ->withHeader(new ContentType('text/plain', 'us-ascii'))
-            ->withHeader(new ContentTransferEncoding('7bit'));
-    }
-
-    /**
-     * @return Boundary
-     */
-    public function getBoundary(): Boundary
-    {
-        throw new \RuntimeException('PlainTextPart does not have sub parts, so does not have a boundary');
-    }
-
-    /**
-     * @param Boundary $boundary
-     * @return PartInterface
-     */
-    public function withBoundary(Boundary $boundary): PartInterface
-    {
-        throw new \RuntimeException('PlainTextPart does not have sub parts, so cannot not have a boundary');
+            ->withBody($stream)
+            ->withHeader(new ContentType('text/plain'))
+            ->withHeader(new ContentTransferEncoding($encoding));
     }
 
     /**
@@ -106,56 +92,5 @@ final class PlainTextPart implements PartInterface
     public function getBody(): StreamInterface
     {
         return $this->decoratedPart->getBody();
-    }
-
-    /**
-     * @param PartInterface $part
-     * @return PartInterface
-     */
-    public function withPart(PartInterface $part): PartInterface
-    {
-        throw new \BadMethodCallException('PlainTextPart cannot have sub parts. PlainTextPart is a final mime part');
-    }
-
-    /**
-     * @param PartInterface $part
-     * @return PartInterface
-     */
-    public function withoutPart(PartInterface $part): PartInterface
-    {
-        throw new \BadMethodCallException('PlainTextPart cannot have sub parts. PlainTextPart is a final mime part');
-    }
-
-    /**
-     * @param iterable|PartInterface[] $parts
-     * @return PartInterface
-     */
-    public function withParts(iterable $parts): PartInterface
-    {
-        throw new \BadMethodCallException('PlainTextPart cannot have sub parts. PlainTextPart is a final mime part');
-    }
-
-    /**
-     * @return iterable|PartInterface[]
-     */
-    public function getParts(): iterable
-    {
-        return [];
-    }
-
-    /**
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->decoratedPart->__toString();
-    }
-
-    /**
-     * @return StreamInterface
-     */
-    public function toStream(): StreamInterface
-    {
-        return $this->decoratedPart->toStream();
     }
 }

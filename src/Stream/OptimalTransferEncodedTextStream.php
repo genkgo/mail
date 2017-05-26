@@ -16,6 +16,10 @@ final class OptimalTransferEncodedTextStream implements StreamInterface
      */
     private $encoding = '7bit';
     /**
+     * @var int
+     */
+    private $lineLength = 78;
+    /**
      *
      */
     private CONST NON_7BIT_CHARS = "\x00\x01\x02\x03\x04\x05\x06\x07\x08\x09\x0A\x0B\x0C\x0D\x0E\x0F\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1A\x1B\x1C\x1D\x1E\x1F\x7F\x80\x81\x82\x83\x84\x85\x86\x87\x88\x89\x8A\x8B\x8C\x8D\x8E\x8F\x90\x91\x92\x93\x94\x95\x96\x97\x98\x99\x9A\x9B\x9C\x9D\x9E\x9F\xA0\xA1\xA2\xA3\xA4\xA5\xA6\xA7\xA8\xA9\xAA\xAB\xAC\xAD\xAE\xAF\xB0\xB1\xB2\xB3\xB4\xB5\xB6\xB7\xB8\xB9\xBA\xBB\xBC\xBD\xBE\xBF\xC0\xC1\xC2\xC3\xC4\xC5\xC6\xC7\xC8\xC9\xCA\xCB\xCC\xCD\xCE\xCF\xD0\xD1\xD2\xD3\xD4\xD5\xD6\xD7\xD8\xD9\xDA\xDB\xDC\xDD\xDE\xDF\xE0\xE1\xE2\xE3\xE4\xE5\xE6\xE7\xE8\xE9\xEA\xEB\xEC\xED\xEE\xEF\xF0\xF1\xF2\xF3\xF4\xF5\xF6\xF7\xF8\xF9\xFA\xFB\xFC\xFD\xFE\xFF";
@@ -23,13 +27,21 @@ final class OptimalTransferEncodedTextStream implements StreamInterface
      *
      */
     private CONST NON_8BIT_CHARS = "\x80\x81\x82\x83\x84\x85\x86\x87\x88\x89\x8A\x8B\x8C\x8D\x8E\x8F\x90\x91\x92\x93\x94\x95\x96\x97\x98\x99\x9A\x9B\x9C\x9D\x9E\x9F\xA0\xA1\xA2\xA3\xA4\xA5\xA6\xA7\xA8\xA9\xAA\xAB\xAC\xAD\xAE\xAF\xB0\xB1\xB2\xB3\xB4\xB5\xB6\xB7\xB8\xB9\xBA\xBB\xBC\xBD\xBE\xBF\xC0\xC1\xC2\xC3\xC4\xC5\xC6\xC7\xC8\xC9\xCA\xCB\xCC\xCD\xCE\xCF\xD0\xD1\xD2\xD3\xD4\xD5\xD6\xD7\xD8\xD9\xDA\xDB\xDC\xDD\xDE\xDF\xE0\xE1\xE2\xE3\xE4\xE5\xE6\xE7\xE8\xE9\xEA\xEB\xEC\xED\xEE\xEF\xF0\xF1\xF2\xF3\xF4\xF5\xF6\xF7\xF8\xF9\xFA\xFB\xFC\xFD\xFE\xFF";
+    /**
+     * @var string
+     */
+    private $lineBreak;
 
     /**
      * OptimalEncodedTextStream constructor.
      * @param string $text
+     * @param int $lineLength
+     * @param string $lineBreak
      */
-    public function __construct(string $text)
+    public function __construct(string $text, int $lineLength = 78, string $lineBreak = "\r\n")
     {
+        $this->lineLength = $lineLength;
+        $this->lineBreak = $lineBreak;
         $this->decoratedStream = $this->calculateOptimalStream($text);
     }
 
@@ -41,21 +53,21 @@ final class OptimalTransferEncodedTextStream implements StreamInterface
     {
         if (strcspn($text, self::NON_7BIT_CHARS) === strlen($text)) {
             $this->encoding = '7bit';
-            return new StringStream($text);
+            return new BitEncodedStream($text, $this->lineLength, $this->lineBreak);
         }
 
         if (strcspn($text, self::NON_8BIT_CHARS) === strlen($text)) {
             $this->encoding = '8bit';
-            return new StringStream($text);
+            return new BitEncodedStream($text, $this->lineLength, $this->lineBreak);
         }
 
         if (preg_match_all('/[\000-\010\013\014\016-\037\177-\377]/', $text) > (strlen($text) / 3)) {
             $this->encoding = 'base64';
-            return Base64EncodedStream::fromString($text);
+            return Base64EncodedStream::fromString($text, $this->lineLength, $this->lineBreak);
         }
 
         $this->encoding = 'quoted-printable';
-        return QuotedPrintableStream::fromString($text);
+        return QuotedPrintableStream::fromString($text, $this->lineLength, $this->lineBreak);
     }
 
     /**

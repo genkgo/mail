@@ -1,6 +1,6 @@
 <?php
 
-namespace Genkgo\Mail\Unit;
+namespace Genkgo\Mail\Unit\Header;
 
 use Genkgo\Mail\AbstractTestCase;
 use Genkgo\Mail\Header\HeaderName;

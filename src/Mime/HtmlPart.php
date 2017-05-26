@@ -35,25 +35,6 @@ final class HtmlPart implements PartInterface
     }
 
     /**
-     * @return Boundary
-     */
-    public function getBoundary(): Boundary
-    {
-        return $this->decoratedPart->getBoundary();
-    }
-
-    /**
-     * @param Boundary $boundary
-     * @return PartInterface
-     */
-    public function withBoundary(Boundary $boundary): PartInterface
-    {
-        $clone = clone $this;
-        $clone->decoratedPart = $this->decoratedPart->withBoundary($boundary);
-        return $clone;
-    }
-
-    /**
      * @return iterable
      */
     public function getHeaders(): iterable
@@ -116,56 +97,5 @@ final class HtmlPart implements PartInterface
     public function getBody(): StreamInterface
     {
         return $this->decoratedPart->getBody();
-    }
-
-    /**
-     * @param PartInterface $part
-     * @return PartInterface
-     */
-    public function withPart(PartInterface $part): PartInterface
-    {
-        throw new \BadMethodCallException('HtmlPart cannot have sub parts. HtmlPart is a final mime part');
-    }
-
-    /**
-     * @param PartInterface $part
-     * @return PartInterface
-     */
-    public function withoutPart(PartInterface $part): PartInterface
-    {
-        throw new \BadMethodCallException('HtmlPart cannot have sub parts. HtmlPart is a final mime part');
-    }
-
-    /**
-     * @param iterable|PartInterface[] $parts
-     * @return PartInterface
-     */
-    public function withParts(iterable $parts): PartInterface
-    {
-        throw new \BadMethodCallException('HtmlPart cannot have sub parts. HtmlPart is a final mime part');
-    }
-
-    /**
-     * @return iterable|PartInterface[]
-     */
-    public function getParts(): iterable
-    {
-        return [];
-    }
-
-    /**
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->decoratedPart->__toString();
-    }
-
-    /**
-     * @return StreamInterface
-     */
-    public function toStream(): StreamInterface
-    {
-        return $this->decoratedPart->toStream();
     }
 }

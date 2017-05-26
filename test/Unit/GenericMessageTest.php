@@ -7,7 +7,7 @@ use Genkgo\Mail\GenericMessage;
 use Genkgo\Mail\Header\GenericHeader;
 use Genkgo\Mail\Header\MimeVersion;
 use Genkgo\Mail\Stream\EmptyStream;
-use Genkgo\Mail\Stream\StringStream;
+use Genkgo\Mail\Stream\BitEncodedStream;
 
 final class GenericMessageTest extends AbstractTestCase
 {
@@ -48,6 +48,16 @@ final class GenericMessageTest extends AbstractTestCase
     /**
      * @test
      */
+    public function it_return_an_empty_array_when_there_are_no_headers() {
+        $message = (new GenericMessage());
+
+        $this->assertEquals([], $message->getHeader('to'));
+        $this->assertEquals([], $message->getHeader('x-custom'));
+    }
+
+    /**
+     * @test
+     */
     public function it_orders_headers() {
         $message1 = (new GenericMessage())
             ->withHeader(new MimeVersion())
@@ -59,36 +69,6 @@ final class GenericMessageTest extends AbstractTestCase
 
         $this->assertEquals((string) $message1, (string) $message2);
         $this->assertContains("Subject: Value\r\nMIME-Version: 1.0", (string)$message1);
-    }
-
-    /**
-     * @test
-     */
-    public function it_folds_headers_when_name_plus_value_is_longer_than_78_characters() {
-        $message = (new GenericMessage())
-            ->withHeader(
-                new GenericHeader(
-                'Super-Long-Header-Value-That-Will-Make-The-Value-Exceed-Max-Length',
-                'Value That Is Also Quite Long'
-                )
-            )
-            ->withHeader(
-                new GenericHeader(
-                'Super-Long-Header-Value-That-Will-Make-The-Value-Exceed-Max-Length',
-                'Value That Is Also Quite Long And Needs Folding Only By Looking At The Value Itself'
-                )
-            );
-
-        $lines = preg_split('/\r\n/', (string)$message);
-
-        $lines = array_map(
-            function ($line) {
-                return strlen($line);
-            },
-            $lines
-        );
-
-        $this->assertLessThanOrEqual(76, max($lines));
     }
 
     /**
@@ -118,7 +98,7 @@ final class GenericMessageTest extends AbstractTestCase
             ->withHeader(new GenericHeader('To', 'me@example.com'))
             ->withHeader(new GenericHeader('From', 'other@example.com'))
             ->withHeader(new GenericHeader('X-Custom', str_repeat('tëst', 50)))
-            ->withBody(new StringStream('Hello World'))
+            ->withBody(new BitEncodedStream('Hello World'))
         ;
 
         $this->assertEquals(

@@ -4,6 +4,7 @@ namespace Genkgo\Mail\Unit;
 
 use Genkgo\Mail\AbstractTestCase;
 use Genkgo\Mail\Address;
+use Genkgo\Mail\AddressList;
 use Genkgo\Mail\EmailAddress;
 use Genkgo\Mail\FormattedMessageFactory;
 use Genkgo\Mail\Header\Cc;
@@ -12,8 +13,9 @@ use Genkgo\Mail\Header\ContentType;
 use Genkgo\Mail\Header\Subject;
 use Genkgo\Mail\Header\To;
 use Genkgo\Mail\Mime\EmbeddedImage;
-use Genkgo\Mail\Mime\StringAttachment;
-use Genkgo\Mail\Stream\StringStream;
+use Genkgo\Mail\Mime\HtmlPart;
+use Genkgo\Mail\Mime\ResourceAttachment;
+use Genkgo\Mail\Stream\BitEncodedStream;
 
 /**
  * Class FormattedMessageFactoryTest
@@ -21,6 +23,88 @@ use Genkgo\Mail\Stream\StringStream;
  */
 final class FormattedMessageFactoryTest extends AbstractTestCase
 {
+    /**
+     * @test
+     */
+    public function it_is_immutable()
+    {
+        $message = new FormattedMessageFactory();
+
+        $this->assertNotSame(
+            $message,
+            $message->withEmbeddedImage(
+                new EmbeddedImage(
+                    new BitEncodedStream(
+                        base64_decode('R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==')
+                    ),
+                    'pixel.gif',
+                    new ContentType('image/gif'),
+                    new ContentID('123456')
+                )
+            )
+        );
+
+        $this->assertNotSame(
+            $message,
+            $message->withAttachment(
+                ResourceAttachment::fromString(
+                    'Attachment text',
+                    'attachment.txt',
+                    new ContentType('plain/text')
+                )
+            )
+        );
+
+        $this->assertNotSame(
+            $message,
+            $message->withHtml('<html></html>')
+        );
+
+        $this->assertNotSame(
+            $message,
+            $message->withHtmlAndNoGeneratedAlternativeText('<html></html>')
+        );
+
+        $this->assertNotSame(
+            $message,
+            $message->withAlternativeText('text')
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_exception_when_attachment_does_not_have_content_disposition()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+
+        $message = new FormattedMessageFactory();
+
+        $message->withAttachment(
+            new HtmlPart('<html></html>')
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_exception_when_attachment_header_content_disposition_does_not_equals_attachment()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+
+        $message = new FormattedMessageFactory();
+
+        $message->withAttachment(
+            new EmbeddedImage(
+                new BitEncodedStream(
+                    base64_decode('R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==')
+                ),
+                'pixel.gif',
+                new ContentType('image/gif'),
+                new ContentID('123456')
+            )
+        );
+    }
 
     /**
      * @test
@@ -33,12 +117,31 @@ final class FormattedMessageFactoryTest extends AbstractTestCase
 
         $message = $factory->createMessage()
             ->withHeader(new Subject('Hello World'))
-            ->withHeader((new To([new Address(new EmailAddress('me@example.com'), 'me')])))
-            ->withHeader((new Cc([new Address(new EmailAddress('other@example.com'), 'other')])))
+            ->withHeader((new To(new AddressList([new Address(new EmailAddress('me@example.com'), 'me')]))))
+            ->withHeader((new Cc(new AddressList([new Address(new EmailAddress('other@example.com'), 'other')]))))
         ;
 
         $this->assertEquals(
             file_get_contents(__DIR__ . '/../Stub/FormattedMessageFactoryTest/html-only.eml'),
+            (string) $message
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_equal_empty_text_plain_message_when_no_and_no_text ()
+    {
+        $factory = (new FormattedMessageFactory());
+
+        $message = $factory->createMessage()
+            ->withHeader(new Subject('Hello World'))
+            ->withHeader((new To(new AddressList([new Address(new EmailAddress('me@example.com'), 'me')]))))
+            ->withHeader((new Cc(new AddressList([new Address(new EmailAddress('other@example.com'), 'other')]))))
+        ;
+
+        $this->assertEquals(
+            file_get_contents(__DIR__ . '/../Stub/FormattedMessageFactoryTest/empty-email.eml'),
             (string) $message
         );
     }
@@ -51,15 +154,15 @@ final class FormattedMessageFactoryTest extends AbstractTestCase
         $message = (new FormattedMessageFactory())
             ->withHtml('<html><body><p>Hello World</p></body></html>')
             ->withAttachment(
-                new StringAttachment(
+                ResourceAttachment::fromString(
                     'Attachment text',
                     'attachment.txt',
-                    new ContentType('plain/text')
+                    new ContentType('text/plain')
                 )
             )
             ->withEmbeddedImage(
                 new EmbeddedImage(
-                    new StringStream(
+                    new BitEncodedStream(
                         base64_decode('R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==')
                     ),
                     'pixel.gif',
@@ -69,8 +172,8 @@ final class FormattedMessageFactoryTest extends AbstractTestCase
             )
             ->createMessage()
             ->withHeader(new Subject('Hello World'))
-            ->withHeader((new To([new Address(new EmailAddress('me@example.com'), 'me')])))
-            ->withHeader((new Cc([new Address(new EmailAddress('other@example.com'), 'other')])))
+            ->withHeader((new To(new AddressList([new Address(new EmailAddress('me@example.com'), 'me')]))))
+            ->withHeader((new Cc(new AddressList([new Address(new EmailAddress('other@example.com'), 'other')]))))
         ;
 
         $this->assertEquals(
@@ -90,9 +193,8 @@ final class FormattedMessageFactoryTest extends AbstractTestCase
      * @param $boundary
      * @return string
      */
-    private function replaceBoundaries($messageString, $boundary): string
+    private function replaceBoundaries(string $messageString, string $boundary): string
     {
         return preg_replace(['/(_part_[A-Za-z0-9\-]*)/'], $boundary, $messageString);
     }
-
 }

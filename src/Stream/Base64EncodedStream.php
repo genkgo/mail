@@ -19,29 +19,37 @@ final class Base64EncodedStream implements StreamInterface
      * @var resource
      */
     private $filter;
+    /**
+     * @var string
+     */
+    private $lineBreak;
 
     /**
      * Base64EncodedStream constructor.
      * @param resource $resource
      * @param int $lineLength
+     * @param string $lineBreak
      */
-    public function __construct($resource, int $lineLength = 78)
+    public function __construct($resource, int $lineLength = 78, string $lineBreak = "\r\n")
     {
         $this->decoratedStream = new ResourceStream($resource);
         $this->lineLength = $lineLength;
+        $this->lineBreak = $lineBreak;
 
         $this->applyFilter();
     }
 
     /**
      * @param string $string
+     * @param int $lineLength
+     * @param string $lineBreak
      * @return Base64EncodedStream
      */
-    public static function fromString(string $string): Base64EncodedStream
+    public static function fromString(string $string, int $lineLength = 78, string $lineBreak = "\r\n"): Base64EncodedStream
     {
         $resource = fopen('php://memory', 'r+');
         fwrite($resource, $string);
-        return new self($resource);
+        return new self($resource, $lineLength, $lineBreak);
     }
 
     /**
@@ -55,7 +63,7 @@ final class Base64EncodedStream implements StreamInterface
             STREAM_FILTER_READ,
             [
                 'line-length' => $this->lineLength,
-                'line-break-chars' => "\r\n"
+                'line-break-chars' => $this->lineBreak
             ]
         );
     }

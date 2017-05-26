@@ -102,7 +102,7 @@ final class QuotedPrintableStreamTest extends AbstractTestCase
             $lines
         );
 
-        $this->assertLessThanOrEqual(75, max($lines));
+        $this->assertLessThanOrEqual(78, max($lines));
     }
 
 }

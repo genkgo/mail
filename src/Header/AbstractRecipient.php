@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Genkgo\Mail\Header;
 
-use Genkgo\Mail\Address;
+use Genkgo\Mail\AddressList;
 use Genkgo\Mail\HeaderInterface;
 
 /**
@@ -13,34 +13,17 @@ use Genkgo\Mail\HeaderInterface;
 abstract class AbstractRecipient implements HeaderInterface
 {
     /**
-     * @var array|Address[]
+     * @var AddressList
      */
-    private $recipients = [];
+    private $recipients;
 
     /**
      * To constructor.
-     * @param array|Address[] $recipients
+     * @param AddressList $recipients
      */
-    public function __construct(array $recipients = [])
+    final public function __construct(AddressList $recipients)
     {
-        foreach ($recipients as $recipient) {
-            if ($recipient instanceof Address === false) {
-                throw new \InvalidArgumentException('Recipient must be EmailAddressAndName object');
-            }
-
-            $this->recipients[] = $recipient;
-        }
-    }
-
-    /**
-     * @param Address $recipient
-     * @return AbstractRecipient
-     */
-    public function withRecipient(Address $recipient): AbstractRecipient
-    {
-        $clone = $this;
-        $clone->recipients[] = $recipient;
-        return $clone;
+        $this->recipients = $recipients;
     }
 
     /**
@@ -51,18 +34,8 @@ abstract class AbstractRecipient implements HeaderInterface
     /**
      * @return HeaderValue
      */
-    public function getValue(): HeaderValue
+    final public function getValue(): HeaderValue
     {
-        return new HeaderValue(
-            implode(
-                ',',
-                array_map(
-                    function (Address $addressAndName) {
-                        return (string) $addressAndName;
-                    },
-                    $this->recipients
-                )
-            )
-        );
+        return new HeaderValue((string)$this->recipients);
     }
 }

@@ -19,29 +19,37 @@ final class QuotedPrintableStream implements StreamInterface
      * @var resource
      */
     private $filter;
+    /**
+     * @var string
+     */
+    private $lineBreak;
 
     /**
      * QuotedPrintableStream constructor.
      * @param resource $resource
      * @param int $lineLength
+     * @param string $lineBreak
      */
-    public function __construct($resource, int $lineLength = 75)
+    public function __construct($resource, int $lineLength = 75, string $lineBreak = "\r\n")
     {
         $this->decoratedStream = new ResourceStream($resource);
         $this->lineLength = $lineLength;
+        $this->lineBreak = $lineBreak;
 
         $this->applyFilter();
     }
 
     /**
      * @param string $string
+     * @param int $lineLength
+     * @param string $lineBreak
      * @return QuotedPrintableStream
      */
-    public static function fromString(string $string): QuotedPrintableStream
+    public static function fromString(string $string, int $lineLength = 78, string $lineBreak = "\r\n"): QuotedPrintableStream
     {
         $resource = fopen('php://memory', 'r+');
         fwrite($resource, $string);
-        return new self($resource);
+        return new self($resource, $lineLength, $lineBreak);
     }
 
     /**
@@ -55,7 +63,7 @@ final class QuotedPrintableStream implements StreamInterface
             STREAM_FILTER_READ,
             [
                 'line-length' => $this->lineLength,
-                'line-break-chars' => "\r\n"
+                'line-break-chars' => $this->lineBreak
             ]
         );
     }

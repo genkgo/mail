@@ -22,7 +22,8 @@ final class ResourceAttachment implements PartInterface
      * @param string $filename
      * @param ContentType $contentType
      */
-    public function __construct($resource, string $filename, ContentType $contentType) {
+    public function __construct($resource, string $filename, ContentType $contentType)
+    {
         if (!is_resource($resource)) {
             throw new \InvalidArgumentException('Resource must be a resource');
         }
@@ -35,20 +36,16 @@ final class ResourceAttachment implements PartInterface
     }
 
     /**
-     * @return Boundary
+     * @param string $string
+     * @param string $filename
+     * @param ContentType $contentType
+     * @return ResourceAttachment
      */
-    public function getBoundary(): Boundary
+    public static function fromString(string $string, string $filename, ContentType $contentType)
     {
-        throw new \RuntimeException('ResourceAttachment does not have sub parts, so does not have a boundary');
-    }
-
-    /**
-     * @param Boundary $boundary
-     * @return PartInterface
-     */
-    public function withBoundary(Boundary $boundary): PartInterface
-    {
-        throw new \RuntimeException('ResourceAttachment does not have sub parts, so cannot not have a boundary');
+        $resource = fopen('php://memory', 'r+');
+        fwrite($resource, $string);
+        return new self($resource, $filename, $contentType);
     }
 
     /**
@@ -114,56 +111,5 @@ final class ResourceAttachment implements PartInterface
     public function getBody(): StreamInterface
     {
         return $this->decoratedPart->getBody();
-    }
-
-    /**
-     * @param PartInterface $part
-     * @return PartInterface
-     */
-    public function withPart(PartInterface $part): PartInterface
-    {
-        throw new \BadMethodCallException('FilePart cannot have sub parts. FilePart is a final mime part');
-    }
-
-    /**
-     * @param PartInterface $part
-     * @return PartInterface
-     */
-    public function withoutPart(PartInterface $part): PartInterface
-    {
-        throw new \BadMethodCallException('FilePart cannot have sub parts. FilePart is a final mime part');
-    }
-
-    /**
-     * @param iterable|PartInterface[] $parts
-     * @return PartInterface
-     */
-    public function withParts(iterable $parts): PartInterface
-    {
-        throw new \BadMethodCallException('FilePart cannot have sub parts. FilePart is a final mime part');
-    }
-
-    /**
-     * @return iterable|PartInterface[]
-     */
-    public function getParts(): iterable
-    {
-        return [];
-    }
-
-    /**
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->decoratedPart->__toString();
-    }
-
-    /**
-     * @return StreamInterface
-     */
-    public function toStream(): StreamInterface
-    {
-        return $this->decoratedPart->toStream();
     }
 }

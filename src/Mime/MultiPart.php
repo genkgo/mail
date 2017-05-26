@@ -3,50 +3,54 @@ declare(strict_types=1);
 
 namespace Genkgo\Mail\Mime;
 
+use Genkgo\Mail\Header\ContentType;
 use Genkgo\Mail\Header\GenericHeader;
+use Genkgo\Mail\Header\HeaderValueParameter;
 use Genkgo\Mail\HeaderInterface;
+use Genkgo\Mail\Stream\EmptyStream;
 use Genkgo\Mail\StreamInterface;
 
-final class MixedPart implements PartInterface
+final class MultiPart implements MultiPartInterface
 {
     /**
      * @var PartInterface
      */
     private $decoratedPart;
+    /**
+     * @var Boundary
+     */
+    private $boundary;
+    /**
+     * @var array|PartInterface
+     */
+    private $parts = [];
 
     /**
-     * MixedPart constructor.
+     * MultiPart constructor.
      * @param Boundary $boundary
+     * @param ContentType $contentType
      */
-    public function __construct(Boundary $boundary)
+    public function __construct(Boundary $boundary, ContentType $contentType)
     {
+        $this->boundary = $boundary;
+
+        if (substr((string)$contentType->getValue(), 0, 10) !== 'multipart/') {
+            throw new \InvalidArgumentException('Content type must be of type multipart/type');
+        }
+
         $this->decoratedPart = (new GenericPart())
-            ->withBoundary($boundary)
             ->withHeader(
                 new GenericHeader(
-                    'Content-Type',
-                    sprintf('multipart/mixed; boundary="%s"', (string)$boundary)
+                    (string)$contentType->getName(),
+                    (string)$contentType->getValue()
+                        ->withParameter(
+                            new HeaderValueParameter(
+                                'boundary',
+                                (string)$boundary
+                            )
+                        )
                 )
             );
-    }
-
-    /**
-     * @return Boundary
-     */
-    public function getBoundary(): Boundary
-    {
-        return $this->decoratedPart->getBoundary();
-    }
-
-    /**
-     * @param Boundary $boundary
-     * @return PartInterface
-     */
-    public function withBoundary(Boundary $boundary): PartInterface
-    {
-        $clone = clone $this;
-        $clone->decoratedPart = $this->decoratedPart->withBoundary($boundary);
-        return $clone;
     }
 
     /**
@@ -81,7 +85,7 @@ final class MixedPart implements PartInterface
      */
     public function withHeader(HeaderInterface $header): PartInterface
     {
-        throw new \RuntimeException('Cannot modify headers of MixedPart');
+        throw new \RuntimeException('Cannot modify headers of MultiPart');
     }
 
     /**
@@ -90,7 +94,7 @@ final class MixedPart implements PartInterface
      */
     public function withoutHeader(string $name): PartInterface
     {
-        throw new \RuntimeException('Cannot modify headers of MixedPart');
+        throw new \RuntimeException('Cannot modify headers of MultiPart');
     }
 
     /**
@@ -99,7 +103,7 @@ final class MixedPart implements PartInterface
      */
     public function withBody(StreamInterface $body): PartInterface
     {
-        throw new \RuntimeException('Cannot modify body of FilePart');
+        throw new \RuntimeException('Cannot modify body of MultiPart');
     }
 
     /**
@@ -107,47 +111,40 @@ final class MixedPart implements PartInterface
      */
     public function getBody(): StreamInterface
     {
-        return $this->decoratedPart->getBody();
+        return new EmptyStream();
     }
 
     /**
-     * @return string
+     * @return Boundary
      */
-    public function __toString(): string
+    public function getBoundary(): Boundary
     {
-        return $this->decoratedPart->__toString();
-    }
-
-    /**
-     * @param PartInterface $part
-     * @return PartInterface
-     */
-    public function withPart(PartInterface $part): PartInterface
-    {
-        $clone = clone $this;
-        $clone->decoratedPart = $clone->decoratedPart->withPart($part);
-        return $clone;
+        return $this->boundary;
     }
 
     /**
      * @param PartInterface $part
-     * @return PartInterface
+     * @return MultiPartInterface
      */
-    public function withoutPart(PartInterface $part): PartInterface
+    public function withPart(PartInterface $part): MultiPartInterface
     {
         $clone = clone $this;
-        $clone->decoratedPart = $clone->decoratedPart->withoutPart($part);
+        $clone->parts[] = $part;
         return $clone;
     }
 
     /**
      * @param iterable|PartInterface[] $parts
-     * @return PartInterface
+     * @return MultiPartInterface
      */
-    public function withParts(iterable $parts): PartInterface
+    public function withParts(iterable $parts): MultiPartInterface
     {
         $clone = clone $this;
-        $clone->decoratedPart = $clone->decoratedPart->withParts($parts);
+
+        foreach ($parts as $part) {
+            $clone->parts[] = $part;
+        }
+
         return $clone;
     }
 
@@ -156,14 +153,6 @@ final class MixedPart implements PartInterface
      */
     public function getParts(): iterable
     {
-        return $this->decoratedPart->getParts();
-    }
-
-    /**
-     * @return StreamInterface
-     */
-    public function toStream(): StreamInterface
-    {
-        return $this->decoratedPart->toStream();
+        return $this->parts;
     }
 }

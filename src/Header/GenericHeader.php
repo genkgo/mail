@@ -28,16 +28,6 @@ final class GenericHeader implements HeaderInterface
     }
 
     /**
-     * @param string $line
-     * @return HeaderInterface
-     */
-    public static function fromString(string $line): HeaderInterface
-    {
-        [$name, $value] = preg_split('/\:\s*/', $line, 2);
-        return new self($name, $value);
-    }
-
-    /**
      * @return HeaderName
      */
     public function getName(): HeaderName

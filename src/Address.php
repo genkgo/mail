@@ -50,6 +50,15 @@ final class Address
     }
 
     /**
+     * @param Address $address
+     * @return bool
+     */
+    public function equals(Address $address): bool
+    {
+        return $this->address->equals($address->address) && $this->name === $address->name;
+    }
+
+    /**
      * @return string
      */
     public function __toString(): string

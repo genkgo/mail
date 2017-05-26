@@ -72,6 +72,15 @@ final class EmailAddress
     }
 
     /**
+     * @param EmailAddress $address
+     * @return bool
+     */
+    public function equals(EmailAddress $address): bool
+    {
+        return $this->address === $address->address;
+    }
+
+    /**
      * @return string
      */
     public function __toString(): string

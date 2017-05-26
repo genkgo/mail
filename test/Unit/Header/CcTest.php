@@ -4,6 +4,7 @@ namespace Genkgo\Mail\Unit\Header;
 
 use Genkgo\Mail\AbstractTestCase;
 use Genkgo\Mail\Address;
+use Genkgo\Mail\AddressList;
 use Genkgo\Mail\EmailAddress;
 use Genkgo\Mail\Header\Cc;
 
@@ -12,24 +13,20 @@ final class CcTest extends AbstractTestCase
 
     /**
      * @test
-     * @dataProvider provideValues
      */
-    public function it_produces_correct_values($recipientEmail, $recipientName, $headerName, $headerValue)
+    public function it_produces_correct_values()
     {
-        $header = new Cc([new Address(new EmailAddress($recipientEmail), $recipientName)]);
-        $this->assertEquals($headerName, (string)$header->getName());
-        $this->assertEquals($headerValue, (string)$header->getValue());
-    }
+        $header = new Cc(
+            new AddressList([
+                new Address(
+                    new EmailAddress('me@example.com'),
+                    'Name'
+                )
+            ])
+        );
 
-    /**
-     * @return array
-     */
-    public function provideValues()
-    {
-        return [
-            ['me@example.com', 'Name', 'Cc', 'Name <me@example.com>'],
-        ];
+        $this->assertEquals('Cc', (string)$header->getName());
+        $this->assertEquals('Name <me@example.com>', (string)$header->getValue());
     }
-
 
 }

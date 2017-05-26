@@ -25,6 +25,10 @@ final class PlainTextMessage implements MessageInterface
         $stream = new OptimalTransferEncodedTextStream($text);
         $encoding = $stream->getMetadata(['transfer-encoding'])['transfer-encoding'];
 
+        if ($encoding === '7bit') {
+            $charset = 'us-ascii';
+        }
+
         $this->decoratedMessage = (new GenericMessage())
             ->withHeader(new ContentType('text/plain', $charset))
             ->withHeader(new MimeVersion())

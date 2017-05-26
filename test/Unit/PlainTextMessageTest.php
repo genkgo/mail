@@ -11,25 +11,25 @@ use Genkgo\Mail\Header\Date;
 use Genkgo\Mail\Header\GenericHeader;
 use Genkgo\Mail\Header\Subject;
 use Genkgo\Mail\Header\To;
-use Genkgo\Mail\HtmlOnlyMessage;
+use Genkgo\Mail\PlainTextMessage;
 use Genkgo\Mail\Stream\EmptyStream;
 use Genkgo\Mail\Stream\OptimalTransferEncodedTextStream;
 
-final class HtmlOnlyMessageTest extends AbstractTestCase
+final class PlainTextMessageTest extends AbstractTestCase
 {
 
     /**
      * @test
      */
     public function it_correctly_produces_message_string() {
-        $message = (new HtmlOnlyMessage('<html><body><p>Hello World</p></body></html>'))
+        $message = (new PlainTextMessage('Hello World'))
             ->withHeader(new Date(new \DateTimeImmutable('2017-01-01 18:15:00')))
             ->withHeader(new Subject('Hello World'))
             ->withHeader((new To(new AddressList([new Address(new EmailAddress('me@example.com'), 'me')]))))
             ->withHeader((new Cc(new AddressList([new Address(new EmailAddress('other@example.com'), 'other')]))));
 
         $this->assertEquals(
-            file_get_contents(__DIR__ . '/../Stub/HtmlOnlyMessageTest/message.eml'),
+            file_get_contents(__DIR__ . '/../Stub/PlainTextMessageTest/message.eml'),
             (string) $message
         );
     }
@@ -38,7 +38,7 @@ final class HtmlOnlyMessageTest extends AbstractTestCase
      * @test
      */
     public function it_is_immutable() {
-        $message = new HtmlOnlyMessage('<html><body><p>Hello World</p></body></html>');
+        $message = new PlainTextMessage('Hello World');
 
         $this->assertNotSame($message, $message->withBody(new EmptyStream()));
         $this->assertNotSame($message, $message->withHeader(new GenericHeader('X', 'Y')));
@@ -50,7 +50,7 @@ final class HtmlOnlyMessageTest extends AbstractTestCase
      * @test
      */
     public function it_has_case_insensitive_headers() {
-        $message = (new HtmlOnlyMessage('<html><body><p>Hello World</p></body></html>'))
+        $message = (new PlainTextMessage('Hello World'))
             ->withHeader(new GenericHeader('X', 'Y'))
             ->withHeader(new GenericHeader('wEiRd-CasEd-HeaDer', 'value'));
 
@@ -72,7 +72,7 @@ final class HtmlOnlyMessageTest extends AbstractTestCase
      */
     public function it_uses_an_optimal_encoding_for_body()
     {
-        $message = new HtmlOnlyMessage('<html><body><p>Hello World</p></body></html>');
+        $message = new PlainTextMessage('Hello World');
 
         $this->assertInstanceOf(OptimalTransferEncodedTextStream::class, $message->getBody());
     }

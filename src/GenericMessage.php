@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace Genkgo\Mail;
 
-use Genkgo\Mail\Header\GenericHeader;
+use Genkgo\Mail\Header\HeaderLine;
 use Genkgo\Mail\Stream\EmptyStream;
-use Genkgo\Mail\Stream\StringStream;
+use Genkgo\Mail\Stream\BitEncodedStream;
 
 /**
  * Class ImmutableMessage
@@ -145,19 +145,7 @@ final class GenericMessage implements MessageInterface
                             "\r\n",
                             array_map(
                                 function (HeaderInterface $header) {
-                                    $headerName = (string)$header->getName();
-                                    $headerValue = (string)$header->getValue();
-
-                                    $firstFoldingAt = strpos($headerValue, "\r\n");
-                                    if ($firstFoldingAt === false) {
-                                        $firstFoldingAt = strlen($headerValue);
-                                    }
-
-                                    if (strlen($headerName) + $firstFoldingAt > 76) {
-                                        return sprintf("%s:\r\n %s", $headerName, $headerValue);
-                                    }
-
-                                    return sprintf("%s: %s", $headerName, $headerValue);
+                                    return (string) (new HeaderLine($header));
                                 },
                                 $headers
                             )
@@ -185,7 +173,7 @@ final class GenericMessage implements MessageInterface
 
             if ($line === '') {
                 return $message->withBody(
-                    new StringStream(
+                    new BitEncodedStream(
                         implode(
                             "\r\n",
                             array_slice($lines, $n + 1)
@@ -195,11 +183,11 @@ final class GenericMessage implements MessageInterface
             }
 
             while (isset($lines[$n + 1]) && $lines[$n + 1] !== '' && $lines[$n + 1][0] === ' ') {
-                $line .= substr($lines[$n + 1], 1);
+                $line .= $lines[$n + 1];
                 $n++;
             }
 
-            $message = $message->withHeader(GenericHeader::fromString($line));
+            $message = $message->withHeader(HeaderLine::fromString($line)->getHeader());
         }
 
         return $message;

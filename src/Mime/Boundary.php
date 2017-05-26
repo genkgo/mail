@@ -57,20 +57,8 @@ final class Boundary
         for ($i = 0; $i < $total; $i += 1) {
             $ord = ord($value[$i]);
             // bare LF means we aren't valid
-            if ($ord === 10 || $ord > 127) {
+            if ($ord === 10 || $ord === 13) {
                 return false;
-            }
-            if ($ord === 13) {
-                if ($i + 2 >= $total) {
-                    return false;
-                }
-                $lf = ord($value[$i + 1]);
-                $sp = ord($value[$i + 2]);
-                if ($lf !== 10 || !in_array($sp, [9, 32], true)) {
-                    return false;
-                }
-                // skip over the LF following this
-                $i += 2;
             }
         }
         return true;

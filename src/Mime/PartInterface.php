@@ -9,17 +9,6 @@ use Genkgo\Mail\StreamInterface;
 interface PartInterface
 {
     /**
-     * @return Boundary
-     */
-    public function getBoundary(): Boundary;
-
-    /**
-     * @param Boundary $boundary
-     * @return PartInterface
-     */
-    public function withBoundary(Boundary $boundary): PartInterface;
-
-    /**
      * @return iterable
      */
     public function getHeaders(): iterable;
@@ -58,37 +47,4 @@ interface PartInterface
      * @return PartInterface
      */
     public function withBody(StreamInterface $body): PartInterface;
-
-    /**
-     * @return string
-     */
-    public function __toString(): string;
-
-    /**
-     * @param PartInterface $part
-     * @return PartInterface
-     */
-    public function withPart(PartInterface $part): PartInterface;
-
-    /**
-     * @param PartInterface $part
-     * @return PartInterface
-     */
-    public function withoutPart(PartInterface $part): PartInterface;
-
-    /**
-     * @param iterable|PartInterface[] $parts
-     * @return PartInterface
-     */
-    public function withParts(iterable $parts): PartInterface;
-
-    /**
-     * @return iterable|PartInterface[]
-     */
-    public function getParts(): iterable;
-
-    /**
-     * @return StreamInterface
-     */
-    public function toStream(): StreamInterface;
 }

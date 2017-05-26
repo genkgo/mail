@@ -4,6 +4,7 @@ namespace Genkgo\Mail\Integration;
 
 use Genkgo\Mail\AbstractTestCase;
 use Genkgo\Mail\Address;
+use Genkgo\Mail\AddressList;
 use Genkgo\Mail\EmailAddress;
 use Genkgo\Mail\FormattedMessageFactory;
 use Genkgo\Mail\GenericMessage;
@@ -13,8 +14,8 @@ use Genkgo\Mail\Header\ContentType;
 use Genkgo\Mail\Header\Subject;
 use Genkgo\Mail\Header\To;
 use Genkgo\Mail\Mime\EmbeddedImage;
-use Genkgo\Mail\Mime\StringAttachment;
-use Genkgo\Mail\Stream\StringStream;
+use Genkgo\Mail\Mime\ResourceAttachment;
+use Genkgo\Mail\Stream\BitEncodedStream;
 
 /**
  * Class ParseFormattedMessageTest
@@ -31,7 +32,7 @@ final class ParseFormattedMessageTest extends AbstractTestCase
         $message = (new FormattedMessageFactory())
             ->withHtml('<html><body><p>Hello World</p></body></html>')
             ->withAttachment(
-                new StringAttachment(
+                ResourceAttachment::fromString(
                     'Attachment text',
                     'attachment.txt',
                     new ContentType('plain/text')
@@ -39,7 +40,7 @@ final class ParseFormattedMessageTest extends AbstractTestCase
             )
             ->withEmbeddedImage(
                 new EmbeddedImage(
-                    new StringStream(
+                    new BitEncodedStream(
                         base64_decode('R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==')
                     ),
                     'pixel.gif',
@@ -49,8 +50,8 @@ final class ParseFormattedMessageTest extends AbstractTestCase
             )
             ->createMessage()
             ->withHeader(new Subject('Hello World'))
-            ->withHeader((new To([new Address(new EmailAddress('me@example.com'), 'me')])))
-            ->withHeader((new Cc([new Address(new EmailAddress('other@example.com'), 'other')])))
+            ->withHeader((new To(new AddressList([new Address(new EmailAddress('me@example.com'), 'me')]))))
+            ->withHeader((new Cc(new AddressList([new Address(new EmailAddress('other@example.com'), 'other')]))))
         ;
 
         $messageString = (string) $message;

@@ -4,7 +4,7 @@ namespace Genkgo\Mail\Unit\Stream;
 
 use Genkgo\Mail\AbstractTestCase;
 use Genkgo\Mail\Stream\ConcatenatedStream;
-use Genkgo\Mail\Stream\StringStream;
+use Genkgo\Mail\Stream\BitEncodedStream;
 
 final class ConcatenatedStreamTest extends AbstractTestCase
 {
@@ -16,8 +16,8 @@ final class ConcatenatedStreamTest extends AbstractTestCase
     {
         $stream = new ConcatenatedStream(
             new \ArrayObject([
-                new StringStream('test1'),
-                new StringStream('test2'),
+                new BitEncodedStream('test1'),
+                new BitEncodedStream('test2'),
             ])
         );
 
@@ -36,8 +36,8 @@ final class ConcatenatedStreamTest extends AbstractTestCase
     {
         $stream = new ConcatenatedStream(
             new \ArrayObject([
-                new StringStream('test1'),
-                new StringStream('test2'),
+                new BitEncodedStream('test1'),
+                new BitEncodedStream('test2'),
             ])
         );
 
@@ -51,8 +51,8 @@ final class ConcatenatedStreamTest extends AbstractTestCase
     {
         $stream = new ConcatenatedStream(
             new \ArrayObject([
-                new StringStream('test1'),
-                new StringStream('test2'),
+                new BitEncodedStream('test1'),
+                new BitEncodedStream('test2'),
             ])
         );
 
@@ -68,8 +68,8 @@ final class ConcatenatedStreamTest extends AbstractTestCase
     {
         $stream = new ConcatenatedStream(
             new \ArrayObject([
-                new StringStream('test1'),
-                new StringStream('test2'),
+                new BitEncodedStream('test1'),
+                new BitEncodedStream('test2'),
             ])
         );
 
@@ -86,8 +86,8 @@ final class ConcatenatedStreamTest extends AbstractTestCase
     {
         $stream = new ConcatenatedStream(
             new \ArrayObject([
-                new StringStream('test1'),
-                new StringStream('test2'),
+                new BitEncodedStream('test1'),
+                new BitEncodedStream('test2'),
             ])
         );
 
@@ -106,8 +106,8 @@ final class ConcatenatedStreamTest extends AbstractTestCase
 
         $stream = new ConcatenatedStream(
             new \ArrayObject([
-                new StringStream('test1'),
-                new StringStream('test2'),
+                new BitEncodedStream('test1'),
+                new BitEncodedStream('test2'),
             ])
         );
 

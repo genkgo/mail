@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Genkgo\Mail\Header;
 
-use Genkgo\Mail\Mime\EncodedValue;
+use Genkgo\Mail\Stream\OptimalTransferEncodedTextStream;
 
 /**
  * Class HeaderValue
@@ -25,11 +25,6 @@ final class HeaderValue
     private $parameters = [];
 
     /**
-     *
-     */
-    private CONST PRINTABLE = "\x00\x01\x02\x03\x04\x05\x06\x07\x08\x09\x0A\x0B\x0C\x0D\x0E\x0F\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1A\x1B\x1C\x1D\x1E\x1F\x7F\x80\x81\x82\x83\x84\x85\x86\x87\x88\x89\x8A\x8B\x8C\x8D\x8E\x8F\x90\x91\x92\x93\x94\x95\x96\x97\x98\x99\x9A\x9B\x9C\x9D\x9E\x9F\xA0\xA1\xA2\xA3\xA4\xA5\xA6\xA7\xA8\xA9\xAA\xAB\xAC\xAD\xAE\xAF\xB0\xB1\xB2\xB3\xB4\xB5\xB6\xB7\xB8\xB9\xBA\xBB\xBC\xBD\xBE\xBF\xC0\xC1\xC2\xC3\xC4\xC5\xC6\xC7\xC8\xC9\xCA\xCB\xCC\xCD\xCE\xCF\xD0\xD1\xD2\xD3\xD4\xD5\xD6\xD7\xD8\xD9\xDA\xDB\xDC\xDD\xDE\xDF\xE0\xE1\xE2\xE3\xE4\xE5\xE6\xE7\xE8\xE9\xEA\xEB\xEC\xED\xEE\xEF\xF0\xF1\xF2\xF3\xF4\xF5\xF6\xF7\xF8\xF9\xFA\xFB\xFC\xFD\xFE\xFF";
-
-    /**
      * HeaderValue constructor.
      * @param string $value
      */
@@ -47,7 +42,7 @@ final class HeaderValue
     public function withParameter(HeaderValueParameter $parameter): HeaderValue
     {
         $clone = clone $this;
-        $clone->parameters[] = $parameter;
+        $clone->parameters[$parameter->getName()] = $parameter;
         return $clone;
     }
 
@@ -58,11 +53,17 @@ final class HeaderValue
     {
         $value = implode('; ', array_merge([$this->value], $this->parameters));
 
-        if (strcspn($value, self::PRINTABLE) === strlen($value)) {
-            return \wordwrap($value, 75, self::FOLDING);
+        $encoded = new OptimalTransferEncodedTextStream($value, 68, self::FOLDING);
+        $encoding = $encoded->getMetadata(['transfer-encoding'])['transfer-encoding'];
+        if ($encoding === '7bit' || $encoding === '8bit') {
+            return (string) $encoded;
         }
 
-        return (string)(new EncodedValue($value, 75, self::FOLDING));
+        if ($encoding === 'base64') {
+            return sprintf('=?%s?B?', 'UTF-8') . (string) $encoded;
+        }
+
+        return sprintf('=?%s?Q?', 'UTF-8') . (string) $encoded;
     }
 
     /**
@@ -85,27 +86,36 @@ final class HeaderValue
 
         for ($i = 0; $i < $total; $i += 1) {
             $ord = ord($value[$i]);
-            // bare LF means we aren't valid
-            if ($ord === 10 || $ord === 13) {
+            if ($ord === 10) {
                 return false;
+            }
+            if ($ord === 13) {
+                if ($i + 2 >= $total) {
+                    return false;
+                }
+                $lf = ord($value[$i + 1]);
+                $sp = ord($value[$i + 2]);
+                if ($lf !== 10 || ! in_array($sp, [9, 32], true)) {
+                    return false;
+                }
+                // skip over the LF following this
+                $i += 2;
             }
         }
 
-        return $this->canBeEncoded($value);
+        return true;
     }
 
     /**
-     * @param string $value
-     * @return bool
+     * @param string $name
+     * @return HeaderValueParameter
      */
-    private function canBeEncoded(string $value): bool
+    public function getParameter(string $name): HeaderValueParameter
     {
-        return iconv_mime_encode('x-test', $value, [
-            'scheme' => 'Q',
-            'input-charset' => 'UTF-8',
-            'output-charset' => 'UTF-8',
-            'line-length' => strlen($value) * 4 + strlen('UTF-8') + 16,
-        ]) !== false;
-    }
+        if (isset($this->parameters[$name])) {
+            return $this->parameters[$name];
+        }
 
+        throw new \UnexpectedValueException('No parameter with name ' . $name);
+    }
 }

@@ -9,7 +9,7 @@ use Genkgo\Mail\StreamInterface;
  * Class TextStream
  * @package Genkgo\Email\Stream
  */
-final class StringStream implements StreamInterface
+final class BitEncodedStream implements StreamInterface
 {
 
     /**
@@ -25,10 +25,12 @@ final class StringStream implements StreamInterface
     /**
      * ResourceStream constructor.
      * @param string $text
+     * @param int $lineLength
+     * @param string $lineBreak
      */
-    public function __construct(string $text)
+    public function __construct(string $text, int $lineLength = 78, string $lineBreak = "\r\n")
     {
-        $this->text = $text;
+        $this->text = \wordwrap($text, $lineLength, $lineBreak);
     }
 
     /**

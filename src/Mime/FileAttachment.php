@@ -28,7 +28,7 @@ final class FileAttachment implements PartInterface
             throw new \InvalidArgumentException('Attachment does not exists');
         }
 
-        if ($attachmentName) {
+        if ($attachmentName === '') {
             $attachmentName = basename($filename);
         }
 
@@ -39,23 +39,6 @@ final class FileAttachment implements PartInterface
             ->withHeader($contentType)
             ->withHeader(ContentDisposition::newAttachment($attachmentName))
             ->withHeader(new ContentTransferEncoding('base64'));
-    }
-
-    /**
-     * @return Boundary
-     */
-    public function getBoundary(): Boundary
-    {
-        throw new \RuntimeException('FileAttachment does not have sub parts, so does not have a boundary');
-    }
-
-    /**
-     * @param Boundary $boundary
-     * @return PartInterface
-     */
-    public function withBoundary(Boundary $boundary): PartInterface
-    {
-        throw new \RuntimeException('FileAttachment does not have sub parts, so does not have a boundary');
     }
 
     /**
@@ -90,6 +73,10 @@ final class FileAttachment implements PartInterface
      */
     public function withHeader(HeaderInterface $header): PartInterface
     {
+        if (strtolower((string)$header->getName()) === 'content-disposition') {
+            throw new \InvalidArgumentException('Cannot modify content disposition for file attachment');
+        }
+
         $clone = clone $this;
         $clone->decoratedPart = $this->decoratedPart->withHeader($header);
         return $clone;
@@ -101,6 +88,10 @@ final class FileAttachment implements PartInterface
      */
     public function withoutHeader(string $name): PartInterface
     {
+        if (strtolower($name) === 'content-disposition') {
+            throw new \InvalidArgumentException('Cannot modify content disposition for file attachment');
+        }
+
         $clone = clone $this;
         $clone->decoratedPart = $this->decoratedPart->withoutHeader($name);
         return $clone;
@@ -121,56 +112,5 @@ final class FileAttachment implements PartInterface
     public function getBody(): StreamInterface
     {
         return $this->decoratedPart->getBody();
-    }
-
-    /**
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->decoratedPart->__toString();
-    }
-
-    /**
-     * @param PartInterface $part
-     * @return PartInterface
-     */
-    public function withPart(PartInterface $part): PartInterface
-    {
-        throw new \BadMethodCallException('FileAttachment cannot have sub parts. FileAttachment is a final mime part');
-    }
-
-    /**
-     * @param PartInterface $part
-     * @return PartInterface
-     */
-    public function withoutPart(PartInterface $part): PartInterface
-    {
-        throw new \BadMethodCallException('FileAttachment cannot have sub parts. FileAttachment is a final mime part');
-    }
-
-    /**
-     * @param iterable|PartInterface[] $parts
-     * @return PartInterface
-     */
-    public function withParts(iterable $parts): PartInterface
-    {
-        throw new \BadMethodCallException('FileAttachment cannot have sub parts. FileAttachment is a final mime part');
-    }
-
-    /**
-     * @return iterable|PartInterface[]
-     */
-    public function getParts(): iterable
-    {
-        return [];
-    }
-
-    /**
-     * @return StreamInterface
-     */
-    public function toStream(): StreamInterface
-    {
-        return $this->decoratedPart->toStream();
     }
 }

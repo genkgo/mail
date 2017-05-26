@@ -1,6 +1,6 @@
 <?php
 
-namespace Genkgo\Mail\Unit;
+namespace Genkgo\Mail\Unit\Header;
 
 use Genkgo\Mail\AbstractTestCase;
 use Genkgo\Mail\Header\HeaderValue;
@@ -36,12 +36,12 @@ final class HeaderValueTest extends AbstractTestCase
             [
                 'Value Value Value Value Value Value Value Value Value Value Value Value Value Value',
                 true,
-                "Value Value Value Value Value Value Value Value Value Value Value Value\r\n Value Value"
+                "Value Value Value Value Value Value Value Value Value Value Value\r\n Value Value Value"
             ],
             [
                 'Subject with special characters ëëëëëëëëëëëëëëë Value Value Value ',
                 true,
-                "=?UTF-8?Q?Subject=20with=20special=20characters=20?=\r\n =?UTF-8?Q?=C3=AB=C3=AB=C3=AB=C3=AB=C3=AB=C3=AB=C3=AB=C3=AB=C3=AB=C3=AB=C3=AB=C3=AB=C3=AB=C3=AB=C3=AB=20?=\r\n =?UTF-8?Q?Value=20Value=20Value?="
+                "=?UTF-8?B?U3ViamVjdCB3aXRoIHNwZWNpYWwgY2hhcmFjdGVycyDDq8Orw6vDq8Orw6vDq8Orw6vD\r\n q8Orw6vDq8Orw6sgVmFsdWUgVmFsdWUgVmFsdWUg"
             ],
         ];
     }
@@ -56,5 +56,17 @@ final class HeaderValueTest extends AbstractTestCase
             ->withParameter(new HeaderValueParameter('name2', 'value2'));
 
         $this->assertEquals('value; name1="value1"; name2="value2"', (string)$header);
+    }
+
+    /**
+     * @test
+     */
+    public function it_overwrites_parameters()
+    {
+        $header = (new HeaderValue('value'))
+            ->withParameter(new HeaderValueParameter('name1', 'value1'))
+            ->withParameter(new HeaderValueParameter('name1', 'value2'));
+
+        $this->assertEquals('value; name1="value2"', (string)$header);
     }
 }

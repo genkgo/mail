@@ -21,9 +21,14 @@ final class ContentType implements HeaderInterface
      * @param string $contentType
      * @param string $charset
      */
-    public function __construct(string $contentType, string $charset = 'UTF-8')
+    public function __construct(string $contentType, string $charset = '')
     {
         $this->contentType = $contentType;
+
+        if ($charset === '' && substr($contentType, 0, 5) === 'text/') {
+            $charset = 'UTF-8';
+        }
+
         $this->charset = $charset;
     }
 
