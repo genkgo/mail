@@ -28,8 +28,10 @@ final class OptimalTransferEncodedTextStreamTest extends AbstractTestCase
             [str_repeat('test1 test2', 50), '7bit'],
             [str_repeat('tëst1 test2', 50), 'quoted-printable'],
             [str_repeat('ëëëëë ëëëëë', 50), 'base64'],
-            ["\x00", '8bit'],
+            ["\x00", 'base64'],
             ["\x80", 'base64'],
+            ["\u{aa}", 'base64'],
+            ["\u{1F600}", 'base64'],
         ];
     }
 
