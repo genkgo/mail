@@ -25,6 +25,10 @@ final class HtmlOnlyMessage implements MessageInterface
         $stream = new OptimalTransferEncodedTextStream($html);
         $encoding = $stream->getMetadata(['transfer-encoding'])['transfer-encoding'];
 
+        if ($encoding === '7bit') {
+            $charset = 'us-ascii';
+        }
+
         $this->decoratedMessage = (new GenericMessage())
             ->withHeader(new ContentType('text/html', $charset))
             ->withHeader(new MimeVersion())
