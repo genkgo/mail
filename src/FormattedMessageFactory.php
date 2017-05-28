@@ -13,7 +13,7 @@ use Genkgo\Mail\Mime\PlainTextPart;
 
 /**
  * Class FormattedMessageFactory
- * @package Genkgo\Email
+ * @package Genkgo\Mail
  */
 final class FormattedMessageFactory
 {

@@ -7,7 +7,7 @@ use Genkgo\Mail\StreamInterface;
 
 /**
  * Class ResourceStream
- * @package Genkgo\Email\Stream
+ * @package Genkgo\Mail\Stream
  */
 final class ResourceStream implements StreamInterface
 {

@@ -5,7 +5,7 @@ namespace Genkgo\Mail\Header;
 
 /**
  * Class Bcc
- * @package Genkgo\Email\Header
+ * @package Genkgo\Mail\Header
  */
 final class Bcc extends AbstractRecipient
 {

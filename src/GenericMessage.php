@@ -9,7 +9,7 @@ use Genkgo\Mail\Stream\BitEncodedStream;
 
 /**
  * Class ImmutableMessage
- * @package Genkgo\Email
+ * @package Genkgo\Mail
  */
 final class GenericMessage implements MessageInterface
 {

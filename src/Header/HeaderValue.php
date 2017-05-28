@@ -7,7 +7,7 @@ use Genkgo\Mail\Stream\OptimalTransferEncodedTextStream;
 
 /**
  * Class HeaderValue
- * @package Genkgo\Email\Header
+ * @package Genkgo\Mail\Header
  */
 final class HeaderValue
 {

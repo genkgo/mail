@@ -5,7 +5,7 @@ namespace Genkgo\Mail;
 
 /**
  * Interface StreamInterface
- * @package Genkgo\Email
+ * @package Genkgo\Mail
  */
 interface StreamInterface
 {

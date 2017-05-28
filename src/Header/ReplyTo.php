@@ -5,7 +5,7 @@ namespace Genkgo\Mail\Header;
 
 /**
  * Class ReplyTo
- * @package Genkgo\Email\Header
+ * @package Genkgo\Mail\Header
  */
 final class ReplyTo extends AbstractRecipient
 {

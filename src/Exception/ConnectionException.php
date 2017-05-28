@@ -5,7 +5,7 @@ namespace Genkgo\Mail\Exception;
 
 /**
  * Class ConnectionException
- * @package Genkgo\Email\Exception
+ * @package Genkgo\Mail\Exception
  */
 final class ConnectionException extends TransportException
 {

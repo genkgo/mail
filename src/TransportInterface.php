@@ -5,7 +5,7 @@ namespace Genkgo\Mail;
 
 /**
  * Interface TransportInterface
- * @package Genkgo\Email
+ * @package Genkgo\Mail
  */
 interface TransportInterface
 {

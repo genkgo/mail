@@ -14,7 +14,7 @@ use Genkgo\Mail\TransportInterface;
 
 /**
  * Class QueueIfFailedTransport
- * @package Genkgo\Email\Transport
+ * @package Genkgo\Mail\Transport
  */
 final class QueueIfFailedTransport implements TransportInterface
 {

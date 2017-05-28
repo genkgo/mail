@@ -9,7 +9,7 @@ use Genkgo\Mail\MessageInterface;
 
 /**
  * Interface QueueInterface
- * @package Genkgo\Email\Queue
+ * @package Genkgo\Mail\Queue
  */
 interface QueueInterface
 {

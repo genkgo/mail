@@ -5,7 +5,7 @@ namespace Genkgo\Mail\Exception;
 
 /**
  * Class TransportException
- * @package Genkgo\Email\Exception
+ * @package Genkgo\Mail\Exception
  */
 abstract class TransportException extends AbstractException
 {

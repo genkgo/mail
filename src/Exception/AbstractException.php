@@ -7,7 +7,7 @@ use Exception;
 
 /**
  * Class AbstractException
- * @package Genkgo\Email\Exception
+ * @package Genkgo\Mail\Exception
  */
 abstract class AbstractException extends Exception
 {

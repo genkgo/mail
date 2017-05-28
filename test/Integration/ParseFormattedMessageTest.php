@@ -19,7 +19,7 @@ use Genkgo\Mail\Stream\BitEncodedStream;
 
 /**
  * Class ParseFormattedMessageTest
- * @package Genkgo\Email\Integration
+ * @package Genkgo\Mail\Integration
  */
 final class ParseFormattedMessageTest extends AbstractTestCase
 {

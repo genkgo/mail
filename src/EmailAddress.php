@@ -5,7 +5,7 @@ namespace Genkgo\Mail;
 
 /**
  * Class EmailAddress
- * @package Genkgo\Email
+ * @package Genkgo\Mail
  */
 final class EmailAddress
 {

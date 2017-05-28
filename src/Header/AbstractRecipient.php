@@ -8,7 +8,7 @@ use Genkgo\Mail\HeaderInterface;
 
 /**
  * Class Recipient
- * @package Genkgo\Email\Header
+ * @package Genkgo\Mail\Header
  */
 abstract class AbstractRecipient implements HeaderInterface
 {

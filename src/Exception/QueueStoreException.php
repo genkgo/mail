@@ -5,7 +5,7 @@ namespace Genkgo\Mail\Exception;
 
 /**
  * Class QueueStoreException
- * @package Genkgo\Email\Exception
+ * @package Genkgo\Mail\Exception
  */
 final class QueueStoreException extends AbstractException
 {

@@ -7,7 +7,7 @@ use Genkgo\Mail\StreamInterface;
 
 /**
  * Class TextStream
- * @package Genkgo\Email\Stream
+ * @package Genkgo\Mail\Stream
  */
 final class BitEncodedStream implements StreamInterface
 {

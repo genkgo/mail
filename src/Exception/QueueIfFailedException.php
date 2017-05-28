@@ -5,7 +5,7 @@ namespace Genkgo\Mail\Exception;
 
 /**
  * Class QueueIfFailedException
- * @package Genkgo\Email\Exception
+ * @package Genkgo\Mail\Exception
  */
 class QueueIfFailedException extends AbstractException
 {

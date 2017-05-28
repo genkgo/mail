@@ -7,7 +7,7 @@ use Genkgo\Mail\HeaderInterface;
 
 /**
  * Class ContentDisposition
- * @package Genkgo\Email\Header
+ * @package Genkgo\Mail\Header
  */
 final class ContentDisposition implements HeaderInterface
 {

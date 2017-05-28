@@ -5,7 +5,7 @@ namespace Genkgo\Mail\Header;
 
 /**
  * Class HeaderName
- * @package Genkgo\Email\Header
+ * @package Genkgo\Mail\Header
  */
 final class HeaderName
 {

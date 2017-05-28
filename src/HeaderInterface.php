@@ -8,7 +8,7 @@ use Genkgo\Mail\Header\HeaderValue;
 
 /**
  * Interface HeaderInterface
- * @package Genkgo\Email
+ * @package Genkgo\Mail
  */
 interface HeaderInterface
 {
