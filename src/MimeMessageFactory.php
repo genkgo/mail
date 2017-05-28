@@ -19,28 +19,15 @@ use Genkgo\Mail\Stream\ConcatenatedStream;
 final class MimeMessageFactory
 {
     /**
-     * @var PartInterface
-     */
-    private $part;
-
-    /**
-     * Message constructor.
      * @param PartInterface $part
-     */
-    public function __construct(PartInterface $part)
-    {
-        $this->part = $part;
-    }
-
-    /**
      * @return MessageInterface
      */
-    public function createMessage(): MessageInterface
+    public function createMessage(PartInterface $part): MessageInterface
     {
         $message = (new GenericMessage())
             ->withHeader(new MimeVersion());
 
-        $part = $this->pickOptimalCharset($this->part);
+        $part = $this->pickOptimalCharset($part);
 
         foreach ($part->getHeaders() as $header) {
             $message = $message->withHeader($header);

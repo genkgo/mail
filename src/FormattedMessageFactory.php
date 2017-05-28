@@ -117,7 +117,7 @@ final class FormattedMessageFactory
      */
     public function createMessage(): MessageInterface
     {
-        return (new MimeMessageFactory($this->createMessageRoot()))->createMessage();
+        return (new MimeMessageFactory())->createMessage($this->createMessageRoot());
     }
 
     /**
