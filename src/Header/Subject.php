@@ -18,6 +18,10 @@ final class Subject implements HeaderInterface
      */
     public function __construct(string $subject)
     {
+        if (preg_match('/\v/', $subject) !== 0) {
+            throw new \InvalidArgumentException('Cannot use vertical white space within subject');
+        }
+
         $this->subject = $subject;
     }
 

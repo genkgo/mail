@@ -41,6 +41,9 @@ final class EmailAddressTest extends AbstractTestCase {
             ['multiple@local@parts@domain.com', false, '', ''],
             ['@example.com', false, '', ''],
             ['missing-domain@', false, '', ''],
+            ["x\ry@z", false, '', ''],
+            ["x\r\ny@z", false, '', ''],
+            ["x\ny@z", false, '', ''],
         ];
     }
 

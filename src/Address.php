@@ -25,7 +25,7 @@ final class Address
      */
     public function __construct(EmailAddress $address, string $name = '')
     {
-        if (preg_match('/\v/', $name) > 0) {
+        if (preg_match('/\v/', $name) !== 0) {
             throw new \InvalidArgumentException('Cannot use vertical white space within name of email address');
         }
 

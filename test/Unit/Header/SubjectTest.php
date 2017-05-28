@@ -12,11 +12,16 @@ final class SubjectTest extends AbstractTestCase
      * @test
      * @dataProvider provideValues
      */
-    public function it_produces_correct_values($subject, $headerName, $headerValue)
+    public function it_produces_correct_values($subject, $constructed, $headerName, $headerValue)
     {
-        $header = new Subject($subject);
-        $this->assertEquals($headerName, (string)$header->getName());
-        $this->assertEquals($headerValue, (string)$header->getValue());
+        if ($constructed) {
+            $header = new Subject($subject);
+            $this->assertEquals($headerName, (string)$header->getName());
+            $this->assertEquals($headerValue, (string)$header->getValue());
+        } else {
+            $this->expectException(\InvalidArgumentException::class);
+            new Subject($subject);
+        }
     }
 
     /**
@@ -25,7 +30,10 @@ final class SubjectTest extends AbstractTestCase
     public function provideValues()
     {
         return [
-            ['Value', 'Subject', 'Value'],
+            ['Value', true, 'Subject', 'Value'],
+            ["x \n y", false, '', ''],
+            ["x \r\n y", false, '', ''],
+            ["x \r y", false, '', ''],
         ];
     }
 

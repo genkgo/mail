@@ -29,6 +29,10 @@ final class EmailAddress
      */
     public function __construct(string $address)
     {
+        if (preg_match('/\v/', $address) !== 0) {
+            throw new \InvalidArgumentException('Cannot use vertical white space within email address');
+        }
+
         $address = trim($address);
 
         $hits = preg_match('/^([^@]+)@([^@]+)$/', $address, $matches);
