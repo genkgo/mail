@@ -134,6 +134,8 @@ final class AddressListTest extends AbstractTestCase
             ['"Name <local-part@domain.com>', false, 0, 'Address uses starting quotes but no ending quotes'],
             ['X <local-part@domain.com>, Y <local-part@domain.com>', true, 2, ''],
             ['"X" <local-part@domain.com>, "Y" <local-part@domain.com>', true, 2, ''],
+            ['"," <local-part@domain.com>, "Y" <local-part@domain.com>', true, 2, ''],
+            ['"," <local-part@domain.com>, "Y" <"local,part"@domain.com>', true, 2, ''],
         ];
     }
 }
