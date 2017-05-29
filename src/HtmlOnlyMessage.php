@@ -5,7 +5,6 @@ namespace Genkgo\Mail;
 
 use Genkgo\Mail\Header\ContentTransferEncoding;
 use Genkgo\Mail\Header\ContentType;
-use Genkgo\Mail\Header\MimeVersion;
 use Genkgo\Mail\Stream\OptimalTransferEncodedTextStream;
 
 final class HtmlOnlyMessage implements MessageInterface
@@ -31,7 +30,6 @@ final class HtmlOnlyMessage implements MessageInterface
 
         $this->decoratedMessage = (new GenericMessage())
             ->withHeader(new ContentType('text/html', $charset))
-            ->withHeader(new MimeVersion())
             ->withBody($stream)
             ->withHeader(new ContentTransferEncoding($encoding));
     }
