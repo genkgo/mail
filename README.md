@@ -29,6 +29,24 @@ $transport = new NullTransport();
 $transport->send($message);
 ```
 
+## RFC-compliant
+ 
+This library tends to be as compliant with e-mail RFCs as possible. It should be compliant with the following RFCs.
+
+- [RFC 1896, The text/enriched MIME Content-type](https://tools.ietf.org/html/rfc1896)
+- [RFC 2822, Internet Message Format](https://tools.ietf.org/html/rfc2822)
+- [RFC 2045, Multipurpose Internet Mail Extensions (MIME) Part One](https://tools.ietf.org/html/rfc2045)
+- [RFC 2046, Multipurpose Internet Mail Extensions (MIME) Part Two](https://tools.ietf.org/html/rfc2046)
+- [RFC 2047, Multipurpose Internet Mail Extensions (MIME) Part Three](https://tools.ietf.org/html/rfc2047)
+- [RFC 2048, Multipurpose Internet Mail Extensions (MIME) Part Four](https://tools.ietf.org/html/rfc2048)
+- [RFC 2049, Multipurpose Internet Mail Extensions (MIME) Part Five](https://tools.ietf.org/html/rfc2049)
+
+Pending implementations.
+
+- [RFC 2821, Simple Mail Transfer Protocol](https://tools.ietf.org/html/rfc2821)
+- [RFC 5321, Simple Mail Transfer Protocol](https://tools.ietf.org/html/rfc5321)
+
+
 ## Credits
 
 This library was not able to exist without [Zend/Mail](https://github.com/zendframework/zend-mail)

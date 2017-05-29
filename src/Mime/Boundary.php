@@ -53,15 +53,20 @@ final class Boundary
      */
     private function validate(string $value): bool
     {
-        $total = strlen($value);
-        for ($i = 0; $i < $total; $i += 1) {
-            $ord = ord($value[$i]);
-            // bare LF means we aren't valid
-            if ($ord === 10 || $ord === 13) {
-                return false;
-            }
+        if ($value === '') {
+            return false;
         }
-        return true;
+
+        $length = strlen($value);
+        if ($length > 70) {
+            return false;
+        }
+
+        if ($value[$length - 1] === ' ') {
+            return false;
+        }
+
+        return preg_match('/[^A-Za-z0-9\'\,\(\)\+\_\,\-\.\/\:\=\? ]/', $value) !== 1;
     }
 
 }
