@@ -96,6 +96,15 @@ final class AddressListTest extends AbstractTestCase
 
     /**
      * @test
+     */
+    public function it_throws_when_providing_incorrect_array()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        new AddressList(['']);
+    }
+
+    /**
+     * @test
      * @dataProvider provideAddressListStrings
      */
     public function it_parses_address_strings(string $addressListString, bool $constructed, int $count, string $exceptionMessage)
