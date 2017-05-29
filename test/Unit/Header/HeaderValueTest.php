@@ -41,7 +41,12 @@ final class HeaderValueTest extends AbstractTestCase
             [
                 'Subject with special characters ëëëëëëëëëëëëëëë Value Value Value ',
                 true,
-                "=?UTF-8?B?U3ViamVjdCB3aXRoIHNwZWNpYWwgY2hhcmFjdGVycyDDq8Orw6vDq8Orw6vDq8Orw6vD\r\n q8Orw6vDq8Orw6sgVmFsdWUgVmFsdWUgVmFsdWUg"
+                "=?UTF-8?B?U3ViamVjdCB3aXRoIHNwZWNpYWwgY2hhcmFjdGVycyDDq8Orw6vDq8Orw6vDq8Orw6vD\r\n q8Orw6vDq8Orw6sgVmFsdWUgVmFsdWUgVmFsdWUg?="
+            ],
+            [
+                'Subject with not so many characters ë',
+                true,
+                "=?UTF-8?Q?Subject with not so many characters =C3=AB?="
             ],
         ];
     }

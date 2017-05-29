@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Genkgo\Mail;
 
-use Genkgo\Mail\Header\HeaderValue;
+use Genkgo\Mail\Stream\QuotedPrintableStream;
 
 /**
  * Class Address
@@ -89,13 +89,18 @@ final class Address
 
         $name = $this->name;
 
-        $encodedName = addcslashes($name, "\0..\37\177\\\"");
+        $encodedName = (string)QuotedPrintableStream::fromString($name);
+        if ($encodedName !== $name) {
+            $encodedName = sprintf('=?%s?Q?%s?=', 'UTF-8', (string) $encodedName);
+        } else {
+            $encodedName = addcslashes($encodedName, "\0..\37\177\\\"");
 
-        if ($encodedName !== $name || preg_match('/[^A-Za-z0-9!#$%&\'*+\/=?^_`{|}~ -]/', $this->name) === 1) {
-            $encodedName = sprintf('"%s"', $encodedName);
+            if ($encodedName !== $name || preg_match('/[^A-Za-z0-9!#$%&\'*+\/=?^_`{|}~ -]/', $this->name) === 1) {
+                $encodedName = sprintf('"%s"', $encodedName);
+            }
         }
 
-        return (string)(new HeaderValue($encodedName)) . ' <' . $this->address->getPunyCode() . '>';
+        return sprintf('%s <%s>', $encodedName, $this->address->getPunyCode());
     }
 
     /**
@@ -194,6 +199,6 @@ final class Address
             $name = substr($name, 1, -1);
         }
 
-        return new self(new EmailAddress($email), $name);
+        return new self(new EmailAddress($email), iconv_mime_decode($name));
     }
 }

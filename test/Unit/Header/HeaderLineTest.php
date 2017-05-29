@@ -26,4 +26,39 @@ final class HeaderLineTest extends AbstractTestCase
             (string)$line
         );
     }
+
+    /**
+     * @test
+     */
+    public function it_creates_a_line_from_a_string() {
+        $line = HeaderLine::fromString('X: Y');
+        $this->assertEquals('X', (string) $line->getHeader()->getName());
+        $this->assertEquals('Y', (string) $line->getHeader()->getValue());
+    }
+
+    /**
+     * @test
+     */
+    public function it_creates_a_line_from_a_encoded_string() {
+        $line = HeaderLine::fromString('X: =?UTF-8?Q?t=C3=ABst?=');
+        $this->assertEquals('X', (string) $line->getHeader()->getName());
+        $this->assertEquals('tëst', $line->getHeader()->getValue()->getRaw());
+
+        $line = HeaderLine::fromString('X: =?UTF-8?B?dMOrc3Q=?=');
+        $this->assertEquals('X', (string) $line->getHeader()->getName());
+        $this->assertEquals('tëst', $line->getHeader()->getValue()->getRaw());
+    }
+
+    /**
+     * @test
+     */
+    public function it_creates_a_line_from_a_partial_encoded_string() {
+        $line = HeaderLine::fromString('X: =?UTF-8?Q?t=C3=ABst?= <local-part@domain.com>');
+        $this->assertEquals('X', (string) $line->getHeader()->getName());
+        $this->assertEquals('=?UTF-8?Q?t=C3=ABst?= <local-part@domain.com>', $line->getHeader()->getValue()->getRaw());
+
+        $line = HeaderLine::fromString('X: =?UTF-8?B?bMOkc3QgbmFtZSwgZsOvcnN0IG5hbWU=?= <local-part@domain.com>');
+        $this->assertEquals('X', (string) $line->getHeader()->getName());
+        $this->assertEquals('=?UTF-8?B?bMOkc3QgbmFtZSwgZsOvcnN0IG5hbWU=?= <local-part@domain.com>', $line->getHeader()->getValue()->getRaw());
+    }
 }

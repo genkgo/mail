@@ -36,6 +36,7 @@ final class AddressTest extends AbstractTestCase {
             ['local-part@domain.com', 'Name " Name', true, '"Name \" Name" <local-part@domain.com>'],
             ['local-part@domain.com', '', true, 'local-part@domain.com'],
             ['local-part@domain.com', "test\r\ntest", false, 'local-part@domain.com'],
+            ['local-part@domain.com', "tëst", true, '=?UTF-8?Q?t=C3=ABst?= <local-part@domain.com>'],
         ];
     }
 
@@ -105,6 +106,9 @@ final class AddressTest extends AbstractTestCase {
             ['e"Name" <local-part@domain.com>', false, 'Invalid characters before "', ''],
             ['"Name" <"local-part"@domain.com>', true, '"local-part"@domain.com', 'Name'],
             ['', false, 'Address cannot be empty', ''],
+            ['=?UTF-8?Q?t=C3=ABst?= <local-part@domain.com>', true, 'local-part@domain.com', 'tëst'],
+            ['=?UTF-8?B?dMOrc3Q=?= <local-part@domain.com>', true, 'local-part@domain.com', 'tëst'],
+            ['=?UTF-8?B?bMOkc3QgbmFtZSwgZsOvcnN0IG5hbWU=?= <local-part@domain.com>', true, 'local-part@domain.com', 'läst name, fïrst name'],
         ];
     }
 }

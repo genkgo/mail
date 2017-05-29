@@ -49,6 +49,14 @@ final class HeaderValue
     /**
      * @return string
      */
+    public function getRaw(): string
+    {
+        return $this->value;
+    }
+
+    /**
+     * @return string
+     */
     public function __toString(): string
     {
         $value = implode('; ', array_merge([$this->value], $this->parameters));
@@ -60,10 +68,10 @@ final class HeaderValue
         }
 
         if ($encoding === 'base64') {
-            return sprintf('=?%s?B?', 'UTF-8') . (string) $encoded;
+            return sprintf('=?%s?B?%s?=', 'UTF-8', (string) $encoded);
         }
 
-        return sprintf('=?%s?Q?', 'UTF-8') . (string) $encoded;
+        return sprintf('=?%s?Q?%s?=', 'UTF-8', (string) $encoded);
     }
 
     /**
