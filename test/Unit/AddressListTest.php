@@ -93,4 +93,49 @@ final class AddressListTest extends AbstractTestCase
             )
         );
     }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_providing_incorrect_array()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        new AddressList(['']);
+    }
+
+    /**
+     * @test
+     * @dataProvider provideAddressListStrings
+     */
+    public function it_parses_address_strings(string $addressListString, bool $constructed, int $count, string $exceptionMessage)
+    {
+        if ($constructed) {
+            $addressList = AddressList::fromString($addressListString);
+            $this->assertCount($count, $addressList);
+        } else {
+            $this->expectException(\InvalidArgumentException::class);
+            $this->expectExceptionMessage($exceptionMessage);
+            AddressList::fromString($addressListString);
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public function provideAddressListStrings()
+    {
+        return [
+            ['', true, 0, ''],
+            ['Name <local-part@domain.com>', true, 1, ''],
+            ['"Name , Name" <local-part@domain.com>', true, 1, ''],
+            ['"Name \" Name" <local-part@domain.com>', true, 1, ''],
+            ['"Name \" Name" <"local-part"@domain.com>', true, 1, ''],
+            ['local-part@domain.com', true, 1, ''],
+            ['"Name <local-part@domain.com>', false, 0, 'Address uses starting quotes but no ending quotes'],
+            ['X <local-part@domain.com>, Y <local-part@domain.com>', true, 2, ''],
+            ['"X" <local-part@domain.com>, "Y" <local-part@domain.com>', true, 2, ''],
+            ['"," <local-part@domain.com>, "Y" <local-part@domain.com>', true, 2, ''],
+            ['"," <local-part@domain.com>, "Y" <"local,part"@domain.com>', true, 2, ''],
+        ];
+    }
 }

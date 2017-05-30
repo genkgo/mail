@@ -6,7 +6,6 @@ namespace Genkgo\Mail;
 use Genkgo\Mail\Header\GenericHeader;
 use Genkgo\Mail\Header\HeaderLine;
 use Genkgo\Mail\Header\HeaderValueParameter;
-use Genkgo\Mail\Header\MimeVersion;
 use Genkgo\Mail\Mime\MultiPartInterface;
 use Genkgo\Mail\Mime\PartInterface;
 use Genkgo\Mail\Stream\BitEncodedStream;
@@ -24,8 +23,7 @@ final class MimeMessageFactory
      */
     public function createMessage(PartInterface $part): MessageInterface
     {
-        $message = (new GenericMessage())
-            ->withHeader(new MimeVersion());
+        $message = new GenericMessage();
 
         $part = $this->pickOptimalCharset($part);
 

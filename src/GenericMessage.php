@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Genkgo\Mail;
 
 use Genkgo\Mail\Header\HeaderLine;
+use Genkgo\Mail\Header\MimeVersion;
 use Genkgo\Mail\Stream\EmptyStream;
 use Genkgo\Mail\Stream\BitEncodedStream;
 
@@ -45,6 +46,7 @@ final class GenericMessage implements MessageInterface
     public function __construct()
     {
         $this->body = new EmptyStream();
+        $this->headers['mime-version'] = [new MimeVersion()];
     }
 
     /**

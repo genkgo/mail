@@ -35,6 +35,12 @@ final class BoundaryTest extends AbstractTestCase
             ["incorrect \r\n", false],
             ["incorrect \r", false],
             ["incorrect \n", false],
+            ["Aa'()+_,-./:=?", true],
+            ["{}", false],
+            ["test test", true],
+            ["test ", false],
+            [str_repeat("a", 70), true],
+            [str_repeat("a", 71), false],
         ];
     }
 

@@ -6,9 +6,8 @@
 
 While analyzing what mail library to use when refactoring a code base, we discovered that the available ones are mostly
 legacy libraries. Some do not use namespaces and every library we encountered were merely a collection of scalar
-property bags than objects using encapsulation. It is our believe that recent vulnerabilities found in these libraries
-are a consequence of that. This is not a critique to these libraries. We all used them, and used them with joy. However,
-we think there is a need for new libraries that use modern principles.
+property bags than objects using encapsulation. This is not a critique to these libraries. We all used them, and used
+them with joy. However, we think there is a need for new libraries that use modern principles.
 
 Use this if you want to send e-mails over different transports and protocols using immutable messages and streams.
 
@@ -28,6 +27,24 @@ $message = (new FormattedMessageFactory())
 $transport = new NullTransport();
 $transport->send($message);
 ```
+
+## RFC-compliant
+ 
+This library tends to be as compliant with e-mail RFCs as possible. It should be compliant with the following RFCs.
+
+- [RFC 1896, The text/enriched MIME Content-type](https://tools.ietf.org/html/rfc1896)
+- [RFC 2822, Internet Message Format](https://tools.ietf.org/html/rfc2822)
+- [RFC 2045, Multipurpose Internet Mail Extensions (MIME) Part One](https://tools.ietf.org/html/rfc2045)
+- [RFC 2046, Multipurpose Internet Mail Extensions (MIME) Part Two](https://tools.ietf.org/html/rfc2046)
+- [RFC 2047, Multipurpose Internet Mail Extensions (MIME) Part Three](https://tools.ietf.org/html/rfc2047)
+- [RFC 2048, Multipurpose Internet Mail Extensions (MIME) Part Four](https://tools.ietf.org/html/rfc2048)
+- [RFC 2049, Multipurpose Internet Mail Extensions (MIME) Part Five](https://tools.ietf.org/html/rfc2049)
+
+Pending implementations.
+
+- [RFC 2821, Simple Mail Transfer Protocol](https://tools.ietf.org/html/rfc2821)
+- [RFC 5321, Simple Mail Transfer Protocol](https://tools.ietf.org/html/rfc5321)
+
 
 ## Credits
 
