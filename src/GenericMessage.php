@@ -174,7 +174,7 @@ final class GenericMessage implements MessageInterface
             $line = $lines[$n];
 
             if ($line === '') {
-                return $message->withBody(
+                $message = $message->withBody(
                     new BitEncodedStream(
                         implode(
                             "\r\n",
@@ -182,6 +182,7 @@ final class GenericMessage implements MessageInterface
                         )
                     )
                 );
+                break;
             }
 
             while (isset($lines[$n + 1]) && $lines[$n + 1] !== '' && $lines[$n + 1][0] === ' ') {
