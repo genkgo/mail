@@ -19,6 +19,10 @@ final class PhpMailTransport implements TransportInterface
      * @var array
      */
     private $parameters;
+    /**
+     * @var \Closure
+     */
+    private $replacedMailMethod;
 
     /**
      * PhpMailTransport constructor.
@@ -42,13 +46,24 @@ final class PhpMailTransport implements TransportInterface
         $headers = $this->extractHeaders($message);
         $parameters = $this->constructParameters($message);
 
-        mail(
-            $to,
-            $subject,
-            (string)$message->getBody(),
-            $headers,
-            $parameters
-        );
+        if ($this->replacedMailMethod === null) {
+            mail(
+                $to,
+                $subject,
+                (string)$message->getBody(),
+                $headers,
+                $parameters
+            );
+        } else {
+            $callback = $this->replacedMailMethod;
+            $callback(
+                $to,
+                $subject,
+                (string)$message->getBody(),
+                $headers,
+                $parameters
+            );
+        }
     }
 
     /**
@@ -83,7 +98,7 @@ final class PhpMailTransport implements TransportInterface
                                 "\r\n",
                                 array_map(
                                     function (HeaderInterface $header) {
-                                        return (string) (new HeaderLine($header));
+                                        return (string)(new HeaderLine($header));
                                     },
                                     $headers
                                 )
@@ -106,12 +121,29 @@ final class PhpMailTransport implements TransportInterface
     private function constructParameters(MessageInterface $message): string
     {
         $envelop = $this->envelopFactory->make($message);
-        if (preg_match('/\\\"/', $envelop->getAddress())) {
+        if (preg_match('/\"/', $envelop->getAddress())) {
             throw new \RuntimeException(
                 'Unable to guarantee injection-free envelop'
             );
         }
 
         return implode(' ', array_merge($this->parameters, ['-f' . (string)$envelop]));
+    }
+
+    /**
+     * @param \Closure $callback
+     * @param EnvelopeFactory $envelopFactory
+     * @param array $parameters
+     * @return PhpMailTransport
+     */
+    public static function newReplaceMailMethod(
+        \Closure $callback,
+        EnvelopeFactory $envelopFactory,
+        array $parameters = []
+    ): PhpMailTransport
+    {
+        $transport = new self($envelopFactory, $parameters);
+        $transport->replacedMailMethod = $callback;
+        return $transport;
     }
 }

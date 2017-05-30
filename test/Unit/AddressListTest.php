@@ -105,6 +105,27 @@ final class AddressListTest extends AbstractTestCase
 
     /**
      * @test
+     */
+    public function it_returns_the_first_address()
+    {
+        $firstAddress = new Address(new EmailAddress('x@y.com'));
+        $list = new AddressList([$firstAddress]);
+        $this->assertSame($firstAddress, $list->first());
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_first_called_without_addresses()
+    {
+        $this->expectException(\OutOfRangeException::class);
+
+        $list = new AddressList([]);
+        $list->first();
+    }
+
+    /**
+     * @test
      * @dataProvider provideAddressListStrings
      */
     public function it_parses_address_strings(string $addressListString, bool $constructed, int $count, string $exceptionMessage)

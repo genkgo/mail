@@ -67,6 +67,18 @@ final class AddressList implements \Countable
     }
 
     /**
+     * @return Address
+     */
+    public function first(): Address
+    {
+        if (empty($this->addresses)) {
+            throw new \OutOfRangeException();
+        }
+
+        return reset($this->addresses);
+    }
+
+    /**
      * @return int
      */
     public function count(): int

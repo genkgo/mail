@@ -148,6 +148,9 @@ final class Address
                 default:
                     if ($char === '"') {
                         $position = self::PARSE_POSITION_QUOTE;
+                    }
+
+                    if ($char === '"' && $state === self::PARSE_STATE_EMAIL) {
                         $nameQuoted = true;
                     }
                     break;
