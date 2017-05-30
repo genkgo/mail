@@ -30,7 +30,7 @@ final class Base64EncodedStream implements StreamInterface
      * @param int $lineLength
      * @param string $lineBreak
      */
-    public function __construct($resource, int $lineLength = 78, string $lineBreak = "\r\n")
+    public function __construct($resource, int $lineLength = 76, string $lineBreak = "\r\n")
     {
         $this->decoratedStream = new ResourceStream($resource);
         $this->lineLength = $lineLength;
@@ -45,7 +45,7 @@ final class Base64EncodedStream implements StreamInterface
      * @param string $lineBreak
      * @return Base64EncodedStream
      */
-    public static function fromString(string $string, int $lineLength = 78, string $lineBreak = "\r\n"): Base64EncodedStream
+    public static function fromString(string $string, int $lineLength = 76, string $lineBreak = "\r\n"): Base64EncodedStream
     {
         $resource = fopen('php://memory', 'r+');
         fwrite($resource, $string);

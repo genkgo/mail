@@ -3,18 +3,12 @@ declare(strict_types=1);
 
 namespace Genkgo\Mail\Header;
 
-use Genkgo\Mail\Stream\OptimalTransferEncodedTextStream;
-
 /**
  * Class HeaderValue
  * @package Genkgo\Mail\Header
  */
 final class HeaderValue
 {
-    /**
-     *
-     */
-    private const FOLDING = "\r\n ";
     /**
      * @var string
      */
@@ -60,18 +54,7 @@ final class HeaderValue
     public function __toString(): string
     {
         $value = implode('; ', array_merge([$this->value], $this->parameters));
-
-        $encoded = new OptimalTransferEncodedTextStream($value, 68, self::FOLDING);
-        $encoding = $encoded->getMetadata(['transfer-encoding'])['transfer-encoding'];
-        if ($encoding === '7bit' || $encoding === '8bit') {
-            return (string) $encoded;
-        }
-
-        if ($encoding === 'base64') {
-            return sprintf('=?%s?B?%s?=', 'UTF-8', (string) $encoded);
-        }
-
-        return sprintf('=?%s?Q?%s?=', 'UTF-8', (string) $encoded);
+        return (string) (new OptimalEncodedHeaderValue($value));
     }
 
     /**

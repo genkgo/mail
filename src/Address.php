@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Genkgo\Mail;
 
-use Genkgo\Mail\Stream\QuotedPrintableStream;
+use Genkgo\Mail\Header\OptimalEncodedHeaderValue;
 
 /**
  * Class Address
@@ -87,15 +87,11 @@ final class Address
             return (string)$this->address;
         }
 
-        $name = $this->name;
-
-        $encodedName = (string)QuotedPrintableStream::fromString($name);
-        if ($encodedName !== $name) {
-            $encodedName = sprintf('=?%s?Q?%s?=', 'UTF-8', (string) $encodedName);
-        } else {
+        $encodedName = (string) (new OptimalEncodedHeaderValue($this->name));
+        if ($encodedName === $this->name) {
             $encodedName = addcslashes($encodedName, "\0..\37\177\\\"");
 
-            if ($encodedName !== $name || preg_match('/[^A-Za-z0-9!#$%&\'*+\/=?^_`{|}~ -]/', $this->name) === 1) {
+            if ($encodedName !== $this->name || preg_match('/[^A-Za-z0-9!#$%&\'*+\/=?^_`{|}~ -]/', $this->name) === 1) {
                 $encodedName = sprintf('"%s"', $encodedName);
             }
         }
