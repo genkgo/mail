@@ -16,13 +16,13 @@ final class QuotedPrintableStreamTest extends AbstractTestCase
         $decoded = str_repeat('test1 test2', 50);
         $stream = QuotedPrintableStream::fromString($decoded);
 
-        $streamRead = '';
+        $encoded = '';
         while (!$stream->eof()) {
-            $streamRead .= $stream->read(4);
+            $encoded .= $stream->read(4);
         }
 
         $this->assertEquals($decoded, quoted_printable_decode((string)$stream));
-        $this->assertEquals($decoded, quoted_printable_decode($streamRead));
+        $this->assertEquals($decoded, quoted_printable_decode($encoded));
     }
 
     /**
@@ -88,7 +88,7 @@ final class QuotedPrintableStreamTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_uses_correct_line_endings()
+    public function it_uses_correct_max_lines()
     {
         $decoded = str_repeat('tëst1 test2', 50);
         $stream = QuotedPrintableStream::fromString($decoded);
@@ -103,6 +103,50 @@ final class QuotedPrintableStreamTest extends AbstractTestCase
         );
 
         $this->assertLessThanOrEqual(78, max($lines));
+    }
+
+    /**
+     * @test
+     */
+    public function it_uses_correct_line_endings_to_string()
+    {
+        $decoded = str_repeat("tëst1 test2\n", 50);
+        $stream = QuotedPrintableStream::fromString($decoded);
+        $encoded = (string)$stream;
+
+        $this->assertEquals(str_repeat("tëst1 test2\r\n", 50), quoted_printable_decode($encoded));
+    }
+
+    /**
+     * @test
+     */
+    public function it_uses_correct_line_endings_read()
+    {
+        $decoded = str_repeat("tëst1 test2\n", 50);
+        $stream = QuotedPrintableStream::fromString($decoded);
+
+        $encoded = '';
+        while (!$stream->eof()) {
+            $encoded .= $stream->read(4);
+        }
+
+        $this->assertEquals(str_repeat("tëst1 test2\r\n", 50), quoted_printable_decode($encoded));
+    }
+
+    /**
+     * @test
+     */
+    public function it_uses_correct_line_endings_tab()
+    {
+        $decoded = str_repeat("tëst1\ttest2\t\n", 50);
+        $stream = QuotedPrintableStream::fromString($decoded);
+
+        $encoded = '';
+        while (!$stream->eof()) {
+            $encoded .= $stream->read(4);
+        }
+
+        $this->assertEquals(str_repeat("tëst1\ttest2\r\n", 50), quoted_printable_decode($encoded));
     }
 
 }

@@ -47,6 +47,12 @@ final class QuotedPrintableStream implements StreamInterface
      */
     public static function fromString(string $string, int $lineLength = 75, string $lineBreak = "\r\n"): QuotedPrintableStream
     {
+        $string = str_replace(
+            ["\r\n", "\r", "\n", "\t\r\n", " \r\n"],
+            ["\n", "\n", "\r\n", "\r\n", "\r\n"],
+            $string
+        );
+
         $resource = fopen('php://memory', 'r+');
         fwrite($resource, $string);
         return new self($resource, $lineLength, $lineBreak);
