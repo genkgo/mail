@@ -6,9 +6,8 @@
 
 While analyzing what mail library to use when refactoring a code base, we discovered that the available ones are mostly
 legacy libraries. Some do not use namespaces and every library we encountered were merely a collection of scalar
-property bags than objects using encapsulation. It is our believe that recent vulnerabilities found in these libraries
-are a consequence of that. This is not a critique to these libraries. We all used them, and used them with joy. However,
-we think there is a need for new libraries that use modern principles.
+property bags than objects using encapsulation. This is not a critique to these libraries. We all used them, and used
+them with joy. However, we think there is a need for new libraries that use modern principles.
 
 Use this if you want to send e-mails over different transports and protocols using immutable messages and streams.
 
