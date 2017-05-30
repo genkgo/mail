@@ -90,7 +90,7 @@ final class EnvelopeFactory
     /**
      * @return EnvelopeFactory
      */
-    public static function useExtractedHeader()
+    public static function useExtractedHeader(): EnvelopeFactory
     {
         $options = new self();
         $options->callback = \Closure::fromCallable([$options, 'extractHeader']);
@@ -101,7 +101,7 @@ final class EnvelopeFactory
      * @param EmailAddress $fixedAddress
      * @return EnvelopeFactory
      */
-    public static function useFixed(EmailAddress $fixedAddress)
+    public static function useFixed(EmailAddress $fixedAddress): EnvelopeFactory
     {
         $options = new self();
         $options->callback = function () use ($fixedAddress) {
@@ -114,7 +114,7 @@ final class EnvelopeFactory
      * @param \Closure $callback
      * @return EnvelopeFactory
      */
-    public static function useCallback(\Closure $callback)
+    public static function useCallback(\Closure $callback): EnvelopeFactory
     {
         $options = new self();
         $options->callback = $callback;
