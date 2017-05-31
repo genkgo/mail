@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Genkgo\Mail\Protocol\Smtp;
+namespace Genkgo\Mail\Transport;
 
-final class ProtocolOptions
+final class SmtpTransportOptions
 {
     /**
      * @var float
@@ -24,9 +24,9 @@ final class ProtocolOptions
 
     /**
      * @param float $connectionTimeout
-     * @return ProtocolOptions
+     * @return SmtpTransportOptions
      */
-    public function withTimeout(float $connectionTimeout): ProtocolOptions
+    public function withTimeout(float $connectionTimeout): SmtpTransportOptions
     {
         $clone = clone $this;
         $clone->timeout = $connectionTimeout;
@@ -35,9 +35,9 @@ final class ProtocolOptions
 
     /**
      * @param string $username
-     * @return ProtocolOptions
+     * @return SmtpTransportOptions
      */
-    public function withUsername(string $username): ProtocolOptions
+    public function withUsername(string $username): SmtpTransportOptions
     {
         $clone = clone $this;
         $clone->username = $username;
@@ -46,9 +46,9 @@ final class ProtocolOptions
 
     /**
      * @param string $password
-     * @return ProtocolOptions
+     * @return SmtpTransportOptions
      */
-    public function withPassword(string $password): ProtocolOptions
+    public function withPassword(string $password): SmtpTransportOptions
     {
         $clone = clone $this;
         $clone->password = $password;
@@ -57,9 +57,9 @@ final class ProtocolOptions
 
     /**
      * @param string $ehlo
-     * @return ProtocolOptions
+     * @return SmtpTransportOptions
      */
-    public function withEhlo(string $ehlo): ProtocolOptions
+    public function withEhlo(string $ehlo): SmtpTransportOptions
     {
         $clone = clone $this;
         $clone->ehlo = $ehlo;
@@ -98,5 +98,19 @@ final class ProtocolOptions
         return $this->ehlo;
     }
 
+    /**
+     * @return bool
+     */
+    public function requiresLogin(): bool
+    {
+        return $this->username !== '' && $this->password !== '';
+    }
 
+    /**
+     * @return \DateInterval
+     */
+    public function getMaxConnectionDuration()
+    {
+        return new \DateInterval('P5M');
+    }
 }

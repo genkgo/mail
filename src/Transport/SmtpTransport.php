@@ -6,6 +6,8 @@ namespace Genkgo\Mail\Transport;
 use Genkgo\Mail\AddressList;
 use Genkgo\Mail\MessageInterface;
 use Genkgo\Mail\Protocol\Smtp\Client;
+use Genkgo\Mail\Protocol\Smtp\Request\AuthPlainCommand;
+use Genkgo\Mail\Protocol\Smtp\Request\AuthPlainCredentialsRequest;
 use Genkgo\Mail\Protocol\Smtp\Request\DataCommand;
 use Genkgo\Mail\Protocol\Smtp\Request\DataRequest;
 use Genkgo\Mail\Protocol\Smtp\Request\EhloCommand;
@@ -16,7 +18,6 @@ use Genkgo\Mail\TransportInterface;
 
 final class SmtpTransport implements TransportInterface
 {
-
     /**
      * @var Client
      */
@@ -25,15 +26,32 @@ final class SmtpTransport implements TransportInterface
      * @var EnvelopeFactory
      */
     private $envelopeFactory;
+    /**
+     * @var SmtpTransportOptions
+     */
+    private $transportOptions;
+    /**
+     * @var int
+     */
+    private $prepared = false;
+    /**
+     * @var \DateTimeImmutable
+     */
+    private $connectedAt;
 
     /**
      * PhpMailTransport constructor.
      * @param Client $client
+     * @param SmtpTransportOptions $transportOptions
      * @param EnvelopeFactory $envelopeFactory
      */
-    public function __construct(Client $client, EnvelopeFactory $envelopeFactory)
-    {
+    public function __construct(
+        Client $client,
+        SmtpTransportOptions $transportOptions,
+        EnvelopeFactory $envelopeFactory
+    ) {
         $this->client = $client;
+        $this->transportOptions = $transportOptions;
         $this->envelopeFactory = $envelopeFactory;
     }
 
@@ -43,9 +61,9 @@ final class SmtpTransport implements TransportInterface
      */
     public function send(MessageInterface $message): void
     {
+        $this->prepare();
+
         $this->client
-            ->request(new EhloCommand('127.0.0.1'))
-            ->assertCompleted()
             ->request(new MailFromCommand($this->envelopeFactory->make($message)))
             ->assertCompleted();
 
@@ -60,6 +78,8 @@ final class SmtpTransport implements TransportInterface
             ->request(new DataCommand())
             ->assertIntermediate(new DataRequest(new MessageStream($message)))
             ->assertCompleted();
+
+        $this->doNotExceedMaximumConnectionDuration();
     }
 
     /**
@@ -82,4 +102,44 @@ final class SmtpTransport implements TransportInterface
 
         return $list;
     }
+
+    /**
+     *
+     */
+    private function prepare (): void {
+        if ($this->prepared) {
+            return;
+        }
+
+        $this->connectedAt = new \DateTimeImmutable();
+
+        $this->client
+            ->request(new EhloCommand($this->transportOptions->getEhlo()))
+            ->assertCompleted();
+
+        if ($this->transportOptions->requiresLogin()) {
+            $this->client
+                ->request(new AuthPlainCommand())
+                ->assertIntermediate(
+                    new AuthPlainCredentialsRequest(
+                        $this->transportOptions->getUsername(),
+                        $this->transportOptions->getPassword()
+                    )
+                )->assertCompleted();
+        }
+
+        $this->prepared = true;
+    }
+
+    /**
+     *
+     */
+    private function doNotExceedMaximumConnectionDuration()
+    {
+        if ($this->connectedAt->add($this->transportOptions->getMaxConnectionDuration()) > new \DateTimeImmutable()) {
+            $this->client->reconnect();
+            $this->prepared = false;
+        }
+    }
+
 }

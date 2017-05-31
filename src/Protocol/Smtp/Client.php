@@ -11,20 +11,14 @@ final class Client
      * @var ConnectionInterface
      */
     private $connection;
-    /**
-     * @var ProtocolOptions
-     */
-    private $options;
 
     /**
      * Client constructor.
      * @param ConnectionInterface $connection
-     * @param ProtocolOptions $options
      */
-    public function __construct(ConnectionInterface $connection, ProtocolOptions $options)
+    public function __construct(ConnectionInterface $connection)
     {
         $this->connection = $connection;
-        $this->options = $options;
     }
 
     /**
@@ -53,5 +47,13 @@ final class Client
         } while (strpos($more, '-') === 0);
 
         return $reply;
+    }
+
+    /**
+     *
+     */
+    public function reconnect()
+    {
+        $this->connection->disconnect();
     }
 }

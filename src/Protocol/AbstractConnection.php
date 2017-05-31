@@ -58,6 +58,15 @@ abstract class AbstractConnection implements ConnectionInterface
     /**
      *
      */
+    final public function disconnect(): void
+    {
+        fclose($this->resource);
+        $this->resource = null;
+    }
+
+    /**
+     *
+     */
     private function verifyConnection()
     {
         $info = stream_get_meta_data($this->resource);

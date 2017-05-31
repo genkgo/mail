@@ -13,10 +13,10 @@ use Genkgo\Mail\Header\Subject;
 use Genkgo\Mail\Header\To;
 use Genkgo\Mail\Protocol\ConnectionInterface;
 use Genkgo\Mail\Protocol\Smtp\Client;
-use Genkgo\Mail\Protocol\Smtp\ProtocolOptions;
 use Genkgo\Mail\Stream\BitEncodedStream;
 use Genkgo\Mail\Transport\EnvelopeFactory;
 use Genkgo\Mail\Transport\SmtpTransport;
+use Genkgo\Mail\Transport\SmtpTransportOptions;
 
 final class SmtpTransportTest extends AbstractTestCase
 {
@@ -126,10 +126,8 @@ final class SmtpTransportTest extends AbstractTestCase
             ->willReturn("250 OK\r\n");
 
         $transport = new SmtpTransport(
-            new Client(
-                $mock,
-                new ProtocolOptions()
-            ),
+            new Client($mock),
+            new SmtpTransportOptions(),
             EnvelopeFactory::useExtractedHeader()
         );
 

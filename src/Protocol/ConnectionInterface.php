@@ -27,4 +27,9 @@ interface ConnectionInterface
      */
     public function receive(): string;
 
+    /**
+     * @return void
+     */
+    public function disconnect(): void;
+
 }
