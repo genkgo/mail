@@ -42,18 +42,7 @@ final class SmtpTransportTest extends AbstractTestCase
         $mock
             ->expects($this->at(++$at))
             ->method('send')
-            ->with("STARTTLS\r\n")
-            ->willReturn(1);
-
-        $mock
-            ->expects($this->at(++$at))
-            ->method('receive')
-            ->willReturn("500 unrecognized command\r\n");
-
-        $mock
-            ->expects($this->at(++$at))
-            ->method('send')
-            ->with("MAIL FROM:<from@localhost>\r\n")
+            ->with("MAIL FROM:<from@localhost>")
             ->willReturn(1);
 
         $mock
@@ -64,7 +53,7 @@ final class SmtpTransportTest extends AbstractTestCase
         $mock
             ->expects($this->at(++$at))
             ->method('send')
-            ->with("RCPT TO:<to@localhost>\r\n")
+            ->with("RCPT TO:<to@localhost>")
             ->willReturn(1);
 
         $mock

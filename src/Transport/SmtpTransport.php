@@ -6,6 +6,12 @@ namespace Genkgo\Mail\Transport;
 use Genkgo\Mail\AddressList;
 use Genkgo\Mail\MessageInterface;
 use Genkgo\Mail\Protocol\Smtp\Client;
+use Genkgo\Mail\Protocol\Smtp\Request\DataCommand;
+use Genkgo\Mail\Protocol\Smtp\Request\DataRequest;
+use Genkgo\Mail\Protocol\Smtp\Request\EhloCommand;
+use Genkgo\Mail\Protocol\Smtp\Request\MailFromCommand;
+use Genkgo\Mail\Protocol\Smtp\Request\RcptToCommand;
+use Genkgo\Mail\Stream\MessageStream;
 use Genkgo\Mail\TransportInterface;
 
 final class SmtpTransport implements TransportInterface
@@ -37,11 +43,23 @@ final class SmtpTransport implements TransportInterface
      */
     public function send(MessageInterface $message): void
     {
-        $this->client->deliver(
-            $message,
-            $this->envelopeFactory->make($message),
-            $this->createAddressList($message)
-        );
+        $this->client
+            ->request(new EhloCommand('127.0.0.1'))
+            ->assertCompleted()
+            ->request(new MailFromCommand($this->envelopeFactory->make($message)))
+            ->assertCompleted();
+
+        $addresses = $this->createAddressList($message);
+        foreach ($addresses as $address) {
+            $this->client
+                ->request(new RcptToCommand($address->getAddress()))
+                ->assertCompleted();
+        }
+
+        $this->client
+            ->request(new DataCommand())
+            ->assertIntermediate(new DataRequest(new MessageStream($message)))
+            ->assertCompleted();
     }
 
     /**

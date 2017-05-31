@@ -1,0 +1,33 @@
+<?php
+declare(strict_types=1);
+
+namespace Genkgo\Mail\Protocol\Smtp\Request;
+
+use Genkgo\Mail\Protocol\ConnectionInterface;
+use Genkgo\Mail\Protocol\Smtp\RequestInterface;
+
+final class EhloCommand implements RequestInterface
+{
+    /**
+     * @var string
+     */
+    private $hostName;
+
+    /**
+     * EhloCommand constructor.
+     * @param string $hostName
+     */
+    public function __construct($hostName)
+    {
+        $this->hostName = $hostName;
+    }
+
+    /**
+     * @param ConnectionInterface $connection
+     * @return void
+     */
+    public function execute(ConnectionInterface $connection)
+    {
+        $connection->send(sprintf("EHLO %s%s", $this->hostName, RequestInterface::CRLF));
+    }
+}
