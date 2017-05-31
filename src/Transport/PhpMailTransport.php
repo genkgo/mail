@@ -47,6 +47,7 @@ final class PhpMailTransport implements TransportInterface
         $parameters = $this->constructParameters($message);
 
         if ($this->replacedMailMethod === null) {
+            // @codeCoverageIgnoreStart
             mail(
                 $to,
                 $subject,
@@ -54,6 +55,7 @@ final class PhpMailTransport implements TransportInterface
                 $headers,
                 $parameters
             );
+            // @codeCoverageIgnoreEnd
         } else {
             $callback = $this->replacedMailMethod;
             $callback(
