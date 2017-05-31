@@ -7,7 +7,7 @@ namespace Genkgo\Mail;
  * Class AddressList
  * @package Genkgo\Mail
  */
-final class AddressList implements \Countable
+final class AddressList implements \Countable, \IteratorAggregate
 {
     /**
      *
@@ -67,6 +67,17 @@ final class AddressList implements \Countable
     }
 
     /**
+     * @param AddressList $addressList
+     * @return AddressList
+     */
+    public function withList(AddressList $addressList): AddressList
+    {
+        $clone = clone $this;
+        $clone->addresses = array_merge($this->addresses, $addressList->addresses);
+        return $clone;
+    }
+
+    /**
      * @return Address
      */
     public function first(): Address
@@ -84,6 +95,14 @@ final class AddressList implements \Countable
     public function count(): int
     {
         return count($this->addresses);
+    }
+
+    /**
+     * @return \ArrayIterator|Address[]
+     */
+    public function getIterator()
+    {
+        return new \ArrayIterator($this->addresses);
     }
 
     /**

@@ -7,6 +7,7 @@ use Genkgo\Mail\Header\HeaderLine;
 use Genkgo\Mail\Header\MimeVersion;
 use Genkgo\Mail\Stream\EmptyStream;
 use Genkgo\Mail\Stream\BitEncodedStream;
+use Genkgo\Mail\Stream\MessageStream;
 
 /**
  * Class ImmutableMessage
@@ -139,26 +140,7 @@ final class GenericMessage implements MessageInterface
      */
     public function __toString(): string
     {
-        $headerString = array_values(
-            array_filter(
-                array_map(
-                    function (array $headers) {
-                        return implode(
-                            "\r\n",
-                            array_map(
-                                function (HeaderInterface $header) {
-                                    return (string) (new HeaderLine($header));
-                                },
-                                $headers
-                            )
-                        );
-                    },
-                    $this->headers
-                )
-            )
-        );
-
-        return implode("\r\n", array_merge($headerString, ['', (string)$this->body]));
+        return (string) (new MessageStream($this));
     }
 
     /**
