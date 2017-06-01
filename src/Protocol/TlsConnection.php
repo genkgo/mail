@@ -3,6 +3,11 @@ declare(strict_types=1);
 
 namespace Genkgo\Mail\Protocol;
 
+/**
+ * Class TlsConnection
+ * @package Genkgo\Mail\Protocol
+ * @codeCoverageIgnore
+ */
 final class TlsConnection extends AbstractConnection
 {
     /**

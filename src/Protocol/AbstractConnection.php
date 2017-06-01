@@ -3,6 +3,11 @@ declare(strict_types=1);
 
 namespace Genkgo\Mail\Protocol;
 
+/**
+ * Class AbstractConnection
+ * @package Genkgo\Mail\Protocol
+ * @codeCoverageIgnore
+ */
 abstract class AbstractConnection implements ConnectionInterface
 {
     /**
