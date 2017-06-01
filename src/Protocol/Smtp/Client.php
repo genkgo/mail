@@ -39,21 +39,9 @@ final class Client
                 PREG_SPLIT_DELIM_CAPTURE
             );
 
-            if ($code === null) {
-                throw new \RuntimeException('Unknown SMTP reply');
-            }
-
             $reply = $reply->withLine((int)$code, trim($message));
         } while (strpos($more, '-') === 0);
 
         return $reply;
-    }
-
-    /**
-     *
-     */
-    public function reconnect()
-    {
-        $this->connection->disconnect();
     }
 }

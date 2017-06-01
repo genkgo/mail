@@ -43,9 +43,8 @@ final class PlainTcpConnection extends AbstractConnection
 
     /**
      * @param int $type
-     * @return ConnectionInterface
      */
-    public function upgrade(int $type): ConnectionInterface
+    public function upgrade(int $type): void
     {
         if (!isset(self::UPGRADE_TO[$type])) {
             throw new \InvalidArgumentException('No support for requested encryption type');
@@ -56,18 +55,14 @@ final class PlainTcpConnection extends AbstractConnection
             throw new \InvalidArgumentException('Cannot upgrade connection to requested encryption type');
         }
 
-        return TlsConnection::fromResource($resource, $this->host, $this->port);
+        $this->resource = $resource;
     }
 
     /**
      *
      */
-    protected function connect()
+    public function connect(): void
     {
-        if (is_resource($this->resource)) {
-            return;
-        }
-
         $this->resource = @stream_socket_client(
             'tcp://' . $this->host . ':' . $this->port,
             $errorCode,
@@ -78,7 +73,5 @@ final class PlainTcpConnection extends AbstractConnection
         if ($this->resource === false) {
             throw new \RuntimeException(sprintf('Could not create resource: %s', $errorMessage), $errorCode);
         }
-
-        restore_error_handler();
     }
 }

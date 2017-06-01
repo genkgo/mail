@@ -6,15 +6,14 @@ namespace Genkgo\Mail\Protocol;
 interface ConnectionInterface
 {
     /**
-     * @param int $type
-     * @return ConnectionInterface
+     * @return void
      */
-    public function upgrade(int $type): ConnectionInterface;
+    public function connect(): void;
 
     /**
-     * @param float $timeout
+     * @return void
      */
-    public function timeout(float $timeout): void;
+    public function disconnect(): void;
 
     /**
      * @param string $request
@@ -28,8 +27,13 @@ interface ConnectionInterface
     public function receive(): string;
 
     /**
-     * @return void
+     * @param int $type
      */
-    public function disconnect(): void;
+    public function upgrade(int $type): void;
+
+    /**
+     * @param float $timeout
+     */
+    public function timeout(float $timeout): void;
 
 }

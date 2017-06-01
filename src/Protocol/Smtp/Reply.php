@@ -13,11 +13,14 @@ final class Reply
      * @var array
      */
     private $lines = [];
-
     /**
      * @var array
      */
     private $codes = [];
+    /**
+     * @var array
+     */
+    private $messages = [];
     /**
      * @var Client
      */
@@ -33,6 +36,27 @@ final class Reply
     }
 
     /**
+     * @return bool
+     */
+    public function isError(): bool
+    {
+        try {
+            $this->assertBetween(400, 599);
+            return true;
+        } catch (\RuntimeException $e) {
+            return false;
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public function getMessages(): array
+    {
+        return $this->messages;
+    }
+
+    /**
      * @param int $code
      * @param string $message
      * @return Reply
@@ -42,21 +66,22 @@ final class Reply
         $clone = clone $this;
         $clone->lines[] = [$code, $message];
         $clone->codes[$code] = true;
+        $clone->messages[] = $message;
         return $clone;
     }
 
     /**
      * @param int $code
-     * @return Client
+     * @return Reply
      */
-    public function assert(int $code): Client {
+    public function assert(int $code): Reply {
         return $this->assertBetween($code, $code);
     }
 
     /**
-     * @return Client
+     * @return Reply
      */
-    public function assertCompleted(): Client {
+    public function assertCompleted(): Reply {
         return $this->assertBetween(200, 299);
     }
 
@@ -65,19 +90,21 @@ final class Reply
      * @return Reply
      */
     public function assertIntermediate(RequestInterface $command): Reply {
-        return $this->assertBetween(300, 399)->request($command);
+        return $this->assertBetween(300, 399)
+            ->client
+            ->request($command);
     }
 
     /**
      * @param int $min
      * @param int $max
-     * @return Client
+     * @return Reply
      */
-    private function assertBetween(int $min, int $max)
+    private function assertBetween(int $min, int $max): Reply
     {
         foreach ($this->codes as $code) {
             if ($code >= $min && $code <= $max) {
-                return $this->client;
+                return $this;
             }
         }
 

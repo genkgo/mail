@@ -6,20 +6,21 @@ namespace Genkgo\Mail\Protocol\Smtp\Request;
 use Genkgo\Mail\Protocol\ConnectionInterface;
 use Genkgo\Mail\Protocol\Smtp\RequestInterface;
 
-final class EhloCommand implements RequestInterface
+final class AuthLoginUsernameRequest implements RequestInterface
 {
+
     /**
      * @var string
      */
-    private $hostName;
+    private $username;
 
     /**
-     * EhloCommand constructor.
-     * @param string $hostName
+     * AuthPlainUsernameRequest constructor.
+     * @param string $username
      */
-    public function __construct($hostName)
+    public function __construct(string $username)
     {
-        $this->hostName = $hostName;
+        $this->username = $username;
     }
 
     /**
@@ -28,7 +29,6 @@ final class EhloCommand implements RequestInterface
      */
     public function execute(ConnectionInterface $connection)
     {
-        $connection->connect();
-        $connection->send(sprintf("EHLO %s%s", $this->hostName, RequestInterface::CRLF));
+        $connection->send(base64_encode($this->username));
     }
 }

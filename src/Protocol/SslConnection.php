@@ -33,9 +33,8 @@ final class SslConnection extends AbstractConnection
 
     /**
      * @param int $type
-     * @return ConnectionInterface
      */
-    public function upgrade(int $type): ConnectionInterface
+    public function upgrade(int $type): void
     {
         throw new \InvalidArgumentException('Cannot upgrade TLS connection, already encrypted');
     }
@@ -43,12 +42,8 @@ final class SslConnection extends AbstractConnection
     /**
      *
      */
-    protected function connect()
+    public function connect(): void
     {
-        if (is_resource($this->resource)) {
-            return;
-        }
-
         $this->resource = @stream_socket_client(
             'ssl://' . $this->host . ':' . $this->port,
             $errorCode,
@@ -61,7 +56,5 @@ final class SslConnection extends AbstractConnection
                 'Could not create resource: %s', $errorMessage), $errorCode
             );
         }
-
-        restore_error_handler();
     }
 }

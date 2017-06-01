@@ -6,7 +6,11 @@ namespace Genkgo\Mail\Protocol\Smtp\Request;
 use Genkgo\Mail\Protocol\ConnectionInterface;
 use Genkgo\Mail\Protocol\Smtp\RequestInterface;
 
-final class QuitCommand implements RequestInterface
+/**
+ * Class AuthLoginCommand
+ * @package Genkgo\Mail\Protocol\Smtp\Request
+ */
+final class AuthLoginCommand implements RequestInterface
 {
     /**
      * @param ConnectionInterface $connection
@@ -14,7 +18,6 @@ final class QuitCommand implements RequestInterface
      */
     public function execute(ConnectionInterface $connection)
     {
-        $connection->send(sprintf("QUIT", RequestInterface::CRLF));
-        $connection->disconnect();
+        $connection->send(sprintf("AUTH LOGIN", RequestInterface::CRLF));
     }
 }

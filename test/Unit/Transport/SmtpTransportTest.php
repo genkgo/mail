@@ -12,11 +12,10 @@ use Genkgo\Mail\Header\From;
 use Genkgo\Mail\Header\Subject;
 use Genkgo\Mail\Header\To;
 use Genkgo\Mail\Protocol\ConnectionInterface;
-use Genkgo\Mail\Protocol\Smtp\Client;
+use Genkgo\Mail\Protocol\Smtp\ClientFactory;
 use Genkgo\Mail\Stream\BitEncodedStream;
 use Genkgo\Mail\Transport\EnvelopeFactory;
 use Genkgo\Mail\Transport\SmtpTransport;
-use Genkgo\Mail\Transport\SmtpTransportOptions;
 
 final class SmtpTransportTest extends AbstractTestCase
 {
@@ -27,6 +26,10 @@ final class SmtpTransportTest extends AbstractTestCase
     {
         $at = -1;
         $mock = $this->createMock(ConnectionInterface::class);
+
+        $mock
+            ->expects($this->at(++$at))
+            ->method('connect');
 
         $mock
             ->expects($this->at(++$at))
@@ -126,8 +129,7 @@ final class SmtpTransportTest extends AbstractTestCase
             ->willReturn("250 OK\r\n");
 
         $transport = new SmtpTransport(
-            new Client($mock),
-            new SmtpTransportOptions(),
+            new ClientFactory($mock),
             EnvelopeFactory::useExtractedHeader()
         );
 

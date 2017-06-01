@@ -6,7 +6,7 @@ namespace Genkgo\Mail\Protocol\Smtp\Request;
 use Genkgo\Mail\Protocol\ConnectionInterface;
 use Genkgo\Mail\Protocol\Smtp\RequestInterface;
 
-final class QuitCommand implements RequestInterface
+final class NoopCommand implements RequestInterface
 {
     /**
      * @param ConnectionInterface $connection
@@ -14,7 +14,6 @@ final class QuitCommand implements RequestInterface
      */
     public function execute(ConnectionInterface $connection)
     {
-        $connection->send(sprintf("QUIT", RequestInterface::CRLF));
-        $connection->disconnect();
+        $connection->send(sprintf("NOOP%s", RequestInterface::CRLF));
     }
 }

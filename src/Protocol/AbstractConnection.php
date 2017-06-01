@@ -15,6 +15,28 @@ abstract class AbstractConnection implements ConnectionInterface
     protected $resource;
 
     /**
+     *
+     */
+    final public function __destruct()
+    {
+        $this->disconnect();
+    }
+
+    /**
+     *
+     */
+    abstract public function connect(): void;
+
+    /**
+     *
+     */
+    final public function disconnect(): void
+    {
+        fclose($this->resource);
+        $this->resource = null;
+    }
+
+    /**
      * @param float $timeout
      */
     final public function timeout(float $timeout): void
@@ -28,7 +50,7 @@ abstract class AbstractConnection implements ConnectionInterface
      */
     final public function send(string $request): int
     {
-        $this->connect();
+        $this->verifyConnection();
 
         $bytesWritten = fwrite($this->resource, $request);
 
@@ -36,7 +58,7 @@ abstract class AbstractConnection implements ConnectionInterface
             throw new \RuntimeException(sprintf('Could not send command:'));
         }
 
-        $this->verifyConnection();
+        $this->verifyAlive();
 
         return $bytesWritten;
     }
@@ -46,11 +68,11 @@ abstract class AbstractConnection implements ConnectionInterface
      */
     final public function receive(): string
     {
-        $this->connect();
+        $this->verifyConnection();
 
         $response = fgets($this->resource, self::RECEIVE_BYTES);
 
-        $this->verifyConnection();
+        $this->verifyAlive();
 
         return $response;
     }
@@ -58,25 +80,21 @@ abstract class AbstractConnection implements ConnectionInterface
     /**
      *
      */
-    final public function disconnect(): void
-    {
-        fclose($this->resource);
-        $this->resource = null;
-    }
-
-    /**
-     *
-     */
     private function verifyConnection()
     {
-        $info = stream_get_meta_data($this->resource);
-        if ($info['timed_out']) {
-            throw new \RuntimeException('Connection has timed out');
+        if (!is_resource($this->resource)) {
+            throw new \RuntimeException('Cannot send/receive data while not connected');
         }
     }
 
     /**
      *
      */
-    abstract protected function connect();
+    private function verifyAlive()
+    {
+        $info = stream_get_meta_data($this->resource);
+        if ($info['timed_out']) {
+            throw new \RuntimeException('Connection has timed out');
+        }
+    }
 }
