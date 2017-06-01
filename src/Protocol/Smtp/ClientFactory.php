@@ -17,7 +17,7 @@ use Genkgo\Mail\Protocol\Smtp\Response\EhloResponse;
  * Class ClientFactory
  * @package Genkgo\Mail\Protocol\Smtp
  */
-final class ClientFactory
+final class ClientFactory implements ClientFactoryInterface
 {
     /**
      *

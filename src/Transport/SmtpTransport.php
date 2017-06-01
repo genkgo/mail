@@ -5,7 +5,7 @@ namespace Genkgo\Mail\Transport;
 
 use Genkgo\Mail\AddressList;
 use Genkgo\Mail\MessageInterface;
-use Genkgo\Mail\Protocol\Smtp\ClientFactory;
+use Genkgo\Mail\Protocol\Smtp\ClientFactoryInterface;
 use Genkgo\Mail\Protocol\Smtp\Request\DataCommand;
 use Genkgo\Mail\Protocol\Smtp\Request\DataRequest;
 use Genkgo\Mail\Protocol\Smtp\Request\MailFromCommand;
@@ -16,7 +16,7 @@ use Genkgo\Mail\TransportInterface;
 final class SmtpTransport implements TransportInterface
 {
     /**
-     * @var ClientFactory
+     * @var ClientFactoryInterface
      */
     private $clientFactory;
     /**
@@ -26,11 +26,11 @@ final class SmtpTransport implements TransportInterface
 
     /**
      * PhpMailTransport constructor.
-     * @param ClientFactory $clientFactory
+     * @param ClientFactoryInterface $clientFactory
      * @param EnvelopeFactory $envelopeFactory
      */
     public function __construct(
-        ClientFactory $clientFactory,
+        ClientFactoryInterface $clientFactory,
         EnvelopeFactory $envelopeFactory
     ) {
         $this->clientFactory = $clientFactory;
