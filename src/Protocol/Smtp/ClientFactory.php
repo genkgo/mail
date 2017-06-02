@@ -46,14 +46,6 @@ final class ClientFactory implements ClientFactoryInterface
     /**
      * @var string
      */
-    private $host = 'localhost';
-    /**
-     * @var int
-     */
-    private $port = 25;
-    /**
-     * @var string
-     */
     private $password = '';
     /**
      * @var float
@@ -79,19 +71,6 @@ final class ClientFactory implements ClientFactoryInterface
     public function __construct(ConnectionInterface $connection)
     {
         $this->connection = $connection;
-    }
-
-    /**
-     * @param string $host
-     * @param int $port
-     * @return ClientFactory
-     */
-    public function withHost(string $host, int $port = 25): ClientFactory
-    {
-        $clone = clone $this;
-        $clone->host = $host;
-        $clone->port = $port;
-        return $clone;
     }
 
     /**
@@ -166,14 +145,17 @@ final class ClientFactory implements ClientFactoryInterface
                     $method = $auth;
                 }
             }
+
+            if ($method === ClientFactory::AUTH_AUTO) {
+                throw new \RuntimeException('SMTP server does not advertise which AUTH method to use');
+            }
         }
 
         switch ($method) {
             case ClientFactory::AUTH_PLAIN:
                 $client
                     ->request(new AuthPlainCommand())
-                    ->assertIntermediate(
-                    )
+                    ->assertIntermediate()
                     ->request(
                         new AuthPlainCredentialsRequest(
                             $this->username,

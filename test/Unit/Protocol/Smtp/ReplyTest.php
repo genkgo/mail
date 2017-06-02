@@ -72,4 +72,48 @@ final class ReplyTest extends AbstractTestCase
         $this->assertEquals($client, $reply->assertIntermediate());
     }
 
+    /**
+     * @test
+     */
+    public function it_throws_when_making_wrong_assertions()
+    {
+        $this->expectException(\RuntimeException::class);
+
+        $connection = $this->createMock(ConnectionInterface::class);
+        $client = new Client($connection);
+
+        $reply = (new Reply($client))
+            ->withLine(354, 'send data');
+
+        $reply->assertCompleted();
+    }
+
+    /**
+     * @test
+     */
+    public function it_an_error_400()
+    {
+        $connection = $this->createMock(ConnectionInterface::class);
+        $client = new Client($connection);
+
+        $reply = (new Reply($client))
+            ->withLine(400, 'error');
+
+        $this->assertTrue($reply->isError());
+    }
+
+    /**
+     * @test
+     */
+    public function it_an_error_500()
+    {
+        $connection = $this->createMock(ConnectionInterface::class);
+        $client = new Client($connection);
+
+        $reply = (new Reply($client))
+            ->withLine(500, 'error');
+
+        $this->assertTrue($reply->isError());
+    }
+
 }

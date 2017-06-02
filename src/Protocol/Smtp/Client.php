@@ -32,13 +32,7 @@ final class Client
         $reply = new Reply($this);
         do {
             $line = $this->connection->receive();
-            list($code, $more, $message) = preg_split(
-                '/([\s-]+)/',
-                $line,
-                2,
-                PREG_SPLIT_DELIM_CAPTURE
-            );
-
+            list($code, $more, $message) = preg_split('/([\s-]+)/', $line,2,PREG_SPLIT_DELIM_CAPTURE);
             $reply = $reply->withLine((int)$code, trim($message));
         } while (strpos($more, '-') === 0);
 
