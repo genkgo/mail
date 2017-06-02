@@ -1,5 +1,5 @@
 <?php
-namespace Genkgo\Mail;
+namespace Genkgo\TestMail;
 
 use PHPUnit\Framework\TestCase;
 

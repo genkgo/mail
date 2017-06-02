@@ -1,8 +1,8 @@
 <?php
 
-namespace Genkgo\Mail\Unit\Queue;
+namespace Genkgo\TestMail\Unit\Queue;
 
-use Genkgo\Mail\AbstractTestCase;
+use Genkgo\TestMail\AbstractTestCase;;
 use Genkgo\Mail\Exception\EmptyQueueException;
 use Genkgo\Mail\GenericMessage;
 use Genkgo\Mail\Header\Date;

@@ -1,8 +1,8 @@
 <?php
 
-namespace Genkgo\Mail\Unit\Queue;
+namespace Genkgo\TestMail\Unit\Queue;
 
-use Genkgo\Mail\AbstractTestCase;
+use Genkgo\TestMail\AbstractTestCase;;
 use Genkgo\Mail\Exception\ConnectionException;
 use Genkgo\Mail\GenericMessage;
 use Genkgo\Mail\Header\GenericHeader;

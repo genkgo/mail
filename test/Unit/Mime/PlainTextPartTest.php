@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Genkgo\Mail\Unit\Mime;
+namespace Genkgo\TestMail\Unit\Mime;
 
-use Genkgo\Mail\AbstractTestCase;
+use Genkgo\TestMail\AbstractTestCase;;
 use Genkgo\Mail\Header\ContentType;
 use Genkgo\Mail\Mime\PlainTextPart;
 use Genkgo\Mail\Stream\BitEncodedStream;

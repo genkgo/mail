@@ -1,8 +1,8 @@
 <?php
 
-namespace Genkgo\Mail\Unit\Transport;
+namespace Genkgo\TestMail\Unit\Transport;
 
-use Genkgo\Mail\AbstractTestCase;
+use Genkgo\TestMail\AbstractTestCase;;
 use Genkgo\Mail\Exception\ConnectionException;
 use Genkgo\Mail\Exception\QueueIfFailedException;
 use Genkgo\Mail\Exception\QueueStoreException;

@@ -1,8 +1,8 @@
 <?php
 
-namespace Genkgo\Mail\Unit;
+namespace Genkgo\TestMail\Unit;
 
-use Genkgo\Mail\AbstractTestCase;
+use Genkgo\TestMail\AbstractTestCase;;
 use Genkgo\Mail\GenericMessage;
 use Genkgo\Mail\Header\GenericHeader;
 use Genkgo\Mail\Header\MimeVersion;

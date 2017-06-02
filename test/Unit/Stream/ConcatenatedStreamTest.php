@@ -1,8 +1,8 @@
 <?php
 
-namespace Genkgo\Mail\Unit\Stream;
+namespace Genkgo\TestMail\Unit\Stream;
 
-use Genkgo\Mail\AbstractTestCase;
+use Genkgo\TestMail\AbstractTestCase;;
 use Genkgo\Mail\Stream\ConcatenatedStream;
 use Genkgo\Mail\Stream\BitEncodedStream;
 
