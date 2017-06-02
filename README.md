@@ -11,6 +11,7 @@ them with joy. However, we think there is a need for new libraries that use mode
 
 Use this if you want to send e-mails over different transports and protocols using immutable messages and streams.
 
+
 ## Send message quick and easy
 
 ```php
@@ -32,6 +33,7 @@ $transport = new SmtpTransport(
 $transport->send($message);
 ```
 
+
 ## Features
 
 - Use SMTP or mail() to send messages
@@ -48,6 +50,13 @@ $transport->send($message);
 - Security is high prioritized
 - Great RFC compliance
 - Convert messages to valid strings
+
+
+## Upcoming features
+
+- DKIM headers
+- Encrypted and signed messages
+
 
 ## RFC-compliance
  
