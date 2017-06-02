@@ -5,7 +5,7 @@ namespace Genkgo\Mail\Transport;
 
 use Genkgo\Mail\AddressList;
 use Genkgo\Mail\MessageInterface;
-use Genkgo\Mail\Protocol\Smtp\ClientFactoryInterface;
+use Genkgo\Mail\Protocol\Smtp\Client;
 use Genkgo\Mail\Protocol\Smtp\Request\DataCommand;
 use Genkgo\Mail\Protocol\Smtp\Request\DataRequest;
 use Genkgo\Mail\Protocol\Smtp\Request\MailFromCommand;
@@ -16,9 +16,9 @@ use Genkgo\Mail\TransportInterface;
 final class SmtpTransport implements TransportInterface
 {
     /**
-     * @var ClientFactoryInterface
+     * @var Client
      */
-    private $clientFactory;
+    private $client;
     /**
      * @var EnvelopeFactory
      */
@@ -26,14 +26,14 @@ final class SmtpTransport implements TransportInterface
 
     /**
      * PhpMailTransport constructor.
-     * @param ClientFactoryInterface $clientFactory
+     * @param Client $client
      * @param EnvelopeFactory $envelopeFactory
      */
     public function __construct(
-        ClientFactoryInterface $clientFactory,
+        Client $client,
         EnvelopeFactory $envelopeFactory
     ) {
-        $this->clientFactory = $clientFactory;
+        $this->client = $client;
         $this->envelopeFactory = $envelopeFactory;
     }
 
@@ -43,20 +43,18 @@ final class SmtpTransport implements TransportInterface
      */
     public function send(MessageInterface $message): void
     {
-        $client = $this->clientFactory->newClient();
-
-        $client
+        $this->client
             ->request(new MailFromCommand($this->envelopeFactory->make($message)))
             ->assertCompleted();
 
         $addresses = $this->createAddressList($message);
         foreach ($addresses as $address) {
-            $client
+            $this->client
                 ->request(new RcptToCommand($address->getAddress()))
                 ->assertCompleted();
         }
 
-        $client
+        $this->client
             ->request(new DataCommand())
             ->assertIntermediate()
             ->request(new DataRequest(new MessageStream($message)))

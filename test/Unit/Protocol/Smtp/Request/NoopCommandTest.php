@@ -18,7 +18,7 @@ final class NoopCommandTest extends AbstractTestCase
         $connection
             ->expects($this->once())
             ->method('send')
-            ->with("NOOP\r\n");
+            ->with("NOOP");
 
         $command = new NoopCommand();
         $command->execute($connection);

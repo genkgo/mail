@@ -49,17 +49,21 @@ final class SslConnection extends AbstractConnection
      */
     public function connect(): void
     {
-        $this->resource = @stream_socket_client(
+        $resource = @stream_socket_client(
             'ssl://' . $this->host . ':' . $this->port,
             $errorCode,
             $errorMessage,
             $this->options->getTimeout()
         );
 
-        if ($this->resource === false) {
-            throw new \RuntimeException(sprintf(
-                'Could not create resource: %s', $errorMessage), $errorCode
+        if ($resource === false) {
+            throw new \RuntimeException(
+                sprintf('Could not create ssl connection. %s.', $errorMessage),
+                $errorCode
             );
         }
+
+        $this->resource = $resource;
+        $this->fireEvent('connect');
     }
 }

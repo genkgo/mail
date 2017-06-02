@@ -19,12 +19,12 @@ final class DataRequestTest extends AbstractTestCase
         $connection
             ->expects($this->at(0))
             ->method('send')
-            ->with("test\r\n");
+            ->with("test");
 
         $connection
             ->expects($this->at(1))
             ->method('send')
-            ->with(".\r\n");
+            ->with(".");
 
         $command = new DataRequest(new BitEncodedStream('test'));
         $command->execute($connection);
@@ -39,12 +39,12 @@ final class DataRequestTest extends AbstractTestCase
         $connection
             ->expects($this->at(0))
             ->method('send')
-            ->with("..test\r\n");
+            ->with("..test");
 
         $connection
             ->expects($this->at(1))
             ->method('send')
-            ->with(".\r\n");
+            ->with(".");
 
         $command = new DataRequest(new BitEncodedStream('.test'));
         $command->execute($connection);
@@ -59,12 +59,12 @@ final class DataRequestTest extends AbstractTestCase
         $connection
             ->expects($this->at(0))
             ->method('send')
-            ->with("test\r\n");
+            ->with("test");
 
         $connection
             ->expects($this->at(1))
             ->method('send')
-            ->with(".\r\n");
+            ->with(".");
 
         $command = new DataRequest(new BitEncodedStream("test\r"));
         $command->execute($connection);
@@ -79,32 +79,32 @@ final class DataRequestTest extends AbstractTestCase
         $connection
             ->expects($this->at(0))
             ->method('send')
-            ->with("test\r\n");
+            ->with("test");
 
         $connection
             ->expects($this->at(1))
             ->method('send')
-            ->with("test\r\n");
+            ->with("test");
 
         $connection
             ->expects($this->at(2))
             ->method('send')
-            ->with("test\r\n");
+            ->with("test");
 
         $connection
             ->expects($this->at(3))
             ->method('send')
-            ->with("test\r\n");
+            ->with("test");
 
         $connection
             ->expects($this->at(4))
             ->method('send')
-            ->with("\r\n");
+            ->with("");
 
         $connection
             ->expects($this->at(5))
             ->method('send')
-            ->with(".\r\n");
+            ->with(".");
 
         $command = new DataRequest(new BitEncodedStream(str_repeat("test\r\ntest\r\n", 2)));
         $command->execute($connection);

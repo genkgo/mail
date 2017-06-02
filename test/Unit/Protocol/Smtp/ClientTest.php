@@ -21,8 +21,7 @@ final class ClientTest extends AbstractTestCase
 
         $command
             ->expects($this->once())
-            ->method('execute')
-            ->with($connection);
+            ->method('execute');
 
         $connection
             ->expects($this->once())
@@ -45,16 +44,20 @@ final class ClientTest extends AbstractTestCase
 
         $command
             ->expects($this->once())
-            ->method('execute')
-            ->with($connection);
+            ->method('execute');
 
         $connection
             ->expects($this->at(0))
             ->method('receive')
-            ->willReturn('250-STARTTLS');
+            ->willReturn('220 welcome');
 
         $connection
             ->expects($this->at(1))
+            ->method('receive')
+            ->willReturn('250-STARTTLS');
+
+        $connection
+            ->expects($this->at(2))
             ->method('receive')
             ->willReturn('250 HELP');
 

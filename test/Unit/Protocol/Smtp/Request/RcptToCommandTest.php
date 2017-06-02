@@ -19,7 +19,7 @@ final class RcptToCommandTest extends AbstractTestCase
         $connection
             ->expects($this->once())
             ->method('send')
-            ->with("RCPT TO:<me@localhost>\r\n");
+            ->with("RCPT TO:<me@localhost>");
 
         $command = new RcptToCommand(new EmailAddress('me@localhost'));
         $command->execute($connection);

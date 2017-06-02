@@ -14,7 +14,7 @@ final class SecureConnectionOptions
     /**
      * @var float
      */
-    private $timeout = 1;
+    private $timeout = 10;
 
     /**
      * @param float $connectionTimeout

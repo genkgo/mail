@@ -55,12 +55,9 @@ final class PlainTcpConnection extends AbstractConnection
             throw new \InvalidArgumentException('No support for requested encryption type');
         }
 
-        $resource = stream_socket_enable_crypto($this->resource, true, $type);
-        if ($resource === false) {
+        if (stream_socket_enable_crypto($this->resource, true, $type) === false) {
             throw new \InvalidArgumentException('Cannot upgrade connection to requested encryption type');
         }
-
-        $this->resource = $resource;
     }
 
     /**
@@ -68,15 +65,21 @@ final class PlainTcpConnection extends AbstractConnection
      */
     public function connect(): void
     {
-        $this->resource = @stream_socket_client(
+        $resource = @stream_socket_client(
             'tcp://' . $this->host . ':' . $this->port,
             $errorCode,
             $errorMessage,
             $this->connectionTimeout
         );
 
-        if ($this->resource === false) {
-            throw new \RuntimeException(sprintf('Could not create resource: %s', $errorMessage), $errorCode);
+        if ($resource === false) {
+            throw new \RuntimeException(
+                sprintf('Could not create plain tcp connection. %s.', $errorMessage),
+                $errorCode
+            );
         }
+
+        $this->resource = $resource;
+        $this->fireEvent('connect');
     }
 }

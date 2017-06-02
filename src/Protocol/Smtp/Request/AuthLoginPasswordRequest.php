@@ -29,6 +29,6 @@ final class AuthLoginPasswordRequest implements RequestInterface
      */
     public function execute(ConnectionInterface $connection)
     {
-        $connection->send(sprintf('%s%s', base64_encode($this->password), RequestInterface::CRLF));
+        $connection->send(base64_encode($this->password));
     }
 }

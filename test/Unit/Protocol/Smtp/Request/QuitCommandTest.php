@@ -19,7 +19,7 @@ final class QuitCommandTest extends AbstractTestCase
         $connection
             ->expects($this->at(0))
             ->method('send')
-            ->with("QUIT\r\n");
+            ->with("QUIT");
 
         $connection
             ->expects($this->at(1))

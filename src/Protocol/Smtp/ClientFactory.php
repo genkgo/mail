@@ -4,41 +4,23 @@ declare(strict_types=1);
 namespace Genkgo\Mail\Protocol\Smtp;
 
 use Genkgo\Mail\Protocol\ConnectionInterface;
-use Genkgo\Mail\Protocol\Smtp\Request\AuthLoginCommand;
-use Genkgo\Mail\Protocol\Smtp\Request\AuthLoginPasswordRequest;
-use Genkgo\Mail\Protocol\Smtp\Request\AuthLoginUsernameRequest;
-use Genkgo\Mail\Protocol\Smtp\Request\AuthPlainCommand;
-use Genkgo\Mail\Protocol\Smtp\Request\AuthPlainCredentialsRequest;
-use Genkgo\Mail\Protocol\Smtp\Request\EhloCommand;
-use Genkgo\Mail\Protocol\Smtp\Request\StartTlsCommand;
-use Genkgo\Mail\Protocol\Smtp\Response\EhloResponse;
+use Genkgo\Mail\Protocol\PlainTcpConnection;
+use Genkgo\Mail\Protocol\SecureConnectionOptions;
+use Genkgo\Mail\Protocol\Smtp\Negotiation\AuthNegotiation;
+use Genkgo\Mail\Protocol\Smtp\Negotiation\ConnectionNegotiation;
+use Genkgo\Mail\Protocol\SslConnection;
+use Genkgo\Mail\Protocol\TlsConnection;
 
 /**
  * Class ClientFactory
  * @package Genkgo\Mail\Protocol\Smtp
  */
-final class ClientFactory implements ClientFactoryInterface
+final class ClientFactory
 {
     /**
      *
      */
-    public CONST AUTH_NONE = 0;
-    /**
-     *
-     */
-    public CONST AUTH_PLAIN = 1;
-    /**
-     *
-     */
-    public CONST AUTH_LOGIN = 2;
-    /**
-     *
-     */
-    public CONST AUTH_AUTO = 3;
-    /**
-     *
-     */
-    private CONST AUTH_ENUM = [self::AUTH_NONE, self::AUTH_PLAIN, self::AUTH_LOGIN, self::AUTH_AUTO];
+    private CONST AUTH_ENUM = [Client::AUTH_NONE, Client::AUTH_PLAIN, Client::AUTH_LOGIN, Client::AUTH_AUTO];
     /**
      * @var ConnectionInterface
      */
@@ -60,9 +42,13 @@ final class ClientFactory implements ClientFactoryInterface
      */
     private $ehlo = '127.0.0.1';
     /**
-     * @var
+     * @var int
      */
-    private $authMethod = self::AUTH_NONE;
+    private $authMethod = Client::AUTH_NONE;
+    /**
+     * @var bool
+     */
+    private $insecureAllowed = false;
 
     /**
      * ClientFactory constructor.
@@ -90,7 +76,7 @@ final class ClientFactory implements ClientFactoryInterface
      * @param string $username
      * @return ClientFactory
      */
-    public function withAuthentication(int $method, string $password, string $username): ClientFactory
+    public function withAuthentication(int $method, string $username, string $password): ClientFactory
     {
         if (!in_array($method, self::AUTH_ENUM)) {
             throw new \InvalidArgumentException('Invalid authentication method');
@@ -115,74 +101,111 @@ final class ClientFactory implements ClientFactoryInterface
     }
 
     /**
+     * @return ClientFactory
+     */
+    public function withAllowInsecure(): ClientFactory
+    {
+        $clone = clone $this;
+        $clone->insecureAllowed = true;
+        return $clone;
+    }
+
+    /**
      * @return Client
      */
     public function newClient(): Client
     {
-        $client = new Client($this->connection);
-        $reply = $client->request(new EhloCommand($this->ehlo));
-        $reply->assertCompleted();
+        $negotiators = [
+            new ConnectionNegotiation(
+                $this->connection,
+                $this->ehlo,
+                $this->insecureAllowed
+            )
+        ];
 
-        $ehloResponse = new EhloResponse($reply);
-
-        if ($ehloResponse->isAdvertising('STARTTLS')) {
-            $client
-                ->request(new StartTlsCommand())
-                ->assertCompleted();
-
-            $this->connection->upgrade(STREAM_CRYPTO_METHOD_TLS_CLIENT);
+        if ($this->authMethod !== Client::AUTH_NONE) {
+            $negotiators[] = new AuthNegotiation(
+                $this->ehlo,
+                $this->authMethod,
+                $this->username,
+                $this->password
+            );
         }
 
-        $method = $this->authMethod;
-        if ($method === ClientFactory::AUTH_AUTO) {
-            $options = [
-                'AUTH PLAIN' => ClientFactory::AUTH_PLAIN,
-                'AUTH LOGIN' => ClientFactory::AUTH_LOGIN
-            ];
+        return new Client($this->connection, $negotiators);
+    }
 
-            foreach ($options as $advertisement => $auth) {
-                if ($ehloResponse->isAdvertising($advertisement)) {
-                    $method = $auth;
-                }
+    /**
+     * @param string $dataSourceName
+     * @return ClientFactory
+     */
+    public static function fromString(string $dataSourceName):ClientFactory
+    {
+        $components = parse_url($dataSourceName);
+        if (!isset($components['scheme']) || !isset($components['host'])) {
+            throw new \InvalidArgumentException('Scheme and host are required');
+        }
+
+        $allowInsecure = false;
+        switch ($components['scheme']) {
+            case 'smtp+tls':
+                $connection = new TlsConnection(
+                    $components['host'],
+                    $components['port'] ?? 465,
+                    new SecureConnectionOptions()
+                );
+                break;
+            case 'smtp+ssl':
+                $connection = new SslConnection(
+                    $components['host'],
+                    $components['port'] ?? 465,
+                    new SecureConnectionOptions()
+                );
+                break;
+            case 'smtp+plain':
+                $allowInsecure = true;
+                $connection = new PlainTcpConnection(
+                    $components['host'],
+                    $components['port'] ?? 25
+                );
+                break;
+            case 'smtp':
+                $connection = new PlainTcpConnection(
+                    $components['host'],
+                    $components['port'] ?? 587
+                );
+                break;
+            default:
+                throw new \InvalidArgumentException(
+                    'Use smtp:// smtp+tls:// smtp+ssl:// smtp+plain://'
+                );
+        }
+
+        $factory = new self($connection);
+        if ($allowInsecure) {
+            $factory = $factory->withAllowInsecure();
+        }
+
+        if (isset($components['user']) && isset($components['pass'])) {
+            $factory = $factory->withAuthentication(
+                Client::AUTH_AUTO,
+                urldecode($components['user']),
+                urldecode($components['pass'])
+            );
+        }
+
+        if (isset($components['query'])) {
+            parse_str($components['query'], $query);
+
+            if (isset($query['ehlo'])) {
+                $factory = $factory->withEhlo($query['ehlo']);
             }
 
-            if ($method === ClientFactory::AUTH_AUTO) {
-                throw new \RuntimeException('SMTP server does not advertise which AUTH method to use');
+            if (isset($query['timeout'])) {
+                $factory = $factory->withTimeout((float)$query['timeout']);
             }
         }
 
-        switch ($method) {
-            case ClientFactory::AUTH_PLAIN:
-                $client
-                    ->request(new AuthPlainCommand())
-                    ->assertIntermediate()
-                    ->request(
-                        new AuthPlainCredentialsRequest(
-                            $this->username,
-                            $this->password
-                        )
-                    )
-                    ->assertCompleted();
-                break;
-            case ClientFactory::AUTH_LOGIN:
-                $client
-                    ->request(new AuthLoginCommand())
-                    ->assertIntermediate()
-                    ->request(
-                        new AuthLoginUsernameRequest(
-                            $this->username
-                        )
-                    )
-                    ->assertIntermediate()
-                    ->request(
-                        new AuthLoginPasswordRequest(
-                            $this->password
-                        )
-                    )
-                    ->assertCompleted();
-                break;
-        }
-
-        return $client;
+        return $factory;
     }
 }

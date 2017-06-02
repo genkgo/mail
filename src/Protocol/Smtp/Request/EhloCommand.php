@@ -28,7 +28,6 @@ final class EhloCommand implements RequestInterface
      */
     public function execute(ConnectionInterface $connection)
     {
-        $connection->connect();
-        $connection->send(sprintf("EHLO %s%s", $this->hostName, RequestInterface::CRLF));
+        $connection->send(sprintf('EHLO %s', $this->hostName));
     }
 }

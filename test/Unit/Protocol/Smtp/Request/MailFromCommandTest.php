@@ -19,7 +19,7 @@ final class MailFromCommandTest extends AbstractTestCase
         $connection
             ->expects($this->once())
             ->method('send')
-            ->with("MAIL FROM:<me@localhost>\r\n");
+            ->with("MAIL FROM:<me@localhost>");
 
         $command = new MailFromCommand(new EmailAddress('me@localhost'));
         $command->execute($connection);

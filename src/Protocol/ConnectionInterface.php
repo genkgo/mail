@@ -6,6 +6,12 @@ namespace Genkgo\Mail\Protocol;
 interface ConnectionInterface
 {
     /**
+     * @param string $name
+     * @param \Closure $callback
+     */
+    public function addListener(string $name, \Closure $callback): void;
+
+    /**
      * @return void
      */
     public function connect(): void;
@@ -35,5 +41,11 @@ interface ConnectionInterface
      * @param float $timeout
      */
     public function timeout(float $timeout): void;
+
+    /**
+     * @param array $keys
+     * @return array
+     */
+    public function getMetaData(array $keys = []): array;
 
 }

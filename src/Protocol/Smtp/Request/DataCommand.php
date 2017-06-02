@@ -14,6 +14,6 @@ final class DataCommand implements RequestInterface
      */
     public function execute(ConnectionInterface $connection)
     {
-        $connection->send(sprintf("DATA%s", RequestInterface::CRLF));
+        $connection->send('DATA');
     }
 }

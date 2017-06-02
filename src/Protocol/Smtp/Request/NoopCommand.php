@@ -14,6 +14,6 @@ final class NoopCommand implements RequestInterface
      */
     public function execute(ConnectionInterface $connection)
     {
-        $connection->send(sprintf("NOOP%s", RequestInterface::CRLF));
+        $connection->send('NOOP');
     }
 }

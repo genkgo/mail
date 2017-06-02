@@ -19,7 +19,7 @@ final class StartTlsCommandTest extends AbstractTestCase
         $connection
             ->expects($this->at(0))
             ->method('send')
-            ->with("STARTTLS\r\n");
+            ->with("STARTTLS");
 
         $command = new StartTlsCommand();
         $command->execute($connection);

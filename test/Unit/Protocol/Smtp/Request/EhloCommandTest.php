@@ -18,12 +18,8 @@ final class EhloCommandTest extends AbstractTestCase
 
         $connection
             ->expects($this->at(0))
-            ->method('connect');
-
-        $connection
-            ->expects($this->at(1))
             ->method('send')
-            ->with("EHLO host.example.com\r\n");
+            ->with("EHLO host.example.com");
 
         $command = new EhloCommand('host.example.com');
         $command->execute($connection);

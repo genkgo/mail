@@ -18,6 +18,12 @@ abstract class AbstractConnection implements ConnectionInterface
      * @var resource
      */
     protected $resource;
+    /**
+     * @var \Closure[]
+     */
+    private $listeners = [
+        'connect' => []
+    ];
 
     /**
      *
@@ -25,6 +31,29 @@ abstract class AbstractConnection implements ConnectionInterface
     final public function __destruct()
     {
         $this->disconnect();
+    }
+
+    /**
+     * @param string $name
+     * @param \Closure $callback
+     */
+    final public function addListener(string $name, \Closure $callback): void
+    {
+        $this->listeners[$name][] = $callback;
+    }
+
+    /**
+     * @param $name
+     */
+    final protected function fireEvent($name): void
+    {
+        if (!isset($this->listeners[$name])) {
+            return;
+        }
+
+        foreach ($this->listeners[$name] as $listener) {
+            $listener();
+        }
     }
 
     /**
@@ -37,8 +66,10 @@ abstract class AbstractConnection implements ConnectionInterface
      */
     final public function disconnect(): void
     {
-        fclose($this->resource);
-        $this->resource = null;
+        if ($this->resource !== null) {
+            fclose($this->resource);
+            $this->resource = null;
+        }
     }
 
     /**
@@ -83,12 +114,37 @@ abstract class AbstractConnection implements ConnectionInterface
     }
 
     /**
+     * @param array $keys
+     * @return array
+     */
+    final public function getMetaData(array $keys = []): array
+    {
+        $this->verifyConnection();
+        $this->verifyAlive();
+
+        $metaData = stream_get_meta_data($this->resource);
+        if (!$metaData) {
+            return [];
+        }
+
+        $keys = array_map('strtolower', $keys);
+
+        return array_filter(
+            $metaData,
+            function ($key) use ($keys) {
+                return in_array(strtolower($key), $keys);
+            },
+            ARRAY_FILTER_USE_KEY
+        );
+    }
+
+    /**
      *
      */
     private function verifyConnection()
     {
-        if (!is_resource($this->resource)) {
-            throw new \RuntimeException('Cannot send/receive data while not connected');
+        if ($this->resource === null) {
+            $this->connect();
         }
     }
 

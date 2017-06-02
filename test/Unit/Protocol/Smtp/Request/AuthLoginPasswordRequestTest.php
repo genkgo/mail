@@ -18,7 +18,7 @@ final class AuthLoginPasswordRequestTest extends AbstractTestCase
         $connection
             ->expects($this->once())
             ->method('send')
-            ->with("dGVzdA==\r\n");
+            ->with("dGVzdA==");
 
         $command = new AuthLoginPasswordRequest('test');
         $command->execute($connection);

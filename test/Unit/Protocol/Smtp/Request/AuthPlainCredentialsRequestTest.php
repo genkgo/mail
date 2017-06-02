@@ -18,7 +18,7 @@ final class AuthPlainCredentialsRequestTest extends AbstractTestCase
         $connection
             ->expects($this->once())
             ->method('send')
-            ->with("AHRlc3QAdGVzdA==\r\n");
+            ->with("AHRlc3QAdGVzdA==");
 
         $command = new AuthPlainCredentialsRequest('test', 'test');
         $command->execute($connection);

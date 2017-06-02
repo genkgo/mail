@@ -19,7 +19,7 @@ final class RsetCommandTest extends AbstractTestCase
         $connection
             ->expects($this->at(0))
             ->method('send')
-            ->with("RSET\r\n");
+            ->with("RSET");
 
         $command = new RsetCommand();
         $command->execute($connection);

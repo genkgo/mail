@@ -21,10 +21,14 @@ $message = (new FormattedMessageFactory())
     ->createMessage()
     ->withHeader(new From(new Address(new EmailAddress('from@example.com'), 'name')))
     ->withHeader(new Subject('Hello World'))
-    ->withHeader(new AddressList([new To(new Address(new EmailAddress('to@example.com'), 'name'))]))
-    ->withHeader(new AddressList([new Cc(new Address(new EmailAddress('cc@example.com'), 'name'))]));
+    ->withHeader(new To(new AddressList([new Address(new EmailAddress('to@example.com'), 'name')])))
+    ->withHeader(new Cc(new AddressList([new Address(new EmailAddress('cc@example.com'), 'name')])));
 
-$transport = new NullTransport();
+$transport = new SmtpTransport(
+    ClientFactory::fromString('smtp+tls://user:pass@host/'),
+    EnvelopeFactory::useExtractedHeader()
+);
+
 $transport->send($message);
 ```
 

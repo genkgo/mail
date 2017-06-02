@@ -18,7 +18,7 @@ final class AuthLoginCommandTest extends AbstractTestCase
         $connection
             ->expects($this->once())
             ->method('send')
-            ->with("AUTH LOGIN\r\n");
+            ->with("AUTH LOGIN");
 
         $command = new AuthLoginCommand();
         $command->execute($connection);

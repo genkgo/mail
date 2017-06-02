@@ -18,7 +18,7 @@ final class DataCommandTest extends AbstractTestCase
         $connection
             ->expects($this->once())
             ->method('send')
-            ->with("DATA\r\n");
+            ->with("DATA");
 
         $command = new DataCommand();
         $command->execute($connection);

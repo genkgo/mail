@@ -38,10 +38,10 @@ final class DataRequest implements RequestInterface
                     $line = '.' . $line;
                 }
 
-                $connection->send($line . "\r\n");
+                $connection->send($line);
             }
         }
 
-        $connection->send(".\r\n");
+        $connection->send('.');
     }
 }

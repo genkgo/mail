@@ -8,11 +8,6 @@ use Genkgo\Mail\Protocol\ConnectionInterface;
 interface RequestInterface
 {
     /**
-     *
-     */
-    public CONST CRLF = "\r\n";
-
-    /**
      * @param ConnectionInterface $connection
      * @return void
      */
