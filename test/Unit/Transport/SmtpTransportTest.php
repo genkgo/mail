@@ -45,7 +45,7 @@ final class SmtpTransportTest extends AbstractTestCase
         $connection
             ->expects($this->at(++$at))
             ->method('send')
-            ->with("MAIL FROM:<from@localhost>")
+            ->with("MAIL FROM:<from@localhost>\r\n")
             ->willReturn(1);
 
         $connection
@@ -56,7 +56,7 @@ final class SmtpTransportTest extends AbstractTestCase
         $connection
             ->expects($this->at(++$at))
             ->method('send')
-            ->with("RCPT TO:<to@localhost>")
+            ->with("RCPT TO:<to@localhost>\r\n")
             ->willReturn(1);
 
         $connection
