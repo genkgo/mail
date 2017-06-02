@@ -42,10 +42,10 @@ $transport->send($message);
 - Only streams and connections are mutable
 - Messages and actors are immutable
 - Value objects protect against invalid states
-- Streams make sure as less memory as necessary is being used
+- Streams make sure the library has a low memory burden
 - Many objects but still easy API
 - 90%+ test coverage
-- Security importance
+- Security is high prioritized
 - Great RFC compliance
 - Convert messages to valid strings
 
