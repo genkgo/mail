@@ -49,7 +49,9 @@ $transport->send($message);
 - 90%+ test coverage
 - Security is high prioritized
 - Great RFC compliance
-- Convert messages to valid strings
+- Cast messages to valid string source
+- Library has no external dependencies
+- Only PHP 7.1 and up
 
 
 ## Upcoming features
