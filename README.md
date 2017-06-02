@@ -25,14 +25,31 @@ $message = (new FormattedMessageFactory())
     ->withHeader(new Cc(new AddressList([new Address(new EmailAddress('cc@example.com'), 'name')])));
 
 $transport = new SmtpTransport(
-    ClientFactory::fromString('smtp+tls://user:pass@host/'),
+    ClientFactory::fromString('smtp+tls://user:pass@host/')->newClient(),
     EnvelopeFactory::useExtractedHeader()
 );
 
 $transport->send($message);
 ```
 
-## RFC-compliant
+## Features
+
+- Use SMTP or mail() to send messages
+- Queue messages when transport fails
+- Reconnect automatically after interval
+- Optimal encoded headers, so no excessive (Q/B) encoded headers
+- Optimal encoded multipart messages
+- Only streams and connections are mutable
+- Messages and actors are immutable
+- Value objects protect against invalid states
+- Streams make sure as less memory as necessary is being used
+- Many objects but still easy API
+- 90%+ test coverage
+- Security importance
+- Great RFC compliance
+- Convert messages to valid strings
+
+## RFC-compliance
  
 This library tends to be as compliant with e-mail RFCs as possible. It should be compliant with the following RFCs.
 
@@ -43,10 +60,8 @@ This library tends to be as compliant with e-mail RFCs as possible. It should be
 - [RFC 2047, Multipurpose Internet Mail Extensions (MIME) Part Three](https://tools.ietf.org/html/rfc2047)
 - [RFC 2048, Multipurpose Internet Mail Extensions (MIME) Part Four](https://tools.ietf.org/html/rfc2048)
 - [RFC 2049, Multipurpose Internet Mail Extensions (MIME) Part Five](https://tools.ietf.org/html/rfc2049)
-
-Pending implementations.
-
 - [RFC 2821, Simple Mail Transfer Protocol](https://tools.ietf.org/html/rfc2821)
+- [RCC 4954, SMTP Service Extension for Authentication](https://tools.ietf.org/html/rfc4954)
 - [RFC 5321, Simple Mail Transfer Protocol](https://tools.ietf.org/html/rfc5321)
 
 
