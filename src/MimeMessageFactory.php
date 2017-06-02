@@ -8,8 +8,8 @@ use Genkgo\Mail\Header\HeaderLine;
 use Genkgo\Mail\Header\HeaderValueParameter;
 use Genkgo\Mail\Mime\MultiPartInterface;
 use Genkgo\Mail\Mime\PartInterface;
-use Genkgo\Mail\Stream\BitEncodedStream;
 use Genkgo\Mail\Stream\ConcatenatedStream;
+use Genkgo\Mail\Stream\StringStream;
 
 /**
  * Class MimeMessageFactory
@@ -35,7 +35,7 @@ final class MimeMessageFactory
             $message = $message->withBody(
                 new ConcatenatedStream(
                     new \ArrayObject([
-                        new BitEncodedStream("This is a multipart message in MIME format.\r\n"),
+                        new StringStream("This is a multipart message in MIME format.\r\n"),
                         $this->createPartStream($part, false)
                     ])
                 )
@@ -59,8 +59,8 @@ final class MimeMessageFactory
         $partBody = $part->getBody();
         $streams = new \ArrayObject();
         if ($headers) {
-            $streams->append(new BitEncodedStream($this->createHeaderLines($part)));
-            $streams->append(new BitEncodedStream("\r\n\r\n"));
+            $streams->append(new StringStream($this->createHeaderLines($part)));
+            $streams->append(new StringStream("\r\n\r\n"));
         }
 
         $streams->append($partBody);
@@ -70,20 +70,20 @@ final class MimeMessageFactory
             $boundary = $part->getBoundary();
 
             foreach ($childParts as $childPart) {
-                $streams->append(new BitEncodedStream("\r\n"));
-                $streams->append(new BitEncodedStream('--' . (string) $boundary));
-                $streams->append(new BitEncodedStream("\r\n"));
+                $streams->append(new StringStream("\r\n"));
+                $streams->append(new StringStream('--' . (string) $boundary));
+                $streams->append(new StringStream("\r\n"));
                 $streams->append($this->createPartStream($childPart));
             }
 
             if ($childParts) {
-                $streams->append(new BitEncodedStream('--' . (string) $boundary . '--'));
-                $streams->append(new BitEncodedStream("\r\n"));
+                $streams->append(new StringStream('--' . (string) $boundary . '--'));
+                $streams->append(new StringStream("\r\n"));
             }
         }
 
         if ($partBody->getSize() !== 0) {
-            $streams->append(new BitEncodedStream("\r\n"));
+            $streams->append(new StringStream("\r\n"));
         }
 
         return new ConcatenatedStream($streams);

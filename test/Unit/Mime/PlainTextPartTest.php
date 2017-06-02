@@ -6,7 +6,7 @@ namespace Genkgo\TestMail\Unit\Mime;
 use Genkgo\TestMail\AbstractTestCase;;
 use Genkgo\Mail\Header\ContentType;
 use Genkgo\Mail\Mime\PlainTextPart;
-use Genkgo\Mail\Stream\BitEncodedStream;
+use Genkgo\Mail\Stream\AsciiEncodedStream;
 use Genkgo\Mail\Stream\OptimalTransferEncodedTextStream;
 
 final class PlainTextPartTest extends AbstractTestCase
@@ -30,7 +30,7 @@ final class PlainTextPartTest extends AbstractTestCase
         $this->expectException(\RuntimeException::class);
 
         $part = new PlainTextPart('<html></html>');
-        $part->withBody(new BitEncodedStream('body'));
+        $part->withBody(new AsciiEncodedStream('body'));
     }
 
     /**

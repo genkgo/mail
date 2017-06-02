@@ -15,7 +15,7 @@ use Genkgo\Mail\Header\To;
 use Genkgo\Mail\Mime\EmbeddedImage;
 use Genkgo\Mail\Mime\HtmlPart;
 use Genkgo\Mail\Mime\ResourceAttachment;
-use Genkgo\Mail\Stream\BitEncodedStream;
+use Genkgo\Mail\Stream\AsciiEncodedStream;
 
 /**
  * Class FormattedMessageFactoryTest
@@ -34,7 +34,7 @@ final class FormattedMessageFactoryTest extends AbstractTestCase
             $message,
             $message->withEmbeddedImage(
                 new EmbeddedImage(
-                    new BitEncodedStream(
+                    new AsciiEncodedStream(
                         base64_decode('R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==')
                     ),
                     'pixel.gif',
@@ -96,7 +96,7 @@ final class FormattedMessageFactoryTest extends AbstractTestCase
 
         $message->withAttachment(
             new EmbeddedImage(
-                new BitEncodedStream(
+                new AsciiEncodedStream(
                     base64_decode('R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==')
                 ),
                 'pixel.gif',
@@ -162,7 +162,7 @@ final class FormattedMessageFactoryTest extends AbstractTestCase
             )
             ->withEmbeddedImage(
                 new EmbeddedImage(
-                    new BitEncodedStream(
+                    new AsciiEncodedStream(
                         base64_decode('R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==')
                     ),
                     'pixel.gif',

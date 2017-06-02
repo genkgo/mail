@@ -5,7 +5,7 @@ namespace Genkgo\TestMail\Protocol\Smtp\Request;
 
 use Genkgo\Mail\Protocol\ConnectionInterface;
 use Genkgo\Mail\Protocol\Smtp\Request\DataRequest;
-use Genkgo\Mail\Stream\BitEncodedStream;
+use Genkgo\Mail\Stream\AsciiEncodedStream;
 use Genkgo\TestMail\AbstractTestCase;
 
 final class DataRequestTest extends AbstractTestCase
@@ -26,7 +26,7 @@ final class DataRequestTest extends AbstractTestCase
             ->method('send')
             ->with(".");
 
-        $command = new DataRequest(new BitEncodedStream('test'));
+        $command = new DataRequest(new AsciiEncodedStream('test'));
         $command->execute($connection);
     }
 
@@ -46,7 +46,7 @@ final class DataRequestTest extends AbstractTestCase
             ->method('send')
             ->with(".");
 
-        $command = new DataRequest(new BitEncodedStream('.test'));
+        $command = new DataRequest(new AsciiEncodedStream('.test'));
         $command->execute($connection);
     }
 
@@ -66,7 +66,7 @@ final class DataRequestTest extends AbstractTestCase
             ->method('send')
             ->with(".");
 
-        $command = new DataRequest(new BitEncodedStream("test\r"));
+        $command = new DataRequest(new AsciiEncodedStream("test\r"));
         $command->execute($connection);
     }
 
@@ -106,7 +106,7 @@ final class DataRequestTest extends AbstractTestCase
             ->method('send')
             ->with(".");
 
-        $command = new DataRequest(new BitEncodedStream(str_repeat("test\r\ntest\r\n", 2)));
+        $command = new DataRequest(new AsciiEncodedStream(str_repeat("test\r\ntest\r\n", 2)));
         $command->execute($connection);
     }
 

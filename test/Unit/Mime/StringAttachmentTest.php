@@ -8,7 +8,7 @@ use Genkgo\Mail\Header\ContentDisposition;
 use Genkgo\Mail\Header\ContentType;
 use Genkgo\Mail\Mime\FileAttachment;
 use Genkgo\Mail\Stream\Base64EncodedStream;
-use Genkgo\Mail\Stream\BitEncodedStream;
+use Genkgo\Mail\Stream\AsciiEncodedStream;
 
 final class StringAttachmentTest extends AbstractTestCase
 {
@@ -37,7 +37,7 @@ final class StringAttachmentTest extends AbstractTestCase
         file_put_contents($file, 'content');
 
         $part = new FileAttachment($file, new ContentType('text/plain'));
-        $part->withBody(new BitEncodedStream('body'));
+        $part->withBody(new AsciiEncodedStream('body'));
     }
 
     /**

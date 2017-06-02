@@ -6,10 +6,10 @@ namespace Genkgo\Mail\Stream;
 use Genkgo\Mail\StreamInterface;
 
 /**
- * Class TextStream
+ * Class StringStream
  * @package Genkgo\Mail\Stream
  */
-final class BitEncodedStream implements StreamInterface
+final class StringStream implements StreamInterface
 {
 
     /**
@@ -23,14 +23,12 @@ final class BitEncodedStream implements StreamInterface
     private $position = 0;
 
     /**
-     * ResourceStream constructor.
+     * StringStream constructor.
      * @param string $text
-     * @param int $lineLength
-     * @param string $lineBreak
      */
-    public function __construct(string $text, int $lineLength = 78, string $lineBreak = "\r\n")
+    public function __construct(string $text)
     {
-        $this->text = \wordwrap($text, $lineLength, $lineBreak);
+        $this->text = $text;
     }
 
     /**

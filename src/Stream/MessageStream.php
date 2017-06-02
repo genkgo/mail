@@ -46,8 +46,8 @@ final class MessageStream implements StreamInterface
 
             return new ConcatenatedStream(
                 new \ArrayObject([
-                    new BitEncodedStream($headerString),
-                    new BitEncodedStream("\r\n\r\n"),
+                    new StringStream($headerString),
+                    new StringStream("\r\n\r\n"),
                     $message->getBody()
                 ])
             );

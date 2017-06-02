@@ -9,7 +9,7 @@ use Genkgo\Mail\Header\GenericHeader;
 use Genkgo\Mail\Mime\Boundary;
 use Genkgo\Mail\Mime\GenericPart;
 use Genkgo\Mail\Mime\MultiPart;
-use Genkgo\Mail\Stream\BitEncodedStream;
+use Genkgo\Mail\Stream\AsciiEncodedStream;
 
 final class MultiPartTest extends AbstractTestCase
 {
@@ -55,7 +55,7 @@ final class MultiPartTest extends AbstractTestCase
         $this->expectException(\RuntimeException::class);
 
         $part = new MultiPart(new Boundary('test'), new ContentType('multipart/mixed'));
-        $part->withBody(new BitEncodedStream('body'));
+        $part->withBody(new AsciiEncodedStream('body'));
     }
 
     /**

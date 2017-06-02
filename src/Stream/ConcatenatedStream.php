@@ -26,7 +26,7 @@ final class ConcatenatedStream implements StreamInterface
      */
     public function __construct(\ArrayAccess $streams)
     {
-        $this->streams = $streams;
+        $this->streams = clone $streams;
     }
 
     /**

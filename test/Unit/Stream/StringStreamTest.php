@@ -2,10 +2,10 @@
 
 namespace Genkgo\TestMail\Unit\Stream;
 
+use Genkgo\Mail\Stream\StringStream;
 use Genkgo\TestMail\AbstractTestCase;;
-use Genkgo\Mail\Stream\BitEncodedStream;
 
-final class BitEncodedStreamTest extends AbstractTestCase
+final class StringStreamTest extends AbstractTestCase
 {
 
     /**
@@ -13,7 +13,7 @@ final class BitEncodedStreamTest extends AbstractTestCase
      */
     public function it_produces_equally_result_with_to_string_and_read()
     {
-        $stream = new BitEncodedStream('test1');
+        $stream = new StringStream('test1');
 
         $streamRead = '';
         while (!$stream->eof()) {
@@ -30,7 +30,7 @@ final class BitEncodedStreamTest extends AbstractTestCase
     {
         $value = str_repeat('test1', 50);
 
-        $stream = new BitEncodedStream($value);
+        $stream = new StringStream($value);
 
         $this->assertEquals(wordwrap($value, 78), (string)$stream);
     }
@@ -40,7 +40,7 @@ final class BitEncodedStreamTest extends AbstractTestCase
      */
     public function it_has_a_correct_size()
     {
-        $stream = new BitEncodedStream('test1');
+        $stream = new StringStream('test1');
 
         $this->assertEquals(5, $stream->getSize());
     }
@@ -50,7 +50,7 @@ final class BitEncodedStreamTest extends AbstractTestCase
      */
     public function it_reads_remaining_contents()
     {
-        $stream = new BitEncodedStream('test1');
+        $stream = new StringStream('test1');
 
         $stream->read(2);
 
@@ -62,7 +62,7 @@ final class BitEncodedStreamTest extends AbstractTestCase
      */
     public function it_is_rewindable()
     {
-        $stream = new BitEncodedStream('test1');
+        $stream = new StringStream('test1');
 
         $stream->read(2);
         $stream->rewind();
@@ -75,7 +75,7 @@ final class BitEncodedStreamTest extends AbstractTestCase
      */
     public function it_can_seek()
     {
-        $stream = new BitEncodedStream('test1');
+        $stream = new StringStream('test1');
 
         $stream->seek(3);
 
@@ -88,7 +88,7 @@ final class BitEncodedStreamTest extends AbstractTestCase
      */
     public function it_can_be_written_to()
     {
-        $stream = new BitEncodedStream('test1');
+        $stream = new StringStream('test1');
         $this->assertTrue($stream->isWritable());
 
         $stream->write('x');

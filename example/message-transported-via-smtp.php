@@ -11,7 +11,7 @@ use Genkgo\Mail\Header\To;
 use Genkgo\Mail\Mime\EmbeddedImage;
 use Genkgo\Mail\Mime\ResourceAttachment;
 use Genkgo\Mail\Protocol\Smtp\ClientFactory;
-use Genkgo\Mail\Stream\BitEncodedStream;
+use Genkgo\Mail\Stream\StringStream;
 use Genkgo\Mail\Transport\EnvelopeFactory;
 use Genkgo\Mail\Transport\SmtpTransport;
 
@@ -29,7 +29,7 @@ $message = (new FormattedMessageFactory())
     )
     ->withEmbeddedImage(
         new EmbeddedImage(
-            new BitEncodedStream(
+            new StringStream(
                 base64_decode('R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==')
             ),
             'pixel.gif',

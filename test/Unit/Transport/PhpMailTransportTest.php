@@ -11,7 +11,7 @@ use Genkgo\Mail\GenericMessage;
 use Genkgo\Mail\Header\From;
 use Genkgo\Mail\Header\Subject;
 use Genkgo\Mail\Header\To;
-use Genkgo\Mail\Stream\BitEncodedStream;
+use Genkgo\Mail\Stream\AsciiEncodedStream;
 use Genkgo\Mail\Transport\EnvelopeFactory;
 use Genkgo\Mail\Transport\PhpMailTransport;
 
@@ -45,7 +45,7 @@ final class PhpMailTransportTest extends AbstractTestCase
             ->withHeader(new From(new Address(new EmailAddress('from@localhost'), 'name')))
             ->withHeader(new To(new AddressList([new Address(new EmailAddress('to@localhost'), 'name')])))
             ->withHeader(new Subject('subject'))
-            ->withBody(new BitEncodedStream('test'));
+            ->withBody(new AsciiEncodedStream('test'));
 
         $transport->send($message);
     }
@@ -65,7 +65,7 @@ final class PhpMailTransportTest extends AbstractTestCase
 
         $message = (new GenericMessage())
             ->withHeader(new Subject('subject'))
-            ->withBody(new BitEncodedStream('test'));
+            ->withBody(new AsciiEncodedStream('test'));
 
         $transport->send($message);
     }
@@ -85,7 +85,7 @@ final class PhpMailTransportTest extends AbstractTestCase
 
         $message = (new GenericMessage())
             ->withHeader(new To(new AddressList([new Address(new EmailAddress('to@localhost'), 'name')])))
-            ->withBody(new BitEncodedStream('test'));
+            ->withBody(new AsciiEncodedStream('test'));
 
         $transport->send($message);
     }
@@ -109,7 +109,7 @@ final class PhpMailTransportTest extends AbstractTestCase
             ->withHeader(new From(new Address(new EmailAddress($injection), 'name')))
             ->withHeader(new To(new AddressList([new Address(new EmailAddress('to@localhost'), 'name')])))
             ->withHeader(new Subject('subject'))
-            ->withBody(new BitEncodedStream('test'));
+            ->withBody(new AsciiEncodedStream('test'));
 
         $transport->send($message);
     }

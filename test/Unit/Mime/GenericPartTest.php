@@ -7,7 +7,7 @@ use Genkgo\TestMail\AbstractTestCase;;
 use Genkgo\Mail\Header\ContentType;
 use Genkgo\Mail\Header\GenericHeader;
 use Genkgo\Mail\Mime\GenericPart;
-use Genkgo\Mail\Stream\BitEncodedStream;
+use Genkgo\Mail\Stream\AsciiEncodedStream;
 
 final class GenericPartTest extends AbstractTestCase
 {
@@ -20,7 +20,7 @@ final class GenericPartTest extends AbstractTestCase
 
         $this->assertNotSame($part, $part->withHeader(new ContentType('text/html')));
         $this->assertNotSame($part, $part->withoutHeader('content/type'));
-        $this->assertNotSame($part, $part->withBody(new BitEncodedStream('test')));
+        $this->assertNotSame($part, $part->withBody(new AsciiEncodedStream('test')));
     }
 
     /**

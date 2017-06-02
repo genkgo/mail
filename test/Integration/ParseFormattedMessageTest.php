@@ -15,7 +15,7 @@ use Genkgo\Mail\Header\Subject;
 use Genkgo\Mail\Header\To;
 use Genkgo\Mail\Mime\EmbeddedImage;
 use Genkgo\Mail\Mime\ResourceAttachment;
-use Genkgo\Mail\Stream\BitEncodedStream;
+use Genkgo\Mail\Stream\AsciiEncodedStream;
 
 /**
  * Class ParseFormattedMessageTest
@@ -40,7 +40,7 @@ final class ParseFormattedMessageTest extends AbstractTestCase
             )
             ->withEmbeddedImage(
                 new EmbeddedImage(
-                    new BitEncodedStream(
+                    new AsciiEncodedStream(
                         base64_decode('R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==')
                     ),
                     'pixel.gif',

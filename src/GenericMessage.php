@@ -6,8 +6,8 @@ namespace Genkgo\Mail;
 use Genkgo\Mail\Header\HeaderLine;
 use Genkgo\Mail\Header\MimeVersion;
 use Genkgo\Mail\Stream\EmptyStream;
-use Genkgo\Mail\Stream\BitEncodedStream;
 use Genkgo\Mail\Stream\MessageStream;
+use Genkgo\Mail\Stream\StringStream;
 
 /**
  * Class ImmutableMessage
@@ -157,7 +157,7 @@ final class GenericMessage implements MessageInterface
 
             if ($line === '') {
                 $message = $message->withBody(
-                    new BitEncodedStream(
+                    new StringStream(
                         implode(
                             "\r\n",
                             array_slice($lines, $n + 1)

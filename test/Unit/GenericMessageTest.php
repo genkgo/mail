@@ -7,7 +7,7 @@ use Genkgo\Mail\GenericMessage;
 use Genkgo\Mail\Header\GenericHeader;
 use Genkgo\Mail\Header\MimeVersion;
 use Genkgo\Mail\Stream\EmptyStream;
-use Genkgo\Mail\Stream\BitEncodedStream;
+use Genkgo\Mail\Stream\AsciiEncodedStream;
 
 final class GenericMessageTest extends AbstractTestCase
 {
@@ -98,7 +98,7 @@ final class GenericMessageTest extends AbstractTestCase
             ->withHeader(new GenericHeader('To', 'me@example.com'))
             ->withHeader(new GenericHeader('From', 'other@example.com'))
             ->withHeader(new GenericHeader('X-Custom', str_repeat('tëst', 50)))
-            ->withBody(new BitEncodedStream('Hello World'))
+            ->withBody(new AsciiEncodedStream('Hello World'))
         ;
 
         $this->assertEquals(

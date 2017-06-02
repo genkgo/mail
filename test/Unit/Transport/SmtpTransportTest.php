@@ -15,7 +15,7 @@ use Genkgo\Mail\Header\To;
 use Genkgo\Mail\HeaderInterface;
 use Genkgo\Mail\Protocol\ConnectionInterface;
 use Genkgo\Mail\Protocol\Smtp\Client;
-use Genkgo\Mail\Stream\BitEncodedStream;
+use Genkgo\Mail\Stream\AsciiEncodedStream;
 use Genkgo\Mail\Transport\EnvelopeFactory;
 use Genkgo\Mail\Transport\SmtpTransport;
 
@@ -33,7 +33,7 @@ final class SmtpTransportTest extends AbstractTestCase
             ->withHeader(new From(new Address(new EmailAddress('from@localhost'), 'name')))
             ->withHeader(new To(new AddressList([new Address(new EmailAddress('to@localhost'), 'name')])))
             ->withHeader(new Subject('subject'))
-            ->withBody(new BitEncodedStream("test\r\ntest"));
+            ->withBody(new AsciiEncodedStream("test\r\ntest"));
 
         $connection
             ->expects($this->at(++$at))

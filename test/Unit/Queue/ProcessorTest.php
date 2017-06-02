@@ -9,7 +9,7 @@ use Genkgo\Mail\Header\GenericHeader;
 use Genkgo\Mail\MessageInterface;
 use Genkgo\Mail\Queue\ArrayObjectQueue;
 use Genkgo\Mail\Queue\QueueProcessor;
-use Genkgo\Mail\Stream\BitEncodedStream;
+use Genkgo\Mail\Stream\AsciiEncodedStream;
 use Genkgo\Mail\TransportInterface;
 
 final class ProcessorTest extends AbstractTestCase
@@ -89,7 +89,7 @@ final class ProcessorTest extends AbstractTestCase
     {
         return (new GenericMessage())
             ->withHeader(new GenericHeader('Subject', $subject))
-            ->withBody(new BitEncodedStream($subject));
+            ->withBody(new AsciiEncodedStream($subject));
     }
 
 }

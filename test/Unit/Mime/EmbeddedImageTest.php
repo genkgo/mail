@@ -9,7 +9,7 @@ use Genkgo\Mail\Header\ContentID;
 use Genkgo\Mail\Header\ContentType;
 use Genkgo\Mail\Mime\EmbeddedImage;
 use Genkgo\Mail\Stream\Base64EncodedStream;
-use Genkgo\Mail\Stream\BitEncodedStream;
+use Genkgo\Mail\Stream\AsciiEncodedStream;
 
 final class EmbeddedImageTest extends AbstractTestCase
 {
@@ -19,7 +19,7 @@ final class EmbeddedImageTest extends AbstractTestCase
     public function it_is_immutable()
     {
         $part = new EmbeddedImage(
-            new BitEncodedStream(
+            new AsciiEncodedStream(
                 base64_decode('R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==')
             ),
             'image.png',
@@ -39,14 +39,14 @@ final class EmbeddedImageTest extends AbstractTestCase
         $this->expectException(\RuntimeException::class);
 
         $part = new EmbeddedImage(
-            new BitEncodedStream(
+            new AsciiEncodedStream(
                 base64_decode('R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==')
             ),
             'image.png',
             new ContentType('image/png'),
             new ContentID('123456')
         );
-        $part->withBody(new BitEncodedStream('body'));
+        $part->withBody(new AsciiEncodedStream('body'));
     }
 
     /**
@@ -55,7 +55,7 @@ final class EmbeddedImageTest extends AbstractTestCase
     public function it_has_header_content_type()
     {
         $part = new EmbeddedImage(
-            new BitEncodedStream(
+            new AsciiEncodedStream(
                 base64_decode('R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==')
             ),
             'image.png',
@@ -79,7 +79,7 @@ final class EmbeddedImageTest extends AbstractTestCase
         $this->expectException(\InvalidArgumentException::class);
 
         $attachment = new EmbeddedImage(
-            new BitEncodedStream(
+            new AsciiEncodedStream(
                 base64_decode('R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==')
             ),
             'image.png',
@@ -98,7 +98,7 @@ final class EmbeddedImageTest extends AbstractTestCase
         $this->expectException(\InvalidArgumentException::class);
 
         $attachment = new EmbeddedImage(
-            new BitEncodedStream(
+            new AsciiEncodedStream(
                 base64_decode('R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==')
             ),
             'image.png',
@@ -115,7 +115,7 @@ final class EmbeddedImageTest extends AbstractTestCase
     public function it_encodes_body_with_base64()
     {
         $attachment = new EmbeddedImage(
-            new BitEncodedStream(
+            new AsciiEncodedStream(
                 base64_decode('R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==')
             ),
             'image.png',

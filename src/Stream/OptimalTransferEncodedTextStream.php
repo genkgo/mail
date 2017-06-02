@@ -49,7 +49,7 @@ final class OptimalTransferEncodedTextStream implements StreamInterface
     {
         if (strcspn($text, self::NON_7BIT_CHARS) === strlen($text)) {
             $this->encoding = '7bit';
-            return new BitEncodedStream($text, $this->lineLength, $this->lineBreak);
+            return new AsciiEncodedStream($text, $this->lineLength, $this->lineBreak);
         }
 
         if (preg_match_all('/[\000-\010\013\014\016-\037\177-\377]/', $text) > (strlen($text) / 3)) {
