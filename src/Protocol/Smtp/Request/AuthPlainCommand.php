@@ -18,6 +18,6 @@ final class AuthPlainCommand implements RequestInterface
      */
     public function execute(ConnectionInterface $connection)
     {
-        $connection->send(sprintf("AUTH PLAIN", RequestInterface::CRLF));
+        $connection->send(sprintf("AUTH PLAIN%s", RequestInterface::CRLF));
     }
 }

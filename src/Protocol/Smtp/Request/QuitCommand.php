@@ -14,7 +14,7 @@ final class QuitCommand implements RequestInterface
      */
     public function execute(ConnectionInterface $connection)
     {
-        $connection->send(sprintf("QUIT", RequestInterface::CRLF));
+        $connection->send(sprintf("QUIT%s", RequestInterface::CRLF));
         $connection->disconnect();
     }
 }

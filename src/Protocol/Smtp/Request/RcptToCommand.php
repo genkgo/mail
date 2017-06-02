@@ -29,6 +29,6 @@ final class RcptToCommand implements RequestInterface
      */
     public function execute(ConnectionInterface $connection)
     {
-        $connection->send(sprintf("RCPT TO:<%s>", (string)$this->recipient, RequestInterface::CRLF));
+        $connection->send(sprintf("RCPT TO:<%s>%s", (string)$this->recipient, RequestInterface::CRLF));
     }
 }

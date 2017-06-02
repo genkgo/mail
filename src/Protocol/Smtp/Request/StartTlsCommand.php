@@ -14,6 +14,6 @@ final class StartTlsCommand implements RequestInterface
      */
     public function execute(ConnectionInterface $connection)
     {
-        $connection->send(sprintf("STARTTLS", RequestInterface::CRLF));
+        $connection->send(sprintf("STARTTLS%s", RequestInterface::CRLF));
     }
 }

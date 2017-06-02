@@ -18,6 +18,6 @@ final class AuthLoginCommand implements RequestInterface
      */
     public function execute(ConnectionInterface $connection)
     {
-        $connection->send(sprintf("AUTH LOGIN", RequestInterface::CRLF));
+        $connection->send(sprintf("AUTH LOGIN%s", RequestInterface::CRLF));
     }
 }

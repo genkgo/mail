@@ -14,6 +14,6 @@ final class RsetCommand implements RequestInterface
      */
     public function execute(ConnectionInterface $connection)
     {
-        $connection->send(sprintf("RSET", RequestInterface::CRLF));
+        $connection->send(sprintf("RSET%s", RequestInterface::CRLF));
     }
 }
