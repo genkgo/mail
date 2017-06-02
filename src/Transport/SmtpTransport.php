@@ -58,7 +58,8 @@ final class SmtpTransport implements TransportInterface
 
         $client
             ->request(new DataCommand())
-            ->assertIntermediate(new DataRequest(new MessageStream($message)))
+            ->assertIntermediate()
+            ->request(new DataRequest(new MessageStream($message)))
             ->assertCompleted();
     }
 

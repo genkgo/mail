@@ -72,39 +72,36 @@ final class Reply
 
     /**
      * @param int $code
-     * @return Reply
+     * @return Client
      */
-    public function assert(int $code): Reply {
+    public function assert(int $code): Client {
         return $this->assertBetween($code, $code);
     }
 
     /**
-     * @return Reply
+     * @return Client
      */
-    public function assertCompleted(): Reply {
+    public function assertCompleted(): Client {
         return $this->assertBetween(200, 299);
     }
 
     /**
-     * @param RequestInterface $command
-     * @return Reply
+     * @return Client
      */
-    public function assertIntermediate(RequestInterface $command): Reply {
-        return $this->assertBetween(300, 399)
-            ->client
-            ->request($command);
+    public function assertIntermediate(): Client {
+        return $this->assertBetween(300, 399);
     }
 
     /**
      * @param int $min
      * @param int $max
-     * @return Reply
+     * @return Client
      */
-    private function assertBetween(int $min, int $max): Reply
+    private function assertBetween(int $min, int $max): Client
     {
-        foreach ($this->codes as $code) {
+        foreach ($this->codes as $code => $activated) {
             if ($code >= $min && $code <= $max) {
-                return $this;
+                return $this->client;
             }
         }
 

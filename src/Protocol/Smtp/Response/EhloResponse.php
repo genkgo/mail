@@ -30,10 +30,12 @@ final class EhloResponse
             foreach (array_slice($messages, 1) as $message) {
                 $advertisement = preg_split('/[\s]+/', $message);
 
-                if (count($advertisement) >= 1) {
+                if (count($advertisement) > 1) {
                     foreach (array_slice($advertisement, 1) as $command) {
                         $this->advertisements[$advertisement[0] . ' ' . $command] = true;
                     }
+                } else {
+                    $this->advertisements[$advertisement[0]] = true;
                 }
             }
         }

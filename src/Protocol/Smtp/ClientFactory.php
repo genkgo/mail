@@ -141,12 +141,10 @@ final class ClientFactory implements ClientFactoryInterface
     public function newClient(): Client
     {
         $client = new Client($this->connection);
+        $reply = $client->request(new EhloCommand($this->ehlo));
+        $reply->assertCompleted();
 
-        $ehloResponse = new EhloResponse(
-            $client
-                ->request(new EhloCommand($this->ehlo))
-                ->assertCompleted()
-        );
+        $ehloResponse = new EhloResponse($reply);
 
         if ($ehloResponse->isAdvertising('STARTTLS')) {
             $client
@@ -175,6 +173,8 @@ final class ClientFactory implements ClientFactoryInterface
                 $client
                     ->request(new AuthPlainCommand())
                     ->assertIntermediate(
+                    )
+                    ->request(
                         new AuthPlainCredentialsRequest(
                             $this->username,
                             $this->password
@@ -185,12 +185,14 @@ final class ClientFactory implements ClientFactoryInterface
             case ClientFactory::AUTH_LOGIN:
                 $client
                     ->request(new AuthLoginCommand())
-                    ->assertIntermediate(
+                    ->assertIntermediate()
+                    ->request(
                         new AuthLoginUsernameRequest(
                             $this->username
                         )
                     )
-                    ->assertIntermediate(
+                    ->assertIntermediate()
+                    ->request(
                         new AuthLoginPasswordRequest(
                             $this->password
                         )
