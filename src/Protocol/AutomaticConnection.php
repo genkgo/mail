@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Genkgo\Mail\Protocol;
 
-final class ReconnectAfterConnection implements ConnectionInterface
+final class AutomaticConnection implements ConnectionInterface
 {
     /**
      * @var ConnectionInterface
@@ -17,6 +17,10 @@ final class ReconnectAfterConnection implements ConnectionInterface
      * @var \DateInterval
      */
     private $interval;
+    /**
+     * @var bool
+     */
+    private $connecting = false;
 
     /**
      * AppendCrlfConnection constructor.
@@ -43,8 +47,12 @@ final class ReconnectAfterConnection implements ConnectionInterface
      */
     public function connect(): void
     {
-        $this->decoratedConnection->connect();
-        $this->connectedAt = new \DateTimeImmutable('now');
+        if ($this->connecting === false) {
+            $this->connecting = true;
+            $this->decoratedConnection->connect();
+            $this->connectedAt = new \DateTimeImmutable('now');
+            $this->connecting = false;
+        }
     }
 
     /**
@@ -62,7 +70,7 @@ final class ReconnectAfterConnection implements ConnectionInterface
      */
     public function send(string $request): int
     {
-        $this->validateConnection();
+        $this->connectIfNotConnected();
         return $this->decoratedConnection->send($request);
     }
 
@@ -71,7 +79,7 @@ final class ReconnectAfterConnection implements ConnectionInterface
      */
     public function receive(): string
     {
-        $this->validateConnection();
+        $this->connectIfNotConnected();
         return $this->decoratedConnection->receive();
     }
 
@@ -103,13 +111,13 @@ final class ReconnectAfterConnection implements ConnectionInterface
     /**
      *
      */
-    private function validateConnection(): void
+    private function connectIfNotConnected(): void
     {
         if ($this->connectedAt === null) {
-            throw new \UnexpectedValueException('Never connected at all');
+            $this->connect();
         }
 
-        if ($this->connectedAt->add($this->interval) < new \DateTimeImmutable()) {
+        if ($this->connecting === false && $this->connectedAt->add($this->interval) < new \DateTimeImmutable()) {
             $this->disconnect();
             $this->connect();
         }

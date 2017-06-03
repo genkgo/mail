@@ -3,11 +3,11 @@ declare(strict_types=1);
 
 namespace Genkgo\TestMail\Protocol\Smtp\Response;
 
-use Genkgo\Mail\Protocol\ConnectionInterface;
 use Genkgo\Mail\Protocol\Smtp\Client;
 use Genkgo\Mail\Protocol\Smtp\Reply;
 use Genkgo\Mail\Protocol\Smtp\Response\EhloResponse;
 use Genkgo\TestMail\AbstractTestCase;
+use Genkgo\TestMail\Stub\FakeSmtpConnection;
 
 final class EhloResponseTest extends AbstractTestCase
 {
@@ -17,9 +17,7 @@ final class EhloResponseTest extends AbstractTestCase
      */
     public function it_sends_advertisements()
     {
-        $connection = $this->createMock(ConnectionInterface::class);
-
-        $reply = (new Reply(new Client($connection)))
+        $reply = (new Reply(new Client(new FakeSmtpConnection())))
             ->withLine(250, 'hello')
             ->withLine(250, 'STARTTLS');
 
@@ -32,9 +30,7 @@ final class EhloResponseTest extends AbstractTestCase
      */
     public function it_sends_advertisements_with_parameters()
     {
-        $connection = $this->createMock(ConnectionInterface::class);
-
-        $reply = (new Reply(new Client($connection)))
+        $reply = (new Reply(new Client(new FakeSmtpConnection())))
             ->withLine(250, 'hello')
             ->withLine(250, 'AUTH LOGIN PLAIN');
 

@@ -4,10 +4,10 @@ declare(strict_types=1);
 namespace Genkgo\TestMail\Protocol;
 
 use Genkgo\Mail\Protocol\ConnectionInterface;
-use Genkgo\Mail\Protocol\ReconnectAfterConnection;
+use Genkgo\Mail\Protocol\AutomaticConnection;
 use Genkgo\TestMail\AbstractTestCase;
 
-final class ReconnectAfterConnectionTest extends AbstractTestCase
+final class AutomaticConnectionTest extends AbstractTestCase
 {
     /**
      * @test
@@ -33,7 +33,7 @@ final class ReconnectAfterConnectionTest extends AbstractTestCase
             ->method('send')
             ->with('xyz');
 
-        $connection = new ReconnectAfterConnection($decorated, new \DateInterval('PT0S'));
+        $connection = new AutomaticConnection($decorated, new \DateInterval('PT0S'));
         $connection->connect();
         $connection->send('xyz');
     }
@@ -76,7 +76,7 @@ final class ReconnectAfterConnectionTest extends AbstractTestCase
             ->method('getMetaData')
             ->with(['xyz']);
 
-        $connection = new ReconnectAfterConnection($decorated, new \DateInterval('P1M'));
+        $connection = new AutomaticConnection($decorated, new \DateInterval('P1M'));
         $connection->addListener('xyz', function  () {});
         $connection->connect();
         $connection->upgrade(STREAM_CRYPTO_METHOD_TLS_CLIENT);
@@ -85,18 +85,5 @@ final class ReconnectAfterConnectionTest extends AbstractTestCase
         $connection->send('xyz');
         $connection->receive();
         $connection->disconnect();
-    }
-
-    /**
-     * @test
-     */
-    public function it_throws_when_something_is_send_while_there_is_no_connection()
-    {
-        $this->expectException(\RuntimeException::class);
-
-        $decorated = $this->createMock(ConnectionInterface::class);
-
-        $connection = new ReconnectAfterConnection($decorated, new \DateInterval('P1M'));
-        $connection->send('line');
     }
 }

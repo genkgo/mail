@@ -5,6 +5,7 @@ namespace Genkgo\Mail\Protocol\Smtp;
 
 use Genkgo\Mail\Protocol\ConnectionInterface;
 use Genkgo\Mail\Protocol\PlainTcpConnection;
+use Genkgo\Mail\Protocol\AutomaticConnection;
 use Genkgo\Mail\Protocol\SecureConnectionOptions;
 use Genkgo\Mail\Protocol\Smtp\Negotiation\AuthNegotiation;
 use Genkgo\Mail\Protocol\Smtp\Negotiation\ConnectionNegotiation;
@@ -49,6 +50,10 @@ final class ClientFactory
      * @var bool
      */
     private $insecureAllowed = false;
+    /**
+     * @var string
+     */
+    private $reconnectAfter = 'PT300S';
 
     /**
      * ClientFactory constructor.
@@ -132,7 +137,13 @@ final class ClientFactory
             );
         }
 
-        return new Client($this->connection, $negotiators);
+        return new Client(
+            new AutomaticConnection(
+                $this->connection,
+                new \DateInterval($this->reconnectAfter)
+            ),
+            $negotiators
+        );
     }
 
     /**
@@ -183,26 +194,28 @@ final class ClientFactory
 
         $factory = new self($connection);
         if ($allowInsecure) {
-            $factory = $factory->withAllowInsecure();
+            $factory->insecureAllowed = true;
         }
 
         if (isset($components['user']) && isset($components['pass'])) {
-            $factory = $factory->withAuthentication(
-                Client::AUTH_AUTO,
-                urldecode($components['user']),
-                urldecode($components['pass'])
-            );
+            $factory->authMethod = Client::AUTH_AUTO;
+            $factory->username = urldecode($components['user']);
+            $factory->password = urldecode($components['pass']);
         }
 
         if (isset($components['query'])) {
             parse_str($components['query'], $query);
 
             if (isset($query['ehlo'])) {
-                $factory = $factory->withEhlo($query['ehlo']);
+                $factory->ehlo = $query['ehlo'];
             }
 
             if (isset($query['timeout'])) {
-                $factory = $factory->withTimeout((float)$query['timeout']);
+                $factory->timeout = (float)$query['timeout'];
+            }
+
+            if (isset($query['reconnectAfter'])) {
+                $factory->reconnectAfter = $query['reconnectAfter'];
             }
         }
 

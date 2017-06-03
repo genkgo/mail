@@ -4,10 +4,10 @@ declare(strict_types=1);
 namespace Genkgo\TestMail\Protocol\Smtp;
 
 use Genkgo\Mail\Exception\AssertionFailedException;
-use Genkgo\Mail\Protocol\ConnectionInterface;
 use Genkgo\Mail\Protocol\Smtp\Client;
 use Genkgo\Mail\Protocol\Smtp\Reply;
 use Genkgo\TestMail\AbstractTestCase;
+use Genkgo\TestMail\Stub\FakeSmtpConnection;
 
 final class ReplyTest extends AbstractTestCase
 {
@@ -16,9 +16,7 @@ final class ReplyTest extends AbstractTestCase
      */
     public function it_has_messages()
     {
-        $connection = $this->createMock(ConnectionInterface::class);
-
-        $reply = (new Reply(new Client($connection)))
+        $reply = (new Reply(new Client(new FakeSmtpConnection())))
             ->withLine(250, 'hello')
             ->withLine(250, 'STARTTLS');
 
@@ -31,8 +29,7 @@ final class ReplyTest extends AbstractTestCase
      */
     public function it_asserts()
     {
-        $connection = $this->createMock(ConnectionInterface::class);
-        $client = new Client($connection);
+        $client = new Client(new FakeSmtpConnection());
 
         $reply = (new Reply($client))
             ->withLine(250, 'hello')
@@ -47,8 +44,7 @@ final class ReplyTest extends AbstractTestCase
      */
     public function it_asserts_completed()
     {
-        $connection = $this->createMock(ConnectionInterface::class);
-        $client = new Client($connection);
+        $client = new Client(new FakeSmtpConnection());
 
         $reply = (new Reply($client))
             ->withLine(250, 'hello')
@@ -63,8 +59,7 @@ final class ReplyTest extends AbstractTestCase
      */
     public function it_asserts_intermediate()
     {
-        $connection = $this->createMock(ConnectionInterface::class);
-        $client = new Client($connection);
+        $client = new Client(new FakeSmtpConnection());
 
         $reply = (new Reply($client))
             ->withLine(354, 'send data');
@@ -80,8 +75,7 @@ final class ReplyTest extends AbstractTestCase
     {
         $this->expectException(AssertionFailedException::class);
 
-        $connection = $this->createMock(ConnectionInterface::class);
-        $client = new Client($connection);
+        $client = new Client(new FakeSmtpConnection());
 
         $reply = (new Reply($client))
             ->withLine(354, 'send data');
@@ -94,8 +88,7 @@ final class ReplyTest extends AbstractTestCase
      */
     public function it_an_error_400()
     {
-        $connection = $this->createMock(ConnectionInterface::class);
-        $client = new Client($connection);
+        $client = new Client(new FakeSmtpConnection());
 
         $reply = (new Reply($client))
             ->withLine(400, 'error');
@@ -108,8 +101,7 @@ final class ReplyTest extends AbstractTestCase
      */
     public function it_an_error_500()
     {
-        $connection = $this->createMock(ConnectionInterface::class);
-        $client = new Client($connection);
+        $client = new Client(new FakeSmtpConnection());
 
         $reply = (new Reply($client))
             ->withLine(500, 'error');

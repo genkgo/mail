@@ -48,17 +48,19 @@ final class ConnectionNegotiation implements NegotiationInterface
     {
         $this->connection->receive();
 
-        $reply = $client->request(new EhloCommand($this->ehlo));
-        $reply->assertCompleted();
+        if (empty($this->connection->getMetadata(['crypto']))) {
+            $reply = $client->request(new EhloCommand($this->ehlo));
+            $reply->assertCompleted();
 
-        $ehloResponse = new EhloResponse($reply);
+            $ehloResponse = new EhloResponse($reply);
 
-        if ($ehloResponse->isAdvertising('STARTTLS')) {
-            $client
-                ->request(new StartTlsCommand())
-                ->assertCompleted();
+            if ($ehloResponse->isAdvertising('STARTTLS')) {
+                $client
+                    ->request(new StartTlsCommand())
+                    ->assertCompleted();
 
-            $this->connection->upgrade(STREAM_CRYPTO_METHOD_TLS_CLIENT);
+                $this->connection->upgrade(STREAM_CRYPTO_METHOD_TLS_CLIENT);
+            }
         }
 
         if (!$this->insecureAllowed && empty($this->connection->getMetadata(['crypto']))) {

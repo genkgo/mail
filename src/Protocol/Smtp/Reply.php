@@ -110,7 +110,9 @@ final class Reply
 
         throw new AssertionFailedException(
             sprintf(
-                'Cannot assert OK reply code. Server replied %s',
+                'Cannot assert reply code between %s and %s. Server replied %s.',
+                $min,
+                $max,
                 $this->createErrorMessage()
             )
         );

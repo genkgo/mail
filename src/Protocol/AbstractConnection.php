@@ -148,7 +148,7 @@ abstract class AbstractConnection implements ConnectionInterface
     private function verifyConnection()
     {
         if ($this->resource === null) {
-            $this->connect();
+            throw new \UnexpectedValueException('Cannot communicate when there is no connection');
         }
     }
 
