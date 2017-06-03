@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Genkgo\TestMail\Protocol\Smtp;
 
+use Genkgo\Mail\Exception\AssertionFailedException;
 use Genkgo\Mail\Protocol\ConnectionInterface;
 use Genkgo\Mail\Protocol\Smtp\Client;
 use Genkgo\Mail\Protocol\Smtp\Reply;
@@ -77,7 +78,7 @@ final class ReplyTest extends AbstractTestCase
      */
     public function it_throws_when_making_wrong_assertions()
     {
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(AssertionFailedException::class);
 
         $connection = $this->createMock(ConnectionInterface::class);
         $client = new Client($connection);

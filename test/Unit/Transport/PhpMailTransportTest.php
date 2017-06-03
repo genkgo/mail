@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Genkgo\TestMail\Unit\Transport;
 
+use Genkgo\Mail\Exception\EnvelopeException;
 use Genkgo\TestMail\AbstractTestCase;;
 use Genkgo\Mail\Address;
 use Genkgo\Mail\AddressList;
@@ -95,7 +96,7 @@ final class PhpMailTransportTest extends AbstractTestCase
      */
     public function it_prevents_parameter_injection()
     {
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(EnvelopeException::class);
         $this->expectExceptionMessage('Unable to guarantee injection-free envelop');
 
         $transport = PhpMailTransport::newReplaceMailMethod(

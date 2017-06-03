@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Genkgo\Mail\Transport;
 
 use DateTimeImmutable;
-use Genkgo\Mail\Exception\ConnectionException;
+use Genkgo\Mail\Exception\ConnectionRefusedException;
 use Genkgo\Mail\Exception\QueueIfFailedException;
 use Genkgo\Mail\Exception\QueueStoreException;
 use Genkgo\Mail\Header\GenericHeader;
@@ -57,7 +57,7 @@ final class QueueIfFailedTransport implements TransportInterface
                 try {
                     $sender->send($message);
                     return;
-                } catch (ConnectionException $e) {
+                } catch (ConnectionRefusedException $e) {
                 }
             }
         }

@@ -102,7 +102,7 @@ final class ResourceAttachment implements PartInterface
      */
     public function withBody(StreamInterface $body): PartInterface
     {
-        throw new \RuntimeException('Cannot modify body of ResourcePart');
+        throw new \RuntimeException('Cannot modify body of ResourceAttachment');
     }
 
     /**

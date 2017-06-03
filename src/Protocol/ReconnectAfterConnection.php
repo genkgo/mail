@@ -106,7 +106,7 @@ final class ReconnectAfterConnection implements ConnectionInterface
     private function validateConnection(): void
     {
         if ($this->connectedAt === null) {
-            throw new \RuntimeException('Never connected at all');
+            throw new \UnexpectedValueException('Never connected at all');
         }
 
         if ($this->connectedAt->add($this->interval) < new \DateTimeImmutable()) {

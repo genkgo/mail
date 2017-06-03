@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Genkgo\TestMail\Protocol\Smtp;
 
+use Genkgo\Mail\Exception\SmtpAuthenticationException;
 use Genkgo\Mail\Protocol\ConnectionInterface;
 use Genkgo\Mail\Protocol\Smtp\Client;
 use Genkgo\Mail\Protocol\Smtp\Negotiation\AuthNegotiation;
@@ -152,7 +153,7 @@ final class AuthNegotiationTest extends AbstractTestCase
      */
     public function it_will_throw_when_not_advertised()
     {
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(SmtpAuthenticationException::class);
 
         $connection = $this->createMock(ConnectionInterface::class);
         $connection

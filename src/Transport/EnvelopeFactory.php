@@ -5,6 +5,7 @@ namespace Genkgo\Mail\Transport;
 
 use Genkgo\Mail\AddressList;
 use Genkgo\Mail\EmailAddress;
+use Genkgo\Mail\Exception\EnvelopeException;
 use Genkgo\Mail\MessageInterface;
 
 /**
@@ -43,12 +44,13 @@ final class EnvelopeFactory
     /**
      * @param MessageInterface $message
      * @return EmailAddress
+     * @throws EnvelopeException
      */
     public function make(MessageInterface $message): EmailAddress
     {
         try {
             return $this->callback->call($this, $message);
-        } catch (\RuntimeException $e) {
+        } catch (EnvelopeException $e) {
             if ($this->fallback === null) {
                 throw $e;
             }
@@ -60,6 +62,7 @@ final class EnvelopeFactory
     /**
      * @param MessageInterface $message
      * @return EmailAddress
+     * @throws EnvelopeException
      */
     private function extractHeader(MessageInterface $message): EmailAddress
     {
@@ -72,7 +75,7 @@ final class EnvelopeFactory
             }
         }
 
-        throw new \RuntimeException('Cannot extract envelope from headers');
+        throw new EnvelopeException('Cannot extract envelope from headers');
     }
 
     /**

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Genkgo\TestMail\Unit\Transport;
 
+use Genkgo\Mail\Exception\EnvelopeException;
 use Genkgo\TestMail\AbstractTestCase;;
 use Genkgo\Mail\Address;
 use Genkgo\Mail\EmailAddress;
@@ -80,7 +81,7 @@ final class EnvelopeFactoryTest extends AbstractTestCase
      */
     public function it_throws_when_cannot_extract()
     {
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(EnvelopeException::class);
 
         $factory = EnvelopeFactory::useExtractedHeader();
 
@@ -143,7 +144,7 @@ final class EnvelopeFactoryTest extends AbstractTestCase
     {
         $factory = EnvelopeFactory::useCallback(
             function () {
-                throw new \RuntimeException();
+                throw new EnvelopeException();
             }
         )->withFallback(new EmailAddress('fallback@example.com'));
 

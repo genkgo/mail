@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Genkgo\Mail\Protocol\Smtp\Negotiation;
 
+use Genkgo\Mail\Exception\ConnectionInsecureException;
 use Genkgo\Mail\Protocol\ConnectionInterface;
 use Genkgo\Mail\Protocol\Smtp\Client;
 use Genkgo\Mail\Protocol\Smtp\NegotiationInterface;
@@ -41,6 +42,7 @@ final class ConnectionNegotiation implements NegotiationInterface
 
     /**
      * @param Client $client
+     * @throws ConnectionInsecureException
      */
     public function negotiate(Client $client): void
     {
@@ -60,7 +62,9 @@ final class ConnectionNegotiation implements NegotiationInterface
         }
 
         if (!$this->insecureAllowed && empty($this->connection->getMetadata(['crypto']))) {
-            throw new \RuntimeException('Cannot establish secure connection');
+            throw new ConnectionInsecureException(
+                'Server does not support STARTTLS. Use smtp+tls:// or to allow insecure connections use smtp+plain://'
+            );
         }
     }
 }

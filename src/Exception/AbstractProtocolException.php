@@ -4,9 +4,9 @@ declare(strict_types=1);
 namespace Genkgo\Mail\Exception;
 
 /**
- * Class TransportException
+ * Class ProtocolException
  * @package Genkgo\Mail\Exception
  */
-abstract class TransportException extends AbstractException
+abstract class AbstractProtocolException extends AbstractException
 {
 }

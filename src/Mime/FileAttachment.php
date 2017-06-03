@@ -103,7 +103,7 @@ final class FileAttachment implements PartInterface
      */
     public function withBody(StreamInterface $body): PartInterface
     {
-        throw new \RuntimeException('Cannot modify body of FilePart');
+        throw new \RuntimeException('Cannot modify body of FileAttachment');
     }
 
     /**

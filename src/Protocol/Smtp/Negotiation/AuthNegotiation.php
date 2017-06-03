@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Genkgo\Mail\Protocol\Smtp\Negotiation;
 
+use Genkgo\Mail\Exception\SmtpAuthenticationException;
 use Genkgo\Mail\Protocol\Smtp\Client;
 use Genkgo\Mail\Protocol\Smtp\NegotiationInterface;
 use Genkgo\Mail\Protocol\Smtp\Request\AuthLoginCommand;
@@ -70,7 +71,9 @@ final class AuthNegotiation implements NegotiationInterface
             }
 
             if ($method === Client::AUTH_AUTO) {
-                throw new \RuntimeException('SMTP server does not advertise which AUTH method to use');
+                throw new SmtpAuthenticationException(
+                    'SMTP server does not advertise one the supported AUTH methods (AUTH PLAIN / AUTH LOGIN)'
+                );
             }
         }
 

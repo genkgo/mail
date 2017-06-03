@@ -3,7 +3,7 @@
 namespace Genkgo\TestMail\Unit\Transport;
 
 use Genkgo\TestMail\AbstractTestCase;;
-use Genkgo\Mail\Exception\ConnectionException;
+use Genkgo\Mail\Exception\ConnectionRefusedException;
 use Genkgo\Mail\GenericMessage;
 use Genkgo\Mail\Transport\RetryIfFailedTransport;
 use Genkgo\Mail\TransportInterface;
@@ -35,7 +35,7 @@ final class RetryIfFailedTransportTest extends AbstractTestCase
         $decoratedTransport
             ->expects($this->at(0))
             ->method('send')
-            ->willThrowException(new ConnectionException());
+            ->willThrowException(new ConnectionRefusedException());
 
         $decoratedTransport
             ->expects($this->at(1))
@@ -55,12 +55,12 @@ final class RetryIfFailedTransportTest extends AbstractTestCase
         $decoratedTransport
             ->expects($this->at(0))
             ->method('send')
-            ->willThrowException(new ConnectionException());
+            ->willThrowException(new ConnectionRefusedException());
 
         $decoratedTransport
             ->expects($this->at(1))
             ->method('send')
-            ->willThrowException(new ConnectionException());
+            ->willThrowException(new ConnectionRefusedException());
 
         $decoratedTransport
             ->expects($this->at(2))
@@ -75,24 +75,24 @@ final class RetryIfFailedTransportTest extends AbstractTestCase
      */
     public function it_throws_the_last_exception_when_last_retry_fails()
     {
-        $this->expectException(ConnectionException::class);
+        $this->expectException(ConnectionRefusedException::class);
 
         $decoratedTransport = $this->createMock(TransportInterface::class);
 
         $decoratedTransport
             ->expects($this->at(0))
             ->method('send')
-            ->willThrowException(new ConnectionException());
+            ->willThrowException(new ConnectionRefusedException());
 
         $decoratedTransport
             ->expects($this->at(1))
             ->method('send')
-            ->willThrowException(new ConnectionException());
+            ->willThrowException(new ConnectionRefusedException());
 
         $decoratedTransport
             ->expects($this->at(2))
             ->method('send')
-            ->willThrowException(new ConnectionException());
+            ->willThrowException(new ConnectionRefusedException());
 
         $sender = new RetryIfFailedTransport($decoratedTransport, 3);
         $sender->send(new GenericMessage());

@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Genkgo\Mail\Protocol\Smtp;
 
+use Genkgo\Mail\Exception\AssertionFailedException;
+
 /**
  * Class Reply
  * @package Genkgo\Mail\Protocol\Smtp
@@ -43,7 +45,7 @@ final class Reply
         try {
             $this->assertBetween(400, 599);
             return true;
-        } catch (\RuntimeException $e) {
+        } catch (AssertionFailedException $e) {
             return false;
         }
     }
@@ -96,6 +98,7 @@ final class Reply
      * @param int $min
      * @param int $max
      * @return Client
+     * @throws AssertionFailedException
      */
     private function assertBetween(int $min, int $max): Client
     {
@@ -105,7 +108,7 @@ final class Reply
             }
         }
 
-        throw new \RuntimeException(
+        throw new AssertionFailedException(
             sprintf(
                 'Cannot assert OK reply code. Server replied %s',
                 $this->createErrorMessage()

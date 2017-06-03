@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Genkgo\Mail\Transport;
 
-use Genkgo\Mail\Exception\ConnectionException;
+use Genkgo\Mail\Exception\ConnectionRefusedException;
 use Genkgo\Mail\MessageInterface;
 use Genkgo\Mail\TransportInterface;
 
@@ -31,7 +31,7 @@ final class RetryIfFailedTransport implements TransportInterface
 
     /**
      * @param MessageInterface $message
-     * @throws ConnectionException
+     * @throws ConnectionRefusedException
      */
     public function send(MessageInterface $message): void
     {
@@ -39,10 +39,10 @@ final class RetryIfFailedTransport implements TransportInterface
             try {
                 $this->decoratedTransport->send($message);
                 return;
-            } catch (ConnectionException $e) {
+            } catch (ConnectionRefusedException $e) {
             }
         }
 
-        throw new ConnectionException('Cannot send e-mail, connection failed');
+        throw new ConnectionRefusedException('Cannot send e-mail, connection failed');
     }
 }

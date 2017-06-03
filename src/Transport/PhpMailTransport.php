@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Genkgo\Mail\Transport;
 
+use Genkgo\Mail\Exception\EnvelopeException;
 use Genkgo\Mail\Header\HeaderLine;
 use Genkgo\Mail\HeaderInterface;
 use Genkgo\Mail\MessageInterface;
@@ -119,12 +120,13 @@ final class PhpMailTransport implements TransportInterface
     /**
      * @param MessageInterface $message
      * @return string
+     * @throws EnvelopeException
      */
     private function constructParameters(MessageInterface $message): string
     {
         $envelop = $this->envelopFactory->make($message);
         if (preg_match('/\"/', $envelop->getAddress())) {
-            throw new \RuntimeException(
+            throw new EnvelopeException(
                 'Unable to guarantee injection-free envelop'
             );
         }

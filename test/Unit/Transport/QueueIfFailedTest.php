@@ -3,7 +3,7 @@
 namespace Genkgo\TestMail\Unit\Transport;
 
 use Genkgo\TestMail\AbstractTestCase;;
-use Genkgo\Mail\Exception\ConnectionException;
+use Genkgo\Mail\Exception\ConnectionRefusedException;
 use Genkgo\Mail\Exception\QueueIfFailedException;
 use Genkgo\Mail\Exception\QueueStoreException;
 use Genkgo\Mail\GenericMessage;
@@ -25,7 +25,7 @@ final class QueueIfFailedTest extends AbstractTestCase
         $transport
             ->expects($this->once())
             ->method('send')
-            ->willThrowException(new ConnectionException());
+            ->willThrowException(new ConnectionRefusedException());
 
         $queue
             ->expects($this->any())
@@ -49,7 +49,7 @@ final class QueueIfFailedTest extends AbstractTestCase
         $transport1
             ->expects($this->any())
             ->method('send')
-            ->willThrowException(new ConnectionException());
+            ->willThrowException(new ConnectionRefusedException());
 
         $transport2
             ->expects($this->any())
@@ -77,12 +77,12 @@ final class QueueIfFailedTest extends AbstractTestCase
         $transport1
             ->expects($this->once())
             ->method('send')
-            ->willThrowException(new ConnectionException());
+            ->willThrowException(new ConnectionRefusedException());
 
         $transport2
             ->expects($this->once())
             ->method('send')
-            ->willThrowException(new ConnectionException());
+            ->willThrowException(new ConnectionRefusedException());
 
         $queue1
             ->expects($this->any())
@@ -113,12 +113,12 @@ final class QueueIfFailedTest extends AbstractTestCase
         $transport1
             ->expects($this->once())
             ->method('send')
-            ->willThrowException(new ConnectionException());
+            ->willThrowException(new ConnectionRefusedException());
 
         $transport2
             ->expects($this->once())
             ->method('send')
-            ->willThrowException(new ConnectionException());
+            ->willThrowException(new ConnectionRefusedException());
 
         $queue1
             ->expects($this->once())
@@ -146,7 +146,7 @@ final class QueueIfFailedTest extends AbstractTestCase
         $transport
             ->expects($this->once())
             ->method('send')
-            ->willThrowException(new ConnectionException());
+            ->willThrowException(new ConnectionRefusedException());
 
         $queuedMessage = null;
 

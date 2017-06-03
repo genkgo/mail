@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Genkgo\Mail\Protocol;
 
+use Genkgo\Mail\Exception\ConnectionRefusedException;
+
 /**
  * Class PlainTcpConnection
  * @package Genkgo\Mail\Protocol
@@ -73,7 +75,7 @@ final class PlainTcpConnection extends AbstractConnection
         );
 
         if ($resource === false) {
-            throw new \RuntimeException(
+            throw new ConnectionRefusedException(
                 sprintf('Could not create plain tcp connection. %s.', $errorMessage),
                 $errorCode
             );

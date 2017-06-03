@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Genkgo\TestMail\Protocol\Smtp;
 
+use Genkgo\Mail\Exception\ConnectionRefusedException;
 use Genkgo\Mail\Protocol\ConnectionInterface;
 use Genkgo\Mail\Protocol\Smtp\Client;
 use Genkgo\Mail\Protocol\Smtp\ClientFactory;
@@ -188,12 +189,14 @@ final class ClientFactoryTest extends AbstractTestCase
      */
     public function it_constructs_tcp_from_data_source_name()
     {
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(ConnectionRefusedException::class);
         $this->expectExceptionMessage('Could not create plain tcp connection. Connection refused.');
 
         $factory = ClientFactory::fromString('smtp://user:pass@localhost/?ehlo=localhost&timeout=1');
 
-        $factory->newClient()->request(new NoopCommand());
+        $factory
+            ->newClient()
+            ->request(new NoopCommand());
     }
 
     /**
@@ -201,7 +204,7 @@ final class ClientFactoryTest extends AbstractTestCase
      */
     public function it_constructs_plain_tcp_from_data_source_name()
     {
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(ConnectionRefusedException::class);
         $this->expectExceptionMessage('Could not create plain tcp connection. Connection refused.');
 
         $factory = ClientFactory::fromString('smtp+plain://localhost/');
@@ -214,7 +217,7 @@ final class ClientFactoryTest extends AbstractTestCase
      */
     public function it_constructs_tls_from_data_source_name()
     {
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(ConnectionRefusedException::class);
         $this->expectExceptionMessage('Could not create tls connection. Connection refused.');
 
         $factory = ClientFactory::fromString('smtp+tls://localhost/');
@@ -227,7 +230,7 @@ final class ClientFactoryTest extends AbstractTestCase
      */
     public function it_constructs_ssl_from_data_source_name()
     {
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(ConnectionRefusedException::class);
         $this->expectExceptionMessage('Could not create ssl connection. Connection refused.');
 
         $factory = ClientFactory::fromString('smtp+ssl://localhost/');

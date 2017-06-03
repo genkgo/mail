@@ -3,7 +3,7 @@
 namespace Genkgo\TestMail\Unit\Queue;
 
 use Genkgo\TestMail\AbstractTestCase;;
-use Genkgo\Mail\Exception\ConnectionException;
+use Genkgo\Mail\Exception\ConnectionRefusedException;
 use Genkgo\Mail\GenericMessage;
 use Genkgo\Mail\Header\GenericHeader;
 use Genkgo\Mail\MessageInterface;
@@ -72,7 +72,7 @@ final class ProcessorTest extends AbstractTestCase
                 $this->assertEquals('Test 1', $message->getHeader('subject')[0]->getValue());
                 return true;
             }))
-            ->willThrowException(new ConnectionException())
+            ->willThrowException(new ConnectionRefusedException())
         ;
 
         $processor = new QueueProcessor($transport, [$queue]);

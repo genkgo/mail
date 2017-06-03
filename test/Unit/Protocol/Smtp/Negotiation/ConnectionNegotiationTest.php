@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Genkgo\TestMail\Protocol\Smtp;
 
+use Genkgo\Mail\Exception\ConnectionInsecureException;
 use Genkgo\Mail\Protocol\ConnectionInterface;
 use Genkgo\Mail\Protocol\Smtp\Client;
 use Genkgo\Mail\Protocol\Smtp\Negotiation\ConnectionNegotiation;
@@ -45,7 +46,7 @@ final class ConnectionNegotiationTest extends AbstractTestCase
      */
     public function it_throw_when_not_secure()
     {
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(ConnectionInsecureException::class);
 
         $connection = $this->createMock(ConnectionInterface::class);
         $connection

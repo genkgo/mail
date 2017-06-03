@@ -4,10 +4,10 @@ declare(strict_types=1);
 namespace Genkgo\Mail\Exception;
 
 /**
- * Class ConnectionException
+ * Class ConnectionRefusedException
  * @package Genkgo\Mail\Exception
  */
-final class ConnectionException extends TransportException
+final class ConnectionRefusedException extends AbstractProtocolException
 {
 
 }

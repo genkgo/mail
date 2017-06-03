@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Genkgo\Mail\Protocol;
 
+use Genkgo\Mail\Exception\ConnectionRefusedException;
+
 /**
  * Class TlsConnection
  * @package Genkgo\Mail\Protocol
@@ -57,7 +59,7 @@ final class TlsConnection extends AbstractConnection
         );
 
         if ($resource === false) {
-            throw new \RuntimeException(
+            throw new ConnectionRefusedException(
                 sprintf('Could not create tls connection. %s.', $errorMessage),
                 $errorCode
             );

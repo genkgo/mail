@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace Genkgo\Mail\Protocol;
 
+use Genkgo\Mail\Exception\CannotWriteToStreamException;
+use Genkgo\Mail\Exception\ConnectionTimeoutException;
+
 /**
  * Class AbstractConnection
  * @package Genkgo\Mail\Protocol
@@ -83,6 +86,7 @@ abstract class AbstractConnection implements ConnectionInterface
     /**
      * @param string $request
      * @return int
+     * @throws CannotWriteToStreamException
      */
     final public function send(string $request): int
     {
@@ -91,7 +95,7 @@ abstract class AbstractConnection implements ConnectionInterface
         $bytesWritten = fwrite($this->resource, $request);
 
         if ($bytesWritten === false) {
-            throw new \RuntimeException(sprintf('Could not send command:'));
+            throw new CannotWriteToStreamException();
         }
 
         $this->verifyAlive();
@@ -155,7 +159,7 @@ abstract class AbstractConnection implements ConnectionInterface
     {
         $info = stream_get_meta_data($this->resource);
         if ($info['timed_out']) {
-            throw new \RuntimeException('Connection has timed out');
+            throw new ConnectionTimeoutException('Connection has timed out');
         }
     }
 }
