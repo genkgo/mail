@@ -32,7 +32,7 @@ final class Boundary
     /**
      * @return Boundary
      */
-    public static function newRandomBoundary()
+    public static function newRandom()
     {
         return new self('_part_' . bin2hex(random_bytes(6)));
     }

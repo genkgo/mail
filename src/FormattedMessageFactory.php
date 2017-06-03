@@ -127,7 +127,7 @@ final class FormattedMessageFactory
     {
         if ($this->attachments) {
             return (new MultiPart(
-                Boundary::newRandomBoundary(),
+                Boundary::newRandom(),
                 new ContentType('multipart/mixed')
             ))
                 ->withPart($this->createMessageHumanReadable())
@@ -145,7 +145,7 @@ final class FormattedMessageFactory
     {
         if ($this->embedImages) {
             return (new MultiPart(
-                Boundary::newRandomBoundary(),
+                Boundary::newRandom(),
                 new ContentType('multipart/related')
             ))
                 ->withPart($this->createMessageText())
@@ -169,7 +169,7 @@ final class FormattedMessageFactory
         }
 
         return (new MultiPart(
-            Boundary::newRandomBoundary(),
+            Boundary::newRandom(),
             new ContentType('multipart/alternative')
         ))
             ->withPart(new PlainTextPart($this->text))

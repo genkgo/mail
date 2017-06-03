@@ -1,0 +1,44 @@
+<?php
+declare(strict_types=1);
+
+namespace Genkgo\Mail\Transport;
+
+use Genkgo\Mail\Header\MessageId;
+use Genkgo\Mail\MessageInterface;
+use Genkgo\Mail\TransportInterface;
+
+final class InjectMessageIdHeaderTransport implements TransportInterface
+{
+    /**
+     * @var TransportInterface
+     */
+    private $decoratedTransport;
+    /**
+     * @var string
+     */
+    private $domainName;
+
+    /**
+     * InjectDateHeaderTransport constructor.
+     * @param TransportInterface $transport
+     * @param string $domainName
+     */
+    public function __construct(TransportInterface $transport, string $domainName)
+    {
+        $this->decoratedTransport = $transport;
+        $this->domainName = $domainName;
+    }
+
+    /**
+     * @param MessageInterface $message
+     * @return void
+     */
+    public function send(MessageInterface $message): void
+    {
+        $this->decoratedTransport->send(
+            $message->withHeader(
+                MessageId::newRandom($this->domainName)
+            )
+        );
+    }
+}
