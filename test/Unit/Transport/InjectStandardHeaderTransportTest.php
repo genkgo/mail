@@ -18,7 +18,7 @@ final class InjectStandardHeaderTransportTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_injects_sender_header_in_message()
+    public function it_injects_standard_headers_in_message()
     {
         $message = (new GenericMessage())
             ->withHeader(new From(new Address(new EmailAddress('example@domain.com'))));
