@@ -17,8 +17,7 @@ Use this if you want to send e-mails over different transports and protocols usi
 ```php
 $message = (new FormattedMessageFactory())
     ->withHtml('<html><body><p>Hello World</p></body></html>')
-    ->withAttachment(new StringAttachment('Attachment text', 'attachment.txt', new ContentType('plain/text')))
-    ->withEmbeddedImage(new EmbeddedImage(new StringStream('image'), 'pixel.gif', new ContentType('image/gif'), new ContentID('123456'))
+    ->withAttachment(new FileAttachment('/order1.pdf', new ContentType('application/pdf')))
     ->createMessage()
     ->withHeader(new From(new Address(new EmailAddress('from@example.com'), 'name')))
     ->withHeader(new Subject('Hello World'))
@@ -38,7 +37,7 @@ $transport->send($message);
 
 - Use SMTP or mail() to send messages
 - Queue messages when transport fails
-- Reconnect automatically after interval
+- Automatically connects and reconnects after interval to SMTP server
 - Optimal encoded headers, so no excessive (Q/B) encoded headers
 - Optimal encoded multipart messages
 - Only streams and connections are mutable
