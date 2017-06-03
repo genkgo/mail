@@ -111,7 +111,7 @@ final class AddressList implements \Countable, \IteratorAggregate
     public function __toString(): string
     {
         return implode(
-            ',',
+            ",\r\n ",
             array_map(
                 function (Address $addressAndName) {
                     return (string) $addressAndName;

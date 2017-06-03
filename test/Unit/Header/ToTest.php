@@ -52,7 +52,7 @@ final class ToTest extends AbstractTestCase
         );
 
         $this->assertEquals(
-            "Name <me@example.com>,=?UTF-8?B?VMOrc3Q=?=\r\n <me@example.com>,=?UTF-8?B?w6vDq8Orw6s=?= <me@example.com>",
+            "Name <me@example.com>,\r\n =?UTF-8?B?VMOrc3Q=?= <me@example.com>,\r\n =?UTF-8?B?w6vDq8Orw6s=?= <me@example.com>",
             (string)$header->getValue()
         );
     }

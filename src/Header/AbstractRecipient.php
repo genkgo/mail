@@ -36,6 +36,6 @@ abstract class AbstractRecipient implements HeaderInterface
      */
     final public function getValue(): HeaderValue
     {
-        return new HeaderValue((string)$this->recipients);
+        return HeaderValue::fromEncodedString((string)$this->recipients);
     }
 }

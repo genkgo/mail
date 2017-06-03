@@ -17,6 +17,10 @@ final class HeaderValue
      * @var array
      */
     private $parameters = [];
+    /**
+     * @var bool
+     */
+    private $needsEncoding = true;
 
     /**
      * HeaderValue constructor.
@@ -54,7 +58,12 @@ final class HeaderValue
     public function __toString(): string
     {
         $value = implode('; ', array_merge([$this->value], $this->parameters));
-        return (string) (new OptimalEncodedHeaderValue($value));
+
+        if ($this->needsEncoding) {
+            return (string) (new OptimalEncodedHeaderValue($value));
+        }
+
+        return $value;
     }
 
     /**
@@ -108,5 +117,16 @@ final class HeaderValue
         }
 
         throw new \UnexpectedValueException('No parameter with name ' . $name);
+    }
+
+    /**
+     * @param string $value
+     * @return HeaderValue
+     */
+    public static function fromEncodedString(string $value): HeaderValue
+    {
+        $headerValue = new self($value);
+        $headerValue->needsEncoding = false;
+        return $headerValue;
     }
 }

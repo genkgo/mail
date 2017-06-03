@@ -37,7 +37,7 @@ final class AddressListTest extends AbstractTestCase
         ]);
 
         $this->assertEquals(
-            "name <me1@example.com>,name <me2@example.com>,name <me3@example.com>",
+            "name <me1@example.com>,\r\n name <me2@example.com>,\r\n name <me3@example.com>",
             (string)$addressList
         );
     }
@@ -70,7 +70,7 @@ final class AddressListTest extends AbstractTestCase
         ]);
 
         $this->assertEquals(
-            'name <me1@example.com>,name <me2@example.com>',
+            "name <me1@example.com>,\r\n name <me2@example.com>",
             (string) $addressList->withAddress(
                 new Address(new EmailAddress('me2@example.com'), 'name')
             )
