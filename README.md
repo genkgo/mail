@@ -1,4 +1,4 @@
-# Genkgo/Mail - PHP Mail Library
+# Genkgo/Mail - Modern PHP 7.1+ Mail Library
 
 [![Build Status](https://travis-ci.org/genkgo/mail.svg)](https://travis-ci.org/genkgo/mail)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/genkgo/mail/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/genkgo/mail/)
