@@ -21,7 +21,7 @@ final class ForceTlsUpgradeNegotiationTest extends AbstractTestCase
         $connection = new FakeSmtpConnection();
         $connection->connect();
 
-        $negotiator = new ForceTlsUpgradeNegotiation($connection, 'hostname', CryptoConstant::TYPE_BEST_PRACTISE);
+        $negotiator = new ForceTlsUpgradeNegotiation($connection, 'hostname', CryptoConstant::getAdvisedType());
         $negotiator->negotiate(new Client($connection));
 
         $this->assertTrue($connection->getMetaData()['crypto']);
@@ -37,7 +37,7 @@ final class ForceTlsUpgradeNegotiationTest extends AbstractTestCase
         $connection = new FakeSmtpConnection(['250 AUTH PLAIN']);
         $connection->connect();
 
-        $negotiator = new ForceTlsUpgradeNegotiation($connection, 'hostname', CryptoConstant::TYPE_BEST_PRACTISE);
+        $negotiator = new ForceTlsUpgradeNegotiation($connection, 'hostname', CryptoConstant::getAdvisedType());
         $negotiator->negotiate(new Client($connection));
     }
 }

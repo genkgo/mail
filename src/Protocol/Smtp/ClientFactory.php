@@ -11,8 +11,7 @@ use Genkgo\Mail\Protocol\SecureConnectionOptions;
 use Genkgo\Mail\Protocol\Smtp\Negotiation\AuthNegotiation;
 use Genkgo\Mail\Protocol\Smtp\Negotiation\ForceTlsUpgradeNegotiation;
 use Genkgo\Mail\Protocol\Smtp\Negotiation\TryTlsUpgradeNegotiation;
-use Genkgo\Mail\Protocol\SslConnection;
-use Genkgo\Mail\Protocol\TlsConnection;
+use Genkgo\Mail\Protocol\SecureConnection;
 
 /**
  * Class ClientFactory
@@ -59,7 +58,7 @@ final class ClientFactory
     /**
      * @var int
      */
-    private $crypto = CryptoConstant::TYPE_BEST_PRACTISE;
+    private $startTls;
 
     /**
      * ClientFactory constructor.
@@ -68,6 +67,7 @@ final class ClientFactory
     public function __construct(ConnectionInterface $connection)
     {
         $this->connection = $connection;
+        $this->startTls = CryptoConstant::getAdvisedType();
     }
 
     /**
@@ -125,10 +125,20 @@ final class ClientFactory
      * @param int $crypto
      * @return ClientFactory
      */
-    public function withCrypto(int $crypto): ClientFactory
+    public function withStartTls(int $crypto): ClientFactory
     {
         $clone = clone $this;
-        $clone->crypto = $crypto;
+        $clone->startTls = $crypto;
+        return $clone;
+    }
+
+    /**
+     * @return ClientFactory
+     */
+    public function withoutStartTls(): ClientFactory
+    {
+        $clone = clone $this;
+        $clone->startTls = 0;
         return $clone;
     }
 
@@ -139,18 +149,18 @@ final class ClientFactory
     {
         $negotiators = [];
 
-        if ($this->crypto !== 0) {
+        if ($this->startTls !== 0) {
             if ($this->insecureConnectionAllowed) {
                 $negotiators[] = new TryTlsUpgradeNegotiation(
                     $this->connection,
                     $this->ehlo,
-                    $this->crypto
+                    $this->startTls
                 );
             } else {
                 $negotiators[] = new ForceTlsUpgradeNegotiation(
                     $this->connection,
                     $this->ehlo,
-                    $this->crypto
+                    $this->startTls
                 );
             }
         }
@@ -186,28 +196,32 @@ final class ClientFactory
 
         $insecureConnectionAllowed = false;
         switch ($components['scheme']) {
-            case 'smtp+tls':
-                $connection = new TlsConnection(
+            case 'smtp+secure':
+                $connection = new SecureConnection(
+                    CryptoConstant::getAdvisedProtocol(),
                     $components['host'],
                     $components['port'] ?? 465,
                     new SecureConnectionOptions()
                 );
                 break;
             case 'smtp+ssl':
-                $connection = new SslConnection(
+            case 'smtp+tls':
+                $connection = new SecureConnection(
+                    CryptoConstant::getSupportProtocol(),
                     $components['host'],
                     $components['port'] ?? 465,
                     new SecureConnectionOptions()
                 );
                 break;
-            case 'smtp+plain':
+            case 'smtp':
+            case 'smtp-starttls':
                 $insecureConnectionAllowed = true;
                 $connection = new PlainTcpConnection(
                     $components['host'],
                     $components['port'] ?? 25
                 );
                 break;
-            case 'smtp':
+            case 'smtp+starttls':
                 $connection = new PlainTcpConnection(
                     $components['host'],
                     $components['port'] ?? 587
@@ -215,7 +229,7 @@ final class ClientFactory
                 break;
             default:
                 throw new \InvalidArgumentException(
-                    'Use smtp:// smtp+tls:// smtp+ssl:// smtp+plain://'
+                    'Use smtp+secure:// smtp+tls:// smtp+starttls:// smtp+plain://'
                 );
         }
 
@@ -243,20 +257,20 @@ final class ClientFactory
                 $factory->reconnectAfter = $query['reconnectAfter'];
             }
 
-            if (isset($query['crypto'])) {
+            if (isset($query['starttls'])) {
                 // @codeCoverageIgnoreStart
-                switch ($query['crypto']) {
-                    case 'best':
-                        $factory->crypto = CryptoConstant::TYPE_BEST_PRACTISE;
+                switch ($query['starttls']) {
+                    case 'advised':
+                        $factory->startTls = CryptoConstant::getAdvisedType();
                         break;
-                    case 'secure':
-                        $factory->crypto = CryptoConstant::TYPE_SECURE;
+                    case 'support':
+                        $factory->startTls = CryptoConstant::getSupportType();
                         break;
                     case 'none':
-                        $factory->crypto = CryptoConstant::TYPE_NONE;
+                        $factory->startTls = 0;
                         break;
                     default:
-                        $factory->crypto = (int)$query['crypto'];
+                        $factory->startTls = (int)$query['starttls'];
                         break;
                 }
                 // @codeCoverageIgnoreEnd

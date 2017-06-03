@@ -5,7 +5,6 @@ namespace Genkgo\Mail\Protocol\Smtp\Negotiation;
 
 use Genkgo\Mail\Exception\ConnectionInsecureException;
 use Genkgo\Mail\Protocol\ConnectionInterface;
-use Genkgo\Mail\Protocol\CryptoConstant;
 use Genkgo\Mail\Protocol\Smtp\Client;
 use Genkgo\Mail\Protocol\Smtp\NegotiationInterface;
 use Genkgo\Mail\Protocol\Smtp\Request\EhloCommand;
@@ -36,7 +35,7 @@ final class ForceTlsUpgradeNegotiation implements NegotiationInterface
     public function __construct(
         ConnectionInterface $connection,
         string $ehlo,
-        int $crypto = CryptoConstant::TYPE_BEST_PRACTISE
+        int $crypto
     ) {
         $this->connection = $connection;
         $this->ehlo = $ehlo;

@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace Genkgo\TestMail\Unit\Protocol\Smtp;
 
 use Genkgo\Mail\Exception\ConnectionRefusedException;
-use Genkgo\Mail\Protocol\CryptoConstant;
 use Genkgo\Mail\Protocol\Smtp\Client;
 use Genkgo\Mail\Protocol\Smtp\ClientFactory;
 use Genkgo\Mail\Protocol\Smtp\Request\NoopCommand;
@@ -82,7 +81,7 @@ final class ClientFactoryTest extends AbstractTestCase
         $factory = (new ClientFactory($connection))
             ->withEhlo('hostname')
             ->withInsecureConnectionAllowed()
-            ->withCrypto(CryptoConstant::TYPE_NONE);
+            ->withoutStartTls();
 
         $client = $factory->newClient();
         $client->request(new NoopCommand());
@@ -121,7 +120,7 @@ final class ClientFactoryTest extends AbstractTestCase
         $this->expectException(ConnectionRefusedException::class);
         $this->expectExceptionMessage('Could not create plain tcp connection. Connection refused.');
 
-        $factory = ClientFactory::fromString('smtp+plain://localhost/');
+        $factory = ClientFactory::fromString('smtp-starttls://localhost/');
 
         $factory->newClient()->request(new NoopCommand());
     }
@@ -132,7 +131,7 @@ final class ClientFactoryTest extends AbstractTestCase
     public function it_constructs_tls_from_data_source_name()
     {
         $this->expectException(ConnectionRefusedException::class);
-        $this->expectExceptionMessage('Could not create tls connection. Connection refused.');
+        $this->expectExceptionMessage('Could not create secure connection. Connection refused.');
 
         $factory = ClientFactory::fromString('smtp+tls://localhost/');
 
@@ -142,12 +141,12 @@ final class ClientFactoryTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_constructs_ssl_from_data_source_name()
+    public function it_constructs_secure_from_data_source_name()
     {
         $this->expectException(ConnectionRefusedException::class);
-        $this->expectExceptionMessage('Could not create ssl connection. Connection refused.');
+        $this->expectExceptionMessage('Could not create secure connection. Connection refused.');
 
-        $factory = ClientFactory::fromString('smtp+ssl://localhost/');
+        $factory = ClientFactory::fromString('smtp+secure://localhost/');
 
         $factory->newClient()->request(new NoopCommand());
     }

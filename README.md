@@ -46,6 +46,7 @@ $transport->send($message);
 - Streams make sure the library has a low memory burden
 - Many objects but still easy API
 - 90%+ test coverage
+- Uses TLS 1.2 by default for direct and upgraded SMTP connections
 - Security is high prioritized
 - Great RFC compliance
 - Cast messages to valid string source
