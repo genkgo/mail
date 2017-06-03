@@ -8,9 +8,9 @@ use Genkgo\Mail\StreamInterface;
 final class ConcatenatedStream implements StreamInterface
 {
     /**
-     * @var \ArrayAccess|StreamInterface[]
+     * @var array|StreamInterface[]
      */
-    private $streams;
+    private $streams = [];
     /**
      * @var int
      */
@@ -22,11 +22,21 @@ final class ConcatenatedStream implements StreamInterface
 
     /**
      * ConcatenatedStream constructor.
-     * @param \ArrayAccess $streams
+     * @param iterable $streams
      */
-    public function __construct(\ArrayAccess $streams)
+    public function __construct(iterable $streams)
     {
-        $this->streams = clone $streams;
+        foreach ($streams as $stream) {
+            $this->addStream($stream);
+        }
+    }
+
+    /**
+     * @param StreamInterface $stream
+     */
+    private function addStream(StreamInterface $stream): void
+    {
+        $this->streams[] = $stream;
     }
 
     /**
