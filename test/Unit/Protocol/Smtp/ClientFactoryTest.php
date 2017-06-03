@@ -23,6 +23,7 @@ final class ClientFactoryTest extends AbstractTestCase
         $this->assertNotSame($factory, $factory->withAuthentication(Client::AUTH_AUTO, 'x', 'y'));
         $this->assertNotSame($factory, $factory->withEhlo('127.0.0.1'));
         $this->assertNotSame($factory, $factory->withTimeout(10));
+        $this->assertNotSame($factory, $factory->withAllowInsecure());
     }
 
     /**
