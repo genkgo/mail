@@ -18,11 +18,11 @@ abstract class AbstractConnection implements ConnectionInterface
      */
     private const RECEIVE_BYTES = 1024;
     /**
-     * @var resource
+     * @var resource|null
      */
     protected $resource;
     /**
-     * @var \Closure[]
+     * @var array
      */
     private $listeners = [
         'connect' => []

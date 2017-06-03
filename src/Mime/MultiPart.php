@@ -21,7 +21,7 @@ final class MultiPart implements MultiPartInterface
      */
     private $boundary;
     /**
-     * @var array|PartInterface
+     * @var iterable|PartInterface
      */
     private $parts = [];
 

@@ -10,7 +10,7 @@ final class AutomaticConnection implements ConnectionInterface
      */
     private $decoratedConnection;
     /**
-     * @var \DateTimeImmutable
+     * @var \DateTimeImmutable|null
      */
     private $connectedAt;
     /**

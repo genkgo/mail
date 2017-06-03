@@ -48,7 +48,7 @@ final class ConnectionNegotiation implements NegotiationInterface
     {
         $this->connection->receive();
 
-        if (empty($this->connection->getMetadata(['crypto']))) {
+        if (empty($this->connection->getMetaData(['crypto']))) {
             $reply = $client->request(new EhloCommand($this->ehlo));
             $reply->assertCompleted();
 
@@ -63,7 +63,7 @@ final class ConnectionNegotiation implements NegotiationInterface
             }
         }
 
-        if (!$this->insecureAllowed && empty($this->connection->getMetadata(['crypto']))) {
+        if (!$this->insecureAllowed && empty($this->connection->getMetaData(['crypto']))) {
             throw new ConnectionInsecureException(
                 'Server does not support STARTTLS. Use smtp+tls:// or to allow insecure connections use smtp+plain://'
             );
