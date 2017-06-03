@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Genkgo\TestMail\Protocol\Smtp\Request;
+namespace Genkgo\TestMail\Unit\Protocol\Smtp\Request;
 
 use Genkgo\Mail\Protocol\ConnectionInterface;
 use Genkgo\Mail\Protocol\Smtp\Request\DataRequest;

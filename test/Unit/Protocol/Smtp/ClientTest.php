@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Genkgo\TestMail\Protocol\Smtp;
+namespace Genkgo\TestMail\Unit\Protocol\Smtp;
 
 use Genkgo\Mail\Protocol\Smtp\Client;
 use Genkgo\Mail\Protocol\Smtp\Request\EhloCommand;

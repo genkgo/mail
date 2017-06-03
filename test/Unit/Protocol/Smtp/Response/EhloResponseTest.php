@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Genkgo\TestMail\Protocol\Smtp\Response;
+namespace Genkgo\TestMail\Unit\Protocol\Smtp\Response;
 
 use Genkgo\Mail\Protocol\Smtp\Client;
 use Genkgo\Mail\Protocol\Smtp\Reply;

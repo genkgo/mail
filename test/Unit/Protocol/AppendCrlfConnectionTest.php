@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Genkgo\TestMail\Protocol;
+namespace Genkgo\TestMail\Unit\Protocol;
 
 use Genkgo\Mail\Protocol\AppendCrlfConnection;
 use Genkgo\Mail\Protocol\ConnectionInterface;

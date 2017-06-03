@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Genkgo\TestMail\Protocol\Smtp;
+namespace Genkgo\TestMail\Unit\Protocol\Smtp\Negotiation;
 
 use Genkgo\Mail\Exception\SmtpAuthenticationException;
 use Genkgo\Mail\Protocol\Smtp\Client;
