@@ -250,6 +250,9 @@ final class FakeSmtpConnection implements ConnectionInterface
         );
     }
 
+    /**
+     * @param $request
+     */
     private function authenticate($request): void
     {
         if ($this->metaData['auth']['method'] === 'PLAIN') {
@@ -274,6 +277,9 @@ final class FakeSmtpConnection implements ConnectionInterface
         }
     }
 
+    /**
+     *
+     */
     private function reset()
     {
         $this->buffer = [];

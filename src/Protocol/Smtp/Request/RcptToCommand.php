@@ -27,7 +27,7 @@ final class RcptToCommand implements RequestInterface
      * @param ConnectionInterface $connection
      * @return void
      */
-    public function execute(ConnectionInterface $connection)
+    public function execute(ConnectionInterface $connection): void
     {
         $connection->send(sprintf("RCPT TO:<%s>", (string)$this->recipient));
     }

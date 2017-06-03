@@ -34,7 +34,7 @@ final class AuthPlainCredentialsRequest implements RequestInterface
      * @param ConnectionInterface $connection
      * @return void
      */
-    public function execute(ConnectionInterface $connection)
+    public function execute(ConnectionInterface $connection): void
     {
         $connection->send(
             base64_encode(

@@ -27,7 +27,7 @@ final class DataRequest implements RequestInterface
      * @param ConnectionInterface $connection
      * @return void
      */
-    public function execute(ConnectionInterface $connection)
+    public function execute(ConnectionInterface $connection): void
     {
         while (!$this->stream->eof()) {
             $bytes = $this->stream->read(1000);
