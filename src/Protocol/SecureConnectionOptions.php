@@ -10,7 +10,6 @@ namespace Genkgo\Mail\Protocol;
  */
 final class SecureConnectionOptions
 {
-
     /**
      * @var float
      */

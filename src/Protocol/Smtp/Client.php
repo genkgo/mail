@@ -5,6 +5,7 @@ namespace Genkgo\Mail\Protocol\Smtp;
 
 use Genkgo\Mail\Protocol\AppendCrlfConnection;
 use Genkgo\Mail\Protocol\ConnectionInterface;
+use Genkgo\Mail\Protocol\Smtp\Negotiation\ReceiveWelcomeNegotiation;
 
 final class Client
 {
@@ -41,6 +42,8 @@ final class Client
     public function __construct(ConnectionInterface $connection, iterable $negotiators = [])
     {
         $this->connection = new AppendCrlfConnection($connection);
+
+        $this->addNegotiator(new ReceiveWelcomeNegotiation($this->connection));
 
         foreach ($negotiators as $negotiator) {
             $this->addNegotiator($negotiator);

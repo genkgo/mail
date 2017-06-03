@@ -4,11 +4,13 @@ declare(strict_types=1);
 namespace Genkgo\Mail\Protocol\Smtp;
 
 use Genkgo\Mail\Protocol\ConnectionInterface;
+use Genkgo\Mail\Protocol\CryptoConstant;
 use Genkgo\Mail\Protocol\PlainTcpConnection;
 use Genkgo\Mail\Protocol\AutomaticConnection;
 use Genkgo\Mail\Protocol\SecureConnectionOptions;
 use Genkgo\Mail\Protocol\Smtp\Negotiation\AuthNegotiation;
-use Genkgo\Mail\Protocol\Smtp\Negotiation\ConnectionNegotiation;
+use Genkgo\Mail\Protocol\Smtp\Negotiation\ForceTlsUpgradeNegotiation;
+use Genkgo\Mail\Protocol\Smtp\Negotiation\TryTlsUpgradeNegotiation;
 use Genkgo\Mail\Protocol\SslConnection;
 use Genkgo\Mail\Protocol\TlsConnection;
 
@@ -49,11 +51,15 @@ final class ClientFactory
     /**
      * @var bool
      */
-    private $insecureAllowed = false;
+    private $insecureConnectionAllowed = false;
     /**
      * @var string
      */
     private $reconnectAfter = 'PT300S';
+    /**
+     * @var int
+     */
+    private $crypto = CryptoConstant::TYPE_BEST_PRACTISE;
 
     /**
      * ClientFactory constructor.
@@ -108,10 +114,21 @@ final class ClientFactory
     /**
      * @return ClientFactory
      */
-    public function withAllowInsecure(): ClientFactory
+    public function withInsecureConnectionAllowed(): ClientFactory
     {
         $clone = clone $this;
-        $clone->insecureAllowed = true;
+        $clone->insecureConnectionAllowed = true;
+        return $clone;
+    }
+
+    /**
+     * @param int $crypto
+     * @return ClientFactory
+     */
+    public function withCrypto(int $crypto): ClientFactory
+    {
+        $clone = clone $this;
+        $clone->crypto = $crypto;
         return $clone;
     }
 
@@ -120,13 +137,23 @@ final class ClientFactory
      */
     public function newClient(): Client
     {
-        $negotiators = [
-            new ConnectionNegotiation(
-                $this->connection,
-                $this->ehlo,
-                $this->insecureAllowed
-            )
-        ];
+        $negotiators = [];
+
+        if ($this->crypto !== 0) {
+            if ($this->insecureConnectionAllowed) {
+                $negotiators[] = new TryTlsUpgradeNegotiation(
+                    $this->connection,
+                    $this->ehlo,
+                    $this->crypto
+                );
+            } else {
+                $negotiators[] = new ForceTlsUpgradeNegotiation(
+                    $this->connection,
+                    $this->ehlo,
+                    $this->crypto
+                );
+            }
+        }
 
         if ($this->authMethod !== Client::AUTH_NONE) {
             $negotiators[] = new AuthNegotiation(
@@ -157,7 +184,7 @@ final class ClientFactory
             throw new \InvalidArgumentException('Scheme and host are required');
         }
 
-        $allowInsecure = false;
+        $insecureConnectionAllowed = false;
         switch ($components['scheme']) {
             case 'smtp+tls':
                 $connection = new TlsConnection(
@@ -174,7 +201,7 @@ final class ClientFactory
                 );
                 break;
             case 'smtp+plain':
-                $allowInsecure = true;
+                $insecureConnectionAllowed = true;
                 $connection = new PlainTcpConnection(
                     $components['host'],
                     $components['port'] ?? 25
@@ -193,9 +220,7 @@ final class ClientFactory
         }
 
         $factory = new self($connection);
-        if ($allowInsecure) {
-            $factory->insecureAllowed = true;
-        }
+        $factory->insecureConnectionAllowed = $insecureConnectionAllowed;
 
         if (isset($components['user']) && isset($components['pass'])) {
             $factory->authMethod = Client::AUTH_AUTO;
@@ -216,6 +241,25 @@ final class ClientFactory
 
             if (isset($query['reconnectAfter'])) {
                 $factory->reconnectAfter = $query['reconnectAfter'];
+            }
+
+            if (isset($query['crypto'])) {
+                // @codeCoverageIgnoreStart
+                switch ($query['crypto']) {
+                    case 'best':
+                        $factory->crypto = CryptoConstant::TYPE_BEST_PRACTISE;
+                        break;
+                    case 'secure':
+                        $factory->crypto = CryptoConstant::TYPE_SECURE;
+                        break;
+                    case 'none':
+                        $factory->crypto = CryptoConstant::TYPE_NONE;
+                        break;
+                    default:
+                        $factory->crypto = (int)$query['crypto'];
+                        break;
+                }
+                // @codeCoverageIgnoreEnd
             }
         }
 

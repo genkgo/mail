@@ -3,13 +3,13 @@ declare(strict_types=1);
 
 namespace Genkgo\TestMail\Unit\Protocol\Smtp\Negotiation;
 
-use Genkgo\Mail\Exception\ConnectionInsecureException;
+use Genkgo\Mail\Protocol\CryptoConstant;
 use Genkgo\Mail\Protocol\Smtp\Client;
-use Genkgo\Mail\Protocol\Smtp\Negotiation\ConnectionNegotiation;
+use Genkgo\Mail\Protocol\Smtp\Negotiation\TryTlsUpgradeNegotiation;
 use Genkgo\TestMail\AbstractTestCase;
 use Genkgo\TestMail\Stub\FakeSmtpConnection;
 
-final class ConnectionNegotiationTest extends AbstractTestCase
+final class TryTlsUpgradeNegotiationTest extends AbstractTestCase
 {
 
     /**
@@ -20,24 +20,10 @@ final class ConnectionNegotiationTest extends AbstractTestCase
         $connection = new FakeSmtpConnection();
         $connection->connect();
 
-        $negotiator = new ConnectionNegotiation($connection, 'hostname', false);
+        $negotiator = new TryTlsUpgradeNegotiation($connection, 'hostname', CryptoConstant::TYPE_BEST_PRACTISE);
         $negotiator->negotiate(new Client($connection));
 
         $this->assertTrue($connection->getMetaData()['crypto']);
-    }
-
-    /**
-     * @test
-     */
-    public function it_throw_when_not_secure()
-    {
-        $this->expectException(ConnectionInsecureException::class);
-
-        $connection = new FakeSmtpConnection(['250 AUTH PLAIN']);
-        $connection->connect();
-
-        $negotiator = new ConnectionNegotiation($connection, 'hostname', false);
-        $negotiator->negotiate(new Client($connection));
     }
 
     /**
@@ -48,7 +34,7 @@ final class ConnectionNegotiationTest extends AbstractTestCase
         $connection = new FakeSmtpConnection(['250 AUTH PLAIN']);
         $connection->connect();
 
-        $negotiator = new ConnectionNegotiation($connection, 'hostname', true);
+        $negotiator = new TryTlsUpgradeNegotiation($connection, 'hostname', CryptoConstant::TYPE_BEST_PRACTISE);
         $negotiator->negotiate(new Client($connection));
 
         $this->assertArrayNotHasKey('crypto', $connection->getMetaData());

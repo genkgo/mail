@@ -5,13 +5,14 @@ namespace Genkgo\Mail\Protocol\Smtp\Negotiation;
 
 use Genkgo\Mail\Exception\ConnectionInsecureException;
 use Genkgo\Mail\Protocol\ConnectionInterface;
+use Genkgo\Mail\Protocol\CryptoConstant;
 use Genkgo\Mail\Protocol\Smtp\Client;
 use Genkgo\Mail\Protocol\Smtp\NegotiationInterface;
 use Genkgo\Mail\Protocol\Smtp\Request\EhloCommand;
 use Genkgo\Mail\Protocol\Smtp\Request\StartTlsCommand;
 use Genkgo\Mail\Protocol\Smtp\Response\EhloResponse;
 
-final class ConnectionNegotiation implements NegotiationInterface
+final class TryTlsUpgradeNegotiation implements NegotiationInterface
 {
     /**
      * @var ConnectionInterface
@@ -22,21 +23,24 @@ final class ConnectionNegotiation implements NegotiationInterface
      */
     private $ehlo;
     /**
-     * @var bool
+     * @var int
      */
-    private $insecureAllowed;
+    private $crypto;
 
     /**
      * ConnectionNegotiation constructor.
      * @param ConnectionInterface $connection
      * @param string $ehlo
-     * @param bool $insecureAllowed
+     * @param int $crypto
      */
-    public function __construct(ConnectionInterface $connection, string $ehlo, $insecureAllowed)
-    {
+    public function __construct(
+        ConnectionInterface $connection,
+        string $ehlo,
+        int $crypto = CryptoConstant::TYPE_SECURE
+    ) {
         $this->connection = $connection;
         $this->ehlo = $ehlo;
-        $this->insecureAllowed = $insecureAllowed;
+        $this->crypto = $crypto;
     }
 
 
@@ -46,8 +50,6 @@ final class ConnectionNegotiation implements NegotiationInterface
      */
     public function negotiate(Client $client): void
     {
-        $this->connection->receive();
-
         if (empty($this->connection->getMetaData(['crypto']))) {
             $reply = $client->request(new EhloCommand($this->ehlo));
             $reply->assertCompleted();
@@ -59,14 +61,8 @@ final class ConnectionNegotiation implements NegotiationInterface
                     ->request(new StartTlsCommand())
                     ->assertCompleted();
 
-                $this->connection->upgrade(STREAM_CRYPTO_METHOD_TLS_CLIENT);
+                $this->connection->upgrade($this->crypto);
             }
-        }
-
-        if (!$this->insecureAllowed && empty($this->connection->getMetaData(['crypto']))) {
-            throw new ConnectionInsecureException(
-                'Server does not support STARTTLS. Use smtp+tls:// or to allow insecure connections use smtp+plain://'
-            );
         }
     }
 }

@@ -13,16 +13,6 @@ use Genkgo\Mail\Exception\ConnectionRefusedException;
 final class PlainTcpConnection extends AbstractConnection
 {
     /**
-     *
-     */
-    private const UPGRADE_TO = [
-        STREAM_CRYPTO_METHOD_TLS_CLIENT => true,
-        STREAM_CRYPTO_METHOD_TLSv1_0_CLIENT => true,
-        STREAM_CRYPTO_METHOD_TLSv1_1_CLIENT => true,
-        STREAM_CRYPTO_METHOD_TLSv1_2_CLIENT => true,
-    ];
-
-    /**
      * @var string
      */
     private $host;
@@ -53,10 +43,6 @@ final class PlainTcpConnection extends AbstractConnection
      */
     public function upgrade(int $type): void
     {
-        if (!isset(self::UPGRADE_TO[$type])) {
-            throw new \InvalidArgumentException('No support for requested encryption type');
-        }
-
         if (stream_socket_enable_crypto($this->resource, true, $type) === false) {
             throw new \InvalidArgumentException('Cannot upgrade connection to requested encryption type');
         }

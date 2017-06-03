@@ -11,12 +11,13 @@ use Genkgo\Mail\Protocol\ConnectionInterface;
  */
 final class FakeSmtpConnection implements ConnectionInterface
 {
-    private CONST STATE_NONE = 0;
-    private CONST STATE_CONNECTED = 1;
-    private CONST STATE_AUTHORIZING = 2;
-    private CONST STATE_AUTHORIZED = 3;
-    private CONST STATE_DATA_RECEIVING = 4;
-    private CONST STATE_DATA_RECEIVED = 5;
+    public CONST STATE_NONE = 0;
+    public CONST STATE_CONNECTED = 1;
+    public CONST STATE_EHLO = 2;
+    public CONST STATE_AUTHORIZING = 3;
+    public CONST STATE_AUTHORIZED = 4;
+    public CONST STATE_DATA_RECEIVING = 5;
+    public CONST STATE_DATA_RECEIVED = 6;
     /**
      * @var array
      */
@@ -122,6 +123,7 @@ final class FakeSmtpConnection implements ConnectionInterface
 
         switch ($command) {
             case 'EHLO':
+                $this->state = self::STATE_EHLO;
                 $this->buffer = array_merge([$this->greeting], $this->advertisements);
                 break;
             case 'STARTTLS':
@@ -228,12 +230,12 @@ final class FakeSmtpConnection implements ConnectionInterface
     {
         $metaData = array_merge(
             $this->metaData,
-            ['state' => [
-                'value' => $this->state,
+            [
+                'state' => $this->state,
                 'from' => $this->from,
                 'to' => $this->to,
             ]
-        ]);
+        );
 
         if (empty($keys)) {
             return $metaData;
