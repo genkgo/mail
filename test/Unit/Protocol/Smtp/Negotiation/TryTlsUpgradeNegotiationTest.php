@@ -20,7 +20,11 @@ final class TryTlsUpgradeNegotiationTest extends AbstractTestCase
         $connection = new FakeSmtpConnection();
         $connection->connect();
 
-        $negotiator = new TryTlsUpgradeNegotiation($connection, 'hostname', CryptoConstant::getAdvisedType());
+        $negotiator = new TryTlsUpgradeNegotiation(
+            $connection,
+            'hostname',
+            CryptoConstant::getDefaultMethod(PHP_VERSION)
+        );
         $negotiator->negotiate(new Client($connection));
 
         $this->assertTrue($connection->getMetaData()['crypto']);
@@ -34,7 +38,11 @@ final class TryTlsUpgradeNegotiationTest extends AbstractTestCase
         $connection = new FakeSmtpConnection(['250 AUTH PLAIN']);
         $connection->connect();
 
-        $negotiator = new TryTlsUpgradeNegotiation($connection, 'hostname', CryptoConstant::getAdvisedType());
+        $negotiator = new TryTlsUpgradeNegotiation(
+            $connection,
+            'hostname',
+            CryptoConstant::getDefaultMethod(PHP_VERSION)
+        );
         $negotiator->negotiate(new Client($connection));
 
         $this->assertArrayNotHasKey('crypto', $connection->getMetaData());

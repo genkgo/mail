@@ -67,7 +67,7 @@ final class ClientFactory
     public function __construct(ConnectionInterface $connection)
     {
         $this->connection = $connection;
-        $this->startTls = CryptoConstant::getAdvisedType();
+        $this->startTls = CryptoConstant::getDefaultMethod(PHP_VERSION);
     }
 
     /**
@@ -196,24 +196,14 @@ final class ClientFactory
 
         $insecureConnectionAllowed = false;
         switch ($components['scheme']) {
-            case 'smtp+secure':
-                $connection = new SecureConnection(
-                    CryptoConstant::getAdvisedProtocol(),
-                    $components['host'],
-                    $components['port'] ?? 465,
-                    new SecureConnectionOptions()
-                );
-                break;
-            case 'smtp+ssl':
             case 'smtp+tls':
                 $connection = new SecureConnection(
-                    CryptoConstant::getSupportProtocol(),
+                    CryptoConstant::getDefaultProtocol(PHP_VERSION),
                     $components['host'],
                     $components['port'] ?? 465,
                     new SecureConnectionOptions()
                 );
                 break;
-            case 'smtp':
             case 'smtp-starttls':
                 $insecureConnectionAllowed = true;
                 $connection = new PlainTcpConnection(
@@ -221,6 +211,7 @@ final class ClientFactory
                     $components['port'] ?? 25
                 );
                 break;
+            case 'smtp':
             case 'smtp+starttls':
                 $connection = new PlainTcpConnection(
                     $components['host'],
@@ -228,9 +219,18 @@ final class ClientFactory
                 );
                 break;
             default:
-                throw new \InvalidArgumentException(
-                    'Use smtp+secure:// smtp+tls:// smtp+starttls:// smtp+plain://'
-                );
+                if (substr($components['scheme'], 0, 5) === 'smtp+') {
+                    $connection = new SecureConnection(
+                        substr($components['scheme'], 5) . '://',
+                        $components['host'],
+                        $components['port'] ?? 465,
+                        new SecureConnectionOptions()
+                    );
+                } else {
+                    throw new \InvalidArgumentException(
+                        'Use smtp+secure:// smtp+tls:// smtp+starttls:// smtp+plain://'
+                    );
+                }
         }
 
         $factory = new self($connection);
@@ -258,22 +258,7 @@ final class ClientFactory
             }
 
             if (isset($query['starttls'])) {
-                // @codeCoverageIgnoreStart
-                switch ($query['starttls']) {
-                    case 'advised':
-                        $factory->startTls = CryptoConstant::getAdvisedType();
-                        break;
-                    case 'support':
-                        $factory->startTls = CryptoConstant::getSupportType();
-                        break;
-                    case 'none':
-                        $factory->startTls = 0;
-                        break;
-                    default:
-                        $factory->startTls = (int)$query['starttls'];
-                        break;
-                }
-                // @codeCoverageIgnoreEnd
+                $factory->startTls = (int)$query['starttls'];
             }
         }
 
