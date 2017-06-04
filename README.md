@@ -25,7 +25,7 @@ $message = (new FormattedMessageFactory())
     ->withHeader(new Cc(new AddressList([new Address(new EmailAddress('cc@example.com'), 'name')])));
 
 $transport = new SmtpTransport(
-    ClientFactory::fromString('smtp+tls://user:pass@host/')->newClient(),
+    ClientFactory::fromString('smtp://user:pass@host/')->newClient(),
     EnvelopeFactory::useExtractedHeader()
 );
 
