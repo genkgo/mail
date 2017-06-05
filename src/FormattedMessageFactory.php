@@ -30,7 +30,7 @@ final class FormattedMessageFactory
      */
     private $html;
     /**
-     * @var string
+     * @var AlternativeText
      */
     private $text;
 
@@ -42,7 +42,7 @@ final class FormattedMessageFactory
     {
         $clone = clone $this;
         $clone->html = $html;
-        $clone->text = $this->generateTextFromHtml($html);
+        $clone->text = AlternativeText::fromHtml($html);
         return $clone;
     }
 
@@ -58,10 +58,10 @@ final class FormattedMessageFactory
     }
 
     /**
-     * @param string $text
+     * @param AlternativeText $text
      * @return FormattedMessageFactory
      */
-    public function withAlternativeText(string $text): FormattedMessageFactory
+    public function withAlternativeText(AlternativeText $text): FormattedMessageFactory
     {
         $clone = clone $this;
         $clone->text = $text;
@@ -101,15 +101,6 @@ final class FormattedMessageFactory
         $clone = clone $this;
         $clone->embedImages[] = $embeddedImage;
         return $clone;
-    }
-
-    /**
-     * @param string $html
-     * @return string
-     */
-    private function generateTextFromHtml(string $html): string
-    {
-        return strip_tags($html);
     }
 
     /**
@@ -172,7 +163,7 @@ final class FormattedMessageFactory
             Boundary::newRandom(),
             new ContentType('multipart/alternative')
         ))
-            ->withPart(new PlainTextPart($this->text))
+            ->withPart(new PlainTextPart((string)$this->text))
             ->withPart(new HtmlPart($this->html));
     }
 }

@@ -38,6 +38,7 @@ $transport->send($message);
 - Use SMTP or mail() to send messages
 - Queue messages when transport fails
 - Automatically connects and reconnects after interval to SMTP server
+- Automatically generate alternative text for formatted messages
 - Optimal encoded headers, so no excessive (Q/B) encoded headers
 - Optimal encoded multipart messages
 - Only streams and connections are mutable

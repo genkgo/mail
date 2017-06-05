@@ -2,6 +2,7 @@
 
 namespace Genkgo\TestMail\Unit;
 
+use Genkgo\Mail\AlternativeText;
 use Genkgo\TestMail\AbstractTestCase;;
 use Genkgo\Mail\Address;
 use Genkgo\Mail\AddressList;
@@ -67,7 +68,7 @@ final class FormattedMessageFactoryTest extends AbstractTestCase
 
         $this->assertNotSame(
             $message,
-            $message->withAlternativeText('text')
+            $message->withAlternativeText(new AlternativeText('text'))
         );
     }
 
