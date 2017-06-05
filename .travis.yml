@@ -1,6 +1,7 @@
 language: php
 php:
   - 7.1
+  - nightly
 matrix:
   include:
     - php: 7.1
