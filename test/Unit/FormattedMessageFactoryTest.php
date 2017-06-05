@@ -196,6 +196,6 @@ final class FormattedMessageFactoryTest extends AbstractTestCase
      */
     private function replaceBoundaries(string $messageString, string $boundary): string
     {
-        return preg_replace(['/(_genkgo_mail_v2_part_[A-Za-z0-9\-]*)/'], $boundary, $messageString);
+        return preg_replace(['/(GenkgoMailV2Part[A-Za-z0-9\-]*)/'], $boundary, $messageString);
     }
 }

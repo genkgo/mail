@@ -2,45 +2,44 @@ Subject: Hello World
 To: me <me@example.com>
 Cc: other <other@example.com>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="_genkgo_mail_v2_part_6d41f369b545"
+Content-Type: multipart/mixed; boundary="GenkgoMailV2Part6d41f369b545"
 
 This is a multipart message in MIME format.
 
---_genkgo_mail_v2_part_6d41f369b545
-Content-Type: multipart/related; boundary="_genkgo_mail_v2_part_ecbe5baa2673"
+--GenkgoMailV2Part6d41f369b545
+Content-Type: multipart/related; boundary="GenkgoMailV2Partecbe5baa2673"
 
 
---_genkgo_mail_v2_part_ecbe5baa2673
-Content-Type:
- multipart/alternative; boundary="_genkgo_mail_v2_part_8c6b95fae17e"
+--GenkgoMailV2Partecbe5baa2673
+Content-Type: multipart/alternative; boundary="GenkgoMailV2Part8c6b95fae17e"
 
 
---_genkgo_mail_v2_part_8c6b95fae17e
+--GenkgoMailV2Part8c6b95fae17e
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
 Hello World
 
---_genkgo_mail_v2_part_8c6b95fae17e
+--GenkgoMailV2Part8c6b95fae17e
 Content-Type: text/html; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
 <html><body><p>Hello World</p></body></html>
---_genkgo_mail_v2_part_8c6b95fae17e--
+--GenkgoMailV2Part8c6b95fae17e--
 
---_genkgo_mail_v2_part_ecbe5baa2673
+--GenkgoMailV2Partecbe5baa2673
 Content-Transfer-Encoding: base64
 Content-Disposition: inline; filename="pixel.gif"
 Content-Type: image/gif
 Content-ID: 123456
 
 R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==
---_genkgo_mail_v2_part_ecbe5baa2673--
+--GenkgoMailV2Partecbe5baa2673--
 
---_genkgo_mail_v2_part_6d41f369b545
+--GenkgoMailV2Part6d41f369b545
 Content-Type: text/plain; charset="UTF-8"
 Content-Disposition: attachment; filename="attachment.txt"
 Content-Transfer-Encoding: base64
 
 QXR0YWNobWVudCB0ZXh0
---_genkgo_mail_v2_part_6d41f369b545--
+--GenkgoMailV2Part6d41f369b545--
