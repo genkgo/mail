@@ -31,14 +31,18 @@ final class InjectSenderHeaderTransport implements TransportInterface
     public function send(MessageInterface $message): void
     {
         if ($message->hasHeader('from')) {
-            $message = $message
-                ->withHeader(
-                    new Sender(
-                        AddressList::fromString(
-                            $message->getHeader('from')[0]->getValue()->getRaw()
-                        )->first()
-                    )
-                );
+            $addressList = AddressList::fromString(
+                $message->getHeader('from')[0]->getValue()->getRaw()
+            );
+
+            if ($addressList->count() > 1) {
+                $message = $message
+                    ->withHeader(
+                        new Sender(
+                            $addressList->first()
+                        )
+                    );
+            }
         }
 
         $this->decoratedTransport->send($message);

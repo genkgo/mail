@@ -13,13 +13,14 @@ use Genkgo\Mail\Mime\ResourceAttachment;
 use Genkgo\Mail\Protocol\Smtp\ClientFactory;
 use Genkgo\Mail\Stream\StringStream;
 use Genkgo\Mail\Transport\EnvelopeFactory;
+use Genkgo\Mail\Transport\InjectStandardHeadersTransport;
 use Genkgo\Mail\Transport\SmtpTransport;
 
 require_once __DIR__ . "/../vendor/autoload.php";
 $config = require_once __DIR__ . "/config.php";
 
 $message = (new FormattedMessageFactory())
-    ->withHtml('<html><body><p>Hello World</p></body></html>')
+    ->withHtml('<html><body><p><a href="http://php.net">Hello World</a></p></body></html>')
     ->withAttachment(
         ResourceAttachment::fromString(
             'Attachment text',
@@ -43,7 +44,11 @@ $message = (new FormattedMessageFactory())
     ->withHeader(new To(new AddressList([new Address(new EmailAddress($config['to']), 'name')])));
 
 $client = ClientFactory::fromString($config['dsn'])
+    ->withEhlo('hostname')
     ->newClient();
 
-$transport = new SmtpTransport($client, EnvelopeFactory::useExtractedHeader());
+$transport = new InjectStandardHeadersTransport(
+    new SmtpTransport($client, EnvelopeFactory::useExtractedHeader()),
+    'hostname'
+);
 $transport->send($message);

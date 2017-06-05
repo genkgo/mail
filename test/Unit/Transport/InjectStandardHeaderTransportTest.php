@@ -3,9 +3,10 @@
 namespace Genkgo\TestMail\Unit\Transport;
 
 use Genkgo\Mail\Address;
+use Genkgo\Mail\AddressList;
 use Genkgo\Mail\EmailAddress;
 use Genkgo\Mail\Header\Date;
-use Genkgo\Mail\Header\From;
+use Genkgo\Mail\Header\GenericHeader;
 use Genkgo\Mail\Header\MessageId;
 use Genkgo\Mail\Header\Sender;
 use Genkgo\Mail\Transport\InjectStandardHeadersTransport;
@@ -21,7 +22,15 @@ final class InjectStandardHeaderTransportTest extends AbstractTestCase
     public function it_injects_standard_headers_in_message()
     {
         $message = (new GenericMessage())
-            ->withHeader(new From(new Address(new EmailAddress('example@domain.com'))));
+            ->withHeader(
+                new GenericHeader(
+                    'From',
+                    (string) (new AddressList([
+                        new Address(new EmailAddress('first@domain.com')),
+                        new Address(new EmailAddress('second@domain.com')),
+                    ]))
+                )
+            );
 
         $storage = new \ArrayObject();
 
