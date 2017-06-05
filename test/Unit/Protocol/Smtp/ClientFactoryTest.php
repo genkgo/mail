@@ -133,7 +133,7 @@ final class ClientFactoryTest extends AbstractTestCase
         $this->expectException(ConnectionRefusedException::class);
         $this->expectExceptionMessage('Could not create secure connection. Connection refused.');
 
-        $factory = ClientFactory::fromString('smtp+tls://localhost/');
+        $factory = ClientFactory::fromString('smtps://localhost/');
 
         $factory->newClient()->request(new NoopCommand());
     }
@@ -146,20 +146,9 @@ final class ClientFactoryTest extends AbstractTestCase
         $this->expectException(ConnectionRefusedException::class);
         $this->expectExceptionMessage('Could not create secure connection. Connection refused.');
 
-        $factory = ClientFactory::fromString('smtp+tlsv1.0://localhost/');
+        $version = STREAM_CRYPTO_METHOD_TLSv1_1_CLIENT;
 
-        $factory->newClient()->request(new NoopCommand());
-    }
-
-    /**
-     * @test
-     */
-    public function it_constructs_specific_ssl_from_data_source_name()
-    {
-        $this->expectException(ConnectionRefusedException::class);
-        $this->expectExceptionMessage('Could not create secure connection. Connection refused.');
-
-        $factory = ClientFactory::fromString('smtp+ssl://localhost/');
+        $factory = ClientFactory::fromString('smtps://localhost/?crypto=' . $version);
 
         $factory->newClient()->request(new NoopCommand());
     }

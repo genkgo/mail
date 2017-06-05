@@ -194,14 +194,27 @@ final class ClientFactory
             throw new \InvalidArgumentException('Scheme and host are required');
         }
 
+        if (isset($components['query'])) {
+            parse_str($components['query'], $query);
+        } else {
+            $query = [];
+        }
+
         $insecureConnectionAllowed = false;
         switch ($components['scheme']) {
-            case 'smtp+tls':
+            case 'smtp':
+                $connection = new PlainTcpConnection(
+                    $components['host'],
+                    $components['port'] ?? 587
+                );
+                break;
+            case 'smtps':
                 $connection = new SecureConnection(
-                    CryptoConstant::getDefaultProtocol(PHP_VERSION),
                     $components['host'],
                     $components['port'] ?? 465,
-                    new SecureConnectionOptions()
+                    new SecureConnectionOptions(
+                        (int)($query['crypto'] ?? CryptoConstant::getDefaultMethod(PHP_VERSION))
+                    )
                 );
                 break;
             case 'smtp-starttls':
@@ -211,26 +224,10 @@ final class ClientFactory
                     $components['port'] ?? 25
                 );
                 break;
-            case 'smtp':
-            case 'smtp+starttls':
-                $connection = new PlainTcpConnection(
-                    $components['host'],
-                    $components['port'] ?? 587
-                );
-                break;
             default:
-                if (substr($components['scheme'], 0, 5) === 'smtp+') {
-                    $connection = new SecureConnection(
-                        substr($components['scheme'], 5) . '://',
-                        $components['host'],
-                        $components['port'] ?? 465,
-                        new SecureConnectionOptions()
-                    );
-                } else {
-                    throw new \InvalidArgumentException(
-                        'Use smtp+secure:// smtp+tls:// smtp+starttls:// smtp+plain://'
-                    );
-                }
+                throw new \InvalidArgumentException(
+                    'Use smtp:// smtps:// or smtp-starttls://'
+                );
         }
 
         $factory = new self($connection);
@@ -242,24 +239,20 @@ final class ClientFactory
             $factory->password = urldecode($components['pass']);
         }
 
-        if (isset($components['query'])) {
-            parse_str($components['query'], $query);
+        if (isset($query['ehlo'])) {
+            $factory->ehlo = $query['ehlo'];
+        }
 
-            if (isset($query['ehlo'])) {
-                $factory->ehlo = $query['ehlo'];
-            }
+        if (isset($query['timeout'])) {
+            $factory->timeout = (float)$query['timeout'];
+        }
 
-            if (isset($query['timeout'])) {
-                $factory->timeout = (float)$query['timeout'];
-            }
+        if (isset($query['reconnectAfter'])) {
+            $factory->reconnectAfter = $query['reconnectAfter'];
+        }
 
-            if (isset($query['reconnectAfter'])) {
-                $factory->reconnectAfter = $query['reconnectAfter'];
-            }
-
-            if (isset($query['starttls'])) {
-                $factory->startTls = (int)$query['starttls'];
-            }
+        if (isset($query['crypto'])) {
+            $factory->startTls = (int)$query['crypto'];
         }
 
         return $factory;

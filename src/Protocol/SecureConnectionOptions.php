@@ -16,6 +16,20 @@ final class SecureConnectionOptions
     private $timeout = 10;
 
     /**
+     * @var int
+     */
+    private $method;
+
+    /**
+     * SecureConnectionOptions constructor.
+     * @param int $method
+     */
+    public function __construct(int $method)
+    {
+        $this->method = $method;
+    }
+
+    /**
      * @param float $connectionTimeout
      * @return SecureConnectionOptions
      */
@@ -27,10 +41,29 @@ final class SecureConnectionOptions
     }
 
     /**
+     * @param int $method
+     * @return SecureConnectionOptions
+     */
+    public function withMethod(int $method): SecureConnectionOptions
+    {
+        $clone = clone $this;
+        $clone->method = $method;
+        return $clone;
+    }
+
+    /**
      * @return float
      */
     public function getTimeout(): float
     {
         return $this->timeout;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMethod(): int
+    {
+        return $this->method;
     }
 }

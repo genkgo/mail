@@ -15,10 +15,6 @@ final class SecureConnection extends AbstractConnection
     /**
      * @var string
      */
-    private $protocol;
-    /**
-     * @var string
-     */
     private $host;
     /**
      * @var int
@@ -31,14 +27,12 @@ final class SecureConnection extends AbstractConnection
 
     /**
      * PlainTcpConnection constructor.
-     * @param string $protocol
      * @param string $host
      * @param int $port
      * @param SecureConnectionOptions $options
      */
-    public function __construct(string $protocol, string $host, int $port, SecureConnectionOptions $options)
+    public function __construct(string $host, int $port, SecureConnectionOptions $options)
     {
-        $this->protocol = $protocol;
         $this->host = $host;
         $this->port = $port;
         $this->options = $options;
@@ -57,11 +51,19 @@ final class SecureConnection extends AbstractConnection
      */
     public function connect(): void
     {
+        $context = stream_context_create([
+            'ssl' => [
+                'crypto_method' => $this->options->getMethod(),
+            ]
+        ]);
+
         $resource = @stream_socket_client(
-            $this->protocol . $this->host . ':' . $this->port,
+            'tls://' . $this->host . ':' . $this->port,
             $errorCode,
             $errorMessage,
-            $this->options->getTimeout()
+            $this->options->getTimeout(),
+            STREAM_CLIENT_CONNECT,
+            $context
         );
 
         if ($resource === false) {
