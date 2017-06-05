@@ -34,7 +34,7 @@ final class Boundary
      */
     public static function newRandom()
     {
-        return new self('_genkgo_mail_v2_part_' . bin2hex(random_bytes(6)));
+        return new self('GenkgoMailV2Part' . bin2hex(random_bytes(6)));
     }
 
     /**
