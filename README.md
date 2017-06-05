@@ -1,5 +1,7 @@
 # Genkgo/Mail - Modern PHP 7.1+ Mail Library
 
+
+[![Latest Version](https://img.shields.io/github/release/genkgo/mail.svg?style=flat-square)](https://github.com/genkgo/mail/releases)
 [![Build Status](https://travis-ci.org/genkgo/mail.svg)](https://travis-ci.org/genkgo/mail)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/genkgo/mail/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/genkgo/mail/)
 [![Code Coverage](https://scrutinizer-ci.com/g/genkgo/mail/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/genkgo/mail/)
@@ -30,6 +32,12 @@ $transport = new SmtpTransport(
 );
 
 $transport->send($message);
+```
+
+## Install using composer
+
+```bash
+$ composer install genkgo/mail
 ```
 
 
