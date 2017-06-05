@@ -20,7 +20,7 @@ require_once __DIR__ . "/../vendor/autoload.php";
 $config = require_once __DIR__ . "/config.php";
 
 $message = (new FormattedMessageFactory())
-    ->withHtml('<html><body><p><a href="http://php.net">Hello World</a></p></body></html>')
+    ->withHtml($config['html'])
     ->withAttachment(
         ResourceAttachment::fromString(
             'Attachment text',
@@ -30,9 +30,7 @@ $message = (new FormattedMessageFactory())
     )
     ->withEmbeddedImage(
         new EmbeddedImage(
-            new StringStream(
-                base64_decode('R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==')
-            ),
+            new StringStream($config['image']),
             'pixel.gif',
             new ContentType('image/gif'),
             new ContentID('123456')
@@ -40,15 +38,16 @@ $message = (new FormattedMessageFactory())
     )
     ->createMessage()
     ->withHeader(new From(new Address(new EmailAddress($config['from']), 'name')))
-    ->withHeader(new Subject('Hello World'))
+    ->withHeader(new Subject($config['subject']))
     ->withHeader(new To(new AddressList([new Address(new EmailAddress($config['to']), 'name')])));
 
 $client = ClientFactory::fromString($config['dsn'])
-    ->withEhlo('hostname')
+    ->withEhlo($config['ehlo'])
     ->newClient();
 
 $transport = new InjectStandardHeadersTransport(
     new SmtpTransport($client, EnvelopeFactory::useExtractedHeader()),
-    'hostname'
+    $config['ehlo']
 );
+
 $transport->send($message);
