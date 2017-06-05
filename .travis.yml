@@ -8,6 +8,8 @@ matrix:
       env: dependencies=lowest
     - php: 7.1
       env: dependencies=highest
+  allow_failures:
+    - php: nightly
 before_script:
   - composer self-update
   - if [ -z "$dependencies" ]; then composer install; fi;
