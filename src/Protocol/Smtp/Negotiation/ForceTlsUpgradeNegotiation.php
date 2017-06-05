@@ -66,7 +66,7 @@ final class ForceTlsUpgradeNegotiation implements NegotiationInterface
 
         if (empty($this->connection->getMetaData(['crypto']))) {
             throw new ConnectionInsecureException(
-                'Server does not support STARTTLS. Use smtp+tls:// or to allow insecure connections use smtp+plain://'
+                'Server does not support STARTTLS. Use smtps:// or to allow insecure connections use smtp-starttls://'
             );
         }
     }
