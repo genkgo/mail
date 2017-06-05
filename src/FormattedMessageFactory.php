@@ -116,7 +116,7 @@ final class FormattedMessageFactory
      */
     private function createMessageRoot(): PartInterface
     {
-        if ($this->attachments) {
+        if (!empty($this->attachments)) {
             return (new MultiPart(
                 Boundary::newRandom(),
                 new ContentType('multipart/mixed')
@@ -134,7 +134,7 @@ final class FormattedMessageFactory
      */
     private function createMessageHumanReadable(): PartInterface
     {
-        if ($this->embedImages) {
+        if (!empty($this->embedImages)) {
             return (new MultiPart(
                 Boundary::newRandom(),
                 new ContentType('multipart/related')
