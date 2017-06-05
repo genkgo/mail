@@ -25,7 +25,7 @@ final class SmtpTransport implements TransportInterface
     private $envelopeFactory;
 
     /**
-     * PhpMailTransport constructor.
+     * SmtpTransport constructor.
      * @param Client $client
      * @param EnvelopeFactory $envelopeFactory
      */
