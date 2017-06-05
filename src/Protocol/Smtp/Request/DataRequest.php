@@ -29,19 +29,42 @@ final class DataRequest implements RequestInterface
      */
     public function execute(ConnectionInterface $connection): void
     {
+        $bytes = '';
+
         while (!$this->stream->eof()) {
-            $bytes = $this->stream->read(1000);
-            $lines = explode("\r\n", $bytes);
-            foreach ($lines as $line) {
-                $line = rtrim($line, "\r");
-                if (isset($line[0]) && $line[0] === '.') {
-                    $line = '.' . $line;
+            $bytes .= $this->stream->read(1000);
+
+            $index = 0;
+            while (isset($bytes[$index])) {
+                if ($bytes[$index] === "\r" && isset($bytes[$index+1]) && $bytes[$index+1] === "\n") {
+                    $line = substr($bytes, 0, $index);
+                    $bytes = substr($bytes, $index + 2);
+                    $index = -1;
+
+                    $this->sendLine($connection, $line);
                 }
 
-                $connection->send($line);
+                $index++;
             }
         }
 
+        $this->sendLine($connection, $bytes);
+
         $connection->send('.');
     }
+
+    /**
+     * @param ConnectionInterface $connection
+     * @param string $line
+     */
+    private function sendLine(ConnectionInterface $connection, string $line): void {
+        $line = rtrim($line, "\r");
+
+        if (isset($line[0]) && $line[0] === '.') {
+            $line = '.' . $line;
+        }
+
+        $connection->send($line);
+    }
+
 }

@@ -5,7 +5,7 @@ namespace Genkgo\TestMail\Unit\Protocol\Smtp\Request;
 
 use Genkgo\Mail\Protocol\ConnectionInterface;
 use Genkgo\Mail\Protocol\Smtp\Request\DataRequest;
-use Genkgo\Mail\Stream\AsciiEncodedStream;
+use Genkgo\Mail\Stream\StringStream;
 use Genkgo\TestMail\AbstractTestCase;
 
 final class DataRequestTest extends AbstractTestCase
@@ -26,7 +26,7 @@ final class DataRequestTest extends AbstractTestCase
             ->method('send')
             ->with(".");
 
-        $command = new DataRequest(new AsciiEncodedStream('test'));
+        $command = new DataRequest(new StringStream('test'));
         $command->execute($connection);
     }
 
@@ -46,7 +46,7 @@ final class DataRequestTest extends AbstractTestCase
             ->method('send')
             ->with(".");
 
-        $command = new DataRequest(new AsciiEncodedStream('.test'));
+        $command = new DataRequest(new StringStream('.test'));
         $command->execute($connection);
     }
 
@@ -66,7 +66,7 @@ final class DataRequestTest extends AbstractTestCase
             ->method('send')
             ->with(".");
 
-        $command = new DataRequest(new AsciiEncodedStream("test\r"));
+        $command = new DataRequest(new StringStream("test\r"));
         $command->execute($connection);
     }
 
@@ -106,7 +106,21 @@ final class DataRequestTest extends AbstractTestCase
             ->method('send')
             ->with(".");
 
-        $command = new DataRequest(new AsciiEncodedStream(str_repeat("test\r\ntest\r\n", 2)));
+        $command = new DataRequest(new StringStream(str_repeat("test\r\ntest\r\n", 2)));
+        $command->execute($connection);
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_add_lines()
+    {
+        $connection = $this->createMock(ConnectionInterface::class);
+        $connection
+            ->expects($this->exactly(3))
+            ->method('send');
+
+        $command = new DataRequest(new StringStream(str_repeat("a", 996) . "\r\naaaaa"));
         $command->execute($connection);
     }
 
