@@ -37,7 +37,7 @@ $transport->send($message);
 ## Install using composer
 
 ```bash
-$ composer install genkgo/mail
+$ composer require genkgo/mail
 ```
 
 
