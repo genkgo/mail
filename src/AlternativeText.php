@@ -246,7 +246,7 @@ final class AlternativeText
         ];
 
         /** @var \DOMElement $element */
-        foreach ($xpath->query('//a[@href]') as $element) {
+        foreach ($xpath->query('//a[@href and @href != .]') as $element) {
             $itemString = (string) $item;
             $itemUnicode = '';
             for ($i = 0, $j = strlen($itemString); $i < $j; $i++) {
