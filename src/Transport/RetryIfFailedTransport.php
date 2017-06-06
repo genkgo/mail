@@ -20,12 +20,12 @@ final class RetryIfFailedTransport implements TransportInterface
     private $retryCount;
 
     /**
-     * @param TransportInterface $delegatedSender
+     * @param TransportInterface $transport
      * @param int $retryCount
      */
-    public function __construct(TransportInterface $delegatedSender, int $retryCount)
+    public function __construct(TransportInterface $transport, int $retryCount)
     {
-        $this->decoratedTransport = $delegatedSender;
+        $this->decoratedTransport = $transport;
         $this->retryCount = $retryCount;
     }
 
