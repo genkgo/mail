@@ -31,5 +31,14 @@ final class FromTest extends AbstractTestCase
         ];
     }
 
+    /**
+     * @test
+     * @dataProvider provideValues
+     */
+    public function it_can_be_easier_constructed()
+    {
+        $header = From::fromEmailAddress('me@example.com');
+        $this->assertEquals('me@example.com', (string)$header->getValue());
+    }
 
 }

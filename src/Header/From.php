@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Genkgo\Mail\Header;
 
 use Genkgo\Mail\Address;
+use Genkgo\Mail\EmailAddress;
 use Genkgo\Mail\HeaderInterface;
 
 final class From implements HeaderInterface
@@ -36,5 +37,14 @@ final class From implements HeaderInterface
     public function getValue(): HeaderValue
     {
         return new HeaderValue((string)$this->from);
+    }
+
+    /**
+     * @param string $emailAddress
+     * @return From
+     */
+    public static function fromEmailAddress(string $emailAddress): From
+    {
+        return new self(new Address(new EmailAddress($emailAddress)));
     }
 }

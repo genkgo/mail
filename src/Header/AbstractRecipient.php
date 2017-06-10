@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace Genkgo\Mail\Header;
 
+use Genkgo\Mail\Address;
 use Genkgo\Mail\AddressList;
+use Genkgo\Mail\EmailAddress;
 use Genkgo\Mail\HeaderInterface;
 
 /**
@@ -37,5 +39,22 @@ abstract class AbstractRecipient implements HeaderInterface
     final public function getValue(): HeaderValue
     {
         return HeaderValue::fromEncodedString((string)$this->recipients);
+    }
+
+    /**
+     * @param string $emailAddress
+     * @param string $name
+     * @return AbstractRecipient
+     */
+    final public static function fromSingleRecipient(string $emailAddress, string $name = ''): AbstractRecipient
+    {
+        return new static(
+            new AddressList([
+                new Address(
+                    new EmailAddress($emailAddress),
+                    $name
+                )
+            ])
+        );
     }
 }

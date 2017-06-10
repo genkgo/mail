@@ -21,10 +21,10 @@ $message = (new FormattedMessageFactory())
     ->withHtml('<html><body><p>Hello World</p></body></html>')
     ->withAttachment(new FileAttachment('/order1.pdf', new ContentType('application/pdf')))
     ->createMessage()
-    ->withHeader(new From(new Address(new EmailAddress('from@example.com'), 'name')))
+    ->withHeader(From::fromEmailAddress('from@example.com'))
     ->withHeader(new Subject('Hello World'))
-    ->withHeader(new To(new AddressList([new Address(new EmailAddress('to@example.com'), 'name')])))
-    ->withHeader(new Cc(new AddressList([new Address(new EmailAddress('cc@example.com'), 'name')])));
+    ->withHeader(new To::fromSingleAddress('to@example.com', 'name'))
+    ->withHeader(new Cc::fromSingleAddress('cc@example.com', 'name'));
 
 $transport = new SmtpTransport(
     ClientFactory::fromString('smtp://user:pass@host/')->newClient(),

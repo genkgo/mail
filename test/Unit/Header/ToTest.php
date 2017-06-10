@@ -56,4 +56,13 @@ final class ToTest extends AbstractTestCase
             (string)$header->getValue()
         );
     }
+
+    /**
+     * @test
+     */
+    public function it_can_be_easier_constructed_for_single_address()
+    {
+        $header = To::fromSingleRecipient('me@example.com', 'Name');
+        $this->assertEquals('Name <me@example.com>', (string)$header->getValue());
+    }
 }
