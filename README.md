@@ -21,8 +21,8 @@ $message = (new FormattedMessageFactory())
     ->withHtml('<html><body><p>Hello World</p></body></html>')
     ->withAttachment(new FileAttachment('/order1.pdf', new ContentType('application/pdf')))
     ->createMessage()
-    ->withHeader(From::fromEmailAddress('from@example.com'))
     ->withHeader(new Subject('Hello World'))
+    ->withHeader(From::fromEmailAddress('from@example.com'))
     ->withHeader(To::fromSingleAddress('to@example.com', 'name'))
     ->withHeader(Cc::fromSingleAddress('cc@example.com', 'name'));
 
