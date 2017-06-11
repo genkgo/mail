@@ -66,4 +66,26 @@ final class HeaderValueParameter
     {
         return sprintf('%s="%s"', $this->name, $this->value);
     }
+
+    /**
+     * @param string $parameterString
+     * @return HeaderValueParameter
+     */
+    public static function fromString(string $parameterString): HeaderValueParameter
+    {
+        $nameValue = explode('=', $parameterString);
+        if (count($nameValue) !== 2) {
+            throw new \InvalidArgumentException(
+                sprintf('Invalid parameter string value %s', $parameterString)
+            );
+        }
+
+        [$name, $value] = $nameValue;
+
+        if ($value[0] === '"' && $value[-1] === '"') {
+            $value = substr($value, 1, -1);
+        }
+
+        return new self($name, $value);
+    }
 }

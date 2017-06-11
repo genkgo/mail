@@ -10,6 +10,14 @@ namespace Genkgo\Mail\Header;
 final class HeaderValue
 {
     /**
+     *
+     */
+    private CONST PARSE_START = 1;
+    /**
+     *
+     */
+    private CONST PARSE_QUOTE = 2;
+    /**
      * @var string
      */
     private $value;
@@ -127,6 +135,74 @@ final class HeaderValue
     {
         $headerValue = new self($value);
         $headerValue->needsEncoding = false;
+        return $headerValue;
+    }
+
+    /**
+     * @param string $headerValueAsString
+     * @return HeaderValue
+     */
+    public static function fromString(string $headerValueAsString): HeaderValue
+    {
+        $values = [];
+
+        $headerValueAsString = trim($headerValueAsString);
+
+        $length = strlen($headerValueAsString) - 1;
+        $n = -1;
+        $state = self::PARSE_START;
+        $escapeNext = false;
+        $sequence = '';
+
+        while ($n < $length) {
+            $n++;
+
+            $char = $headerValueAsString[$n];
+
+            $sequence .= $char;
+
+            if ($char === '\\') {
+                $escapeNext = true;
+                continue;
+            }
+
+            if ($escapeNext) {
+                $escapeNext = false;
+                continue;
+            }
+
+            switch ($state) {
+                case self::PARSE_QUOTE:
+                    if ($char === '"') {
+                        $state = self::PARSE_START;
+                    }
+
+                    break;
+                default:
+                    if ($char === '"') {
+                        $state = self::PARSE_QUOTE;
+                    }
+
+                    if ($char === ';') {
+                        $values[] = trim(substr($sequence, 0, -1));
+                        $sequence = '';
+                        $state = self::PARSE_START;
+                    }
+                    break;
+            }
+        }
+
+        $values[] = trim($sequence);
+
+        $headerValue = new self($values[0]);
+
+        $parameters = [];
+        foreach (array_slice($values, 1) as $parameterString) {
+            $parameter = HeaderValueParameter::fromString($parameterString);
+            $parameters[$parameter->getName()] = $parameter;
+        }
+
+        $headerValue->parameters = $parameters;
         return $headerValue;
     }
 }

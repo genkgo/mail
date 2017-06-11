@@ -74,4 +74,27 @@ final class HeaderValueTest extends AbstractTestCase
 
         $this->assertEquals('value; name1="value2"', (string)$header);
     }
+
+    /**
+     * @test
+     */
+    public function it_can_parse_a_string()
+    {
+        $header = HeaderValue::fromString('application/pdf; charset="utf-8"');
+
+        $this->assertEquals('application/pdf; charset="utf-8"', (string)$header);
+        $this->assertEquals('charset="utf-8"', (string)$header->getParameter('charset'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_parse_a_string_with_more_than_one_parameter()
+    {
+        $header = HeaderValue::fromString('application/pdf; charset="utf-8"; foo="bar"');
+
+        $this->assertEquals('application/pdf; charset="utf-8"; foo="bar"', (string)$header);
+        $this->assertEquals('charset="utf-8"', (string)$header->getParameter('charset'));
+        $this->assertEquals('foo="bar"', (string)$header->getParameter('foo'));
+    }
 }

@@ -61,7 +61,7 @@ final class ContentType implements HeaderInterface
     /**
      * @return ContentType
      */
-    public static function unknown()
+    public static function unknown(): ContentType
     {
         return new self('application/octet-stream', '');
     }

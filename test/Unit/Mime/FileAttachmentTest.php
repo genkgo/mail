@@ -110,4 +110,19 @@ final class FileAttachmentTest extends AbstractTestCase
 
         $this->assertInstanceOf(Base64EncodedStream::class, $attachment->getBody());
     }
+
+    /**
+     * @test
+     */
+    public function it_is_able_to_detect_mime_type()
+    {
+        $attachment = FileAttachment::fromUnknownFileType(
+            __DIR__ .'/../../Stub/minimal.pdf'
+        );
+
+        $this->assertEquals(
+            'application/pdf; charset="utf-8"',
+            (string) $attachment->getHeader('Content-Type')->getValue()
+        );
+    }
 }
