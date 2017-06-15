@@ -8,8 +8,8 @@
 
 While analyzing what mail library to use when refactoring a code base, we discovered that the available ones are mostly
 legacy libraries. Some do not use namespaces and every library we encountered was merely a collection of scalar
-property bags than objects using encapsulation. Although we have these libs in the past with joy, they do not meet current 
-quality standards. So, we built a new and better library that uses modern programming principles.
+property bags than objects using encapsulation. Although we used these libs with joy in the past, they do not meet current 
+quality standards. So, we built a new and better library according to modern programming principles.
 
 Use this if you want to send e-mails over different transports and protocols using immutable messages and streams.
 
