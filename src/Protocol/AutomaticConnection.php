@@ -48,10 +48,13 @@ final class AutomaticConnection implements ConnectionInterface
     public function connect(): void
     {
         if ($this->connecting === false) {
-            $this->connecting = true;
-            $this->decoratedConnection->connect();
-            $this->connectedAt = new \DateTimeImmutable('now');
-            $this->connecting = false;
+            try {
+                $this->connecting = true;
+                $this->decoratedConnection->connect();
+                $this->connectedAt = new \DateTimeImmutable('now');
+            } finally {
+                $this->connecting = false;
+            }
         }
     }
 
