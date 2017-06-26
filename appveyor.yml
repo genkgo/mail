@@ -12,12 +12,12 @@ install:
   - net start wuauserv
   - cinst -y php
   - cd c:\tools\php71
-  - IF %PHP%==1 copy php.ini-production php.ini /Y
-  - IF %PHP%==1 echo date.timezone="UTC" >> php.ini
-  - IF %PHP%==1 echo extension_dir=ext >> php.ini
-  - IF %PHP%==1 echo extension=php_openssl.dll >> php.ini
-  - IF %PHP%==1 echo extension=php_intl.dll >> php.ini
-  - IF %PHP%==1 echo extension=php_fileinfo.dll >> php.ini
+  - copy php.ini-production php.ini /Y
+  - echo date.timezone="UTC" >> php.ini
+  - echo extension_dir=ext >> php.ini
+  - echo extension=php_openssl.dll >> php.ini
+  - echo extension=php_intl.dll >> php.ini
+  - echo extension=php_fileinfo.dll >> php.ini
   - cd c:\projects\mail
   - php -r "readfile('http://getcomposer.org/installer');" | php
   - php composer.phar install --prefer-source --no-interaction
