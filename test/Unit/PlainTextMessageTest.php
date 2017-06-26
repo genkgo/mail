@@ -23,7 +23,7 @@ final class PlainTextMessageTest extends AbstractTestCase
      */
     public function it_correctly_produces_message_string() {
         $message = (new PlainTextMessage('Hello World'))
-            ->withHeader(new Date(new \DateTimeImmutable('2017-01-01 18:15:00')))
+            ->withHeader(new Date(new \DateTimeImmutable('2017-01-01 18:15:00', new \DateTimeZone('Europe/London'))))
             ->withHeader(new Subject('Hello World'))
             ->withHeader((new To(new AddressList([new Address(new EmailAddress('me@example.com'), 'me')]))))
             ->withHeader((new Cc(new AddressList([new Address(new EmailAddress('other@example.com'), 'other')]))));
@@ -76,5 +76,4 @@ final class PlainTextMessageTest extends AbstractTestCase
 
         $this->assertInstanceOf(OptimalTransferEncodedTextStream::class, $message->getBody());
     }
-
 }

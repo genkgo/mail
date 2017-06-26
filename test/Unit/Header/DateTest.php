@@ -14,7 +14,8 @@ final class DateTest extends AbstractTestCase
      */
     public function it_produces_correct_values($date, $headerName, $headerValue)
     {
-        $header = new Date(new \DateTimeImmutable($date));
+        $header = new Date(new \DateTimeImmutable($date, new \DateTimeZone('Europe/London')));
+
         $this->assertEquals($headerName, (string)$header->getName());
         $this->assertEquals($headerValue, (string)$header->getValue());
     }
@@ -28,6 +29,4 @@ final class DateTest extends AbstractTestCase
             ['2017-01-01 18:15:00', 'Date', 'Sun, 01 Jan 2017 18:15:00 +0000'],
         ];
     }
-
-
 }
