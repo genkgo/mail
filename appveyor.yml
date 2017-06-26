@@ -32,4 +32,4 @@ install:
 
 test_script:
   - cd c:\projects\mail
-- vendor/bin/phpunit --colors=always
+  - vendor/bin/phpunit --colors=always
