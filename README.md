@@ -23,8 +23,8 @@ $message = (new FormattedMessageFactory())
     ->createMessage()
     ->withHeader(new Subject('Hello World'))
     ->withHeader(From::fromEmailAddress('from@example.com'))
-    ->withHeader(To::fromSingleAddress('to@example.com', 'name'))
-    ->withHeader(Cc::fromSingleAddress('cc@example.com', 'name'));
+    ->withHeader(To::fromSingleRecipient('to@example.com', 'name'))
+    ->withHeader(Cc::fromSingleRecipient('cc@example.com', 'name'));
 
 $transport = new SmtpTransport(
     ClientFactory::fromString('smtp://user:pass@host/')->newClient(),
