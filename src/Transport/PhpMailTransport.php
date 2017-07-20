@@ -15,7 +15,7 @@ final class PhpMailTransport implements TransportInterface
     /**
      * @var EnvelopeFactory
      */
-    private $envelopFactory;
+    private $envelopeFactory;
     /**
      * @var array
      */
@@ -27,12 +27,12 @@ final class PhpMailTransport implements TransportInterface
 
     /**
      * PhpMailTransport constructor.
-     * @param EnvelopeFactory $envelopFactory
+     * @param EnvelopeFactory $envelopeFactory
      * @param array $parameters
      */
-    public function __construct(EnvelopeFactory $envelopFactory, array $parameters = [])
+    public function __construct(EnvelopeFactory $envelopeFactory, array $parameters = [])
     {
-        $this->envelopFactory = $envelopFactory;
+        $this->envelopeFactory = $envelopeFactory;
         $this->parameters = $parameters;
     }
 
@@ -124,7 +124,7 @@ final class PhpMailTransport implements TransportInterface
      */
     private function constructParameters(MessageInterface $message): string
     {
-        $envelop = $this->envelopFactory->make($message);
+        $envelop = $this->envelopeFactory->make($message);
         if (preg_match('/\"/', $envelop->getAddress())) {
             throw new EnvelopeException(
                 'Unable to guarantee injection-free envelop'
@@ -136,17 +136,17 @@ final class PhpMailTransport implements TransportInterface
 
     /**
      * @param \Closure $callback
-     * @param EnvelopeFactory $envelopFactory
+     * @param EnvelopeFactory $envelopeFactory
      * @param array $parameters
      * @return PhpMailTransport
      */
     public static function newReplaceMailMethod(
         \Closure $callback,
-        EnvelopeFactory $envelopFactory,
+        EnvelopeFactory $envelopeFactory,
         array $parameters = []
     ): PhpMailTransport
     {
-        $transport = new self($envelopFactory, $parameters);
+        $transport = new self($envelopeFactory, $parameters);
         $transport->replacedMailMethod = $callback;
         return $transport;
     }
