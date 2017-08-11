@@ -39,6 +39,17 @@ final class DkimSignatureV1 implements HeaderInterface
      * @var string
      */
     private $selector;
+    /**
+     * @var array
+     */
+    private CONST HEADERS_IGNORED = [
+        'return-path' => true,
+        'received' => true,
+        'comments' => true,
+        'keywords' => true,
+        'bcc' => true,
+        'resent-bcc' => true,
+    ];
 
     /**
      * @param MessageInterface $message
@@ -56,6 +67,12 @@ final class DkimSignatureV1 implements HeaderInterface
         string $domain,
         string $selector
     ) {
+        if (!$message->hasHeader('from')) {
+            throw new \InvalidArgumentException(
+                'In order add a DKIM signature the message MUST include a From header'
+            );
+        }
+
         $this->message = $message;
         $this->canonicalizeBody = $canonicalizeBody;
         $this->canonicalizeHeader = $canonicalizeHeader;
@@ -81,13 +98,20 @@ final class DkimSignatureV1 implements HeaderInterface
             $this->canonicalizeBody->canonicalize((string) $this->message->getBody())
         );
 
-        $headerCanonicalized = '';
+        $headerCanonicalized = [];
         $headerNames = [];
         foreach ($this->message->getHeaders() as $headers) {
             /** @var HeaderInterface $header */
             foreach ($headers as $header) {
-                $headerCanonicalized .= $this->canonicalizeHeader->canonicalize($header);
-                $headerNames[(string)$header->getName()] = true;
+                $headerName = strtolower((string)$header->getName());
+
+                if (isset(self::HEADERS_IGNORED[$headerName])) {
+                    break;
+                }
+
+                // make sure we sign only the last header in the list
+                $headerCanonicalized[$headerName] = $this->canonicalizeHeader->canonicalize($header);
+                $headerNames[$headerName] = (string)$header->getName();
             }
         }
 
@@ -99,15 +123,15 @@ final class DkimSignatureV1 implements HeaderInterface
             ->withParameter(new HeaderValueParameter('q', 'dns/txt'))
             ->withParameter(new HeaderValueParameter('s', $this->selector))
             ->withParameter(new HeaderValueParameter('d', $this->domain, true))
-            ->withParameter(new HeaderValueParameter('h', implode(': ', array_keys($headerNames)), true))
+            ->withParameter(new HeaderValueParameter('h', implode(' : ', $headerNames), true))
             ->withParameter(new HeaderValueParameter('bh', base64_encode($bodyHash), true))
             ->withParameter(new HeaderValueParameter('b', '', true));
 
-        $headerCanonicalized .= $this->canonicalizeHeader->canonicalize(
+        $headerCanonicalized[strtolower(self::HEADER_NAME)] = $this->canonicalizeHeader->canonicalize(
             new GenericHeader(self::HEADER_NAME, (string) $headerValue)
         );
 
-        $signature = trim(chunk_split(base64_encode($this->signing->signHeaders($headerCanonicalized)), 73));
-        return $headerValue->withParameter(new HeaderValueParameter('b', $signature));
+        $signature = base64_encode($this->signing->signHeaders(implode('', $headerCanonicalized)));
+        return $headerValue->withParameter(new HeaderValueParameter('b', trim($signature), true));
     }
 }
