@@ -12,4 +12,9 @@ interface CanonicalizeBodyInterface
      */
     public function canonicalize(string $string): string;
 
+    /**
+     * @return string
+     */
+    public static function getName(): string;
+
 }

@@ -14,4 +14,8 @@ interface CanonicalizeHeaderInterface
      */
     public function canonicalize(HeaderInterface $header): string;
 
+    /**
+     * @return string
+     */
+    public static function getName(): string;
 }

@@ -11,7 +11,10 @@ use Genkgo\Mail\MessageInterface;
 
 final class DkimSignatureV1 implements HeaderInterface
 {
-
+    /**
+     *
+     */
+    private CONST HEADER_NAME = 'DKIM-Signature';
     /**
      * @var MessageInterface
      */
@@ -66,7 +69,7 @@ final class DkimSignatureV1 implements HeaderInterface
      */
     public function getName(): HeaderName
     {
-        return new HeaderName('DKIM-Signature');
+        return new HeaderName(self::HEADER_NAME);
     }
 
     /**
@@ -88,9 +91,11 @@ final class DkimSignatureV1 implements HeaderInterface
             }
         }
 
+        $canonicalizedParameter = [$this->canonicalizeHeader::getName(), $this->canonicalizeBody::getName()];
+
         $headerValue = (new HeaderValue('v=1'))
-            ->withParameter(new HeaderValueParameter('a', 'rsa-sha256'))
-            ->withParameter(new HeaderValueParameter('c', 'relaxed/simple'))
+            ->withParameter($this->signing->createAlgorithmParameters())
+            ->withParameter(new HeaderValueParameter('c', implode('/', $canonicalizedParameter)))
             ->withParameter(new HeaderValueParameter('q', 'dns/txt'))
             ->withParameter(new HeaderValueParameter('s', $this->selector))
             ->withParameter(new HeaderValueParameter('d', $this->domain, true))
@@ -99,11 +104,10 @@ final class DkimSignatureV1 implements HeaderInterface
             ->withParameter(new HeaderValueParameter('b', '', true));
 
         $headerCanonicalized .= $this->canonicalizeHeader->canonicalize(
-            new GenericHeader('DKIM-Signature', (string) $headerValue)
+            new GenericHeader(self::HEADER_NAME, (string) $headerValue)
         );
 
         $signature = trim(chunk_split(base64_encode($this->signing->signHeaders($headerCanonicalized)), 73));
-        $headerValue = $headerValue->withParameter(new HeaderValueParameter('b', $signature));
-        return $headerValue;
+        return $headerValue->withParameter(new HeaderValueParameter('b', $signature));
     }
 }
