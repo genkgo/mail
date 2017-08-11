@@ -49,6 +49,7 @@ final class AuthNegotiation implements NegotiationInterface
 
     /**
      * @param Client $client
+     * @throws SmtpAuthenticationException
      */
     public function negotiate(Client $client): void
     {

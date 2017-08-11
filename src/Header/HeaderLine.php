@@ -55,7 +55,13 @@ final class HeaderLine
      */
     public static function fromString(string $line): HeaderLine
     {
-        [$name, $value] = preg_split('/\:\s*/', $line, 2);
+        $parts = preg_split('/\:\s*/', $line, 2);
+
+        if (count($parts) !== 2) {
+            throw new \InvalidArgumentException('Invalid header line');
+        }
+
+        [$name, $value] = $parts;
 
         if (substr($value, 0, 2) === '=?' && substr($value, -2, 2) === '?=') {
             $value = iconv_mime_decode($value);

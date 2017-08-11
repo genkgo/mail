@@ -61,4 +61,12 @@ final class HeaderLineTest extends AbstractTestCase
         $this->assertEquals('X', (string) $line->getHeader()->getName());
         $this->assertEquals('=?UTF-8?B?bMOkc3QgbmFtZSwgZsOvcnN0IG5hbWU=?= <local-part@domain.com>', $line->getHeader()->getValue()->getRaw());
     }
+
+    /**
+     * @test
+     */
+    public function it_throws_an_exception_when_there_is_no_colon() {
+        $this->expectException(\InvalidArgumentException::class);
+        HeaderLine::fromString('test');
+    }
 }

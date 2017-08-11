@@ -1,0 +1,171 @@
+<?php
+declare(strict_types=1);
+
+namespace Genkgo\Mail\Protocol\Smtp;
+
+use Genkgo\Mail\EmailAddress;
+use Genkgo\Mail\MessageInterface;
+
+/**
+ * Class Session
+ * @package Genkgo\Mail\Protocol\Smtp
+ */
+final class Session
+{
+
+    /**
+     *
+     */
+    public CONST STATE_CONNECTED = 0;
+    /**
+     *
+     */
+    public CONST STATE_EHLO = 1;
+    /**
+     *
+     */
+    public CONST STATE_NEGOTIATION = 2;
+    /**
+     *
+     */
+    public CONST STATE_AUTHENTICATED = 3;
+    /**
+     *
+     */
+    public CONST STATE_MESSAGE = 4;
+    /**
+     *
+     */
+    public CONST STATE_MESSAGE_RECEIVED = 5;
+    /**
+     *
+     */
+    public CONST STATE_DISCONNECT = 6;
+
+    /**
+     * @var int
+     */
+    private $state = self::STATE_CONNECTED;
+    /**
+     * @var string
+     */
+    private $command;
+    /**
+     * @var MessageInterface
+     */
+    private $message;
+    /**
+     * @var EmailAddress
+     */
+    private $envelope;
+    /**
+     * @var EmailAddress[]
+     */
+    private $recipients = [];
+
+    /**
+     * @return string
+     */
+    public function getCommand(): string
+    {
+        return $this->command;
+    }
+
+    /**
+     * @return int
+     */
+    public function getState(): int
+    {
+        return $this->state;
+    }
+
+    /**
+     * @param int $state
+     * @return Session
+     */
+    public function withState(int $state): self
+    {
+        $clone = clone $this;
+        $clone->state = $state;
+        return $clone;
+    }
+
+    /**
+     * @param string $command
+     * @return Session
+     */
+    public function withCommand(string $command): self
+    {
+        $clone = clone $this;
+        $clone->command = $command;
+        return $clone;
+    }
+
+    /**
+     * @param EmailAddress $envelope
+     * @return Session
+     */
+    public function withEnvelope(EmailAddress $envelope): self
+    {
+        $clone = clone $this;
+        $clone->state = self::STATE_MESSAGE;
+        $clone->envelope = $envelope;
+        return $clone;
+    }
+
+    /**
+     * @param EmailAddress $recipient
+     * @return Session
+     */
+    public function withRecipient(EmailAddress $recipient): self
+    {
+        $clone = clone $this;
+        $clone->state = self::STATE_MESSAGE;
+        $clone->recipients[] = $recipient;
+        return $clone;
+    }
+
+    /**
+     * @param MessageInterface $message
+     * @return Session
+     */
+    public function withMessage(MessageInterface $message): self
+    {
+        $clone = clone $this;
+        $clone->state = self::STATE_MESSAGE_RECEIVED;
+        $clone->message = $message;
+        return $clone;
+    }
+
+    /**
+     * @return array|EmailAddress[]
+     */
+    public function getRecipients(): array
+    {
+        return $this->recipients;
+    }
+
+    /**
+     * @return MessageInterface
+     */
+    public function getMessage(): MessageInterface
+    {
+        if ($this->message === null) {
+            throw new \UnexpectedValueException('No message');
+        }
+
+        return $this->message;
+    }
+
+    /**
+     * @return EmailAddress
+     */
+    public function getEnvelope(): EmailAddress
+    {
+        if ($this->envelope === null) {
+            throw new \UnexpectedValueException('No message');
+        }
+
+        return $this->envelope;
+    }
+}
