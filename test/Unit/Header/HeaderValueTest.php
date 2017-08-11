@@ -10,29 +10,29 @@ final class HeaderValueTest extends AbstractTestCase
 {
     /**
      * @test
-     * @dataProvider provideNames
+     * @dataProvider provideValues
      */
-    public function it_validates_values_and_produces_correct_output(string $name, bool $expected, string $expectedOutput)
+    public function it_validates_values_and_produces_correct_output(string $value, bool $expected, string $expectedOutput)
     {
         if ($expected) {
-            $header = new HeaderValue($name);
+            $header = new HeaderValue($value);
             $this->assertEquals($expectedOutput, (string)$header);
         } else {
             $this->expectException(\InvalidArgumentException::class);
-            new HeaderValue($name);
+            new HeaderValue($value);
         }
     }
 
     /**
      * @return array
      */
-    public function provideNames()
+    public function provideValues()
     {
         return [
             ['Ascii', true, 'Ascii'],
-            ["X-With\nNew-Line", false, ''],
-            ["X-With\r\nNew-Line", false, ''],
-            ["X-With\rNew-Line", false, ''],
+            ["With\nNew-Line", false, ''],
+            ["With\r\nNew-Line", false, ''],
+            ["With\rNew-Line", false, ''],
             [
                 'Value Value Value Value Value Value Value Value Value Value Value Value Value Value',
                 true,
