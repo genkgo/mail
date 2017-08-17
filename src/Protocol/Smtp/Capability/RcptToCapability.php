@@ -34,7 +34,7 @@ final class RcptToCapability implements CapabilityInterface
     public function manifest(ConnectionInterface $connection, Session $session): Session
     {
         try {
-            $address = new EmailAddress(substr($session->getCommand(), 11, -1));
+            $address = new EmailAddress(substr($session->getCommand(), 9, -1));
 
             if ($this->backend->contains($address) === false) {
                 $connection->send('550 Unknown mailbox');
