@@ -10,6 +10,15 @@ use Genkgo\Mail\Queue\FilesystemQueue;
 
 final class FilesystemQueueTest extends AbstractTestCase
 {
+    public function setUp()
+    {
+        $directory = sys_get_temp_dir();
+        $iterator = new \GlobIterator($directory . '/*.eml');
+        foreach ($iterator as $key => $file) {
+            unlink($file->getPathname());
+        }
+    }
+
     /**
      * @test
      */
@@ -71,6 +80,23 @@ final class FilesystemQueueTest extends AbstractTestCase
 
         $queue->fetch();
         $queue->fetch();
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_count_messages_in_queue()
+    {
+        $directory = sys_get_temp_dir();
+
+        $message = (new GenericMessage())
+            ->withHeader(new Date(new \DateTimeImmutable('2017-01-01 18:15:00')));
+
+        $queue = new FilesystemQueue($directory);
+        $this->assertCount(0, $queue);
+
+        $queue->store($message);
+        $this->assertCount(1, $queue);
     }
 
 }

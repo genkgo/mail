@@ -11,7 +11,7 @@ use Genkgo\Mail\MessageInterface;
  * Class FilesystemQueue
  * @package Genkgo\Mail\Queue
  */
-final class FilesystemQueue implements QueueInterface
+final class FilesystemQueue implements QueueInterface, \Countable
 {
     /**
      * @var string
@@ -65,5 +65,13 @@ final class FilesystemQueue implements QueueInterface
         }
 
         throw new EmptyQueueException('No message left in queue');
+    }
+
+    /**
+     * @return int
+     */
+    public function count(): int
+    {
+        return (new \GlobIterator($this->directory . '/*.eml'))->count();
     }
 }
