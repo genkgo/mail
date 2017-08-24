@@ -35,10 +35,10 @@ final class InjectMessageIdHeaderTransport implements TransportInterface
      */
     public function send(MessageInterface $message): void
     {
-        $this->decoratedTransport->send(
-            $message->withHeader(
-                MessageId::newRandom($this->domainName)
-            )
-        );
+        if (!$message->hasHeader('Message-ID')) {
+            $message = $message->withHeader(MessageId::newRandom($this->domainName));
+        }
+
+        $this->decoratedTransport->send($message);
     }
 }
