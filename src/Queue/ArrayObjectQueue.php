@@ -11,7 +11,7 @@ use Genkgo\Mail\MessageInterface;
  * Class ArrayObjectQueue
  * @package Genkgo\Mail\Queue
  */
-final class ArrayObjectQueue implements QueueInterface
+final class ArrayObjectQueue implements QueueInterface, \Countable
 {
     /**
      * @var \ArrayObject
@@ -47,5 +47,13 @@ final class ArrayObjectQueue implements QueueInterface
         }
 
         throw new EmptyQueueException('No message left in queue');
+    }
+
+    /**
+     * @return int
+     */
+    public function count(): int
+    {
+        return $this->storage->count();
     }
 }

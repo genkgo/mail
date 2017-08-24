@@ -10,7 +10,7 @@ use Genkgo\Mail\MessageInterface;
 use Predis\ClientInterface;
 use Predis\Connection\ConnectionException;
 
-final class RedisQueue implements QueueInterface
+final class RedisQueue implements QueueInterface, \Countable
 {
 
     /**
@@ -62,6 +62,20 @@ final class RedisQueue implements QueueInterface
             throw new EmptyQueueException();
         } catch (ConnectionException $e) {
             throw new QueueStoreException('Cannot add message to redis queue ' . $e->getMessage());
+        }
+    }
+
+
+    /**
+     * @return int
+     * @throws QueueStoreException
+     */
+    public function count(): int
+    {
+        try {
+            return $this->client->llen($this->key);
+        } catch (ConnectionException $e) {
+            throw new QueueStoreException('Cannot get messages from redis queue ' . $e->getMessage());
         }
     }
 }

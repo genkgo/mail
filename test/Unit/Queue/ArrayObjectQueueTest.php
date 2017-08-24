@@ -64,4 +64,23 @@ final class ArrayObjectQueueTest extends AbstractTestCase
         $queue->fetch();
     }
 
+    /**
+     * @test
+     */
+    public function it_can_count_messages_in_queue()
+    {
+        $message = (new GenericMessage())
+            ->withHeader(new Date(new \DateTimeImmutable('2017-01-01 18:15:00')));
+
+        $storage = new \ArrayObject();
+        $queue = new ArrayObjectQueue($storage);
+        $this->assertCount(0, $queue);
+
+        $queue->store($message);
+        $this->assertCount(1, $queue);
+
+        $queue->store($message);
+        $this->assertCount(2, $queue);
+    }
+
 }

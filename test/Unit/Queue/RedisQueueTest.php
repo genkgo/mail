@@ -96,4 +96,29 @@ final class RedisQueueTest extends AbstractTestCase
         $queue->fetch();
     }
 
+    /**
+     * @test
+     */
+    public function it_can_count_messages_in_queue()
+    {
+        $client = $this->createMock(ClientInterface::class);
+
+        $client
+            ->expects($this->at(0))
+            ->method('__call')
+            ->with('llen', ['queue'])
+            ->willReturn(0);
+
+        $client
+            ->expects($this->at(1))
+            ->method('__call')
+            ->with('llen', ['queue'])
+            ->willReturn(2);
+
+        $queue = new RedisQueue($client, 'queue');
+
+        $this->assertCount(0, $queue);
+        $this->assertCount(2, $queue);
+    }
+
 }
