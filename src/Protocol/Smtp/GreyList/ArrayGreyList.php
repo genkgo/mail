@@ -33,7 +33,7 @@ final class ArrayGreyList implements GreyListInterface
     public function attach(MessageInterface $message): void
     {
         $hash = hash('sha256', (string)$message);
-        $this->list[$hash] = $message;
+        $this->list[$hash] = true;
     }
 
     /**

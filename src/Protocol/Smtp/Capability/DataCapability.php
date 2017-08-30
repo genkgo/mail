@@ -90,6 +90,8 @@ final class DataCapability implements CapabilityInterface
             return $session;
         }
 
+        $this->greyListing->detach($message);
+
         $folder = 'INBOX';
 
         if ($this->spamDecideScore->isLikelySpam($spamScore)) {
