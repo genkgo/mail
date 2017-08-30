@@ -21,7 +21,7 @@ final class MailFromCapability implements CapabilityInterface
         try {
             $address = new EmailAddress(substr($session->getCommand(), 11, -1));
             $connection->send('250 OK');
-            return (clone $session)->withEnvelope($address);
+            return $session->withEnvelope($address);
         } catch (\InvalidArgumentException $e) {
             $connection->send('501 Invalid envelope');
             return $session;

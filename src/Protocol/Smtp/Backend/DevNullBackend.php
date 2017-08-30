@@ -21,8 +21,9 @@ final class DevNullBackend implements BackendInterface
     /**
      * @param EmailAddress $mailbox
      * @param MessageInterface $message
+     * @param string $folder
      */
-    public function store(EmailAddress $mailbox, MessageInterface $message): void
+    public function store(EmailAddress $mailbox, MessageInterface $message, string $folder): void
     {
         // and it's gone.
     }

@@ -42,7 +42,7 @@ final class RcptToCapability implements CapabilityInterface
             }
 
             $connection->send('250 OK');
-            return (clone $session)->withRecipient($address);
+            return $session->withRecipient($address);
         } catch (\InvalidArgumentException $e) {
             $connection->send('501 Invalid recipient');
             return $session;
