@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Genkgo\Mail\Queue;
 
+use Genkgo\Mail\Exception\AbstractProtocolException;
 use Genkgo\Mail\Exception\ConnectionRefusedException;
 use Genkgo\Mail\Exception\EmptyQueueException;
 use Genkgo\Mail\TransportInterface;
@@ -43,7 +44,7 @@ final class QueueProcessor
                 while ($message = $queue->fetch()) {
                     try {
                         $this->transport->send($message);
-                    } catch (ConnectionRefusedException $e) {
+                    } catch (AbstractProtocolException $e) {
                         $queue->store($message);
 
                         // do not continue transporting messages
