@@ -2,6 +2,7 @@
 
 namespace Genkgo\TestMail\Unit\Queue;
 
+use Genkgo\Mail\Exception\AbstractProtocolException;
 use Genkgo\TestMail\AbstractTestCase;;
 use Genkgo\Mail\Exception\ConnectionRefusedException;
 use Genkgo\Mail\GenericMessage;
@@ -73,6 +74,34 @@ final class ProcessorTest extends AbstractTestCase
                 return true;
             }))
             ->willThrowException(new ConnectionRefusedException())
+        ;
+
+        $processor = new QueueProcessor($transport, [$queue]);
+        $processor->process();
+
+        $this->assertCount(3, $storage);
+    }
+
+    /**
+     * @test
+     */
+    public function it_will_readd_messages_resulting_in_any_protocol_exception() {
+        $storage = new \ArrayObject();
+
+        $queue = new ArrayObjectQueue($storage);
+        $queue->store($this->newMessage('Test 1'));
+        $queue->store($this->newMessage('Test 2'));
+        $queue->store($this->newMessage('Test 3'));
+
+        $transport = $this->createMock(TransportInterface::class);
+        $transport
+            ->expects($this->once())
+            ->method('send')
+            ->with($this->callback(function (GenericMessage $message) {
+                $this->assertEquals('Test 1', $message->getHeader('subject')[0]->getValue());
+                return true;
+            }))
+            ->willThrowException(new class extends AbstractProtocolException{})
         ;
 
         $processor = new QueueProcessor($transport, [$queue]);
