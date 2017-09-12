@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace Genkgo\Mail\Header\Dkim;
+namespace Genkgo\Mail\Dkim;
 
 use Genkgo\Mail\Header\HeaderLine;
 use Genkgo\Mail\HeaderInterface;
 
-final class SimpleCanonicalizeHeader implements CanonicalizeHeaderInterface
+final class CanonicalizeHeaderSimple implements CanonicalizeHeaderInterface
 {
     /**
      * @param HeaderInterface $header
@@ -15,5 +15,13 @@ final class SimpleCanonicalizeHeader implements CanonicalizeHeaderInterface
     public function canonicalize(HeaderInterface $header): string
     {
         return (string)new HeaderLine($header);
+    }
+
+    /**
+     * @return string
+     */
+    public static function name(): string
+    {
+        return 'simple';
     }
 }

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Genkgo\Mail\Header\Dkim;
+namespace Genkgo\Mail\Dkim;
 
 use Genkgo\Mail\HeaderInterface;
 
@@ -17,5 +17,5 @@ interface CanonicalizeHeaderInterface
     /**
      * @return string
      */
-    public static function getName(): string;
+    public static function name(): string;
 }

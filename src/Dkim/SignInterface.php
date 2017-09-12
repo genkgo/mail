@@ -1,14 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace Genkgo\Mail\Header\Dkim;
-use Genkgo\Mail\Header\HeaderValueParameter;
+namespace Genkgo\Mail\Dkim;
 
 /**
  * Interface SignInterface
  * @package Genkgo\Mail\Header\Dkim
  */
-interface SignatureInterface
+interface SignInterface
 {
     /**
      * @param string $canonicalizedBody
@@ -23,8 +22,8 @@ interface SignatureInterface
     public function signHeaders(string $canonicalizedHeaders): string;
 
     /**
-     * @return HeaderValueParameter
+     * @return string
      */
-    public function createAlgorithmParameters(): HeaderValueParameter;
+    public function name(): string;
 
 }

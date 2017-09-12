@@ -1,13 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace Genkgo\Mail\Header\Dkim;
+namespace Genkgo\Mail\Dkim;
 
 use Genkgo\Mail\HeaderInterface;
 
-final class RelaxedCanonicalizeHeader implements CanonicalizeHeaderInterface
+final class CanonicalizeHeaderRelaxed implements CanonicalizeHeaderInterface
 {
-
     /**
      * @param HeaderInterface $header
      * @return string
@@ -18,5 +17,13 @@ final class RelaxedCanonicalizeHeader implements CanonicalizeHeaderInterface
         $value = str_replace("\r\n", '', (string)$header->getValue());
         $value = preg_replace("/[ \t][ \t]+/", ' ', $value);
         return $name . ':' . trim($value);
+    }
+
+    /**
+     * @return string
+     */
+    public static function name(): string
+    {
+        return 'relaxed';
     }
 }

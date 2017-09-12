@@ -1,17 +1,21 @@
 <?php
 declare(strict_types=1);
 
-namespace Genkgo\Mail\Header\Dkim;
+namespace Genkgo\Mail\Dkim;
 
-final class RelaxedCanonicalizeBody implements CanonicalizeBodyInterface
+use Genkgo\Mail\StreamInterface;
+
+final class CanonicalizeBodyRelaxed implements CanonicalizeBodyInterface
 {
 
     /**
-     * @param string $string
+     * @param StreamInterface $body
      * @return string
      */
-    public function canonicalize(string $string): string
+    public function canonicalize(StreamInterface $body): string
     {
+        $string = (string)$body;
+
         $length = strlen($string);
         $canon = '';
         $lastChar = null;
@@ -64,10 +68,18 @@ final class RelaxedCanonicalizeBody implements CanonicalizeBodyInterface
             }
         }
 
-        if ($line === '') {
-            $canon .= "\r\n";
+        if (substr($canon, -2, 2) === "\r\n") {
+            return rtrim($canon, "\r\n") . "\r\n";
         }
 
         return $canon;
+    }
+
+    /**
+     * @return string
+     */
+    public static function name(): string
+    {
+        return 'relaxed';
     }
 }
