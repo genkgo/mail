@@ -13,12 +13,7 @@ final class CanonicalizeBodySimple implements CanonicalizeBodyInterface
      */
     public function canonicalize(StreamInterface $body): string
     {
-        $string = (string)$body;
-        if (substr($string, -2, 2) === "\r\n") {
-            return rtrim($string, "\r\n") . "\r\n";
-        }
-
-        return $string;
+        return rtrim((string)$body, "\r\n") . "\r\n";
     }
 
     /**

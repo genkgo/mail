@@ -30,7 +30,7 @@ final class CanonicalizeHeaderRelaxedTest extends AbstractTestCase
     {
         $canonicalization = new CanonicalizeBodyRelaxed();
 
-        $this->assertEquals('relaxed', $canonicalization->name());
+        $this->assertEquals('relaxed', $canonicalization::name());
     }
 
 }

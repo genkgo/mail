@@ -29,7 +29,7 @@ final class CanonicalizeHeaderSimpleTest extends AbstractTestCase
     {
         $canonicalization = new CanonicalizeHeaderSimple();
 
-        $this->assertEquals('simple', $canonicalization->name());
+        $this->assertEquals('simple', $canonicalization::name());
     }
 
 }

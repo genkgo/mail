@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Genkgo\Mail\Dkim;
 
-use Genkgo\Mail\Header\GenericHeader;
 use Genkgo\Mail\Header\HeaderName;
 use Genkgo\Mail\Header\HeaderValue;
 use Genkgo\Mail\Header\HeaderValueParameter;
@@ -94,25 +93,35 @@ final class HeaderV1Factory
 
         $headerValue = (new HeaderValue('v=1'))
             ->withParameter(new HeaderValueParameter('a', $this->sign->name()))
-            ->withParameter(new HeaderValueParameter('b', '', true))
-            ->withParameter(new HeaderValueParameter('bh', base64_encode($bodyHash), true))
+            ->withParameter(new HeaderValueParameter('bh', base64_encode($bodyHash)))
             ->withParameter(new HeaderValueParameter('c', implode('/', $canonicalization)))
-            ->withParameter(new HeaderValueParameter('d', $domain, true))
-            ->withParameter(new HeaderValueParameter('h', implode(' : ', $headerNames), true))
+            ->withParameter(new HeaderValueParameter('d', $domain))
+            ->withParameter(new HeaderValueParameter('h', implode(':', $headerNames)))
             ->withParameter(new HeaderValueParameter('q', 'dns/txt'))
-            ->withParameter(new HeaderValueParameter('s', $selector));
+            ->withParameter(new HeaderValueParameter('s', $selector))
+            ->withParameter(new HeaderValueParameter('b', ''));
 
         foreach ($parameters as $key => $value) {
             $headerValue = $headerValue->withParameter(new HeaderValueParameter($key, $value));
         }
 
         $headerCanonicalized[strtolower(self::HEADER_NAME)] = $this->canonicalizeHeader->canonicalize(
-            new GenericHeader(self::HEADER_NAME, (string) $headerValue)
+            $this->newHeader($headerValue)
         );
 
-        $signature = base64_encode($this->sign->signHeaders(implode('', $headerCanonicalized)));
-        $headerValue = $headerValue->withParameter(new HeaderValueParameter('b', trim($signature), true));
 
+        $signature = base64_encode($this->sign->signHeaders(implode('', $headerCanonicalized)));
+        $headerValue = $headerValue->withParameter(new HeaderValueParameter('b', trim($signature)));
+
+        return $this->newHeader($headerValue);
+    }
+
+    /**
+     * @param HeaderValue $headerValue
+     * @return HeaderInterface
+     */
+    private function newHeader(HeaderValue $headerValue): HeaderInterface
+    {
         return new class ($headerValue) implements HeaderInterface
         {
             /**
