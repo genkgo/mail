@@ -95,7 +95,7 @@ final class HeaderV1Factory
         $headerValue = (new HeaderValue('v=1'))
             ->withParameter(new HeaderValueParameter('a', $this->sign->name()))
             ->withParameter(new HeaderValueParameter('b', '', true))
-            ->withParameter(new HeaderValueParameter('bh', $bodyHash, true))
+            ->withParameter(new HeaderValueParameter('bh', base64_encode($bodyHash), true))
             ->withParameter(new HeaderValueParameter('c', implode('/', $canonicalization)))
             ->withParameter(new HeaderValueParameter('d', $domain, true))
             ->withParameter(new HeaderValueParameter('h', implode(' : ', $headerNames), true))
