@@ -15,6 +15,9 @@ final class CanonicalizeBodyRelaxed implements CanonicalizeBodyInterface
     public function canonicalize(StreamInterface $body): string
     {
         $string = (string)$body;
+        if ($string === '') {
+            return $string;
+        }
 
         $length = strlen($string);
         $canon = '';
@@ -68,11 +71,7 @@ final class CanonicalizeBodyRelaxed implements CanonicalizeBodyInterface
             }
         }
 
-        if (substr($canon, -2, 2) === "\r\n") {
-            return rtrim($canon, "\r\n") . "\r\n";
-        }
-
-        return $canon;
+        return rtrim($canon, "\r\n") . "\r\n";
     }
 
     /**
