@@ -109,7 +109,9 @@ final class HeaderV1Factory
             $this->newHeader($headerValue)
         );
 
-        $headers = trim(implode("\r\n", $headerCanonicalized));
+        $headers = implode("\r\n", $headerCanonicalized);
+        $headers = str_replace("; b=", ";\r\n b=", $headers);
+
         $signature = base64_encode($this->sign->signHeaders($headers));
         $headerValue = $headerValue->withParameter(new HeaderValueParameter('b', $signature));
 
