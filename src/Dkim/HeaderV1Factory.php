@@ -93,12 +93,12 @@ final class HeaderV1Factory
 
         $headerValue = (new HeaderValue('v=1'))
             ->withParameter(new HeaderValueParameter('a', $this->sign->name()))
-            ->withParameter(new HeaderValueParameter('bh', base64_encode($bodyHash)))
+            ->withParameter(new HeaderValueParameter('q', 'dns/txt'))
             ->withParameter(new HeaderValueParameter('c', implode('/', $canonicalization)))
             ->withParameter(new HeaderValueParameter('d', $domain))
-            ->withParameter(new HeaderValueParameter('h', implode(':', $headerNames)))
-            ->withParameter(new HeaderValueParameter('q', 'dns/txt'))
             ->withParameter(new HeaderValueParameter('s', $selector))
+            ->withParameter(new HeaderValueParameter('h', implode(':', $headerNames)))
+            ->withParameter(new HeaderValueParameter('bh', base64_encode($bodyHash)))
             ->withParameter(new HeaderValueParameter('b', ''));
 
         foreach ($parameters as $key => $value) {
@@ -109,9 +109,9 @@ final class HeaderV1Factory
             $this->newHeader($headerValue)
         );
 
-
-        $signature = base64_encode($this->sign->signHeaders(implode('', $headerCanonicalized)));
-        $headerValue = $headerValue->withParameter(new HeaderValueParameter('b', trim($signature)));
+        $headers = trim(implode("\r\n", $headerCanonicalized));
+        $signature = base64_encode($this->sign->signHeaders($headers));
+        $headerValue = $headerValue->withParameter(new HeaderValueParameter('b', $signature));
 
         return $this->newHeader($headerValue);
     }
