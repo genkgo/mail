@@ -42,7 +42,7 @@ final class PlainTextPartTest extends AbstractTestCase
 
         $this->assertTrue($part->hasHeader('content-type'));
         $this->assertEquals(
-            'text/plain; charset="UTF-8"',
+            'text/plain; charset=UTF-8',
             (string)$part->getHeader('content-type')->getValue()
         );
         $this->assertArrayHasKey('content-type', $part->getHeaders());

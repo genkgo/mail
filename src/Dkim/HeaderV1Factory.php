@@ -92,14 +92,14 @@ final class HeaderV1Factory
         $canonicalization = [$this->canonicalizeHeader->name(), $this->canonicalizeBody->name()];
 
         $headerValue = (new HeaderValue('v=1'))
-            ->withParameter(new HeaderValueParameter('a', $this->sign->name()))
-            ->withParameter(new HeaderValueParameter('q', 'dns/txt'))
-            ->withParameter(new HeaderValueParameter('c', implode('/', $canonicalization)))
-            ->withParameter(new HeaderValueParameter('d', $domain))
-            ->withParameter(new HeaderValueParameter('s', $selector))
-            ->withParameter(new HeaderValueParameter('h', implode(':', $headerNames)))
-            ->withParameter(new HeaderValueParameter('bh', base64_encode($bodyHash)))
-            ->withParameter(new HeaderValueParameter('b', ''));
+            ->withParameter($this->newUnquotedParameter('a', $this->sign->name()))
+            ->withParameter($this->newUnquotedParameter('q', 'dns/txt'))
+            ->withParameter($this->newUnquotedParameter('c', implode('/', $canonicalization)))
+            ->withParameter($this->newUnquotedParameter('d', $domain), true)
+            ->withParameter($this->newUnquotedParameter('s', $selector))
+            ->withParameter($this->newUnquotedParameter('h', implode(':', $headerNames)), true)
+            ->withParameter($this->newUnquotedParameter('bh', base64_encode($bodyHash)), true)
+            ->withParameter($this->newUnquotedParameter('b', ''), true);
 
         foreach ($parameters as $key => $value) {
             $headerValue = $headerValue->withParameter(new HeaderValueParameter($key, $value));
@@ -110,12 +110,20 @@ final class HeaderV1Factory
         );
 
         $headers = implode("\r\n", $headerCanonicalized);
-        $headers = str_replace("; b=", ";\r\n b=", $headers);
-
         $signature = base64_encode($this->sign->signHeaders($headers));
-        $headerValue = $headerValue->withParameter(new HeaderValueParameter('b', $signature));
+        $headerValue = $headerValue->withParameter(new HeaderValueParameter('b', $signature), true);
 
         return $this->newHeader($headerValue);
+    }
+
+    /**
+     * @param string $name
+     * @param string $value
+     * @return HeaderValueParameter
+     */
+    private function newUnquotedParameter(string $name, string $value): HeaderValueParameter
+    {
+        return (new HeaderValueParameter($name, $value))->withSpecials('');
     }
 
     /**

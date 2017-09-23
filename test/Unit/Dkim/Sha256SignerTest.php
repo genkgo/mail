@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace Genkgo\TestMail\Unit\Dkim;
 
 use Genkgo\Mail\Dkim\Sha256Signer;
-use Genkgo\Mail\Exception\InvalidPrivateKeyException;
 use Genkgo\TestMail\AbstractTestCase;
 
 final class Sha256SignerTest extends AbstractTestCase
@@ -25,11 +24,8 @@ final class Sha256SignerTest extends AbstractTestCase
      */
     public function it_throws_on_invalid_key()
     {
-        $this->expectException(InvalidPrivateKeyException::class);
-        $this->expectExceptionMessage('Unable to load DKIM private key');
-        new Sha256Signer(
-            'i_do_not_exist.key'
-        );
+        $this->expectException(\InvalidArgumentException::class);
+        Sha256Signer::fromString('i_do_not_exist.key');
     }
 
     /**
@@ -37,7 +33,7 @@ final class Sha256SignerTest extends AbstractTestCase
      */
     public function it_throws_on_invalid_file()
     {
-        $this->expectException(InvalidPrivateKeyException::class);
+        $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('File does not exist');
         Sha256Signer::fromFile('i_do_not_exist.key');
     }
@@ -45,13 +41,21 @@ final class Sha256SignerTest extends AbstractTestCase
     /**
      * @test
      */
+    public function it_throws_on_invalid_constructor_argument()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        new Sha256Signer('invalid');
+    }
+
+    /**
+     * @test
+     */
     public function it_throws_on_encrypted_key()
     {
-        $this->expectException(InvalidPrivateKeyException::class);
-        $this->expectExceptionMessage('Unable to load DKIM private key');
-        new Sha256Signer(
-            file_get_contents(__DIR__ . '/../../Stub/Dkim/dkim.test.protected.priv')
-        );
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Cannot create resource from private key string');
+
+        Sha256Signer::fromFile(__DIR__ . '/../../Stub/Dkim/dkim.test.protected.priv');
     }
 
     /**
@@ -61,18 +65,16 @@ final class Sha256SignerTest extends AbstractTestCase
     {
         $body = 'test-body';
         $header = 'test-header';
-        $signer = new Sha256Signer(file_get_contents(__DIR__ . '/../../Stub/Dkim/dkim.test.priv'));
+        $signer = Sha256Signer::fromFile(__DIR__ . '/../../Stub/Dkim/dkim.test.priv');
         $bodyHash = $signer->hashBody($body);
         $headerHash = $signer->signHeaders($header);
 
-        $handler = hash_init('sha256');
-        hash_update($handler, $body);
-
-        $this->assertEquals(hash_final($handler, true), $bodyHash);
+        $this->assertEquals(hash('sha256', $body, true), $bodyHash);
         $this->assertEquals(
             1,
             openssl_verify(
-                $header, $headerHash,
+                $header,
+                $headerHash,
                 file_get_contents(__DIR__ . '/../../Stub/Dkim/dkim.test.pub'),
                 OPENSSL_ALGO_SHA256
             )
@@ -86,21 +88,20 @@ final class Sha256SignerTest extends AbstractTestCase
     {
         $body = 'test-body';
         $header = 'test-header';
-        $signer = new Sha256Signer(
-            file_get_contents(__DIR__ . '/../../Stub/Dkim/dkim.test.protected.priv'),
+        $signer = Sha256Signer::fromFile(
+            __DIR__ . '/../../Stub/Dkim/dkim.test.protected.priv',
             'test'
         );
+
         $bodyHash =$signer->hashBody($body);
         $headerHash = $signer->signHeaders($header);
 
-        $handler = hash_init('sha256');
-        hash_update($handler, $body);
-
-        $this->assertEquals(hash_final($handler, true), $bodyHash);
+        $this->assertEquals(hash('sha256', $body, true), $bodyHash);
         $this->assertEquals(
             1,
             openssl_verify(
-                $header, $headerHash,
+                $header,
+                $headerHash,
                 file_get_contents(__DIR__ . '/../../Stub/Dkim/dkim.test.protected.pub'),
                 OPENSSL_ALGO_SHA256
             )

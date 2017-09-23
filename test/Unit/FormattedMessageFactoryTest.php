@@ -113,14 +113,12 @@ final class FormattedMessageFactoryTest extends AbstractTestCase
     public function it_should_equal_file_when_html_only ()
     {
         $factory = (new FormattedMessageFactory())
-            ->withHtmlAndNoGeneratedAlternativeText('<html><body><p>Hello World</p></body></html>')
-        ;
+            ->withHtmlAndNoGeneratedAlternativeText('<html><body><p>Hello World</p></body></html>');
 
         $message = $factory->createMessage()
             ->withHeader(new Subject('Hello World'))
             ->withHeader((new To(new AddressList([new Address(new EmailAddress('me@example.com'), 'me')]))))
-            ->withHeader((new Cc(new AddressList([new Address(new EmailAddress('other@example.com'), 'other')]))))
-        ;
+            ->withHeader((new Cc(new AddressList([new Address(new EmailAddress('other@example.com'), 'other')]))));
 
         $this->assertEquals(
             file_get_contents(__DIR__ . '/../Stub/FormattedMessageFactoryTest/html-only.eml'),
@@ -138,8 +136,7 @@ final class FormattedMessageFactoryTest extends AbstractTestCase
         $message = $factory->createMessage()
             ->withHeader(new Subject('Hello World'))
             ->withHeader((new To(new AddressList([new Address(new EmailAddress('me@example.com'), 'me')]))))
-            ->withHeader((new Cc(new AddressList([new Address(new EmailAddress('other@example.com'), 'other')]))))
-        ;
+            ->withHeader((new Cc(new AddressList([new Address(new EmailAddress('other@example.com'), 'other')]))));
 
         $this->assertEquals(
             file_get_contents(__DIR__ . '/../Stub/FormattedMessageFactoryTest/empty-email.eml'),
@@ -174,8 +171,7 @@ final class FormattedMessageFactoryTest extends AbstractTestCase
             ->createMessage()
             ->withHeader(new Subject('Hello World'))
             ->withHeader((new To(new AddressList([new Address(new EmailAddress('me@example.com'), 'me')]))))
-            ->withHeader((new Cc(new AddressList([new Address(new EmailAddress('other@example.com'), 'other')]))))
-        ;
+            ->withHeader((new Cc(new AddressList([new Address(new EmailAddress('other@example.com'), 'other')]))));
 
         $this->assertEquals(
             $this->replaceBoundaries(

@@ -34,9 +34,9 @@ final class GenericPartTest extends AbstractTestCase
         $this->assertTrue($part->hasHeader('ContenT-TyPe'));
         $this->assertTrue($part->hasHeader('content-type'));
         $this->assertTrue($part->hasHeader('Content-Type'));
-        $this->assertEquals('text/html; charset="UTF-8"', (string)$part->getHeader('ContenT-TyPe')->getValue());
-        $this->assertEquals('text/html; charset="UTF-8"', (string)$part->getHeader('content-type')->getValue());
-        $this->assertEquals('text/html; charset="UTF-8"', (string)$part->getHeader('Content-Type')->getValue());
+        $this->assertEquals('text/html; charset=UTF-8', (string)$part->getHeader('ContenT-TyPe')->getValue());
+        $this->assertEquals('text/html; charset=UTF-8', (string)$part->getHeader('content-type')->getValue());
+        $this->assertEquals('text/html; charset=UTF-8', (string)$part->getHeader('Content-Type')->getValue());
         $this->assertFalse($part->withoutHeader('ConTent-TYPE')->hasHeader('ContenT-TyPe'));
     }
 

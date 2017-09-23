@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Genkgo\TestMail\Integration;
 
@@ -23,7 +24,7 @@ final class DKIMHeaderSimpleTest extends AbstractTestCase
      */
     public function it_formats_dkim_header_correctly()
     {
-        $message = new PlainTextMessage("");
+        $message = new PlainTextMessage('Hello World');
         $factory = new HeaderV1Factory(
             Sha256Signer::fromFile(__DIR__ . '/../Stub/Dkim/dkim.test.priv'),
             new CanonicalizeHeaderSimple(),
@@ -38,16 +39,10 @@ final class DKIMHeaderSimpleTest extends AbstractTestCase
         $dkimHeader = $factory->factory($message, 'genkgodev.com', 'x');
         $message = $message->withHeader($dkimHeader);
 
-        $mime = (string)$message;
-        echo($mime);
-//        $expectedString = str_replace("\n", "\r\n",
-//            file_get_contents(__DIR__ . '/../Stub/Dkim/dkim_message.eml')
-//        );
-//
-//        $this->assertEquals(
-//            $expectedString,
-//            $mime
-//        );
+        $this->assertEquals(
+            file_get_contents(__DIR__ . '/../Stub/Dkim/dkim_relaxed_simple.eml'),
+            (string)$message
+        );
     }
 
 }

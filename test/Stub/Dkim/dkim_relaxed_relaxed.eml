@@ -1,9 +1,8 @@
-DKIM-Signature:
- v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=genkgodev.com;
- s=gtest;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=genkgodev.com; s=x;
  h=Message-ID:Date:From:To:MIME-Version:Content-Type:Content-Transfer-Encoding;
  bh=sIAi0xXPHrEtJmW97Q5q9AZTwKC+l1Iy+0m8vQIc/DY=;
- b=PcSEEc+XUaEORabxCcb3VwrTbU1On6qtcGG0YHd7p/p2e4OBRjmfKSC4Q20W1Ev3ugSVtIvuGvQZUP20fPCGmcrCsezUpgjcTl0VImK+CKkDbXWGS1PDVvObe1OOeqtdsHCsTYMHhOVj23cc25USGtha/plZnQb1KIHkuMRh5+4sr6cHjbRLx+rpUWFWMfd6iyzE5J9BauyPvYZzg2kSt8AN7R2lTbTpmOj35m11BgyTEsTN4wS64ez5hDXtoHxpmCpPFNmtlDEmA0AIhMnflruEO3lMee3mQr3FbmRlDmwK98IBlBHywtKiMJfr0SvrPCKROJktArt+uEHvb3NOmA==
+ b=bvNrkh83t/1OahhULSsn1eisjM6oAWakFxInCbSM7VWendL0enTnjX8IVlfZOy7bEZsmN4eqnHGxqrTNULbhI2xqU7dxp1Gg2h6VYusNOJ+igt4OBrubI6fhH3jIo6rHop1OATaXcCC2pAhm2wpdjESbvdxANscF+nkBppf4f4ojAAaDPdHsGSm4ptAaJhAvKRqU4GFswEuj/Fw5GMUXQldnU1Jp9l7MwavVnw2sylDTim2b9P2xTH5rb6fuYYIorc6mQ3Cr4mxrPd/k5K4INFNia9WIAabufYOKLlfHxwr3s5Y7L6SJeV+lVeXNdAAfnJ5kVFvJvQMunNHHvtmW3w==
 Message-ID: <testing@genkgodev.com>
 Date: Sun, 01 Jan 2017 00:00:00 +0000
 From: sender@genkgodev.com

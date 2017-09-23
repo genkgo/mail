@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Genkgo\TestMail\Integration;
 
@@ -38,14 +39,9 @@ final class DKIMHeaderRelaxedTest extends AbstractTestCase
         $dkimHeader = $factory->factory($message, 'genkgodev.com', 'x');
         $message = $message->withHeader($dkimHeader);
 
-        $mime = (string)$message;
-        $expectedString = str_replace("\n", "\r\n",
-            file_get_contents(__DIR__ . '/../Stub/Dkim/dkim_relaxed_relaxed.eml')
-        );
-
         $this->assertEquals(
-            $expectedString,
-            $mime
+            file_get_contents(__DIR__ . '/../Stub/Dkim/dkim_relaxed_relaxed.eml'),
+            (string)$message
         );
     }
 

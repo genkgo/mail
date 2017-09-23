@@ -26,6 +26,10 @@ final class HeaderValue
      */
     private $parameters = [];
     /**
+     * @var array
+     */
+    private $parametersForceNewLine = [];
+    /**
      * @var bool
      */
     private $needsEncoding = true;
@@ -43,12 +47,14 @@ final class HeaderValue
 
     /**
      * @param HeaderValueParameter $parameter
+     * @param bool $forceNewLine
      * @return HeaderValue
      */
-    public function withParameter(HeaderValueParameter $parameter): HeaderValue
+    public function withParameter(HeaderValueParameter $parameter, bool $forceNewLine = false): HeaderValue
     {
         $clone = clone $this;
         $clone->parameters[$parameter->getName()] = $parameter;
+        $clone->parametersForceNewLine[$parameter->getName()] = $forceNewLine;
         return $clone;
     }
 
@@ -65,13 +71,23 @@ final class HeaderValue
      */
     public function __toString(): string
     {
-        $value = implode('; ', array_merge([$this->value], $this->parameters));
+        $value = $this->value;
 
         if ($this->needsEncoding) {
-            return (string) (new OptimalEncodedHeaderValue($value));
+            $value = (new OptimalEncodedHeaderValue($value));
         }
 
-        return $value;
+        $parameters = [];
+
+        foreach ($this->parameters as $name => $parameter) {
+            $parameters[] = sprintf(
+                ';%s%s',
+                empty($this->parametersForceNewLine[$name]) ? ' ' : "\r\n ",
+                (string) $parameter
+            );
+        }
+
+        return implode('', array_merge([$value], $parameters));
     }
 
     /**

@@ -60,7 +60,7 @@ final class HeaderValueTest extends AbstractTestCase
             ->withParameter(new HeaderValueParameter('name1', 'value1'))
             ->withParameter(new HeaderValueParameter('name2', 'value2'));
 
-        $this->assertEquals('value; name1="value1"; name2="value2"', (string)$header);
+        $this->assertEquals('value; name1=value1; name2=value2', (string)$header);
     }
 
     /**
@@ -72,7 +72,19 @@ final class HeaderValueTest extends AbstractTestCase
             ->withParameter(new HeaderValueParameter('name1', 'value1'))
             ->withParameter(new HeaderValueParameter('name1', 'value2'));
 
-        $this->assertEquals('value; name1="value2"', (string)$header);
+        $this->assertEquals('value; name1=value2', (string)$header);
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_prepend_a_new_line_to_a_parameter()
+    {
+        $header = (new HeaderValue('value'))
+            ->withParameter(new HeaderValueParameter('name1', 'value1'), true)
+            ->withParameter(new HeaderValueParameter('name2', 'value2'));
+
+        $this->assertEquals("value;\r\n name1=value1; name2=value2", (string)$header);
     }
 
     /**
@@ -82,8 +94,8 @@ final class HeaderValueTest extends AbstractTestCase
     {
         $header = HeaderValue::fromString('application/pdf; charset="utf-8"');
 
-        $this->assertEquals('application/pdf; charset="utf-8"', (string)$header);
-        $this->assertEquals('charset="utf-8"', (string)$header->getParameter('charset'));
+        $this->assertEquals('application/pdf; charset=utf-8', (string)$header);
+        $this->assertEquals('charset=utf-8', (string)$header->getParameter('charset'));
     }
 
     /**
@@ -93,8 +105,8 @@ final class HeaderValueTest extends AbstractTestCase
     {
         $header = HeaderValue::fromString('application/pdf; charset="utf-8"; foo="bar"');
 
-        $this->assertEquals('application/pdf; charset="utf-8"; foo="bar"', (string)$header);
-        $this->assertEquals('charset="utf-8"', (string)$header->getParameter('charset'));
-        $this->assertEquals('foo="bar"', (string)$header->getParameter('foo'));
+        $this->assertEquals('application/pdf; charset=utf-8; foo=bar', (string)$header);
+        $this->assertEquals('charset=utf-8', (string)$header->getParameter('charset'));
+        $this->assertEquals('foo=bar', (string)$header->getParameter('foo'));
     }
 }
