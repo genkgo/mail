@@ -22,7 +22,7 @@ final class CanonicalizeHeaderRelaxed implements CanonicalizeHeaderInterface
     /**
      * @return string
      */
-    public static function name(): string
+    public function name(): string
     {
         return 'relaxed';
     }

@@ -57,22 +57,14 @@ final class HeaderV1Factory
 
     /**
      * @param MessageInterface $message
-     * @param string $domain
-     * @param string $selector
-     * @param array $parameters
+     * @param Parameters $parameters
      * @return HeaderInterface
      */
     public function factory(
         MessageInterface $message,
-        string $domain,
-        string $selector,
-        array $parameters = []
+        Parameters $parameters
     ): HeaderInterface
     {
-        $bodyHash = $this->sign->hashBody(
-            $this->canonicalizeBody->canonicalize($message->getBody())
-        );
-
         $headerCanonicalized = [];
         $headerNames = [];
         foreach ($message->getHeaders() as $headers) {
@@ -89,21 +81,18 @@ final class HeaderV1Factory
             }
         }
 
+        $bodyHash = $this->sign->hashBody(
+            $this->canonicalizeBody->canonicalize($message->getBody())
+        );
+
         $canonicalization = [$this->canonicalizeHeader->name(), $this->canonicalizeBody->name()];
 
-        $headerValue = (new HeaderValue('v=1'))
+        $headerValue = $parameters->newHeaderValue()
             ->withParameter($this->newUnquotedParameter('a', $this->sign->name()))
-            ->withParameter($this->newUnquotedParameter('q', 'dns/txt'))
             ->withParameter($this->newUnquotedParameter('c', implode('/', $canonicalization)))
-            ->withParameter($this->newUnquotedParameter('d', $domain), true)
-            ->withParameter($this->newUnquotedParameter('s', $selector))
             ->withParameter($this->newUnquotedParameter('h', implode(':', $headerNames)), true)
             ->withParameter($this->newUnquotedParameter('bh', base64_encode($bodyHash)), true)
             ->withParameter($this->newUnquotedParameter('b', ''), true);
-
-        foreach ($parameters as $key => $value) {
-            $headerValue = $headerValue->withParameter(new HeaderValueParameter($key, $value));
-        }
 
         $headerCanonicalized[strtolower(self::HEADER_NAME)] = $this->canonicalizeHeader->canonicalize(
             $this->newHeader($headerValue)

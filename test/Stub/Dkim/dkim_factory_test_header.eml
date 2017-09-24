@@ -1,0 +1,5 @@
+v=1; q=dns/txt;
+ d=example.com; s=x; a=rsa-sha256; c=/;
+ h=Message-ID:Date:From:To:MIME-Version:Content-Type:Content-Transfer-Encoding;
+ bh=aGFzaA==;
+ b=c2lnbmF0dXJl

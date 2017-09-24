@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Genkgo\Mail\Transport;
 
 use Genkgo\Mail\Dkim\HeaderV1Factory;
+use Genkgo\Mail\Dkim\Parameters;
 use Genkgo\Mail\MessageInterface;
 use Genkgo\Mail\TransportInterface;
 
@@ -18,31 +19,26 @@ final class DkimV1SignedTransport implements TransportInterface
      */
     private $headerFactory;
     /**
-     * @var string
+     * @var Parameters
      */
-    private $domain;
-    /**
-     * @var string
-     */
-    private $selector;
+    private $parameters;
 
     /**
      * DkimSignedTransport constructor.
      * @param TransportInterface $transport
      * @param HeaderV1Factory $headerFactory
-     * @param string $domain
-     * @param string $selector
+     * @param Parameters $parameters
+     * @internal param string $domain
+     * @internal param string $selector
      */
     public function __construct(
         TransportInterface $transport,
         HeaderV1Factory $headerFactory,
-        string $domain,
-        string $selector
+        Parameters $parameters
     ) {
         $this->transport = $transport;
         $this->headerFactory = $headerFactory;
-        $this->domain = $domain;
-        $this->selector = $selector;
+        $this->parameters = $parameters;
     }
 
     /**
@@ -55,8 +51,7 @@ final class DkimV1SignedTransport implements TransportInterface
             $message->withHeader(
                 $this->headerFactory->factory(
                     $message,
-                    $this->domain,
-                    $this->selector
+                    $this->parameters->withSignatureTimestamp(new \DateTimeImmutable('now'))
                 )
             )
         );

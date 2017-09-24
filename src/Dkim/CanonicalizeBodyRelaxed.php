@@ -77,7 +77,7 @@ final class CanonicalizeBodyRelaxed implements CanonicalizeBodyInterface
     /**
      * @return string
      */
-    public static function name(): string
+    public function name(): string
     {
         return 'relaxed';
     }

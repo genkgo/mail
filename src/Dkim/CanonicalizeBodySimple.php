@@ -19,7 +19,7 @@ final class CanonicalizeBodySimple implements CanonicalizeBodyInterface
     /**
      * @return string
      */
-    public static function name(): string
+    public function name(): string
     {
         return 'simple';
     }

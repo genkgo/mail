@@ -8,6 +8,7 @@ use Genkgo\Mail\AddressList;
 use Genkgo\Mail\Dkim\CanonicalizeBodySimple;
 use Genkgo\Mail\Dkim\CanonicalizeHeaderSimple;
 use Genkgo\Mail\Dkim\HeaderV1Factory;
+use Genkgo\Mail\Dkim\Parameters;
 use Genkgo\Mail\Dkim\Sha256Signer;
 use Genkgo\Mail\EmailAddress;
 use Genkgo\Mail\Header\Date;
@@ -36,7 +37,7 @@ final class DKIMHeaderSimpleTest extends AbstractTestCase
         $message = $message->withHeader(new To(new AddressList([new Address(new EmailAddress('recipient@genkgodev.com'))])));
         $message = $message->withHeader(new MessageId('testing', 'genkgodev.com'));
 
-        $dkimHeader = $factory->factory($message, 'genkgodev.com', 'x');
+        $dkimHeader = $factory->factory($message, new Parameters('genkgodev.com', 'x'));
         $message = $message->withHeader($dkimHeader);
 
         $this->assertEquals(

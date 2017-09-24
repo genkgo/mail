@@ -17,5 +17,5 @@ interface CanonicalizeHeaderInterface
     /**
      * @return string
      */
-    public static function name(): string;
+    public function name(): string;
 }
