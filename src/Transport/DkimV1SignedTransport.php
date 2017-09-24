@@ -28,8 +28,6 @@ final class DkimV1SignedTransport implements TransportInterface
      * @param TransportInterface $transport
      * @param HeaderV1Factory $headerFactory
      * @param Parameters $parameters
-     * @internal param string $domain
-     * @internal param string $selector
      */
     public function __construct(
         TransportInterface $transport,
