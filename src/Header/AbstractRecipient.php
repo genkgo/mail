@@ -57,4 +57,30 @@ abstract class AbstractRecipient implements HeaderInterface
             ])
         );
     }
+
+    /**
+     * @param array $array pairs of email address and name
+     * @return AbstractRecipient
+     */
+    final public static function fromArray(array $array): AbstractRecipient
+    {
+        return new static(
+            new AddressList(
+                array_map(
+                    function (array $pair) {
+                        $count = count($pair);
+                        if ($count !== 1 && $count !== 2) {
+                            throw new \InvalidArgumentException('Each recipient should have one or two elements: [<EmailAddress>] or [<EmailAddress>, <Name>]');
+                        }
+                        [$emailAddress, $name] = $pair + [1 => ''];
+                        return new Address(
+                            new EmailAddress($emailAddress),
+                            $name
+                        );
+                    },
+                    $array
+                )
+            )
+        );
+    }
 }
