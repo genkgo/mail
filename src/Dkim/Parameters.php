@@ -71,14 +71,14 @@ final class Parameters
      */
     public function newHeaderValue(): HeaderValue
     {
-        $selector = idn_to_ascii($this->selector);
+        $selector = \idn_to_ascii($this->selector, 0, INTL_IDNA_VARIANT_UTS46);
 
         // @codeCoverageIgnoreStart
         if ($selector === false) {
             throw new \UnexpectedValueException('Cannot encode selector as A-label');
         }
 
-        $domain = idn_to_ascii($this->domain);
+        $domain = \idn_to_ascii($this->domain, 0, INTL_IDNA_VARIANT_UTS46);
         if ($domain === false) {
             throw new \UnexpectedValueException('Cannot encode domain as A-label');
         }
