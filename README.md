@@ -72,7 +72,7 @@ $ composer require genkgo/mail
 
 ## Documentation
 
-- English documentation, not there yeyt, want to [help](https://github.com/genkgo/mail/issues/10)?
+- English documentation, not there yet, want to [help](https://github.com/genkgo/mail/issues/10)?
 - [PHP7.1未満お断り！最新PHPメーラーライブラリ Genkgo/Mail を試してみる - Qiita](https://qiita.com/mpyw/items/88161f9a809e063823c6)
 
 ## RFC-compliance
