@@ -70,6 +70,11 @@ $ composer require genkgo/mail
 - Encrypted and signed messages
 
 
+## Documentation
+
+- English documentation, not there yeyt, want to [help](https://github.com/genkgo/mail/issues/10)?
+- [PHP7.1未満お断り！最新PHPメーラーライブラリ Genkgo/Mail を試してみる - Qiita](https://qiita.com/mpyw/items/88161f9a809e063823c6)
+
 ## RFC-compliance
  
 This library tends to be as compliant with e-mail RFCs as possible. It should be compliant with the following RFCs.
