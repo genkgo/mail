@@ -65,4 +65,22 @@ final class ToTest extends AbstractTestCase
         $header = To::fromSingleRecipient('me@example.com', 'Name');
         $this->assertEquals('Name <me@example.com>', (string)$header->getValue());
     }
+
+    /**
+     * @test
+     */
+    public function it_can_be_easier_constructed_for_multiple_addresses()
+    {
+        $header = To::fromArray([['bob@example.com', 'Bob'], ['john@example.com', 'John'], ['noname@example.com']]);
+        $this->assertEquals("Bob <bob@example.com>,\r\n John <john@example.com>,\r\n noname@example.com", (string)$header->getValue());
+    }
+
+    /**
+     * @test
+     */
+    public function it_cannot_be_easier_constructed_with_invalid_entry()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        To::fromArray([['bob@example.com', 'Bob'], ['john@example.com', 'John'], ['invalid@example.com', 'Foo', 'Bar']]);
+    }
 }
