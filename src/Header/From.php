@@ -41,6 +41,16 @@ final class From implements HeaderInterface
 
     /**
      * @param string $emailAddress
+     * @param string $name
+     * @return From
+     */
+    public static function fromAddress(string $emailAddress, string $name = ''): From
+    {
+        return new self(new Address(new EmailAddress($emailAddress), $name));
+    }
+
+    /**
+     * @param string $emailAddress
      * @return From
      */
     public static function fromEmailAddress(string $emailAddress): From
