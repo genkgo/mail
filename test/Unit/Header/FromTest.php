@@ -35,7 +35,17 @@ final class FromTest extends AbstractTestCase
      * @test
      * @dataProvider provideValues
      */
-    public function it_can_be_easier_constructed()
+    public function it_can_be_easier_constructed_with_email_address_and_name()
+    {
+        $header = From::fromAddress('me@example.com', 'Name');
+        $this->assertEquals('Name <me@example.com>', (string)$header->getValue());
+    }
+
+    /**
+     * @test
+     * @dataProvider provideValues
+     */
+    public function it_can_be_easier_constructed_with_email_address()
     {
         $header = From::fromEmailAddress('me@example.com');
         $this->assertEquals('me@example.com', (string)$header->getValue());
