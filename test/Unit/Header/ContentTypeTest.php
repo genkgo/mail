@@ -25,7 +25,7 @@ final class ContentTypeTest extends AbstractTestCase
     public function provideValues()
     {
         return [
-            ['text/html', 'UTF-8', 'Content-Type', 'text/html; charset="UTF-8"'],
+            ['text/html', 'UTF-8', 'Content-Type', 'text/html; charset=UTF-8'],
         ];
     }
 

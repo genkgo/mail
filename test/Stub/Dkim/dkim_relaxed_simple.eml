@@ -1,0 +1,14 @@
+DKIM-Signature: v=1; q=dns/txt;
+ d=x; s=genkgodev.com; a=rsa-sha256; c=simple/simple;
+ h=Message-ID:Date:From:To:MIME-Version:Content-Type:Content-Transfer-Encoding;
+ bh=sIAi0xXPHrEtJmW97Q5q9AZTwKC+l1Iy+0m8vQIc/DY=;
+ b=Wiurcl/alY+0A0yIt2Up1ITY12FJv8apHLYwE3yY1h8ZG9NGoN/gpIINTLGL4fhXE9cFW9UqUApdUOnIoWHv2v4iJgAh7xclPG58q08Bc8j3W424dbTpi1mTNLiy6/2YRWJf+oHLQgcRW8dxU230MBKVtO80y4IQoQUPyLIXRkNB7CpzwUy6ZBvF21lHbQgP2SYi7DHoGc7x4s2nF1z0HGtt4Hwv3b1cqqx1KifkbF20b1yJZeh1Ik39xPvoyg3bfUGa1fuOKugExMoo1byrkRB+79asvOb+o+EEaINK3hC3Mm438wqpPsw+jPTx6v32IWdIoKN532UD7R9ByPjPEw==
+Message-ID: <testing@genkgodev.com>
+Date: Sun, 01 Jan 2017 00:00:00 +0000
+From: sender@genkgodev.com
+To: recipient@genkgodev.com
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+Hello World

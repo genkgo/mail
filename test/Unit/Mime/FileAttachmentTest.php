@@ -121,7 +121,7 @@ final class FileAttachmentTest extends AbstractTestCase
         );
 
         $this->assertEquals(
-            'application/pdf; charset="utf-8"',
+            'application/pdf; charset=utf-8',
             (string) $attachment->getHeader('Content-Type')->getValue()
         );
     }

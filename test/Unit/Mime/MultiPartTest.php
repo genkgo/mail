@@ -77,7 +77,7 @@ final class MultiPartTest extends AbstractTestCase
 
         $this->assertTrue($part->hasHeader('content-type'));
         $this->assertEquals(
-            'multipart/mixed; boundary="test"',
+            'multipart/mixed; boundary=test',
             (string)$part->getHeader('content-type')->getValue()
         );
         $this->assertArrayHasKey('content-type', $part->getHeaders());

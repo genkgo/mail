@@ -8,6 +8,10 @@ use Genkgo\Mail\HeaderInterface;
 final class ContentType implements HeaderInterface
 {
     /**
+     *
+     */
+    private CONST RFC_1341_ADDITIONAL_SPECIALS = "\x2F\x3F\x3D";
+    /**
      * @var string
      */
     private $contentType;
@@ -49,13 +53,13 @@ final class ContentType implements HeaderInterface
             return new HeaderValue($this->contentType);
         }
 
-        return (new HeaderValue($this->contentType))
-            ->withParameter(
-                new HeaderValueParameter(
-                    'charset',
-                    $this->charset
-                )
-            );
+        $charset = (new HeaderValueParameter(
+            'charset',
+            $this->charset
+        ))
+            ->withSpecials(HeaderValueParameter::RFC_822_T_SPECIAL . self::RFC_1341_ADDITIONAL_SPECIALS);
+
+        return (new HeaderValue($this->contentType))->withParameter($charset);
     }
 
     /**
