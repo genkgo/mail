@@ -56,7 +56,8 @@ $ composer require genkgo/mail
 - Many objects but still easy API
 - 90%+ test coverage
 - Only uses TLS < 1.2 if not otherwise possible 
-- Discourages SSL 
+- Discourages SSL
+- DKIM signed message
 - Security is high prioritized
 - Great RFC compliance
 - Cast messages to valid string source
@@ -66,7 +67,6 @@ $ composer require genkgo/mail
 
 ## Upcoming features
 
-- DKIM headers
 - Encrypted and signed messages
 
 
