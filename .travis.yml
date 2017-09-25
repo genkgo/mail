@@ -1,12 +1,17 @@
 language: php
 php:
   - 7.1
+  - 7.2
   - nightly
 matrix:
   include:
     - php: 7.1
       env: dependencies=lowest
     - php: 7.1
+      env: dependencies=highest
+    - php: 7.2
+      env: dependencies=lowest
+    - php: 7.2
       env: dependencies=highest
   allow_failures:
     - php: nightly
