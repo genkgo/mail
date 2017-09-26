@@ -38,6 +38,7 @@ final class AddressTest extends AbstractTestCase {
             ['local-part@domain.com', "test\r\ntest", false, 'local-part@domain.com'],
             ['local-part@domain.com', "tëst", true, '=?UTF-8?B?dMOrc3Q=?= <local-part@domain.com>'],
             ['a."local-part"@domain.com', "test", true, 'test <a."local-part"@domain.com>'],
+            ['h.sprode@domain.com', "sprode, henriëtte", true, '=?UTF-8?B?c3Byb2RlLCBoZW5yacOrdHRl?= <h.sprode@domain.com>'],
         ];
     }
 
