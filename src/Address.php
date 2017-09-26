@@ -87,7 +87,7 @@ final class Address
             return (string)$this->address;
         }
 
-        $encodedName = (string) (new OptimalEncodedHeaderValue($this->name));
+        $encodedName = (string) OptimalEncodedHeaderValue::forPhrase($this->name);
         if ($encodedName === $this->name) {
             $encodedName = addcslashes($encodedName, "\0..\37\177\\\"");
 

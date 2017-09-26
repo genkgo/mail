@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Genkgo\Mail\Header;
 
+use Genkgo\Mail\Stream\OptimalTransferEncodedPhraseStream;
 use Genkgo\Mail\Stream\OptimalTransferEncodedTextStream;
 
 /**
@@ -19,6 +20,10 @@ final class OptimalEncodedHeaderValue
      * @var string
      */
     private $value;
+    /**
+     * @var array
+     */
+    private $phrase = false;
 
     /**
      * OptimalEncodedHeaderValue constructor.
@@ -34,9 +39,16 @@ final class OptimalEncodedHeaderValue
      */
     public function __toString(): string
     {
-        $encoded = new OptimalTransferEncodedTextStream($this->value, 68, self::FOLDING);
+        if ($this->phrase === true) {
+            $encoded = new OptimalTransferEncodedPhraseStream($this->value, 68, self::FOLDING);
 
-        $encoding = $encoded->getMetadata(['transfer-encoding'])['transfer-encoding'];
+            $encoding = $encoded->getMetadata(['transfer-encoding'])['transfer-encoding'];
+        } else {
+            $encoded = new OptimalTransferEncodedTextStream($this->value, 68, self::FOLDING);
+
+            $encoding = $encoded->getMetadata(['transfer-encoding'])['transfer-encoding'];
+        }
+
         if ($encoding === '7bit' || $encoding === '8bit') {
             return (string) $encoded;
         }
@@ -48,4 +60,15 @@ final class OptimalEncodedHeaderValue
         return sprintf('=?%s?Q?%s?=', 'UTF-8', (string) $encoded);
     }
 
+    /**
+     * @param string $value
+     * @return OptimalEncodedHeaderValue
+     */
+    public static function forPhrase(string $value): self
+    {
+        $encoded = new self($value);
+        $encoded->value = $value;
+        $encoded->phrase = true;
+        return $encoded;
+    }
 }
