@@ -198,6 +198,11 @@ final class Address
             $name = substr($name, 1, -1);
         }
 
-        return new self(new EmailAddress($email), iconv_mime_decode($name));
+        $name = @iconv_mime_decode($name);
+        if ($name === false) {
+            throw new \InvalidArgumentException('Failed to mime decode the name');
+        }
+
+        return new self(new EmailAddress($email), $name);
     }
 }

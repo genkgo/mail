@@ -76,6 +76,18 @@ final class AddressTest extends AbstractTestCase {
 
     /**
      * @test
+     */
+    public function it_fails_when_it_contains_bad_characters()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+
+        Address::fromString(
+            (string)(new Address(new EmailAddress('test@test.com'), 'MariÃ?Â«lla Test'))
+        );
+    }
+
+    /**
+     * @test
      * @dataProvider provideAddressStrings
      */
     public function it_parses_address_strings(string $addressString, bool $constructed, string $email, string $name)
