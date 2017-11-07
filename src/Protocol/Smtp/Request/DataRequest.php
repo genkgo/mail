@@ -31,6 +31,7 @@ final class DataRequest implements RequestInterface
     {
         $bytes = '';
 
+        $this->stream->rewind();
         while (!$this->stream->eof()) {
             $bytes .= $this->stream->read(1000);
 
