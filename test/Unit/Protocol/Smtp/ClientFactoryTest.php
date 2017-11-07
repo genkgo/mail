@@ -104,7 +104,7 @@ final class ClientFactoryTest extends AbstractTestCase
         $this->expectExceptionMessage('Could not create plain tcp connection. Connection refused.');
 
         $factory = ClientFactory::fromString(
-            'smtp://user:pass@localhost/?ehlo=localhost&timeout=1&reconnectAfter=PT1S'
+            'smtp://user:pass@localhost:3333/?ehlo=localhost&timeout=1&reconnectAfter=PT1S'
         );
 
         $factory
@@ -120,7 +120,7 @@ final class ClientFactoryTest extends AbstractTestCase
         $this->expectException(ConnectionRefusedException::class);
         $this->expectExceptionMessage('Could not create plain tcp connection. Connection refused.');
 
-        $factory = ClientFactory::fromString('smtp-starttls://localhost/');
+        $factory = ClientFactory::fromString('smtp-starttls://localhost:3333/');
 
         $factory->newClient()->request(new NoopCommand());
     }
@@ -133,7 +133,7 @@ final class ClientFactoryTest extends AbstractTestCase
         $this->expectException(ConnectionRefusedException::class);
         $this->expectExceptionMessage('Could not create secure connection. Connection refused.');
 
-        $factory = ClientFactory::fromString('smtps://localhost/');
+        $factory = ClientFactory::fromString('smtps://localhost:3333/');
 
         $factory->newClient()->request(new NoopCommand());
     }
@@ -148,7 +148,7 @@ final class ClientFactoryTest extends AbstractTestCase
 
         $version = STREAM_CRYPTO_METHOD_TLSv1_1_CLIENT;
 
-        $factory = ClientFactory::fromString('smtps://localhost/?crypto=' . $version);
+        $factory = ClientFactory::fromString('smtps://localhost:3333/?crypto=' . $version);
 
         $factory->newClient()->request(new NoopCommand());
     }
