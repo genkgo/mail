@@ -101,7 +101,6 @@ final class ClientFactoryTest extends AbstractTestCase
     public function it_constructs_tcp_from_data_source_name()
     {
         $this->expectException(ConnectionRefusedException::class);
-        $this->expectExceptionMessage('Could not create plain tcp connection. Connection refused.');
 
         $factory = ClientFactory::fromString(
             'smtp://user:pass@localhost/?ehlo=localhost&timeout=1&reconnectAfter=PT1S'
@@ -118,7 +117,6 @@ final class ClientFactoryTest extends AbstractTestCase
     public function it_constructs_plain_tcp_from_data_source_name()
     {
         $this->expectException(ConnectionRefusedException::class);
-        $this->expectExceptionMessage('Could not create plain tcp connection. Connection refused.');
 
         $factory = ClientFactory::fromString('smtp-starttls://localhost/');
 
@@ -131,7 +129,6 @@ final class ClientFactoryTest extends AbstractTestCase
     public function it_constructs_tls_from_data_source_name()
     {
         $this->expectException(ConnectionRefusedException::class);
-        $this->expectExceptionMessage('Could not create secure connection. Connection refused.');
 
         $factory = ClientFactory::fromString('smtps://localhost/');
 
@@ -144,7 +141,6 @@ final class ClientFactoryTest extends AbstractTestCase
     public function it_constructs_specific_tls_version_from_data_source_name()
     {
         $this->expectException(ConnectionRefusedException::class);
-        $this->expectExceptionMessage('Could not create secure connection. Connection refused.');
 
         $version = STREAM_CRYPTO_METHOD_TLSv1_1_CLIENT;
 
