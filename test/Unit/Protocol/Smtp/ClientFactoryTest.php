@@ -101,10 +101,9 @@ final class ClientFactoryTest extends AbstractTestCase
     public function it_constructs_tcp_from_data_source_name()
     {
         $this->expectException(ConnectionRefusedException::class);
-        $this->expectExceptionMessage('Could not create plain tcp connection. Connection refused.');
 
         $factory = ClientFactory::fromString(
-            'smtp://user:pass@localhost:3333/?ehlo=localhost&timeout=1&reconnectAfter=PT1S'
+            'smtp://user:pass@localhost/?ehlo=localhost&timeout=1&reconnectAfter=PT1S'
         );
 
         $factory
@@ -118,9 +117,8 @@ final class ClientFactoryTest extends AbstractTestCase
     public function it_constructs_plain_tcp_from_data_source_name()
     {
         $this->expectException(ConnectionRefusedException::class);
-        $this->expectExceptionMessage('Could not create plain tcp connection. Connection refused.');
 
-        $factory = ClientFactory::fromString('smtp-starttls://localhost:3333/');
+        $factory = ClientFactory::fromString('smtp-starttls://localhost/');
 
         $factory->newClient()->request(new NoopCommand());
     }
@@ -131,9 +129,8 @@ final class ClientFactoryTest extends AbstractTestCase
     public function it_constructs_tls_from_data_source_name()
     {
         $this->expectException(ConnectionRefusedException::class);
-        $this->expectExceptionMessage('Could not create secure connection. Connection refused.');
 
-        $factory = ClientFactory::fromString('smtps://localhost:3333/');
+        $factory = ClientFactory::fromString('smtps://localhost/');
 
         $factory->newClient()->request(new NoopCommand());
     }
@@ -144,11 +141,10 @@ final class ClientFactoryTest extends AbstractTestCase
     public function it_constructs_specific_tls_version_from_data_source_name()
     {
         $this->expectException(ConnectionRefusedException::class);
-        $this->expectExceptionMessage('Could not create secure connection. Connection refused.');
 
         $version = STREAM_CRYPTO_METHOD_TLSv1_1_CLIENT;
 
-        $factory = ClientFactory::fromString('smtps://localhost:3333/?crypto=' . $version);
+        $factory = ClientFactory::fromString('smtps://localhost/?crypto=' . $version);
 
         $factory->newClient()->request(new NoopCommand());
     }
