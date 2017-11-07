@@ -159,6 +159,10 @@ final class FormattedMessageFactory
             return new HtmlPart($this->html);
         }
 
+        if ($this->html === null) {
+            return new PlainTextPart((string)$this->text);
+        }
+
         return (new MultiPart(
             Boundary::newRandom(),
             new ContentType('multipart/alternative')

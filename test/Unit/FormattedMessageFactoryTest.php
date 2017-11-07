@@ -129,6 +129,25 @@ final class FormattedMessageFactoryTest extends AbstractTestCase
     /**
      * @test
      */
+    public function it_should_equal_file_when_text_only ()
+    {
+        $factory = (new FormattedMessageFactory())
+            ->withAlternativeText(new AlternativeText('Hello World'));
+
+        $message = $factory->createMessage()
+            ->withHeader(new Subject('Hello World'))
+            ->withHeader((new To(new AddressList([new Address(new EmailAddress('me@example.com'), 'me')]))))
+            ->withHeader((new Cc(new AddressList([new Address(new EmailAddress('other@example.com'), 'other')]))));
+
+        $this->assertEquals(
+            file_get_contents(__DIR__ . '/../Stub/FormattedMessageFactoryTest/text-only.eml'),
+            (string) $message
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_should_equal_empty_text_plain_message_when_no_and_no_text ()
     {
         $factory = (new FormattedMessageFactory());
