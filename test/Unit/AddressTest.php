@@ -104,6 +104,22 @@ final class AddressTest extends AbstractTestCase {
     }
 
     /**
+     * @test
+     * @dataProvider provideAddressStrings
+     */
+    public function it_can_be_converted_to_readable_string()
+    {
+        $address = new Address(new EmailAddress('local-part@münchen.com'), 'sprode, henriëtte');
+        $this->assertEquals('"sprode, henriëtte" <local-part@münchen.com>', $address->toReadableString());
+
+        $address = new Address(new EmailAddress('local-part@münchen.com'), 'Frederik');
+        $this->assertEquals('Frederik <local-part@münchen.com>', $address->toReadableString());
+
+        $address = new Address(new EmailAddress('local-part@münchen.com'));
+        $this->assertEquals('local-part@münchen.com', $address->toReadableString());
+    }
+
+    /**
      * @return array
      */
     public function provideAddressStrings()

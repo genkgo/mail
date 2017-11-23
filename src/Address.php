@@ -100,6 +100,23 @@ final class Address
     }
 
     /**
+     * @return string
+     */
+    public function toReadableString(): string
+    {
+        if ($this->name === '') {
+            return (string)$this->address;
+        }
+
+        $encodedName = $this->name;
+        if ($encodedName !== $this->name || preg_match('/[^A-Za-z0-9!#$%&\'*+\/=?^_`{|}~ -]/', $this->name) === 1) {
+            $encodedName = sprintf('"%s"', $encodedName);
+        }
+
+        return sprintf('%s <%s>', $encodedName, $this->address->getAddress());
+    }
+
+    /**
      * @param string $addressAsString
      * @return Address
      */
