@@ -69,7 +69,7 @@ final class AlternativeText
 
             $text->text = $document->textContent;
         } catch (\DOMException $e) {
-            $text->text = strip_tags($text);
+            $text->text = strip_tags($text->text);
         }
 
         return $text;

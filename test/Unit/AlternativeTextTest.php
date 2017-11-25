@@ -21,6 +21,18 @@ final class AlternativeTextTest extends AbstractTestCase
     }
 
     /**
+     * @test
+     */
+    public function it_strips_tags_on_dom_exception()
+    {
+        $html = '';
+        $text = '';
+
+        $alternativeText = AlternativeText::fromHtml($html);
+        $this->assertEquals($text, (string) $alternativeText);
+    }
+
+    /**
      * @return array
      */
     public function provideHtmlFiles()
