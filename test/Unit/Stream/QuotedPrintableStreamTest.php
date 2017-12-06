@@ -149,4 +149,16 @@ final class QuotedPrintableStreamTest extends AbstractTestCase
         $this->assertEquals(str_repeat("tëst1\ttest2\r\n", 50), quoted_printable_decode($encoded));
     }
 
+    /**
+     * @test
+     */
+    public function it_produces_equally_result_with_to_string_twice()
+    {
+        $stream = QuotedPrintableStream::fromString(
+            file_get_contents(__DIR__.'/../../Stub/BugReport/issue-30.txt')
+        );
+
+        $this->assertEquals((string)$stream, (string)$stream);
+    }
+
 }

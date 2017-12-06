@@ -113,4 +113,15 @@ final class Base64StreamTest extends AbstractTestCase
         $this->assertLessThanOrEqual(76, max($lines));
     }
 
+    /**
+     * @test
+     */
+    public function it_produces_equally_result_with_to_string_twice()
+    {
+        $stream = Base64EncodedStream::fromString(
+            file_get_contents(__DIR__.'/../../Stub/BugReport/issue-30.txt')
+        );
+
+        $this->assertEquals((string)$stream, (string)$stream);
+    }
 }

@@ -89,6 +89,7 @@ final class QuotedPrintableStream implements StreamInterface
      */
     public function __toString(): string
     {
+        $this->rewind();
         return $this->decoratedStream->__toString();
     }
 

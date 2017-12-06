@@ -80,6 +80,7 @@ final class Base64EncodedStream implements StreamInterface
      */
     public function __toString(): string
     {
+        $this->rewind();
         return $this->decoratedStream->__toString();
     }
 
