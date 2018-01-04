@@ -47,6 +47,10 @@ final class ArrayBackend implements BackendInterface
      */
     public function store(EmailAddress $mailbox, MessageInterface $message, string $folder): void
     {
+        if (!isset($this->addresses[(string)$mailbox])) {
+            throw new \UnexpectedValueException('Unknown mailbox');
+        }
+
         if (!isset($this->backend[(string)$mailbox])) {
             $this->backend[(string)$mailbox] = [];
         }
@@ -55,34 +59,6 @@ final class ArrayBackend implements BackendInterface
             $this->backend[(string)$mailbox][$folder] = [];
         }
 
-        $this->backend[(string)$mailbox][$folder][] = $mailbox;
-    }
-
-    /**
-     * @param EmailAddress $mailbox
-     * @param string $folder
-     * @param int $number
-     * @param int $offset
-     * @return iterable
-     */
-    public function fetch(EmailAddress $mailbox, string $folder, int $number, int $offset = 0): iterable
-    {
-        return new \LimitIterator(
-            new \ArrayIterator(
-                $this->backend[(string)$mailbox][$folder] ?? []
-            ),
-            $offset,
-            $number
-        );
-    }
-
-    /**
-     * @param EmailAddress $mailbox
-     * @param string $folder
-     * @param string $id
-     */
-    public function remove(EmailAddress $mailbox, string $folder, string $id): void
-    {
-        unset($this->backend[(string)$mailbox][$folder][$id]);
+        $this->backend[(string)$mailbox][$folder][] = $message;
     }
 }

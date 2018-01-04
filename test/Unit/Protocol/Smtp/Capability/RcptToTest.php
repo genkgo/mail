@@ -56,4 +56,22 @@ final class RcptToTest extends AbstractTestCase
         $session = $capability->manifest($connection, (new Session())->withCommand('RCPT TO <test@@genkgo.nl>'));
         $this->assertSame(Session::STATE_CONNECTED, $session->getState());
     }
+
+    /**
+     * @test
+     */
+    public function it_rejects_unknown_mailbox()
+    {
+        $connection = $this->createMock(ConnectionInterface::class);
+
+        $connection
+            ->expects($this->at(0))
+            ->method('send')
+            ->with('550 Unknown mailbox');
+
+        $capability = new RcptToCapability(new ArrayBackend(['test@genkgo.nl'], new \ArrayObject()));
+
+        $session = $capability->manifest($connection, (new Session())->withCommand('RCPT TO <other@genkgo.nl>'));
+        $this->assertSame(Session::STATE_CONNECTED, $session->getState());
+    }
 }

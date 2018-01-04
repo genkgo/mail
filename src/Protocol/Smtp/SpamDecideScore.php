@@ -35,7 +35,7 @@ final class SpamDecideScore
      */
     public function isHam(int $score): bool
     {
-        return $this->ham > $score;
+        return $this->ham >= $score;
     }
 
     /**
@@ -44,7 +44,7 @@ final class SpamDecideScore
      */
     public function isSpam(int $score): bool
     {
-        return $this->spam < $score;
+        return $this->spam <= $score;
     }
 
     /**
@@ -53,7 +53,7 @@ final class SpamDecideScore
      */
     public function isLikelySpam(int $score): bool
     {
-        return $this->ham <= $score && $this->spam >= $score;
+        return $this->ham < $score && $this->spam > $score;
     }
 
 }

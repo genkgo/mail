@@ -26,6 +26,6 @@ final class UnknownUserBackend implements BackendInterface
      */
     public function store(EmailAddress $mailbox, MessageInterface $message, string $folder): void
     {
-        throw new \InvalidArgumentException('Unknown mailbox');
+        throw new \UnexpectedValueException('Unknown mailbox');
     }
 }

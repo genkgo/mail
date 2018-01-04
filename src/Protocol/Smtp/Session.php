@@ -64,22 +64,6 @@ final class Session
     private $recipients = [];
 
     /**
-     * @return string
-     */
-    public function getCommand(): string
-    {
-        return $this->command;
-    }
-
-    /**
-     * @return int
-     */
-    public function getState(): int
-    {
-        return $this->state;
-    }
-
-    /**
      * @param int $state
      * @return Session
      */
@@ -135,6 +119,26 @@ final class Session
         $clone->state = self::STATE_MESSAGE_RECEIVED;
         $clone->message = $message;
         return $clone;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCommand(): string
+    {
+        if ($this->command === null) {
+            throw new \UnexpectedValueException('No command');
+        }
+
+        return $this->command;
+    }
+
+    /**
+     * @return int
+     */
+    public function getState(): int
+    {
+        return $this->state;
     }
 
     /**
