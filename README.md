@@ -3,6 +3,7 @@
 
 [![Latest Version](https://img.shields.io/github/release/genkgo/mail.svg?style=flat-square)](https://github.com/genkgo/mail/releases)
 [![Build Status](https://travis-ci.org/genkgo/mail.svg)](https://travis-ci.org/genkgo/mail)
+[![Build Status](https://ci.appveyor.com/api/projects/status/ceb2ywsddoknaero/branch/master)](https://ci.appveyor.com/project/frederikbosch/mail)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/genkgo/mail/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/genkgo/mail/)
 [![Code Coverage](https://scrutinizer-ci.com/g/genkgo/mail/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/genkgo/mail/)
 
