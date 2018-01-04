@@ -59,6 +59,7 @@ $ composer require genkgo/mail
 - Discourages SSL
 - DKIM signed message
 - Security is high prioritized
+- SMTP server for testing purposes
 - Great RFC compliance
 - Cast messages to valid string source
 - Library has no external dependencies (but uses intl extension)
@@ -68,6 +69,7 @@ $ composer require genkgo/mail
 ## Upcoming features
 
 - Encrypted and signed messages
+- IMAP support
 
 
 ## Documentation
