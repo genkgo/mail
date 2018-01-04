@@ -15,9 +15,7 @@ use Genkgo\Mail\Protocol\Smtp\SpamScore\ForbiddenWordSpamScore;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-$backend = new ArrayBackend([
-    'mailbox@domain.com'
-]);
+$backend = new ArrayBackend(['mailbox@domain.com'], new \ArrayObject());
 
 $server = new Server(
     new PlainTcpConnectionListener('0.0.0.0', 8025),
