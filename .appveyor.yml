@@ -20,7 +20,6 @@ environment:
     - PHP_VERSION: '7.1.12-Win32-VC14'
       DEPENDENCIES: ''
 
-matrix:
 fast_finish: true
 
 cache:
