@@ -1,61 +1,53 @@
 build: false
-shallow_clone: true
 platform:
-  - x86
   - x64
-clone_folder: c:\projects\mail
-max_jobs: 3
-version: '{build}.{branch}'
+clone_folder: c:\projects\php-project-workspace
 
+## Build matrix for lowest and highest possible targets
 environment:
-  COMPOSER_ROOT_VERSION: '7.0-dev'
-
   matrix:
-    - PHP_VERSION: '7.2.0-Win32-VC15'
-      DEPENDENCIES: '--prefer-lowest'
-    - PHP_VERSION: '7.2.0-Win32-VC15'
-      DEPENDENCIES: ''
-    - PHP_VERSION: '7.1.12-Win32-VC14'
-      DEPENDENCIES: '--prefer-lowest'
-    - PHP_VERSION: '7.1.12-Win32-VC14'
-      DEPENDENCIES: ''
+  - dependencies: lowest
+    php_ver_target: 7.1
+  - dependencies: highest
+    php_ver_target: 7.1
+  - dependencies: highest
+    php_ver_target: 7.2
 
-matrix:
-  fast_finish: true
-
+## Cache composer, chocolatey and php bits
 cache:
-  - c:\php -> appveyor.yml
-  - '%LOCALAPPDATA%\Composer\files'
+    - '%LOCALAPPDATA%\Composer\files -> composer.lock'
+    - composer.phar
+    - C:\ProgramData\chocolatey\bin -> .appveyor.yml
+    - C:\ProgramData\chocolatey\lib -> .appveyor.yml
+    - c:\tools\php -> .appveyor.yml
 
+## Set up environment varriables
 init:
-- SET PATH=c:\php\%PHP_VERSION%;%PATH%
+    - SET PATH=C:\Program Files\OpenSSL;c:\tools\php;%PATH%
+    - SET COMPOSER_NO_INTERACTION=1
+    - SET PHP=1
+    - SET ANSICON=121x90 (121x90)
 
+## Install PHP and composer, and run the appropriate composer command
 install:
-  - IF NOT EXIST c:\php mkdir c:\php
-  - IF NOT EXIST c:\php\%PHP_VERSION% mkdir c:\php\%PHP_VERSION%
-  - cd c:\php\%PHP_VERSION%
-  - IF NOT EXIST php-installed.txt appveyor DownloadFile http://windows.php.net/downloads/releases/php-%PHP_VERSION%-x86.zip
-  - IF NOT EXIST php-installed.txt 7z x php-%PHP_VERSION%-x86.zip -y >nul
-  - IF NOT EXIST php-installed.txt del /Q *.zip
-  - IF NOT EXIST php-installed.txt copy /Y php.ini-development php.ini
-  - IF NOT EXIST php-installed.txt echo max_execution_time=1200 >> php.ini
-  - IF NOT EXIST php-installed.txt echo date.timezone="UTC" >> php.ini
-  - IF NOT EXIST php-installed.txt echo extension_dir=ext >> php.ini
-  - IF NOT EXIST php-installed.txt echo extension=php_curl.dll >> php.ini
-  - IF NOT EXIST php-installed.txt echo extension=php_openssl.dll >> php.ini
-  - IF NOT EXIST php-installed.txt echo extension=php_mbstring.dll >> php.ini
-  - IF NOT EXIST php-installed.txt echo extension=php_fileinfo.dll >> php.ini
-  - IF NOT EXIST php-installed.txt echo extension=php_mysqli.dll >> php.ini
-  - IF NOT EXIST php-installed.txt echo extension=php_pdo_sqlite.dll >> php.ini
-  - IF NOT EXIST php-installed.txt echo zend.assertions=1 >> php.ini
-  - IF NOT EXIST php-installed.txt echo assert.exception=On >> php.ini
-  - IF NOT EXIST php-installed.txt appveyor DownloadFile https://getcomposer.org/composer.phar
-  - IF NOT EXIST php-installed.txt echo @php %%~dp0composer.phar %%* > composer.bat
-  - IF NOT EXIST php-installed.txt type nul >> php-installed.txt
-  - cd c:\projects\mail
-  - cd c:\phpunit
-  - composer update --no-interaction --no-ansi --no-progress --no-suggest --optimize-autoloader --prefer-stable %DEPENDENCIES%
+    - IF EXIST c:\tools\php (SET PHP=0)
+    - ps: appveyor-retry cinst --params '""/InstallDir:C:\tools\php""' --ignore-checksums -y php --version ((choco search php --exact --all-versions -r | select-string -pattern $env:php_ver_target | sort { [version]($_ -split '\|' | select -last 1) } -Descending | Select-Object -first 1) -replace '[php|]','')
+    - cd c:\tools\php
+    - IF %PHP%==1 copy php.ini-production php.ini /Y
+    - IF %PHP%==1 echo date.timezone="UTC" >> php.ini
+    - IF %PHP%==1 echo extension_dir=ext >> php.ini
+    - IF %PHP%==1 echo extension=php_openssl.dll >> php.ini
+    - IF %PHP%==1 echo extension=php_mbstring.dll >> php.ini
+    - IF %PHP%==1 echo extension=php_fileinfo.dll >> php.ini
+    - IF %PHP%==1 echo @php %%~dp0composer.phar %%* > composer.bat
+    - appveyor-retry appveyor DownloadFile https://getcomposer.org/composer.phar
+    - cd c:\projects\php-project-workspace
+    - IF %dependencies%==lowest appveyor-retry composer update --prefer-lowest --no-progress --profile -n
+    - IF %dependencies%==current appveyor-retry composer install --no-progress --profile
+    - IF %dependencies%==highest appveyor-retry composer update --no-progress --profile -n
+    - composer show
 
+## Run the actual test
 test_script:
-  - cd c:\projects\mail
-  - vendor/bin/phpunit --colors=always
+    - cd c:\projects\php-project-workspace
+    - vendor/bin/phpunit --colors=always
