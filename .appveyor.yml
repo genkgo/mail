@@ -13,6 +13,10 @@ environment:
   - dependencies: highest
     php_ver_target: 7.2
 
+## Cancel all if one fails
+matrix:
+  fast_finish: true
+
 ## Cache composer, chocolatey and php bits
 cache:
     - '%LOCALAPPDATA%\Composer\files -> composer.lock'
