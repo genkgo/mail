@@ -98,8 +98,6 @@ abstract class AbstractConnection implements ConnectionInterface
             throw new CannotWriteToStreamException();
         }
 
-        $this->verifyAlive();
-
         return $bytesWritten;
     }
 
