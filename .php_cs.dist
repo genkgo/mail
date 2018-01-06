@@ -1,0 +1,18 @@
+<?php
+
+if (!file_exists(__DIR__ . '/src')) {
+    exit(0);
+}
+
+return PhpCsFixer\Config::create()
+    ->setRules([
+        '@Symfony' => true,
+        '@Symfony:risky' => true,
+        '@PHP71Migration:risky' => true,
+        '@PHPUnit60Migration:risky' => true,
+        'array_syntax' => ['syntax' => 'short'],
+        'declare_strict_types' => true,
+        'yoda_style' => false,
+    ])
+    ->setRiskyAllowed(true)
+;

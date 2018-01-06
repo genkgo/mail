@@ -7,10 +7,11 @@
         "ext-intl": "*"
     },
     "require-dev": {
-        "phpunit/phpunit": "~6",
-        "predis/predis": "~1.0",
+        "ext-openssl": "*",
+        "friendsofphp/php-cs-fixer": "^2.9",
         "phpstan/phpstan": "^0.7.0",
-        "ext-openssl": "*"
+        "phpunit/phpunit": "~6",
+        "predis/predis": "~1.0"
     },
     "authors": [
         {
@@ -31,5 +32,11 @@
         "psr-4": {
             "Genkgo\\TestMail\\": ["test"]
         }
+    },
+    "scripts": {
+        "lint": "vendor/bin/php-cs-fixer fix --verbose ."
+    },
+    "scripts-descriptions": {
+        "lint": "Run PHP-CS-Fixer and make changes to comply with code style standards"
     }
 }

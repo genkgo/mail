@@ -17,10 +17,16 @@ matrix:
     - php: nightly
 before_script:
   - composer self-update
+  # Nightly (unreleased) PHP versions are generally not supported by PHP-CS-Fixer
+  - if [ "$TRAVIS_PHP_VERSION" = "nightly" ]; then composer remove --dev --no-update friendsofphp/php-cs-fixer ; fi
   - if [ -z "$dependencies" ]; then composer install; fi;
   - if [ "$dependencies" = "lowest" ]; then composer update --prefer-lowest -n; fi;
   - if [ "$dependencies" = "highest" ]; then composer update -n; fi;
-after_script:
-  - vendor/bin/phpunit --coverage-clover=coverage.clover
   - wget https://scrutinizer-ci.com/ocular.phar
+script:
+  - vendor/bin/phpunit --coverage-clover=coverage.clover
+after_script:
   - php ocular.phar code-coverage:upload --format=php-clover coverage.clover
+cache:
+  directories:
+    - $HOME/.composer/cache/files/
