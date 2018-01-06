@@ -51,6 +51,19 @@ final class Reply
     }
 
     /**
+     * @return bool
+     */
+    public function isCommandNotImplemented(): bool
+    {
+        try {
+            $this->assert(502);
+            return true;
+        } catch (AssertionFailedException $e) {
+            return false;
+        }
+    }
+
+    /**
      * @return array
      */
     public function getMessages(): array

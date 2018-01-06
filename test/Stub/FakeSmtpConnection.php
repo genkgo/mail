@@ -54,6 +54,10 @@ final class FakeSmtpConnection implements ConnectionInterface
      * @var array
      */
     private $metaData = [];
+    /**
+     * @var bool
+     */
+    private $isLegacy = false;
 
     /**
      * FakeSmtpConnection constructor.
@@ -63,6 +67,17 @@ final class FakeSmtpConnection implements ConnectionInterface
     {
         $this->advertisements = $advertisements;
         $this->reset();
+    }
+
+    /**
+     * @param bool $isLegacy
+     */
+    public static function newLegacyRfc821(): self
+    {
+        $factory = new self();
+        $factory->isLegacy = true;
+
+        return $factory;
     }
 
     /**
@@ -122,9 +137,17 @@ final class FakeSmtpConnection implements ConnectionInterface
         $command = reset($parameters);
 
         switch ($command) {
+            case 'HELO':
+                $this->state = self::STATE_EHLO;
+                $this->buffer = array_merge([$this->greeting]);
+                break;
             case 'EHLO':
                 $this->state = self::STATE_EHLO;
-                $this->buffer = array_merge([$this->greeting], $this->advertisements);
+                if ($this->isLegacy) {
+                    $this->buffer = ['502 Command not implemented'];
+                } else {
+                    $this->buffer = array_merge([$this->greeting], $this->advertisements);
+                }
                 break;
             case 'STARTTLS':
                 $this->buffer = ['220 OK'];
