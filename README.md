@@ -82,6 +82,7 @@ $ composer require genkgo/mail
  
 This library tends to be as compliant with e-mail RFCs as possible. It should be compliant with the following RFCs.
 
+- [RFC 821, Simple Mail Transfer Protocol](https://tools.ietf.org/html/rfc821)
 - [RFC 1896, The text/enriched MIME Content-type](https://tools.ietf.org/html/rfc1896)
 - [RFC 2822, Internet Message Format](https://tools.ietf.org/html/rfc2822)
 - [RFC 2045, Multipurpose Internet Mail Extensions (MIME) Part One](https://tools.ietf.org/html/rfc2045)

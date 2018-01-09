@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Genkgo\TestMail\Unit\Protocol\Smtp;
 
 use Genkgo\Mail\Exception\ConnectionRefusedException;
+use Genkgo\Mail\Protocol\CryptoConstant;
 use Genkgo\Mail\Protocol\Smtp\Client;
 use Genkgo\Mail\Protocol\Smtp\ClientFactory;
 use Genkgo\Mail\Protocol\Smtp\Request\NoopCommand;
@@ -24,6 +25,7 @@ final class ClientFactoryTest extends AbstractTestCase
         $this->assertNotSame($factory, $factory->withEhlo('127.0.0.1'));
         $this->assertNotSame($factory, $factory->withTimeout(10));
         $this->assertNotSame($factory, $factory->withInsecureConnectionAllowed());
+        $this->assertNotSame($factory, $factory->withStartTls(CryptoConstant::getDefaultMethod(PHP_VERSION)));
     }
 
     /**

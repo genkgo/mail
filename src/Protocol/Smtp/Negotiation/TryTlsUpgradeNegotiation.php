@@ -8,6 +8,7 @@ use Genkgo\Mail\Protocol\ConnectionInterface;
 use Genkgo\Mail\Protocol\Smtp\Client;
 use Genkgo\Mail\Protocol\Smtp\NegotiationInterface;
 use Genkgo\Mail\Protocol\Smtp\Request\EhloCommand;
+use Genkgo\Mail\Protocol\Smtp\Request\HeloCommand;
 use Genkgo\Mail\Protocol\Smtp\Request\StartTlsCommand;
 use Genkgo\Mail\Protocol\Smtp\Response\EhloResponse;
 
@@ -51,6 +52,9 @@ final class TryTlsUpgradeNegotiation implements NegotiationInterface
     {
         if (empty($this->connection->getMetaData(['crypto']))) {
             $reply = $client->request(new EhloCommand($this->ehlo));
+            if ($reply->isCommandNotImplemented()) {
+                $reply = $client->request(new HeloCommand($this->ehlo));
+            }
             $reply->assertCompleted();
 
             $ehloResponse = new EhloResponse($reply);

@@ -86,7 +86,7 @@ final class ReplyTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_an_error_400()
+    public function it_is_an_error_400()
     {
         $client = new Client(new FakeSmtpConnection());
 
@@ -99,7 +99,7 @@ final class ReplyTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_an_error_500()
+    public function it_is_an_error_500()
     {
         $client = new Client(new FakeSmtpConnection());
 
@@ -109,4 +109,29 @@ final class ReplyTest extends AbstractTestCase
         $this->assertTrue($reply->isError());
     }
 
+    /**
+     * @test
+     */
+    public function it_is_an_implemented_command()
+    {
+        $client = new Client(new FakeSmtpConnection());
+
+        $reply = (new Reply($client))
+            ->withLine(250, 'Ok');
+
+        $this->assertFalse($reply->isCommandNotImplemented());
+    }
+
+    /**
+     * @test
+     */
+    public function it_is_an_unimplemented_command(): void
+    {
+        $client = new Client(new FakeSmtpConnection());
+
+        $reply = (new Reply($client))
+            ->withLine(502, 'error');
+
+        $this->assertTrue($reply->isCommandNotImplemented());
+    }
 }
