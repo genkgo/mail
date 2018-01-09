@@ -3,15 +3,15 @@ declare(strict_types=1);
 
 namespace Genkgo\Mail\Protocol\Smtp;
 
+use Genkgo\Mail\Protocol\AutomaticConnection;
 use Genkgo\Mail\Protocol\ConnectionInterface;
 use Genkgo\Mail\Protocol\CryptoConstant;
 use Genkgo\Mail\Protocol\PlainTcpConnection;
-use Genkgo\Mail\Protocol\AutomaticConnection;
+use Genkgo\Mail\Protocol\SecureConnection;
 use Genkgo\Mail\Protocol\SecureConnectionOptions;
 use Genkgo\Mail\Protocol\Smtp\Negotiation\AuthNegotiation;
 use Genkgo\Mail\Protocol\Smtp\Negotiation\ForceTlsUpgradeNegotiation;
 use Genkgo\Mail\Protocol\Smtp\Negotiation\TryTlsUpgradeNegotiation;
-use Genkgo\Mail\Protocol\SecureConnection;
 
 /**
  * Class ClientFactory
@@ -225,9 +225,10 @@ final class ClientFactory
                 );
                 break;
             default:
-                throw new \InvalidArgumentException(
-                    'Use smtp:// smtps:// or smtp-starttls://'
-                );
+                throw new \InvalidArgumentException(sprintf(
+                    'Provided scheme "%s://" is invalid. Only smtp:// smtps:// and smtp-starttls:// are supported',
+                    $components['scheme']
+                ));
         }
 
         $factory = new self($connection);
