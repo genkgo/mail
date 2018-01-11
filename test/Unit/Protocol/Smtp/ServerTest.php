@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Genkgo\TestMail\Unit\Protocol\Smtp;
 
+use Genkgo\Mail\Exception\ConnectionBrokenException;
+use Genkgo\Mail\Exception\ConnectionClosedException;
 use Genkgo\Mail\Exception\ConnectionListenerException;
 use Genkgo\Mail\Exception\ConnectionTimeoutException;
 use Genkgo\Mail\Protocol\ConnectionInterface;
@@ -121,6 +123,128 @@ final class ServerTest extends AbstractTestCase
             ->expects($this->at(2))
             ->method('send')
             ->with("421 command timeout - closing connection\r\n");
+
+        $connection
+            ->expects($this->at(3))
+            ->method('disconnect');
+
+        $listener = $this->createMock(ConnectionListenerInterface::class);
+        $listener
+            ->expects($this->at(0))
+            ->method('listen')
+            ->willReturn($connection);
+
+        $listener
+            ->expects($this->at(1))
+            ->method('listen')
+            ->willThrowException(new ConnectionListenerException());
+
+        $server = new Server($listener, [], 'localhost');
+        $server->start();
+    }
+
+    /**
+     * @test
+     */
+    public function it_closes_connection_when_client_closed_it()
+    {
+        $this->expectException(ConnectionListenerException::class);
+
+        $connection = $this->createMock(ConnectionInterface::class);
+        $connection
+            ->expects($this->at(0))
+            ->method('send')
+            ->with("220 Welcome to Genkgo Mail Server\r\n");
+
+        $connection
+            ->expects($this->at(1))
+            ->method('receive')
+            ->willThrowException(new ConnectionClosedException());
+
+        $connection
+            ->expects($this->at(2))
+            ->method('disconnect');
+
+        $listener = $this->createMock(ConnectionListenerInterface::class);
+        $listener
+            ->expects($this->at(0))
+            ->method('listen')
+            ->willReturn($connection);
+
+        $listener
+            ->expects($this->at(1))
+            ->method('listen')
+            ->willThrowException(new ConnectionListenerException());
+
+        $server = new Server($listener, [], 'localhost');
+        $server->start();
+    }
+
+    /**
+     * @test
+     */
+    public function it_closes_broken_connections_and_notifies_client()
+    {
+        $this->expectException(ConnectionListenerException::class);
+
+        $connection = $this->createMock(ConnectionInterface::class);
+        $connection
+            ->expects($this->at(0))
+            ->method('send')
+            ->with("220 Welcome to Genkgo Mail Server\r\n");
+
+        $connection
+            ->expects($this->at(1))
+            ->method('receive')
+            ->willThrowException(new ConnectionBrokenException());
+
+        $connection
+            ->expects($this->at(2))
+            ->method('send')
+            ->with("554 transaction failed, unexpected value - closing connection\r\n");
+
+        $connection
+            ->expects($this->at(3))
+            ->method('disconnect');
+
+        $listener = $this->createMock(ConnectionListenerInterface::class);
+        $listener
+            ->expects($this->at(0))
+            ->method('listen')
+            ->willReturn($connection);
+
+        $listener
+            ->expects($this->at(1))
+            ->method('listen')
+            ->willThrowException(new ConnectionListenerException());
+
+        $server = new Server($listener, [], 'localhost');
+        $server->start();
+    }
+
+    /**
+     * @test
+     */
+    public function it_closes_broken_connections_and_disconnects_if_notification_fails()
+    {
+        $this->expectException(ConnectionListenerException::class);
+
+        $connection = $this->createMock(ConnectionInterface::class);
+        $connection
+            ->expects($this->at(0))
+            ->method('send')
+            ->with("220 Welcome to Genkgo Mail Server\r\n");
+
+        $connection
+            ->expects($this->at(1))
+            ->method('receive')
+            ->willThrowException(new ConnectionBrokenException());
+
+        $connection
+            ->expects($this->at(2))
+            ->method('send')
+            ->with("554 transaction failed, unexpected value - closing connection\r\n")
+            ->willThrowException(new \UnexpectedValueException('Some unknown exception'));
 
         $connection
             ->expects($this->at(3))

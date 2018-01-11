@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace Genkgo\Mail\Protocol\Smtp;
 
+use Genkgo\Mail\Exception\ConnectionBrokenException;
 use Genkgo\Mail\Exception\ConnectionTimeoutException;
+use Genkgo\Mail\Exception\ConnectionClosedException;
 use Genkgo\Mail\Exception\UnknownSmtpCommandException;
 use Genkgo\Mail\Protocol\AppendCrlfConnection;
 use Genkgo\Mail\Protocol\ConnectionInterface;
@@ -73,6 +75,15 @@ final class Server
                 }
             } catch (ConnectionTimeoutException $e) {
                 $connection->send('421 command timeout - closing connection');
+                $connection->disconnect();
+            } catch (ConnectionBrokenException $e) {
+                try {
+                    $connection->send('554 transaction failed, unexpected value - closing connection');
+                } catch (\Exception $e) {
+                }
+
+                $connection->disconnect();
+            } catch (ConnectionClosedException $e) {
                 $connection->disconnect();
             }
         }
