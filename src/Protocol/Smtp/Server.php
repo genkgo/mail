@@ -59,33 +59,46 @@ final class Server
             $connection = new TrimCrlfConnection(new AppendCrlfConnection($connection));
             $connection->send('220 Welcome to Genkgo Mail Server');
 
+            $this->transport(
+                $connection,
+                function (ConnectionInterface $connection) {
+                    $session = new Session();
+
+                    while ($session = $session->withCommand($connection->receive())) {
+                        try {
+                            $session = $this->handleCommand($connection, $session);
+                        } catch (UnknownSmtpCommandException $e) {
+                            $connection->send('500 unrecognized command');
+                        }
+
+                        if ($session->getState() === Session::STATE_DISCONNECT) {
+                            break;
+                        }
+                    }
+                }
+            );
+        }
+    }
+
+    /**
+     * @param ConnectionInterface $connection
+     * @param \Closure $callback
+     */
+    private function transport(ConnectionInterface $connection, \Closure $callback) {
+        try {
+            $callback($connection);
+        } catch (ConnectionTimeoutException $e) {
+            $connection->send('421 command timeout - closing connection');
+            $connection->disconnect();
+        } catch (ConnectionBrokenException $e) {
             try {
-                $session = new Session();
-
-                while ($session = $session->withCommand($connection->receive())) {
-                    try {
-                        $session = $this->handleCommand($connection, $session);
-                    } catch (UnknownSmtpCommandException $e) {
-                        $connection->send('500 unrecognized command');
-                    }
-
-                    if ($session->getState() === Session::STATE_DISCONNECT) {
-                        break;
-                    }
-                }
-            } catch (ConnectionTimeoutException $e) {
-                $connection->send('421 command timeout - closing connection');
-                $connection->disconnect();
-            } catch (ConnectionBrokenException $e) {
-                try {
-                    $connection->send('554 transaction failed, unexpected value - closing connection');
-                } catch (\Exception $e) {
-                }
-
-                $connection->disconnect();
-            } catch (ConnectionClosedException $e) {
-                $connection->disconnect();
+                $connection->send('554 transaction failed, unexpected value - closing connection');
+            } catch (\Exception $e) {
             }
+
+            $connection->disconnect();
+        } catch (ConnectionClosedException $e) {
+            $connection->disconnect();
         }
     }
 
