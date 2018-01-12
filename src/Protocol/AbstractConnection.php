@@ -4,7 +4,9 @@ declare(strict_types=1);
 namespace Genkgo\Mail\Protocol;
 
 use Genkgo\Mail\Exception\CannotWriteToStreamException;
+use Genkgo\Mail\Exception\ConnectionBrokenException;
 use Genkgo\Mail\Exception\ConnectionTimeoutException;
+use Genkgo\Mail\Exception\ConnectionClosedException;
 
 /**
  * Class AbstractConnection
@@ -112,6 +114,10 @@ abstract class AbstractConnection implements ConnectionInterface
 
         $this->verifyAlive();
 
+        if ($response === false) {
+            throw new ConnectionBrokenException('Cannot receive information');
+        }
+
         return $response;
     }
 
@@ -158,6 +164,10 @@ abstract class AbstractConnection implements ConnectionInterface
         $info = stream_get_meta_data($this->resource);
         if ($info['timed_out']) {
             throw new ConnectionTimeoutException('Connection has timed out');
+        }
+
+        if ($info['eof']) {
+            throw new ConnectionClosedException('Connection is gone');
         }
     }
 }
