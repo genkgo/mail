@@ -61,6 +61,7 @@ class NullConnectionTest extends TestCase
 
     /**
      * @dataProvider providerSendReceive
+     * @test
      */
     public function it_responds_correctly_to_send_commands(string $send, string $expect): void
     {

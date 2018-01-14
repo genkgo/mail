@@ -70,7 +70,7 @@ final class FakeSmtpConnection implements ConnectionInterface
     }
 
     /**
-     * @param bool $isLegacy
+     * @return FakeSmtpConnection
      */
     public static function newLegacyRfc821(): self
     {

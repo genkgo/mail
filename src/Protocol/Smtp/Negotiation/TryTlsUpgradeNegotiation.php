@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Genkgo\Mail\Protocol\Smtp\Negotiation;
 
+use Genkgo\Mail\Exception\AssertionFailedException;
 use Genkgo\Mail\Exception\ConnectionInsecureException;
 use Genkgo\Mail\Protocol\ConnectionInterface;
 use Genkgo\Mail\Protocol\Smtp\Client;
@@ -50,11 +51,28 @@ final class TryTlsUpgradeNegotiation implements NegotiationInterface
      */
     public function negotiate(Client $client): void
     {
-        if (empty($this->connection->getMetaData(['crypto']))) {
-            $reply = $client->request(new EhloCommand($this->ehlo));
-            if ($reply->isCommandNotImplemented()) {
-                $reply = $client->request(new HeloCommand($this->ehlo));
+        if (!empty($this->connection->getMetaData(['crypto']))) {
+            return;
+        }
+
+        $reply = $client->request(new EhloCommand($this->ehlo));
+
+        if ($reply->isCommandNotImplemented()) {
+            // since EHLO is not implemented, let's try HELO and then STARTTLS
+            $reply = $client->request(new HeloCommand($this->ehlo));
+            $reply->assertCompleted();
+
+            try {
+                $client
+                    ->request(new StartTlsCommand())
+                    ->assertCompleted();
+
+                $this->connection->upgrade($this->crypto);
+            } catch (AssertionFailedException $e) {
+                // apparently HELO OR STARTTLS command is also not implemented
+                // but failure of STARTTLS is allowed
             }
+        } else {
             $reply->assertCompleted();
 
             $ehloResponse = new EhloResponse($reply);
