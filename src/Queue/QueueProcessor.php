@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace Genkgo\Mail\Queue;
 
 use Genkgo\Mail\Exception\AbstractProtocolException;
-use Genkgo\Mail\Exception\ConnectionRefusedException;
 use Genkgo\Mail\Exception\EmptyQueueException;
 use Genkgo\Mail\TransportInterface;
 
@@ -28,7 +27,7 @@ final class QueueProcessor
      * @param TransportInterface $transport
      * @param QueueInterface[] $queue
      */
-    public function __construct(TransportInterface $transport, array $queue)
+    public function __construct(TransportInterface $transport, iterable $queue)
     {
         $this->transport = $transport;
         $this->queue = $queue;
@@ -37,8 +36,9 @@ final class QueueProcessor
     /**
      *
      */
-    public function process()
+    public function process(): int
     {
+        $count = 0;
         foreach ($this->queue as $queue) {
             try {
                 while ($message = $queue->fetch()) {
@@ -49,12 +49,14 @@ final class QueueProcessor
 
                         // do not continue transporting messages
                         // apparently our transport is not ready to receive messages yet
-                        return;
+                        return $count;
                     }
+                    ++$count;
                 }
             } catch (EmptyQueueException $e) {
             }
         }
-    }
 
+        return $count;
+    }
 }
