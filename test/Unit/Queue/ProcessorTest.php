@@ -3,7 +3,6 @@
 namespace Genkgo\TestMail\Unit\Queue;
 
 use Genkgo\Mail\Exception\AbstractProtocolException;
-use Genkgo\TestMail\AbstractTestCase;;
 use Genkgo\Mail\Exception\ConnectionRefusedException;
 use Genkgo\Mail\GenericMessage;
 use Genkgo\Mail\Header\GenericHeader;
@@ -12,6 +11,7 @@ use Genkgo\Mail\Queue\ArrayObjectQueue;
 use Genkgo\Mail\Queue\QueueProcessor;
 use Genkgo\Mail\Stream\AsciiEncodedStream;
 use Genkgo\Mail\TransportInterface;
+use Genkgo\TestMail\AbstractTestCase;
 
 final class ProcessorTest extends AbstractTestCase
 {
@@ -51,7 +51,9 @@ final class ProcessorTest extends AbstractTestCase
             }));
 
         $processor = new QueueProcessor($transport, [$queue]);
-        $processor->process();
+        $count = $processor->process();
+
+        $this->assertSame(3, $count);
     }
 
     /**
@@ -77,9 +79,10 @@ final class ProcessorTest extends AbstractTestCase
         ;
 
         $processor = new QueueProcessor($transport, [$queue]);
-        $processor->process();
+        $count = $processor->process();
 
         $this->assertCount(3, $storage);
+        $this->assertSame(0, $count);
     }
 
     /**
@@ -105,9 +108,10 @@ final class ProcessorTest extends AbstractTestCase
         ;
 
         $processor = new QueueProcessor($transport, [$queue]);
-        $processor->process();
+        $count = $processor->process();
 
         $this->assertCount(3, $storage);
+        $this->assertSame(0, $count);
     }
 
     /**
