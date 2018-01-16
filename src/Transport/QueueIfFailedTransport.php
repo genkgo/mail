@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Genkgo\Mail\Transport;
 
-use DateTimeImmutable;
 use Genkgo\Mail\Exception\AbstractProtocolException;
 use Genkgo\Mail\Exception\QueueIfFailedException;
 use Genkgo\Mail\Exception\QueueStoreException;
@@ -73,7 +72,7 @@ final class QueueIfFailedTransport implements TransportInterface
                     $message = $message->withHeader(
                         new GenericHeader(
                             self::QUEUED_HEADER,
-                            (new DateTimeImmutable('now'))->format('r')
+                            (new \DateTimeImmutable('now'))->format('r')
                         )
                     );
                 }

@@ -2,12 +2,15 @@
 
 namespace Genkgo\TestMail\Unit\Queue;
 
-use Genkgo\TestMail\AbstractTestCase;;
 use Genkgo\Mail\Exception\EmptyQueueException;
+use Genkgo\Mail\Exception\QueueStoreException;
 use Genkgo\Mail\GenericMessage;
 use Genkgo\Mail\Header\Date;
+use Genkgo\Mail\MessageInterface;
 use Genkgo\Mail\Queue\RedisQueue;
+use Genkgo\TestMail\AbstractTestCase;
 use Predis\ClientInterface;
+use Predis\Connection\ConnectionException;
 
 final class RedisQueueTest extends AbstractTestCase
 {
@@ -121,4 +124,62 @@ final class RedisQueueTest extends AbstractTestCase
         $this->assertCount(2, $queue);
     }
 
+    /**
+     * @test
+     */
+    public function it_catches_connection_exception_in_store(): void
+    {
+        $this->expectException(QueueStoreException::class);
+        $this->expectExceptionMessageRegExp('/Cannot add message to redis queue/');
+
+        $message = $this->createMock(MessageInterface::class);
+        $client = $this->newConnectionExceptionClient('rpush', ['queue', '']);
+        $queue = new RedisQueue($client, 'queue');
+
+        $queue->store($message);
+    }
+
+    /**
+     * @test
+     */
+    public function it_catches_connection_exception_in_fetch(): void
+    {
+        $this->expectException(QueueStoreException::class);
+        $this->expectExceptionMessageRegExp('/Cannot add message to redis queue/');
+
+        $message = $this->createMock(MessageInterface::class);
+        $client = $this->newConnectionExceptionClient('lpop', ['queue']);
+        $queue = new RedisQueue($client, 'queue');
+
+        $queue->fetch($message);
+    }
+
+    /**
+     * @test
+     */
+    public function it_catches_connection_exception_in_count(): void
+    {
+        $this->expectException(QueueStoreException::class);
+        $this->expectExceptionMessageRegExp('/Cannot get messages from redis queue/');
+
+        $message = $this->createMock(MessageInterface::class);
+        $client = $this->newConnectionExceptionClient('llen', ['queue']);
+        $queue = new RedisQueue($client, 'queue');
+
+        $queue->count($message);
+    }
+
+    private function newConnectionExceptionClient(string $method, array $args): ClientInterface
+    {
+        $connectionException = $this->createMock(ConnectionException::class);
+        $client = $this->createMock(ClientInterface::class);
+        $client
+            ->expects($this->once())
+            ->method('__call')
+            ->with($method, $args)
+            ->willThrowException($connectionException)
+        ;
+
+        return $client;
+    }
 }

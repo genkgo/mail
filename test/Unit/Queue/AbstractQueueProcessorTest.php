@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Genkgo\TestMail\Unit\Queue;
 
@@ -8,14 +9,13 @@ use Genkgo\Mail\GenericMessage;
 use Genkgo\Mail\Header\GenericHeader;
 use Genkgo\Mail\MessageInterface;
 use Genkgo\Mail\Queue\ArrayObjectQueue;
-use Genkgo\Mail\Queue\QueueProcessor;
+use Genkgo\Mail\Queue\QueueProcessorInterface;
 use Genkgo\Mail\Stream\AsciiEncodedStream;
 use Genkgo\Mail\TransportInterface;
 use Genkgo\TestMail\AbstractTestCase;
 
-final class ProcessorTest extends AbstractTestCase
+abstract class AbstractQueueProcessorTest extends AbstractTestCase
 {
-
     /**
      * @test
      */
@@ -50,7 +50,7 @@ final class ProcessorTest extends AbstractTestCase
                 return true;
             }));
 
-        $processor = new QueueProcessor($transport, [$queue]);
+        $processor = $this->getQueueProcessor($transport, [$queue]);
         $count = $processor->process();
 
         $this->assertSame(3, $count);
@@ -78,7 +78,7 @@ final class ProcessorTest extends AbstractTestCase
             ->willThrowException(new ConnectionRefusedException())
         ;
 
-        $processor = new QueueProcessor($transport, [$queue]);
+        $processor = $this->getQueueProcessor($transport, [$queue]);
         $count = $processor->process();
 
         $this->assertCount(3, $storage);
@@ -107,7 +107,7 @@ final class ProcessorTest extends AbstractTestCase
             ->willThrowException(new class extends AbstractProtocolException{})
         ;
 
-        $processor = new QueueProcessor($transport, [$queue]);
+        $processor = $this->getQueueProcessor($transport, [$queue]);
         $count = $processor->process();
 
         $this->assertCount(3, $storage);
@@ -125,4 +125,5 @@ final class ProcessorTest extends AbstractTestCase
             ->withBody(new AsciiEncodedStream($subject));
     }
 
+    abstract protected function getQueueProcessor($transport, array $queue): QueueProcessorInterface;
 }
