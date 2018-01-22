@@ -3,11 +3,14 @@ declare(strict_types=1);
 
 namespace Genkgo\Mail\Protocol\Imap\Request;
 
-use Genkgo\Mail\Protocol\Imap\RequestInterface;
 use Genkgo\Mail\Stream\StringStream;
 use Genkgo\Mail\StreamInterface;
 
-final class SelectCommand implements RequestInterface
+/**
+ * Class SelectCommand
+ * @package Genkgo\Mail\Protocol\Imap\Request
+ */
+final class SelectCommand extends AbstractCommand
 {
     /**
      * @var string
@@ -25,7 +28,7 @@ final class SelectCommand implements RequestInterface
     /**
      * @return StreamInterface
      */
-    public function toStream(): StreamInterface
+    public function createStream(): StreamInterface
     {
         return new StringStream(
             sprintf(

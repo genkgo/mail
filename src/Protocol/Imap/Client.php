@@ -11,7 +11,7 @@ use Genkgo\Mail\Protocol\Imap\Negotiation\ReceiveWelcomeNegotiation;
  * Class Client
  * @package Genkgo\Mail\Protocol\Imap
  */
-final class Client implements EmitterInterface
+final class Client
 {
     /**
      *
@@ -47,8 +47,6 @@ final class Client implements EmitterInterface
     {
         $this->connection = new AppendCrlfConnection($connection);
 
-        $this->tagList = $this->newTagList();
-
         $this->addNegotiator(new ReceiveWelcomeNegotiation($this->connection));
 
         foreach ($negotiators as $negotiator) {
@@ -60,6 +58,8 @@ final class Client implements EmitterInterface
                 $negotiator->negotiate($this);
             }
         });
+
+        $this->tagList = $this->newTagList();
     }
 
     /**
@@ -72,16 +72,18 @@ final class Client implements EmitterInterface
 
     /**
      * @param RequestInterface $request
-     * @return Response
+     * @return AggregateResponse
      */
-    public function emit(RequestInterface $request): Response
+    public function emit(RequestInterface $request): AggregateResponse
     {
-        $stream = $request->toStream();
-        $stream->rewind();
-
         $this->tagList->next();
 
-        $bytes = $this->tagList->current() . ' ';
+        $request = $request->withTag($this->tagList->current());
+        $stream = $request->toStream();
+
+        $stream->rewind();
+
+        $bytes = '';
         while (!$stream->eof()) {
             $bytes .= $stream->read(1000);
 
@@ -101,13 +103,13 @@ final class Client implements EmitterInterface
 
         $this->connection->send($bytes);
 
-        $reply = new Response(new UntaggedEmitter($this->connection), $request);
-        do {
-            $line = $this->connection->receive();
-            $reply = $reply->withLine($line);
-        } while (isset($line[0]) && $line[0] === '*');
+        $response = new AggregateResponse($request);
 
-        return $reply;
+        while (!$response->hasCompleted()) {
+            $response = $response->withLine($this->connection->receive());
+        }
+
+        return $response;
     }
 
     /**
@@ -118,7 +120,8 @@ final class Client implements EmitterInterface
         $i = 0;
 
         while (true) {
-            yield 'TAG' . ($i + 1);
+            $i++;
+            yield new Tag('TAG' . $i);
         }
     }
 }

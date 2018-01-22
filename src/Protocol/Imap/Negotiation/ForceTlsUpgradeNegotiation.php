@@ -6,10 +6,11 @@ namespace Genkgo\Mail\Protocol\Imap\Negotiation;
 use Genkgo\Mail\Exception\ConnectionInsecureException;
 use Genkgo\Mail\Protocol\ConnectionInterface;
 use Genkgo\Mail\Protocol\Imap\Client;
+use Genkgo\Mail\Protocol\Imap\CompletionResult;
 use Genkgo\Mail\Protocol\Imap\NegotiationInterface;
 use Genkgo\Mail\Protocol\Imap\Request\CapabilityCommand;
 use Genkgo\Mail\Protocol\Imap\Request\StartTlsCommand;
-use Genkgo\Mail\Protocol\Imap\Response\CapabilityResponse;
+use Genkgo\Mail\Protocol\Imap\Response\CapabilityList;
 
 final class ForceTlsUpgradeNegotiation implements NegotiationInterface
 {
@@ -42,19 +43,30 @@ final class ForceTlsUpgradeNegotiation implements NegotiationInterface
      */
     public function negotiate(Client $client): void
     {
-        if (empty($this->connection->getMetaData(['crypto']))) {
-            $reply = $client->emit(new CapabilityCommand());
-            $reply->assertOk();
+        if (!empty($this->connection->getMetaData(['crypto']))) {
+            return;
+        }
 
-            $capabilityResponse = new CapabilityResponse($reply);
+        $responseList = $client->emit(new CapabilityCommand());
 
-            if ($capabilityResponse->isAdvertising('STARTTLS')) {
-                $client
-                    ->emit(new StartTlsCommand())
-                    ->assertTagged();
+        $capabilities = CapabilityList::fromResponse(
+            $responseList
+                ->first()
+                ->assertCommand('CAPABILITY')
+        );
 
-                $this->connection->upgrade($this->crypto);
-            }
+        $responseList
+            ->last()
+            ->assertTagged();
+
+        if ($capabilities->isAdvertising('STARTTLS')) {
+            $client
+                ->emit(new StartTlsCommand())
+                ->last()
+                ->assertCompletion(CompletionResult::ok())
+                ->assertTagged();
+
+            $this->connection->upgrade($this->crypto);
         }
 
         if (empty($this->connection->getMetaData(['crypto']))) {

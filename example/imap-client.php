@@ -1,20 +1,38 @@
 <?php
 
+use Genkgo\Mail\Exception\AssertionFailedException;
 use Genkgo\Mail\Protocol\AutomaticConnection;
 use Genkgo\Mail\Protocol\CryptoConstant;
+use Genkgo\Mail\Protocol\DataLogConnection;
 use Genkgo\Mail\Protocol\Imap\Client;
+use Genkgo\Mail\Protocol\Imap\CompletionResult;
+use Genkgo\Mail\Protocol\Imap\MessageDataItemList;
 use Genkgo\Mail\Protocol\Imap\Negotiation\AuthNegotiation;
 use Genkgo\Mail\Protocol\Imap\Negotiation\ForceTlsUpgradeNegotiation;
-use Genkgo\Mail\Protocol\Imap\Request\FetchAllCommand;
+use Genkgo\Mail\Protocol\Imap\Request\FetchCommand;
 use Genkgo\Mail\Protocol\Imap\Request\SelectCommand;
+use Genkgo\Mail\Protocol\Imap\Request\SequenceSet;
 use Genkgo\Mail\Protocol\PlainTcpConnection;
+use Psr\Log\LoggerInterface;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
 $config = require_once __DIR__ . '/config.php';
 
 $connection = new AutomaticConnection(
-    new PlainTcpConnection($config['server'],$config['port']),
+    new DataLogConnection(
+        new PlainTcpConnection($config['server'],$config['port']),
+        new class implements LoggerInterface {
+
+            use \Psr\Log\LoggerTrait;
+
+            public function log($level, $message, array $context = array())
+            {
+                echo $message;
+            }
+
+        }
+    ),
     new \DateInterval('PT300S')
 );
 
@@ -28,8 +46,31 @@ $client = new Client(
 
 $client
     ->emit(new SelectCommand('inbox'))
-    ->assertOk();
+    ->last()
+    ->assertCompletion(CompletionResult::ok());
 
-var_dump($client
-    ->emit(new FetchAllCommand())
-    ->getLines());
+$responseList = $client
+    ->emit(
+        new FetchCommand(
+            (new SequenceSet(1))->withLast(2),
+            (new MessageDataItemList())->withName('BODY[]')
+        )
+    );
+
+$list = [];
+
+try {
+    $index = 0;
+
+    $list[] = MessageDataItemList::fromString(
+        $responseList
+            ->at(++$index)
+            ->assertCommand('FETCH')
+            ->getBody()
+    );
+} catch (AssertionFailedException $e) {
+    $responseList
+        ->at($index)
+        ->assertCompletion(CompletionResult::ok())
+        ->assertTagged();
+}

@@ -3,16 +3,19 @@ declare(strict_types=1);
 
 namespace Genkgo\Mail\Protocol\Imap\Request;
 
-use Genkgo\Mail\Protocol\Imap\RequestInterface;
 use Genkgo\Mail\Stream\StringStream;
 use Genkgo\Mail\StreamInterface;
 
-final class AuthPlainCommand implements RequestInterface
+/**
+ * Class AuthPlainCommand
+ * @package Genkgo\Mail\Protocol\Imap\Request
+ */
+final class AuthPlainCommand extends AbstractCommand
 {
     /**
      * @return StreamInterface
      */
-    public function toStream(): StreamInterface
+    protected function createStream(): StreamInterface
     {
         return new StringStream('AUTHENTICATE PLAIN');
     }

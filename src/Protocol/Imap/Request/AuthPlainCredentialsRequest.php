@@ -3,11 +3,10 @@ declare(strict_types=1);
 
 namespace Genkgo\Mail\Protocol\Imap\Request;
 
-use Genkgo\Mail\Protocol\Imap\RequestInterface;
 use Genkgo\Mail\Stream\StringStream;
 use Genkgo\Mail\StreamInterface;
 
-final class AuthPlainCredentialsRequest implements RequestInterface
+final class AuthPlainCredentialsRequest extends AbstractContinuationRequest
 {
     /**
      * @var string
@@ -32,7 +31,7 @@ final class AuthPlainCredentialsRequest implements RequestInterface
     /**
      * @return StreamInterface
      */
-    public function toStream(): StreamInterface
+    protected function createStream(): StreamInterface
     {
         return new StringStream(
             base64_encode(

@@ -5,11 +5,12 @@ namespace Genkgo\Mail\Protocol\Imap\Negotiation;
 
 use Genkgo\Mail\Exception\ImapAuthenticationException;
 use Genkgo\Mail\Protocol\Imap\Client;
+use Genkgo\Mail\Protocol\Imap\CompletionResult;
 use Genkgo\Mail\Protocol\Imap\NegotiationInterface;
 use Genkgo\Mail\Protocol\Imap\Request\AuthPlainCommand;
 use Genkgo\Mail\Protocol\Imap\Request\AuthPlainCredentialsRequest;
 use Genkgo\Mail\Protocol\Imap\Request\CapabilityCommand;
-use Genkgo\Mail\Protocol\Imap\Response\CapabilityResponse;
+use Genkgo\Mail\Protocol\Imap\Response\CapabilityList;
 
 final class AuthNegotiation implements NegotiationInterface
 {
@@ -47,17 +48,24 @@ final class AuthNegotiation implements NegotiationInterface
     {
         $method = $this->method;
         if ($method === Client::AUTH_AUTO) {
-            $reply = $client->emit(new CapabilityCommand());
-            $reply->assertOk();
+            $responseList = $client->emit(new CapabilityCommand());
 
-            $capabilityResponse = new CapabilityResponse($reply);
+            $capabilities = CapabilityList::fromResponse(
+                $responseList
+                    ->first()
+                    ->assertCommand('CAPABILITY')
+            );
+
+            $responseList
+                ->last()
+                ->assertTagged();
 
             $options = [
                 'AUTH=PLAIN' => Client::AUTH_PLAIN,
             ];
 
             foreach ($options as $capability => $auth) {
-                if ($capabilityResponse->isAdvertising($capability)) {
+                if ($capabilities->isAdvertising($capability)) {
                     $method = $auth;
                 }
             }
@@ -72,17 +80,20 @@ final class AuthNegotiation implements NegotiationInterface
         switch ($method) {
             case Client::AUTH_PLAIN:
                 $client
-                    ->emit(
-                        new AuthPlainCommand()
-                    )
-                    ->assertIntermediate()
+                    ->emit(new AuthPlainCommand())
+                    ->first()
+                    ->assertContinuation();
+
+                $client
                     ->emit(
                         new AuthPlainCredentialsRequest(
                             $this->username,
                             $this->password
                         )
                     )
-                    ->assertOk();
+                    ->first()
+                    ->assertCompletion(CompletionResult::ok())
+                    ->assertTagged();
                 break;
         }
     }
