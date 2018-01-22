@@ -56,7 +56,6 @@ final class MessageDataItemList
      */
     public static function fromString(string $dataItems): self
     {
-        var_dump($dataItems);
         return new self();
     }
 }
