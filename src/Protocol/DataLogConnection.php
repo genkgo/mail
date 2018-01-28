@@ -59,7 +59,7 @@ final class DataLogConnection implements ConnectionInterface
      */
     public function send(string $request): int
     {
-        $this->logger->info('SENT: ' . $request);
+        $this->logger->info('-> ' . $request);
         return $this->decoratedConnection->send($request);
     }
 
@@ -69,7 +69,7 @@ final class DataLogConnection implements ConnectionInterface
     public function receive(): string
     {
         $data = $this->decoratedConnection->receive();
-        $this->logger->info('RECEIVED: ' . $data);
+        $this->logger->info('<- ' . $data);
         return $data;
     }
 

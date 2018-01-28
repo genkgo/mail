@@ -3,7 +3,8 @@ declare(strict_types=1);
 
 namespace Genkgo\Mail\Protocol\Imap\Request;
 
-use Genkgo\Mail\Protocol\Imap\MessageDataItemList;
+use Genkgo\Mail\Protocol\Imap\MessageData\ItemList;
+use Genkgo\Mail\Protocol\Imap\Tag;
 use Genkgo\Mail\Stream\StringStream;
 use Genkgo\Mail\StreamInterface;
 
@@ -18,18 +19,25 @@ final class FetchCommand extends AbstractCommand
      */
     private $set;
     /**
-     * @var MessageDataItemList
+     * @var ItemList
      */
     private $list;
+    /**
+     * @var Tag
+     */
+    private $tag;
 
     /**
      * FetchCommand constructor.
+     * @param Tag $tag
      * @param SequenceSet $set
+     * @param ItemList $list
      */
-    public function __construct(SequenceSet $set, MessageDataItemList $list)
+    public function __construct(Tag $tag, SequenceSet $set, ItemList $list)
     {
         $this->set = $set;
         $this->list = $list;
+        $this->tag = $tag;
     }
 
     /**
@@ -44,5 +52,13 @@ final class FetchCommand extends AbstractCommand
                 (string)$this->list
             )
         );
+    }
+
+    /**
+     * @return Tag
+     */
+    public function getTag(): Tag
+    {
+        return $this->tag;
     }
 }

@@ -5,12 +5,12 @@ namespace Genkgo\Mail\Protocol\Imap\Negotiation;
 
 use Genkgo\Mail\Exception\ImapAuthenticationException;
 use Genkgo\Mail\Protocol\Imap\Client;
-use Genkgo\Mail\Protocol\Imap\CompletionResult;
 use Genkgo\Mail\Protocol\Imap\NegotiationInterface;
 use Genkgo\Mail\Protocol\Imap\Request\AuthPlainCommand;
 use Genkgo\Mail\Protocol\Imap\Request\AuthPlainCredentialsRequest;
 use Genkgo\Mail\Protocol\Imap\Request\CapabilityCommand;
-use Genkgo\Mail\Protocol\Imap\Response\CapabilityList;
+use Genkgo\Mail\Protocol\Imap\Response\Command\CapabilityCommandResponse;
+use Genkgo\Mail\Protocol\Imap\Response\CompletionResult;
 
 final class AuthNegotiation implements NegotiationInterface
 {
@@ -48,16 +48,13 @@ final class AuthNegotiation implements NegotiationInterface
     {
         $method = $this->method;
         if ($method === Client::AUTH_AUTO) {
-            $responseList = $client->emit(new CapabilityCommand());
+            $responseList = $client->emit(new CapabilityCommand($client->newTag()));
 
-            $capabilities = CapabilityList::fromResponse(
-                $responseList
-                    ->first()
-                    ->assertCommand('CAPABILITY')
-            );
+            $capabilities = CapabilityCommandResponse::fromResponse($responseList->first());
 
             $responseList
                 ->last()
+                ->assertCompletion(CompletionResult::ok())
                 ->assertTagged();
 
             $options = [
@@ -79,19 +76,21 @@ final class AuthNegotiation implements NegotiationInterface
 
         switch ($method) {
             case Client::AUTH_PLAIN:
+                $tag = $client->newTag();
                 $client
-                    ->emit(new AuthPlainCommand())
+                    ->emit(new AuthPlainCommand($tag))
                     ->first()
                     ->assertContinuation();
 
                 $client
                     ->emit(
                         new AuthPlainCredentialsRequest(
+                            $tag,
                             $this->username,
                             $this->password
                         )
                     )
-                    ->first()
+                    ->last()
                     ->assertCompletion(CompletionResult::ok())
                     ->assertTagged();
                 break;

@@ -167,8 +167,8 @@ final class GenericMessage implements MessageInterface
                 break;
             }
 
-            while (isset($lines[$n + 1]) && $lines[$n + 1] !== '' && $lines[$n + 1][0] === ' ') {
-                $line .= $lines[$n + 1];
+            while (isset($lines[$n + 1]) && $lines[$n + 1] !== '' && trim($lines[$n + 1][0]) === '') {
+                $line .= ' ' . ltrim($lines[$n + 1]);
                 $n++;
             }
 

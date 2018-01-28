@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace Genkgo\Mail\Protocol\Imap\Response;
 
 use Genkgo\Mail\Exception\AssertionFailedException;
-use Genkgo\Mail\Protocol\Imap\CompletionResult;
 use Genkgo\Mail\Protocol\Imap\ResponseInterface;
 
 final class CommandContinuationRequestResponse implements ResponseInterface
@@ -53,16 +52,6 @@ final class CommandContinuationRequestResponse implements ResponseInterface
     }
 
     /**
-     * @param string $expectedCommand
-     * @return ResponseInterface
-     * @throws AssertionFailedException
-     */
-    public function assertCommand(string $expectedCommand): ResponseInterface
-    {
-        throw new AssertionFailedException();
-    }
-
-    /**
      * @return ResponseInterface
      */
     public function assertContinuation(): ResponseInterface
@@ -76,7 +65,7 @@ final class CommandContinuationRequestResponse implements ResponseInterface
      */
     public function assertTagged(): ResponseInterface
     {
-        throw new AssertionFailedException();
+        throw new AssertionFailedException('A command continuous request is never tagged');
     }
 
     /**

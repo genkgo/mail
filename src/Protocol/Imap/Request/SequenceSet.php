@@ -29,17 +29,6 @@ final class SequenceSet
     }
 
     /**
-     * @param int $last
-     * @return self
-     */
-    public function withLast(int $last): self
-    {
-        $clone = clone $this;
-        $clone->last = $last;
-        return $clone;
-    }
-
-    /**
      * @return string
      */
     public function __toString(): string
@@ -59,6 +48,18 @@ final class SequenceSet
     {
         $set = new self($number);
         $set->last = $number;
+        return $set;
+    }
+
+    /**
+     * @param int $first
+     * @param int $last
+     * @return SequenceSet
+     */
+    public static function sequence(int $first, int $last): self
+    {
+        $set = new self($first);
+        $set->last = $last;
         return $set;
     }
 }

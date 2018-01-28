@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace Genkgo\Mail\Protocol\Imap\Response;
 
 use Genkgo\Mail\Exception\AssertionFailedException;
-use Genkgo\Mail\Protocol\Imap\CompletionResult;
 use Genkgo\Mail\Protocol\Imap\ResponseInterface;
 
 /**
@@ -76,32 +75,6 @@ final class UntaggedResponse implements ResponseInterface
     }
 
     /**
-     * @param string $expectedCommand
-     * @return ResponseInterface
-     * @throws AssertionFailedException
-     */
-    public function assertCommand(string $expectedCommand): ResponseInterface
-    {
-        $commandLength = strlen($expectedCommand . ' ');
-        $commandActual = substr($this->line, 0, $commandLength);
-
-        if (strcasecmp($commandActual, $expectedCommand . ' ')) {
-            throw new AssertionFailedException(
-                sprintf(
-                    'Command %s is not equal to %s',
-                    $commandActual,
-                    $expectedCommand
-                )
-            );
-        }
-
-        $clone = clone $this;
-        $clone->command = strtoupper($expectedCommand);
-        $clone->line = substr($this->line, $commandLength);
-        return $clone;
-    }
-
-    /**
      * @return ResponseInterface
      * @throws AssertionFailedException
      */
@@ -116,7 +89,7 @@ final class UntaggedResponse implements ResponseInterface
      */
     public function assertTagged(): ResponseInterface
     {
-        throw new AssertionFailedException();
+        throw new AssertionFailedException('An untagged response is never tagged');
     }
 
     /**

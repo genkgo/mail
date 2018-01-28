@@ -3,6 +3,7 @@
 namespace Genkgo\Mail\Protocol\Imap;
 
 use Genkgo\Mail\Exception\AssertionFailedException;
+use Genkgo\Mail\Protocol\Imap\Response\CompletionResult;
 
 /**
  * Interface ResponseInterface
@@ -19,13 +20,6 @@ interface ResponseInterface
     public function assertCompletion(CompletionResult $expectedResult): ResponseInterface;
 
     /**
-     * @param string $expectedCommand
-     * @return ResponseInterface
-     * @throws AssertionFailedException
-     */
-    public function assertCommand(string $expectedCommand): ResponseInterface;
-
-    /**
      * @return ResponseInterface
      * @throws AssertionFailedException
      */
@@ -33,7 +27,6 @@ interface ResponseInterface
 
     /**
      * @return ResponseInterface
-     * @throws AssertionFailedException
      */
     public function assertTagged(): ResponseInterface;
 

@@ -74,7 +74,7 @@ final class HeaderValue
         $value = $this->value;
 
         if ($this->needsEncoding) {
-            $value = (new OptimalEncodedHeaderValue($value));
+            $value = new OptimalEncodedHeaderValue($value);
         }
 
         $parameters = [];

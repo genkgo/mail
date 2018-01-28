@@ -6,11 +6,11 @@ namespace Genkgo\Mail\Protocol\Imap\Negotiation;
 use Genkgo\Mail\Exception\ConnectionInsecureException;
 use Genkgo\Mail\Protocol\ConnectionInterface;
 use Genkgo\Mail\Protocol\Imap\Client;
-use Genkgo\Mail\Protocol\Imap\CompletionResult;
 use Genkgo\Mail\Protocol\Imap\NegotiationInterface;
 use Genkgo\Mail\Protocol\Imap\Request\CapabilityCommand;
 use Genkgo\Mail\Protocol\Imap\Request\StartTlsCommand;
-use Genkgo\Mail\Protocol\Imap\Response\CapabilityList;
+use Genkgo\Mail\Protocol\Imap\Response\Command\CapabilityCommandResponse;
+use Genkgo\Mail\Protocol\Imap\Response\CompletionResult;
 
 final class ForceTlsUpgradeNegotiation implements NegotiationInterface
 {
@@ -47,21 +47,18 @@ final class ForceTlsUpgradeNegotiation implements NegotiationInterface
             return;
         }
 
-        $responseList = $client->emit(new CapabilityCommand());
+        $responseList = $client->emit(new CapabilityCommand($client->newTag()));
 
-        $capabilities = CapabilityList::fromResponse(
-            $responseList
-                ->first()
-                ->assertCommand('CAPABILITY')
-        );
+        $capabilities = CapabilityCommandResponse::fromResponse($responseList->first());
 
         $responseList
             ->last()
+            ->assertCompletion(CompletionResult::ok())
             ->assertTagged();
 
         if ($capabilities->isAdvertising('STARTTLS')) {
             $client
-                ->emit(new StartTlsCommand())
+                ->emit(new StartTlsCommand($client->newTag()))
                 ->last()
                 ->assertCompletion(CompletionResult::ok())
                 ->assertTagged();

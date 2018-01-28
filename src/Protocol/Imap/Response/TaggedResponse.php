@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace Genkgo\Mail\Protocol\Imap\Response;
 
 use Genkgo\Mail\Exception\AssertionFailedException;
-use Genkgo\Mail\Protocol\Imap\CompletionResult;
 use Genkgo\Mail\Protocol\Imap\ResponseInterface;
 use Genkgo\Mail\Protocol\Imap\Tag;
 
@@ -84,16 +83,6 @@ final class TaggedResponse implements ResponseInterface
     }
 
     /**
-     * @param string $expectedCommand
-     * @return ResponseInterface
-     * @throws AssertionFailedException
-     */
-    public function assertCommand(string $expectedCommand): ResponseInterface
-    {
-        throw new AssertionFailedException();
-    }
-
-    /**
      * @return ResponseInterface
      * @throws AssertionFailedException
      */
@@ -104,7 +93,6 @@ final class TaggedResponse implements ResponseInterface
 
     /**
      * @return ResponseInterface
-     * @throws AssertionFailedException
      */
     public function assertTagged(): ResponseInterface
     {

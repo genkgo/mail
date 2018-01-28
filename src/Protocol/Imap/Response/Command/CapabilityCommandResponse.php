@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Genkgo\Mail\Protocol\Imap\Response;
+namespace Genkgo\Mail\Protocol\Imap\Response\Command;
 
 use Genkgo\Mail\Protocol\Imap\ResponseInterface;
 
-final class CapabilityList
+final class CapabilityCommandResponse
 {
     /**
      * @var array
@@ -36,11 +36,19 @@ final class CapabilityList
 
     /**
      * @param ResponseInterface $response
-     * @return CapabilityList
+     * @return CapabilityCommandResponse
      */
     public static function fromResponse(ResponseInterface $response): self
     {
-        $advertisements = preg_split('/[\s]+/', $response->getBody());
+        $command = 'CAPABILITY ';
+        $commandLength = strlen($command);
+
+        $body = $response->getBody();
+        if (substr($body,0, $commandLength) !== $command) {
+            throw new \InvalidArgumentException('Expected CAPABILITY command');
+        }
+
+        $advertisements = preg_split('/[\s]+/', substr($body, $commandLength));
 
         return new self(
             array_combine(

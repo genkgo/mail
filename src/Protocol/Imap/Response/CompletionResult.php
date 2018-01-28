@@ -1,14 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Genkgo\Mail\Protocol\Imap;
+namespace Genkgo\Mail\Protocol\Imap\Response;
 
 /**
  * Class CompletionResult
- */
-/**
- * Class CompletionResult
- * @package Genkgo\Mail\Protocol\Imap
+ * @package Genkgo\Mail\Protocol\Imap\Response
  */
 final class CompletionResult
 {

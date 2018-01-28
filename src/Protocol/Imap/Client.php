@@ -6,6 +6,7 @@ namespace Genkgo\Mail\Protocol\Imap;
 use Genkgo\Mail\Protocol\AppendCrlfConnection;
 use Genkgo\Mail\Protocol\ConnectionInterface;
 use Genkgo\Mail\Protocol\Imap\Negotiation\ReceiveWelcomeNegotiation;
+use Genkgo\Mail\Protocol\Imap\Response\AggregateResponse;
 
 /**
  * Class Client
@@ -34,17 +35,21 @@ final class Client
      */
     private $negotiators = [];
     /**
-     * @var \Iterator
+     * @var TagFactoryInterface
      */
-    private $tagList;
+    private $tagFactory;
 
     /**
      * Client constructor.
      * @param ConnectionInterface $connection
+     * @param TagFactoryInterface $tagFactory
      * @param iterable $negotiators
      */
-    public function __construct(ConnectionInterface $connection, iterable $negotiators = [])
-    {
+    public function __construct(
+        ConnectionInterface $connection,
+        TagFactoryInterface $tagFactory,
+        iterable $negotiators = []
+    ) {
         $this->connection = new AppendCrlfConnection($connection);
 
         $this->addNegotiator(new ReceiveWelcomeNegotiation($this->connection));
@@ -59,7 +64,7 @@ final class Client
             }
         });
 
-        $this->tagList = $this->newTagList();
+        $this->tagFactory = $tagFactory;
     }
 
     /**
@@ -76,11 +81,7 @@ final class Client
      */
     public function emit(RequestInterface $request): AggregateResponse
     {
-        $this->tagList->next();
-
-        $request = $request->withTag($this->tagList->current());
         $stream = $request->toStream();
-
         $stream->rewind();
 
         $bytes = '';
@@ -113,15 +114,12 @@ final class Client
     }
 
     /**
-     * @return \Generator
+     * @return Tag
      */
-    private function newTagList(): \Generator
+    public function newTag(): Tag
     {
-        $i = 0;
-
-        while (true) {
-            $i++;
-            yield new Tag('TAG' . $i);
-        }
+        return $this->tagFactory->newTag();
     }
+
+
 }

@@ -13,19 +13,12 @@ interface RequestInterface
 {
 
     /**
-     * @param Tag $tag
-     * @return self
+     * @return StreamInterface
      */
-    public function withTag(Tag $tag): RequestInterface;
+    public function toStream(): StreamInterface;
 
     /**
      * @return Tag
      */
     public function getTag(): Tag;
-
-    /**
-     * @return StreamInterface
-     */
-    public function toStream(): StreamInterface;
-
 }

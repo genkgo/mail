@@ -107,4 +107,24 @@ final class GenericMessageTest extends AbstractTestCase
         );
     }
 
+    /**
+     * @test
+     */
+    public function it_can_parse_a_message_with_tabbed_header_folding_from_string()
+    {
+        $lines = [
+            "Received: from example.com ([0.0.0.0 helo=localhost)\r\n\tby smtp.server.com with esmtps",
+            "Subject: test",
+            "",
+            "Hello World"
+        ];
+
+        $message = GenericMessage::fromString(implode("\r\n", $lines));
+
+        $this->assertEquals(
+            "from example.com ([0.0.0.0 helo=localhost) by smtp.server.com with\r\n esmtps",
+            (string)$message->getHeader('received')[0]->getValue()
+        );
+    }
+
 }

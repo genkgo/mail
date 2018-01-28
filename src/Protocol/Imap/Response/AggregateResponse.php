@@ -1,12 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Genkgo\Mail\Protocol\Imap;
+namespace Genkgo\Mail\Protocol\Imap\Response;
 
 use Genkgo\Mail\Exception\AssertionFailedException;
-use Genkgo\Mail\Protocol\Imap\Response\CommandContinuationRequestResponse;
-use Genkgo\Mail\Protocol\Imap\Response\TaggedResponse;
-use Genkgo\Mail\Protocol\Imap\Response\UntaggedResponse;
+use Genkgo\Mail\Protocol\Imap\RequestInterface;
+use Genkgo\Mail\Protocol\Imap\ResponseInterface;
 
 /**
  * Class Response
@@ -130,7 +129,7 @@ final class AggregateResponse implements \IteratorAggregate
                 try {
                     $tag = $this->request->getTag();
                     $clone->lines[] = new TaggedResponse($tag, $tag->extractBodyFromLine($line));
-                } catch (\InvalidArgumentException $e) {
+                } catch (\InvalidArgumentException | \BadMethodCallException $e) {
                     $keys = array_keys($clone->lines);
                     $lastKey = end($keys);
                     $clone->lines[$lastKey] = $clone->lines[$lastKey]->withBody($line);

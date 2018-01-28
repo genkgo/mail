@@ -1,43 +1,33 @@
 <?php
 
-use Genkgo\Mail\Exception\AssertionFailedException;
+use Genkgo\Mail\GenericMessage;
 use Genkgo\Mail\Protocol\AutomaticConnection;
 use Genkgo\Mail\Protocol\CryptoConstant;
-use Genkgo\Mail\Protocol\DataLogConnection;
 use Genkgo\Mail\Protocol\Imap\Client;
-use Genkgo\Mail\Protocol\Imap\CompletionResult;
-use Genkgo\Mail\Protocol\Imap\MessageDataItemList;
+use Genkgo\Mail\Protocol\Imap\MessageData\ItemList;
+use Genkgo\Mail\Protocol\Imap\MessageData\NameSectionItem;
 use Genkgo\Mail\Protocol\Imap\Negotiation\AuthNegotiation;
 use Genkgo\Mail\Protocol\Imap\Negotiation\ForceTlsUpgradeNegotiation;
 use Genkgo\Mail\Protocol\Imap\Request\FetchCommand;
 use Genkgo\Mail\Protocol\Imap\Request\SelectCommand;
 use Genkgo\Mail\Protocol\Imap\Request\SequenceSet;
+use Genkgo\Mail\Protocol\Imap\Response\Command\FetchCommandResponse;
+use Genkgo\Mail\Protocol\Imap\Response\CompletionResult;
+use Genkgo\Mail\Protocol\Imap\TagFactory\GeneratorTagFactory;
 use Genkgo\Mail\Protocol\PlainTcpConnection;
-use Psr\Log\LoggerInterface;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
 $config = require_once __DIR__ . '/config.php';
 
 $connection = new AutomaticConnection(
-    new DataLogConnection(
-        new PlainTcpConnection($config['server'],$config['port']),
-        new class implements LoggerInterface {
-
-            use \Psr\Log\LoggerTrait;
-
-            public function log($level, $message, array $context = array())
-            {
-                echo $message;
-            }
-
-        }
-    ),
+    new PlainTcpConnection($config['server'],$config['port']),
     new \DateInterval('PT300S')
 );
 
 $client = new Client(
     $connection,
+    new GeneratorTagFactory(),
     [
         new ForceTlsUpgradeNegotiation($connection, CryptoConstant::getDefaultMethod(PHP_VERSION)),
         new AuthNegotiation(Client::AUTH_AUTO, $config['username'], $config['password'])
@@ -45,32 +35,39 @@ $client = new Client(
 );
 
 $client
-    ->emit(new SelectCommand('inbox'))
+    ->emit(new SelectCommand($client->newTag(),'inbox'))
     ->last()
     ->assertCompletion(CompletionResult::ok());
 
 $responseList = $client
     ->emit(
         new FetchCommand(
-            (new SequenceSet(1))->withLast(2),
-            (new MessageDataItemList())->withName('BODY[]')
+            $client->newTag(),
+            SequenceSet::sequence(1, 2),
+            new ItemList(
+                [new NameSectionItem('BODY')]
+            )
         )
     );
 
+/** @var ItemList[] $list */
 $list = [];
 
 try {
     $index = 0;
 
-    $list[] = MessageDataItemList::fromString(
-        $responseList
-            ->at(++$index)
-            ->assertCommand('FETCH')
-            ->getBody()
-    );
-} catch (AssertionFailedException $e) {
+    while (true) {
+        $list[] = FetchCommandResponse::fromResponse($responseList->at($index))->getDataItemList();
+        $index++;
+    }
+} catch (\InvalidArgumentException $e) {
     $responseList
-        ->at($index)
+        ->last()
         ->assertCompletion(CompletionResult::ok())
         ->assertTagged();
+}
+
+foreach ($list as $item) {
+    $message = GenericMessage::fromString($item->getBody());
+    var_dump((string)$message->getHeader('subject')[0]->getValue());
 }
