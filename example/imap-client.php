@@ -5,7 +5,6 @@ use Genkgo\Mail\Protocol\AutomaticConnection;
 use Genkgo\Mail\Protocol\CryptoConstant;
 use Genkgo\Mail\Protocol\Imap\Client;
 use Genkgo\Mail\Protocol\Imap\MessageData\ItemList;
-use Genkgo\Mail\Protocol\Imap\MessageData\NameSectionItem;
 use Genkgo\Mail\Protocol\Imap\Negotiation\AuthNegotiation;
 use Genkgo\Mail\Protocol\Imap\Negotiation\ForceTlsUpgradeNegotiation;
 use Genkgo\Mail\Protocol\Imap\Request\FetchCommand;
@@ -44,9 +43,7 @@ $responseList = $client
         new FetchCommand(
             $client->newTag(),
             SequenceSet::sequence(1, 2),
-            new ItemList(
-                [new NameSectionItem('BODY')]
-            )
+            ItemList::fromString('BODY[]')
         )
     );
 

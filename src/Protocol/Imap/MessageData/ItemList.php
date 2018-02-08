@@ -48,10 +48,10 @@ final class ItemList
     }
 
     /**
-     * @param ItemInterface $item
+     * @param Item $item
      * @return ItemList
      */
-    public function withItem(ItemInterface $item): self
+    public function withItem(Item $item): self
     {
         $clone = clone $this;
         $clone->list[$item->getName()] = $item;
@@ -90,9 +90,9 @@ final class ItemList
 
     /**
      * @param $name
-     * @return ItemInterface
+     * @return Item
      */
-    public function getName($name): ItemInterface
+    public function getName($name): Item
     {
         if (!isset($this->list[$name])) {
             throw new \UnexpectedValueException(
@@ -104,9 +104,9 @@ final class ItemList
     }
 
     /**
-     * @return ItemInterface
+     * @return Item
      */
-    public function last(): ItemInterface
+    public function last(): Item
     {
         if (empty($this->list)) {
             throw new \OutOfBoundsException('Cannot return last item from empty list');
@@ -123,7 +123,7 @@ final class ItemList
         $string = implode(
             ' ',
             array_map(
-                function (ItemInterface $item) {
+                function (Item $item) {
                     return (string)$item;
                 },
                 $this->list
@@ -159,6 +159,8 @@ final class ItemList
                         throw new \InvalidArgumentException('Invalid character [ found');
                     }
 
+                    $list = $list->withItem(new Item(substr($sequence, 0, -1)));
+                    $sequence = '[';
                     $state = self::STATE_SECTION;
                     break;
                 case ']':
@@ -166,7 +168,11 @@ final class ItemList
                         throw new \InvalidArgumentException('Invalid character ] found');
                     }
 
-                    $list = $list->withItem(NameSectionItem::fromString($sequence));
+                    $list = $list->withItem(
+                        $list
+                            ->last()
+                            ->withSections(SectionList::fromString($sequence))
+                    );
 
                     $sequence = '';
                     $state = self::STATE_NAME;
@@ -184,10 +190,9 @@ final class ItemList
                     }
 
                     $list = $list->withItem(
-                        PartialItem::fromString(
-                            $list->last(),
-                            $sequence
-                        )
+                        $list
+                            ->last()
+                            ->withPartial(Partial::fromString($sequence))
                     );
 
                     $sequence = '';
@@ -221,7 +226,7 @@ final class ItemList
                     }
 
                     if ($state === self::STATE_NAME) {
-                        $list = $list->withItem(new NameItem(substr($sequence, 0, -1)));
+                        $list = $list->withItem(new Item(substr($sequence, 0, -1)));
                         $sequence = '';
                         $state = self::STATE_NONE;
                     }
@@ -237,7 +242,7 @@ final class ItemList
         }
 
         if ($sequence) {
-            $list = $list->withItem(new NameItem($sequence));
+            $list = $list->withItem(new Item($sequence));
         }
 
         return $list;
