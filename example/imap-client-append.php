@@ -36,11 +36,6 @@ $client = new Client(
     ]
 );
 
-$client
-    ->emit(new SelectCommand($client->newTag(),'inbox'))
-    ->last()
-    ->assertCompletion(CompletionResult::ok());
-
 $message = (new FormattedMessageFactory())
     ->withHtml('<html><body><p>Hello World</p></body></html>')
     ->createMessage()
