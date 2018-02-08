@@ -13,7 +13,6 @@ use Genkgo\Mail\Protocol\Imap\Negotiation\ForceTlsUpgradeNegotiation;
 use Genkgo\Mail\Protocol\Imap\ParenthesizedList;
 use Genkgo\Mail\Protocol\Imap\Request\AppendCommand;
 use Genkgo\Mail\Protocol\Imap\Request\AppendDataRequest;
-use Genkgo\Mail\Protocol\Imap\Request\SelectCommand;
 use Genkgo\Mail\Protocol\Imap\Response\CompletionResult;
 use Genkgo\Mail\Protocol\Imap\TagFactory\GeneratorTagFactory;
 use Genkgo\Mail\Protocol\PlainTcpConnection;

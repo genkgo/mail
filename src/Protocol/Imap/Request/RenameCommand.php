@@ -3,16 +3,15 @@ declare(strict_types=1);
 
 namespace Genkgo\Mail\Protocol\Imap\Request;
 
-use Genkgo\Mail\Protocol\Imap\ParenthesizedList;
 use Genkgo\Mail\Protocol\Imap\Tag;
 use Genkgo\Mail\Stream\StringStream;
 use Genkgo\Mail\StreamInterface;
 
 /**
- * Class AppendCommand
+ * Class RenameCommand
  * @package Genkgo\Mail\Protocol\Imap\Request
  */
-final class AppendCommand extends AbstractCommand
+final class RenameCommand extends AbstractCommand
 {
     /**
      * @var Tag
@@ -23,27 +22,21 @@ final class AppendCommand extends AbstractCommand
      */
     private $mailboxName;
     /**
-     * @var ParenthesizedList
+     * @var string
      */
-    private $flags;
-    /**
-     * @var int
-     */
-    private $size;
+    private $newName;
 
     /**
-     * AppendCommand constructor.
+     * FetchCommand constructor.
      * @param Tag $tag
      * @param string $mailboxName
-     * @param ParenthesizedList $flags
-     * @param int $size
+     * @param string $newName
      */
-    public function __construct(Tag $tag, string $mailboxName, int $size, ParenthesizedList $flags)
+    public function __construct(Tag $tag, string $mailboxName, string $newName)
     {
         $this->tag = $tag;
         $this->mailboxName = $mailboxName;
-        $this->flags = $flags;
-        $this->size = $size;
+        $this->newName = $newName;
     }
 
     /**
@@ -53,10 +46,9 @@ final class AppendCommand extends AbstractCommand
     {
         return new StringStream(
             sprintf(
-                'APPEND %s %s {%s}',
+                'RENAME %s %s',
                 $this->mailboxName,
-                (string)$this->flags,
-                (string)$this->size
+                $this->newName
             )
         );
     }
