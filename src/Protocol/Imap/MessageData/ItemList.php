@@ -3,6 +3,10 @@ declare(strict_types=1);
 
 namespace Genkgo\Mail\Protocol\Imap\MessageData;
 
+use Genkgo\Mail\Protocol\Imap\MessageData\Item\NameItem;
+use Genkgo\Mail\Protocol\Imap\MessageData\Item\PartialItem;
+use Genkgo\Mail\Protocol\Imap\MessageData\Item\SectionItem;
+
 final class ItemList
 {
     /**
@@ -48,10 +52,10 @@ final class ItemList
     }
 
     /**
-     * @param Item $item
+     * @param ItemInterface $item
      * @return ItemList
      */
-    public function withItem(Item $item): self
+    public function withItem(ItemInterface $item): self
     {
         $clone = clone $this;
         $clone->list[$item->getName()] = $item;
@@ -90,9 +94,9 @@ final class ItemList
 
     /**
      * @param $name
-     * @return Item
+     * @return ItemInterface
      */
-    public function getName($name): Item
+    public function getName($name): ItemInterface
     {
         if (!isset($this->list[$name])) {
             throw new \UnexpectedValueException(
@@ -104,9 +108,9 @@ final class ItemList
     }
 
     /**
-     * @return Item
+     * @return ItemInterface
      */
-    public function last(): Item
+    public function last(): ItemInterface
     {
         if (empty($this->list)) {
             throw new \OutOfBoundsException('Cannot return last item from empty list');
@@ -123,7 +127,7 @@ final class ItemList
         $string = implode(
             ' ',
             array_map(
-                function (Item $item) {
+                function (ItemInterface $item) {
                     return (string)$item;
                 },
                 $this->list
@@ -159,7 +163,7 @@ final class ItemList
                         throw new \InvalidArgumentException('Invalid character [ found');
                     }
 
-                    $list = $list->withItem(new Item(substr($sequence, 0, -1)));
+                    $list = $list->withItem(new NameItem(substr($sequence, 0, -1)));
                     $sequence = '[';
                     $state = self::STATE_SECTION;
                     break;
@@ -169,9 +173,7 @@ final class ItemList
                     }
 
                     $list = $list->withItem(
-                        $list
-                            ->last()
-                            ->withSections(SectionList::fromString($sequence))
+                        new SectionItem($list->last(), SectionList::fromString($sequence))
                     );
 
                     $sequence = '';
@@ -190,9 +192,7 @@ final class ItemList
                     }
 
                     $list = $list->withItem(
-                        $list
-                            ->last()
-                            ->withPartial(Partial::fromString($sequence))
+                        new PartialItem($list->last(), Partial::fromString($sequence))
                     );
 
                     $sequence = '';
@@ -226,7 +226,7 @@ final class ItemList
                     }
 
                     if ($state === self::STATE_NAME) {
-                        $list = $list->withItem(new Item(substr($sequence, 0, -1)));
+                        $list = $list->withItem(new NameItem(substr($sequence, 0, -1)));
                         $sequence = '';
                         $state = self::STATE_NONE;
                     }
@@ -242,7 +242,7 @@ final class ItemList
         }
 
         if ($sequence) {
-            $list = $list->withItem(new Item($sequence));
+            $list = $list->withItem(new NameItem($sequence));
         }
 
         return $list;

@@ -71,7 +71,7 @@ final class AggregateResponse implements \IteratorAggregate
     public function at(int $index): ResponseInterface
     {
         if (!isset($this->lines[$index])) {
-            throw new \UnexpectedValueException('Item not in response');
+            throw new \UnexpectedValueException('GenericItem not in response');
         }
 
         return $this->lines[$index];

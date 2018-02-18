@@ -1,0 +1,53 @@
+<?php
+declare(strict_types=1);
+
+namespace Genkgo\Mail\Protocol\Imap;
+
+/**
+ * Class FlagParenthesizedList
+ * @package Genkgo\Mail\Protocol\Imap
+ */
+final class FlagParenthesizedList
+{
+
+    /**
+     * @var array
+     */
+    private $flags = [];
+
+    /**
+     * ParenthesizedList constructor.
+     * @param array $list
+     */
+    public function __construct(array $list = [])
+    {
+        $this->flags = $list;
+    }
+
+    /**
+     * @param Flag $flag
+     * @return FlagParenthesizedList
+     */
+    public function with(Flag $flag): self
+    {
+        $clone = clone $this;
+        $clone->flags[] = $flag;
+        return $clone;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString(): string
+    {
+        if (empty($this->flags)) {
+            return '';
+        }
+
+        return sprintf(
+            '(%s)',
+            implode(' ', $this->flags)
+        );
+    }
+
+}

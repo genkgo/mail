@@ -29,10 +29,22 @@ final class Partial
      */
     public function __toString(): string
     {
+        if ($this->firstByte === -1 && $this->lastByte === -1) {
+            return '';
+        }
+
         return sprintf(
             '<%s>',
             $this->firstByte === $this->lastByte ? $this->firstByte : $this->firstByte . '.' . $this->lastByte
         );
+    }
+
+    /**
+     * @return Partial
+     */
+    public static function full(): self
+    {
+        return new self(-1, -1);
     }
 
     /**
