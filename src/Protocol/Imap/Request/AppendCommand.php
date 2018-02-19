@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Genkgo\Mail\Protocol\Imap\Request;
 
 use Genkgo\Mail\Protocol\Imap\FlagParenthesizedList;
+use Genkgo\Mail\Protocol\Imap\MailboxName;
 use Genkgo\Mail\Protocol\Imap\ParenthesizedList;
 use Genkgo\Mail\Protocol\Imap\Tag;
 use Genkgo\Mail\Stream\StringStream;
@@ -20,9 +21,9 @@ final class AppendCommand extends AbstractCommand
      */
     private $tag;
     /**
-     * @var string
+     * @var MailboxName
      */
-    private $mailboxName;
+    private $mailbox;
     /**
      * @var ParenthesizedList
      */
@@ -39,21 +40,21 @@ final class AppendCommand extends AbstractCommand
     /**
      * AppendCommand constructor.
      * @param Tag $tag
-     * @param string $mailboxName
+     * @param MailboxName $mailbox
      * @param int $size
      * @param FlagParenthesizedList $flags
      * @param \DateTimeImmutable|null $internalDate
      */
     public function __construct(
         Tag $tag,
-        string $mailboxName,
+        MailboxName $mailbox,
         int $size,
         FlagParenthesizedList $flags = null,
         \DateTimeImmutable $internalDate = null
     )
     {
         $this->tag = $tag;
-        $this->mailboxName = $mailboxName;
+        $this->mailbox = $mailbox;
         $this->flags = $flags;
         $this->size = $size;
         $this->internalDate = $internalDate;
@@ -67,7 +68,7 @@ final class AppendCommand extends AbstractCommand
         return new StringStream(
             sprintf(
                 'APPEND %s %s%s{%s}',
-                $this->mailboxName,
+                (string)$this->mailbox,
                 $this->flags ? (string)$this->flags . ' ' : '',
                 $this->internalDate ? '"'.$this->internalDate->format('d-D-Y H:i:sO') . '" ' : '',
                 (string)$this->size

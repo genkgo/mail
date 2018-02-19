@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Genkgo\Mail\Protocol\Imap\Request;
 
+use Genkgo\Mail\Protocol\Imap\MailboxName;
 use Genkgo\Mail\Protocol\Imap\Tag;
 use Genkgo\Mail\Stream\StringStream;
 use Genkgo\Mail\StreamInterface;
@@ -18,19 +19,19 @@ final class UnsubscribeCommand extends AbstractCommand
      */
     private $tag;
     /**
-     * @var string
+     * @var MailboxName
      */
-    private $mailboxName;
+    private $mailbox;
 
     /**
      * UnsubscribeCommand constructor.
      * @param Tag $tag
-     * @param string $mailboxName
+     * @param MailboxName $mailbox
      */
-    public function __construct(Tag $tag, string $mailboxName)
+    public function __construct(Tag $tag, MailboxName $mailbox)
     {
         $this->tag = $tag;
-        $this->mailboxName = $mailboxName;
+        $this->mailbox = $mailbox;
     }
 
     /**
@@ -41,7 +42,7 @@ final class UnsubscribeCommand extends AbstractCommand
         return new StringStream(
             sprintf(
                 'UNSUBSCRIBE %s',
-                $this->mailboxName
+                (string)$this->mailbox
             )
         );
     }

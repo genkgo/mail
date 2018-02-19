@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Genkgo\Mail\Protocol\Imap\Request;
 
+use Genkgo\Mail\Protocol\Imap\MailboxName;
 use Genkgo\Mail\Protocol\Imap\Tag;
 use Genkgo\Mail\Stream\StringStream;
 use Genkgo\Mail\StreamInterface;
@@ -18,24 +19,24 @@ final class RenameCommand extends AbstractCommand
      */
     private $tag;
     /**
-     * @var string
+     * @var MailboxName
      */
-    private $mailboxName;
+    private $mailbox;
     /**
-     * @var string
+     * @var MailboxName
      */
     private $newName;
 
     /**
      * FetchCommand constructor.
      * @param Tag $tag
-     * @param string $mailboxName
-     * @param string $newName
+     * @param MailboxName $mailbox
+     * @param MailboxName $newName
      */
-    public function __construct(Tag $tag, string $mailboxName, string $newName)
+    public function __construct(Tag $tag, MailboxName $mailbox, MailboxName $newName)
     {
         $this->tag = $tag;
-        $this->mailboxName = $mailboxName;
+        $this->mailbox = $mailbox;
         $this->newName = $newName;
     }
 
@@ -47,8 +48,8 @@ final class RenameCommand extends AbstractCommand
         return new StringStream(
             sprintf(
                 'RENAME %s %s',
-                $this->mailboxName,
-                $this->newName
+                (string)$this->mailbox,
+                (string)$this->newName
             )
         );
     }

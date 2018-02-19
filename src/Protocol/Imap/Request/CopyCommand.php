@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Genkgo\Mail\Protocol\Imap\Request;
 
+use Genkgo\Mail\Protocol\Imap\MailboxName;
 use Genkgo\Mail\Protocol\Imap\Tag;
 use Genkgo\Mail\Stream\StringStream;
 use Genkgo\Mail\StreamInterface;
@@ -22,7 +23,7 @@ final class CopyCommand extends AbstractCommand
      */
     private $tag;
     /**
-     * @var string
+     * @var MailboxName
      */
     private $mailbox;
 
@@ -30,9 +31,9 @@ final class CopyCommand extends AbstractCommand
      * CopyCommand constructor.
      * @param Tag $tag
      * @param SequenceSet $set
-     * @param string $mailbox
+     * @param MailboxName $mailbox
      */
-    public function __construct(Tag $tag, SequenceSet $set, string $mailbox)
+    public function __construct(Tag $tag, SequenceSet $set, MailboxName $mailbox)
     {
         $this->set = $set;
         $this->tag = $tag;
@@ -48,7 +49,7 @@ final class CopyCommand extends AbstractCommand
             sprintf(
                 'COPY %s %s',
                 (string)$this->set,
-                $this->mailbox
+                (string)$this->mailbox
             )
         );
     }

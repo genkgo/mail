@@ -3,35 +3,41 @@ declare(strict_types=1);
 
 namespace Genkgo\Mail\Protocol\Imap\Request;
 
-use Genkgo\Mail\Protocol\Imap\MailboxName;
+use Genkgo\Mail\Protocol\Imap\MailboxWildcard;
 use Genkgo\Mail\Protocol\Imap\Tag;
 use Genkgo\Mail\Stream\StringStream;
 use Genkgo\Mail\StreamInterface;
 
 /**
- * Class CreateCommand
+ * Class ListCommand
  * @package Genkgo\Mail\Protocol\Imap\Request
  */
-final class CreateCommand extends AbstractCommand
+final class ListCommand extends AbstractCommand
 {
     /**
      * @var Tag
      */
     private $tag;
     /**
-     * @var MailboxName
+     * @var MailboxWildcard
      */
     private $mailbox;
+    /**
+     * @var MailboxWildcard
+     */
+    private $referenceName;
 
     /**
-     * CreateCommand constructor.
+     * ListCommand constructor.
      * @param Tag $tag
-     * @param MailboxName $mailbox
+     * @param MailboxWildcard $referenceName
+     * @param MailboxWildcard $mailbox
      */
-    public function __construct(Tag $tag, MailboxName $mailbox)
+    public function __construct(Tag $tag, MailboxWildcard $referenceName , MailboxWildcard $mailbox)
     {
         $this->tag = $tag;
         $this->mailbox = $mailbox;
+        $this->referenceName = $referenceName;
     }
 
     /**
@@ -41,7 +47,8 @@ final class CreateCommand extends AbstractCommand
     {
         return new StringStream(
             sprintf(
-                'CREATE %s',
+                'LIST %s %s',
+                (string)$this->referenceName,
                 (string)$this->mailbox
             )
         );

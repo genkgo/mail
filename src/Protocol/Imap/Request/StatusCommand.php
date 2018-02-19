@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Genkgo\Mail\Protocol\Imap\Request;
 
+use Genkgo\Mail\Protocol\Imap\MailboxName;
 use Genkgo\Mail\Protocol\Imap\MessageData\ItemList;
 use Genkgo\Mail\Protocol\Imap\Tag;
 use Genkgo\Mail\Stream\StringStream;
@@ -23,17 +24,17 @@ final class StatusCommand extends AbstractCommand
      */
     private $tag;
     /**
-     * @var string
+     * @var MailboxName
      */
     private $mailbox;
 
     /**
      * FetchCommand constructor.
      * @param Tag $tag
-     * @param string $mailbox
+     * @param MailboxName $mailbox
      * @param ItemList $list
      */
-    public function __construct(Tag $tag, string $mailbox, ItemList $list)
+    public function __construct(Tag $tag, MailboxName $mailbox, ItemList $list)
     {
         $this->list = $list;
         $this->tag = $tag;
