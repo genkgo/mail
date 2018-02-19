@@ -23,11 +23,6 @@ final class SectionList
     private $sections = [];
 
     /**
-     * @var bool
-     */
-    private $forceBrackets = false;
-
-    /**
      * SectionList constructor.
      * @param array $sections
      */
@@ -45,24 +40,10 @@ final class SectionList
      */
     public function __toString(): string
     {
-        if ($this->forceBrackets === false && empty($this->sections)) {
-            return '';
-        }
-
         return sprintf(
             '[%s]',
             implode(' ', $this->sections)
         );
-    }
-
-    /**
-     * @return SectionList
-     */
-    public static function newEmpty(): self
-    {
-        $list = new self();
-        $list->forceBrackets = true;
-        return $list;
     }
 
     /**
@@ -85,20 +66,21 @@ final class SectionList
                     );
                 }
 
+                $appendIndex = $i;
+                $i++;
                 do {
-                    $sections[$i] .= $sections[$i + 1];
-                    unset($sections[$i + 1]);
-                } while (isset($sections[$i + 1]) && substr($sections[$i + 1], -1) !== ')');
+                    $sections[$appendIndex] .= ' ' . $sections[$i];
+                    unset($sections[$i]);
+                    $i++;
+
+                    if (substr($sections[$appendIndex], -1) === ')') {
+                        break;
+                    }
+                } while (isset($sections[$i]));
             }
         }
 
-        $sectionList = new self($sections);
-
-        if (empty($sectionList->sections)) {
-            $sectionList->forceBrackets = true;
-        }
-
-        return $sectionList;
+        return new self($sections);
     }
 
     /**

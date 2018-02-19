@@ -93,10 +93,10 @@ final class ItemList
     }
 
     /**
-     * @param $name
+     * @param string $name
      * @return ItemInterface
      */
-    public function getName($name): ItemInterface
+    public function getItem(string $name): ItemInterface
     {
         if (!isset($this->list[$name])) {
             throw new \UnexpectedValueException(
@@ -124,7 +124,7 @@ final class ItemList
      */
     public function __toString(): string
     {
-        $string = implode(
+        $items = implode(
             ' ',
             array_map(
                 function (ItemInterface $item) {
@@ -134,11 +134,19 @@ final class ItemList
             )
         );
 
-        if (count($this->list) > 1) {
-            return '(' . $string . ')';
+        if ($this->size) {
+            $items .= ' {' . $this->size . '}';
         }
 
-        return $string;
+        if ($this->body) {
+            $items .= "\n" . $this->body;
+        }
+
+        if (count($this->list) > 1 || $this->body) {
+            return '(' . $items . ')';
+        }
+
+        return $items;
     }
 
     /**
@@ -152,6 +160,14 @@ final class ItemList
         $index = 0;
         $state = self::STATE_NAME;
         $sequence = '';
+
+        if ($serializedList === '') {
+            throw new \InvalidArgumentException('Cannot create list from empty string');
+        }
+
+        if ($serializedList[0] === '(' && $serializedList[-1] === ')') {
+            $serializedList = substr($serializedList, 1, -1);
+        }
 
         while (isset($serializedList[$index])) {
             $char = $serializedList[$index];

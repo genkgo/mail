@@ -57,7 +57,7 @@ final class FetchCommandResponse
         $body = $response->getBody();
 
         $matches = [];
-        $result = preg_match('/^([0-9]+) FETCH \((.*?)\)\s*$/s', $body, $matches);
+        $result = preg_match('/^([0-9]+) FETCH ((\()?.*?(\))?)\s*$/s', $body, $matches);
         if ($result !== 1) {
             throw new \InvalidArgumentException('Not a fetch command');
         }

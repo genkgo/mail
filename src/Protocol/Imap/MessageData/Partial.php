@@ -20,6 +20,12 @@ final class Partial
      */
     public function __construct(int $firstByte, int $lastByte)
     {
+        if ($firstByte < 0 || $lastByte < $firstByte) {
+            throw new \InvalidArgumentException(
+                'Last byte must be greater than first byte, and first byte must be greater than zero'
+            );
+        }
+
         $this->firstByte = $firstByte;
         $this->lastByte = $lastByte;
     }
@@ -29,22 +35,10 @@ final class Partial
      */
     public function __toString(): string
     {
-        if ($this->firstByte === -1 && $this->lastByte === -1) {
-            return '';
-        }
-
         return sprintf(
             '<%s>',
             $this->firstByte === $this->lastByte ? $this->firstByte : $this->firstByte . '.' . $this->lastByte
         );
-    }
-
-    /**
-     * @return Partial
-     */
-    public static function full(): self
-    {
-        return new self(-1, -1);
     }
 
     /**
@@ -53,12 +47,12 @@ final class Partial
      */
     public static function fromString(string $partial): self
     {
-        $result = preg_match('/^<([0-9]+)\.([0-9]+)$/', $partial, $matches);
+        $result = preg_match('/^<([0-9]+)(\.([0-9]+))?>$/', $partial, $matches);
 
         if ($result !== 1) {
             throw new \InvalidArgumentException('String is not a partial');
         }
 
-        return new self((int)$matches[1], (int)$matches[2]);
+        return new self((int)$matches[1], (int)($matches[3] ?? (int)$matches[1]));
     }
 }

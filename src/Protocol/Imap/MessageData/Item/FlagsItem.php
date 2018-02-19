@@ -76,7 +76,7 @@ final class FlagsItem implements ItemInterface
     public function __toString(): string
     {
         return sprintf(
-            '%s%s',
+            '%s %s',
             $this->getName(),
             (string)$this->flagList
         );

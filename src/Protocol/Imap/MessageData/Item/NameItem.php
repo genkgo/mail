@@ -27,7 +27,7 @@ final class NameItem implements ItemInterface
      */
     public function __construct(string $name)
     {
-        if (strlen($name) !== strcspn($name, self::VALID_CHAR)) {
+        if (strlen($name) !== strspn($name, self::VALID_CHAR)) {
             throw new \InvalidArgumentException('name can only contain uppercase A-Z chars');
         }
 
