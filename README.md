@@ -91,6 +91,7 @@ This library tends to be as compliant with e-mail RFCs as possible. It should be
 - [RFC 2048, Multipurpose Internet Mail Extensions (MIME) Part Four](https://tools.ietf.org/html/rfc2048)
 - [RFC 2049, Multipurpose Internet Mail Extensions (MIME) Part Five](https://tools.ietf.org/html/rfc2049)
 - [RFC 2821, Simple Mail Transfer Protocol](https://tools.ietf.org/html/rfc2821)
+- [RFC 3501, Internet Message Access Protocol - version 4rev1](https://tools.ietf.org/html/rfc3501)
 - [RCC 4954, SMTP Service Extension for Authentication](https://tools.ietf.org/html/rfc4954)
 - [RFC 5321, Simple Mail Transfer Protocol](https://tools.ietf.org/html/rfc5321)
 
