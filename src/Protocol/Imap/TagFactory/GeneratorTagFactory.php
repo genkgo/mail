@@ -30,8 +30,9 @@ final class GeneratorTagFactory implements TagFactoryInterface
      */
     public function newTag(): Tag
     {
+        $tag = $this->iterator->current();
         $this->iterator->next();
-        return $this->iterator->current();
+        return $tag;
     }
 
     /**

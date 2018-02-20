@@ -45,7 +45,9 @@ final class CapabilityCommandResponse
 
         $body = $response->getBody();
         if (substr($body,0, $commandLength) !== $command) {
-            throw new \InvalidArgumentException('Expected CAPABILITY command');
+            throw new \InvalidArgumentException(
+                sprintf('Expected CAPABILITY command, got %s', $body)
+            );
         }
 
         $advertisements = preg_split('/[\s]+/', substr($body, $commandLength));
