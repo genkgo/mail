@@ -6,7 +6,7 @@ namespace Genkgo\Mail\Protocol;
 use Genkgo\Mail\Exception\ConnectionListenerException;
 
 /**
- * Class PlainTcpConnection
+ * Class PlainTcpConnectionListener
  * @package Genkgo\Mail\Protocol
  * @codeCoverageIgnore
  */
