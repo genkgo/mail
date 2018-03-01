@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Genkgo\TestMail\Unit\Protocol\Imap\Negotiation;
 
+use Genkgo\Mail\Exception\ImapAuthenticationException;
 use Genkgo\Mail\Protocol\ConnectionInterface;
 use Genkgo\Mail\Protocol\Imap\Client;
 use Genkgo\Mail\Protocol\Imap\Negotiation\AuthNegotiation;
@@ -91,6 +92,39 @@ final class AuthNegotiationTest extends AbstractTestCase
             ->expects($this->at(7))
             ->method('receive')
             ->willReturn('TAG2 OK');
+
+        $client = new Client($connection, new GeneratorTagFactory(), []);
+
+        $negotiation = new AuthNegotiation(Client::AUTH_AUTO, 'username', 'password');
+        $negotiation->negotiate($client);
+    }
+
+    /**
+     * @test
+     */
+    public function it_uses_capability_when_method_is_auto_and_not_advertised()
+    {
+        $this->expectException(ImapAuthenticationException::class);
+
+        $connection = $this->createMock(ConnectionInterface::class);
+        $connection
+            ->expects($this->at(0))
+            ->method('addListener');
+
+        $connection
+            ->expects($this->at(1))
+            ->method('send')
+            ->with("TAG1 CAPABILITY\r\n");
+
+        $connection
+            ->expects($this->at(2))
+            ->method('receive')
+            ->willReturn('* CAPABILITY IMAP4rev1 STARTTLS');
+
+        $connection
+            ->expects($this->at(3))
+            ->method('receive')
+            ->willReturn('TAG1 OK');
 
         $client = new Client($connection, new GeneratorTagFactory(), []);
 

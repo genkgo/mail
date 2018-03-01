@@ -117,4 +117,29 @@ final class ForceTlsUpgradeNegotiationTest extends AbstractTestCase
         $negotiation->negotiate($client);
     }
 
+    /**
+     * @test
+     */
+    public function it_does_not_upgrade_when_already_encrypted()
+    {
+        $connection = $this->createMock(ConnectionInterface::class);
+        $connection
+            ->expects($this->at(0))
+            ->method('addListener');
+
+        $connection
+            ->expects($this->at(1))
+            ->method('getMetaData')
+            ->willReturn(['crypto' => []]);
+
+        $client = new Client($connection, new GeneratorTagFactory(), []);
+
+        $negotiation = new ForceTlsUpgradeNegotiation(
+            $connection,
+            CryptoConstant::getDefaultMethod(PHP_VERSION)
+        );
+
+        $negotiation->negotiate($client);
+    }
+
 }

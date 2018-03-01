@@ -37,6 +37,7 @@ final class GeneratorTagFactory implements TagFactoryInterface
 
     /**
      * @return \Generator
+     * @codeCoverageIgnore
      */
     private function newList(): \Generator
     {
