@@ -43,8 +43,7 @@ final class GeneratorTagFactory implements TagFactoryInterface
         $i = 0;
 
         while (true) {
-            $i++;
-            yield new Tag('TAG' . $i);
+            yield Tag::fromNonce(++$i);
         }
     }
 }

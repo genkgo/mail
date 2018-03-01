@@ -51,4 +51,13 @@ final class Tag
             )
         );
     }
+
+    /**
+     * @param int $nonce
+     * @return Tag
+     */
+    public static function fromNonce(int $nonce): self
+    {
+        return new self('TAG' . $nonce);
+    }
 }
