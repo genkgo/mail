@@ -27,4 +27,21 @@ final class FlagsItemTest extends AbstractTestCase
         $this->assertSame('FLAGS (\\Seen)', (string)$item);
     }
 
+    /**
+     * @test
+     */
+    public function it_throws_when_using_invalid_operator()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        new FlagsItem(new FlagParenthesizedList(['\\Seen']), '*');
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_be_constructed_as_silent()
+    {
+        $this->assertSame('FLAGS.SILENT (\Seen)', (string)FlagsItem::silent(new FlagParenthesizedList(['\\Seen'])));
+    }
+
 }

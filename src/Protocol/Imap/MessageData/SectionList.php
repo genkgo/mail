@@ -60,7 +60,7 @@ final class SectionList
         $sections = array_filter(explode(' ', $matches[1]));
         for ($i = 0; $i < count($sections); $i++) {
             if ($sections[$i] === 'HEADER.FIELDS' || $sections[$i] === 'HEADER.FIELDS.NOT') {
-                if ($sections[$i + 1][0] !== '(') {
+                if (!isset($sections[$i + 1][0]) || $sections[$i + 1][0] !== '(') {
                     throw new \InvalidArgumentException(
                         'HEADER.FIELDS or HEADER.FIELDS.NOT requires header-list'
                     );

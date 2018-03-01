@@ -64,4 +64,32 @@ final class MailboxWildcardTest extends AbstractTestCase
     {
         $this->assertSame('"Archive*2018"', (string)new MailboxWildcard('"Archive*2018"'));
     }
+
+    /**
+     * @test
+     */
+    public function it_throws_an_empty_string()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        new MailboxWildcard('');
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_unfinished_literal()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        new MailboxWildcard('Archive."Archive 2018');
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_using_8bit_name_when_quoted()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        new MailboxWildcard('Archive."' . "\u{1000}" . '"');
+    }
+
 }

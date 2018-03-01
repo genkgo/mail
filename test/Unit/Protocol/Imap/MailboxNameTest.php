@@ -74,4 +74,30 @@ final class MailboxNameTest extends AbstractTestCase
         $this->assertSame('"Archive*2018"', (string)new MailboxName('"Archive*2018"'));
     }
 
+    /**
+     * @test
+     */
+    public function it_throws_an_empty_string()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        new MailboxName('');
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_unfinished_literal()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        new MailboxName('Archive."Archive 2018');
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_using_8bit_name_when_quoted()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        new MailboxName('Archive."' . "\u{1000}" . '"');
+    }
 }

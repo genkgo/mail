@@ -82,4 +82,49 @@ final class SectionListTest extends AbstractTestCase
         $list = SectionList::fromString('[HEADER.FIELDS (Subject Date)]');
         $this->assertSame('[HEADER.FIELDS (Subject Date)]', (string)$list);
     }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_empty_string()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        new SectionList(['']);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_header_fields_not_followed_by_list()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        new SectionList(['HEADER.FIELDS']);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_parsing_header_fields_not_followed_by_list()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        SectionList::fromString('[HEADER.FIELDS HEADER]');
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_parsing_header_fields_not_followed_by_anything()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        SectionList::fromString('[HEADER.FIELDS]');
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_parsing_invalid_string()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        SectionList::fromString('{HEADER}');
+    }
 }

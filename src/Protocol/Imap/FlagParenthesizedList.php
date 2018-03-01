@@ -31,7 +31,18 @@ final class FlagParenthesizedList
     public function with(Flag $flag): self
     {
         $clone = clone $this;
-        $clone->flags[] = $flag;
+        $clone->flags[(string)$flag] = $flag;
+        return $clone;
+    }
+
+    /**
+     * @param Flag $flag
+     * @return FlagParenthesizedList
+     */
+    public function without(Flag $flag): self
+    {
+        $clone = clone $this;
+        unset($clone->flags[(string)$flag]);
         return $clone;
     }
 

@@ -26,4 +26,13 @@ final class NameItemTest extends AbstractTestCase
         $this->assertSame('TEST', (string)$item);
     }
 
+    /**
+     * @test
+     */
+    public function it_throws_when_using_invalid_name()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        new NameItem('TEST' . "\u{1000}");
+    }
+
 }

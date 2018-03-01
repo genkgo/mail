@@ -219,7 +219,6 @@ final class ItemList
                         throw new \InvalidArgumentException('Invalid character { found');
                     }
 
-
                     $state = self::STATE_OCTET;
                     break;
                 case '}':

@@ -31,7 +31,18 @@ final class ParenthesizedList
     public function with(string $name): self
     {
         $clone = clone $this;
-        $clone->list[] = $name;
+        $clone->list[$name] = $name;
+        return $clone;
+    }
+
+    /**
+     * @param string $name
+     * @return ParenthesizedList
+     */
+    public function without(string $name): self
+    {
+        $clone = clone $this;
+        unset($clone->list[$name]);
         return $clone;
     }
 

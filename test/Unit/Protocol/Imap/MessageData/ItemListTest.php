@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Genkgo\TestMail\Unit\Protocol\Imap\MessageData;
 
 use Genkgo\Mail\Protocol\Imap\MessageData\Item\NameItem;
+use Genkgo\Mail\Protocol\Imap\MessageData\Item\PartialItem;
 use Genkgo\Mail\Protocol\Imap\MessageData\ItemList;
 use Genkgo\TestMail\AbstractTestCase;
 
@@ -116,4 +117,86 @@ final class ItemListTest extends AbstractTestCase
         ItemList::fromString('');
     }
 
+    /**
+     * @test
+     */
+    public function it_throws_when_using_brackets_when_already_in_section()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        ItemList::fromString('BODY[HEADER[]');
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_using_brackets_not_in_section()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        ItemList::fromString('BODY]');
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_using_less_than_sign_when_in_section()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        ItemList::fromString('BODY[HEADER<]');
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_using_greater_than_sign_when_in_section()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        ItemList::fromString('BODY[HEADER>]');
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_using_left_curly_bracket_when_in_section()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        ItemList::fromString('BODY[HEADER{]');
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_using_right_curly_bracket_when_in_section()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        ItemList::fromString('BODY[HEADER}]');
+    }
+
+    /**
+     * @test
+     */
+    public function it_separates_spaces()
+    {
+        $itemList = ItemList::fromString('BODY HEADER');
+        $this->assertSame('BODY', (string)$itemList->getItem('BODY'));
+        $this->assertSame('HEADER', (string)$itemList->getItem('HEADER'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_parses_partial()
+    {
+        $itemList = ItemList::fromString('BODY[]<0.100>');
+        $this->assertInstanceOf(PartialItem::class, $itemList->getItem('BODY'));
+        $this->assertSame('BODY[]<0.100>', (string)$itemList->getItem('BODY'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_unknown_item()
+    {
+        $this->expectException(\UnexpectedValueException::class);
+        ItemList::fromString('BODY')->getItem('HEADER');
+    }
 }
