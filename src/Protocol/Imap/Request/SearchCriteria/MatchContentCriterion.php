@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Genkgo\Mail\Protocol\Imap\Request\SearchCriteria;
 
-final class MatchStringCriterion implements CriterionInterface
+final class MatchContentCriterion implements CriterionInterface
 {
 
     /**
@@ -36,7 +36,7 @@ final class MatchStringCriterion implements CriterionInterface
     public function __toString(): string
     {
         return sprintf(
-            '%s %s',
+            '%s "%s"',
             $this->name,
             addslashes($this->query)
         );
@@ -44,7 +44,7 @@ final class MatchStringCriterion implements CriterionInterface
 
     /**
      * @param string $query
-     * @return MatchStringCriterion
+     * @return MatchContentCriterion
      */
     public static function body(string $query): self
     {
@@ -53,7 +53,7 @@ final class MatchStringCriterion implements CriterionInterface
 
     /**
      * @param string $query
-     * @return MatchStringCriterion
+     * @return MatchContentCriterion
      */
     public static function text(string $query): self
     {
@@ -62,7 +62,7 @@ final class MatchStringCriterion implements CriterionInterface
 
     /**
      * @param string $query
-     * @return MatchStringCriterion
+     * @return MatchContentCriterion
      */
     public static function subject(string $query): self
     {

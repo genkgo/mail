@@ -67,8 +67,16 @@ final class DateCriterionTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_uses_sentSince()
+    public function it_uses_sent_since()
     {
         $this->assertSame('SENTSINCE 1-Thu-2015', (string)DateCriterion::sentSince(new \DateTimeImmutable('2015-01-01 00:00:00')));
+    }
+
+    /**
+     * @test
+     */
+    public function it_uses_sent_on()
+    {
+        $this->assertSame('SENTON 1-Thu-2015', (string)DateCriterion::sentOn(new \DateTimeImmutable('2015-01-01 00:00:00')));
     }
 }

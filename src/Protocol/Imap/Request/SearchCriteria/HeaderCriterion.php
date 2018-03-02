@@ -38,7 +38,7 @@ final class HeaderCriterion implements CriterionInterface
     public function __toString(): string
     {
         return sprintf(
-            'HEADER %s %s',
+            'HEADER %s "%s"',
             (string)$this->headerName,
             addslashes($this->query)
         );

@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Genkgo\Mail\Protocol\Imap\Request\SearchCriteria;
 
 /**
- * Class NotCriterium
+ * Class NotCriterion
  * @package Genkgo\Mail\Protocol\Imap\Request\SearchCriteria
  */
 final class NotCriterion implements CriterionInterface

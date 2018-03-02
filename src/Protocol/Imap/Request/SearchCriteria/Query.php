@@ -15,6 +15,15 @@ final class Query implements \Countable
     private $criteria = [];
 
     /**
+     * Query constructor.
+     * @param array $criteria
+     */
+    public function __construct(array $criteria = [])
+    {
+        $this->criteria = $criteria;
+    }
+
+    /**
      * @param CriterionInterface $criterion
      * @return Query
      */
