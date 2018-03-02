@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Genkgo\Mail\Protocol\Imap\Request\SearchCriteria;
 
 /**
- * Class CommunicatorCriterium
+ * Class CommunicatorCriterion
  * @package Genkgo\Mail\Protocol\Imap\Request\SearchCriteria
  */
 final class CommunicatorCriterion implements CriterionInterface
