@@ -128,9 +128,15 @@ final class AggregateResponse implements \IteratorAggregate
                         $this->tag->extractBodyFromLine($line)
                     );
                 } catch (\InvalidArgumentException $e) {
+                    if (empty($clone->lines)) {
+                        throw new \UnexpectedValueException(
+                            'Expected line to begin with +, * or tag. Got: ' . $line
+                        );
+                    }
+
                     $keys = array_keys($clone->lines);
                     $lastKey = end($keys);
-                    $clone->lines[$lastKey] = $clone->lines[$lastKey]->withBody($line);
+                    $clone->lines[$lastKey] = $clone->lines[$lastKey]->withAddedBody($line);
                 }
                 break;
 

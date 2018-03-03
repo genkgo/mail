@@ -29,6 +29,7 @@ final class CompletionResult
         self::NO => true,
         self::OK => true,
     ];
+
     /**
      * @var string
      */

@@ -225,4 +225,13 @@ final class AggregateResponseTest extends AbstractTestCase
         $this->assertSame($fetch, $response->first()->getBody());
     }
 
+    /**
+     * @test
+     */
+    public function it_throws_when_adding_content_line_when_empty_response()
+    {
+        $this->expectException(\UnexpectedValueException::class);
+
+        (new AggregateResponse(Tag::fromNonce(1)))->withLine('content');
+    }
 }

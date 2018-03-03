@@ -27,14 +27,14 @@ final class CommandContinuationRequestResponse implements ResponseInterface
      */
     public function __toString(): string
     {
-        return trim('+' . $this->line);
+        return trim('+ ' . $this->line);
     }
 
     /**
      * @param string $data
      * @return ResponseInterface
      */
-    public function withBody(string $data): ResponseInterface
+    public function withAddedBody(string $data): ResponseInterface
     {
         $clone = clone $this;
         $clone->line .= $data;

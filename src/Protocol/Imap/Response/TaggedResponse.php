@@ -45,7 +45,7 @@ final class TaggedResponse implements ResponseInterface
      * @param string $data
      * @return ResponseInterface
      */
-    public function withBody(string $data): ResponseInterface
+    public function withAddedBody(string $data): ResponseInterface
     {
         $clone = clone $this;
         $clone->line .= $data;
