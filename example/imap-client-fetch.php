@@ -34,7 +34,7 @@ $client = new Client(
 );
 
 $client
-    ->emit(new SelectCommand($client->newTag(),'inbox'))
+    ->emit(new SelectCommand($client->newTag(), new \Genkgo\Mail\Protocol\Imap\MailboxName('inbox')))
     ->last()
     ->assertCompletion(CompletionResult::ok());
 
@@ -42,7 +42,7 @@ $responseList = $client
     ->emit(
         new FetchCommand(
             $client->newTag(),
-            SequenceSet::sequence(1, 2),
+            SequenceSet::range(1, 2),
             ItemList::fromString('BODY[]')
         )
     );

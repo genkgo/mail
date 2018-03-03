@@ -11,43 +11,27 @@ final class SequenceSet
 {
 
     /**
-     * @var int
+     * @var array
      */
-    private $first;
-    /**
-     * @var int
-     */
-    private $last;
+    private $set = [];
 
     /**
      * SequenceSet constructor.
-     * @param int $first
      */
-    public function __construct(int $first)
+    private function __construct()
     {
-        $this->first = $first;
-    }
-
-    /**
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return sprintf(
-            '%s:%s',
-            $this->first,
-            $this->last ? $this->last : '*'
-        );
+        // this constructor is protected in order to force
+        // a set to have at least one item
     }
 
     /**
      * @param int $number
      * @return SequenceSet
      */
-    public static function single(int $number): self
+    public function withSingle(int $number): self
     {
-        $set = new self($number);
-        $set->last = $number;
+        $set = clone $this;
+        $set->set[] = $number;
         return $set;
     }
 
@@ -56,10 +40,73 @@ final class SequenceSet
      * @param int $last
      * @return SequenceSet
      */
-    public static function sequence(int $first, int $last): self
+    public function withRange(int $first, int $last): self
     {
-        $set = new self($first);
-        $set->last = $last;
+        $set = clone $this;
+        $set->set[] = (string)$first.':'.(string)$last;
+        return $set;
+    }
+
+    /**
+     * @param int $first
+     * @return SequenceSet
+     */
+    public function withInfiniteRange(int $first): self
+    {
+        $set = clone $this;
+        $set->set[] = (string)$first.':*';
+        return $set;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return implode(',', $this->set);
+    }
+
+    /**
+     * @return SequenceSet
+     */
+    public static function all(): self
+    {
+        $set = new self();
+        $set->set = ['*'];
+        return $set;
+    }
+
+    /**
+     * @param int $number
+     * @return SequenceSet
+     */
+    public static function single(int $number): self
+    {
+        $set = new self();
+        $set->set = [(string)$number];
+        return $set;
+    }
+
+    /**
+     * @param int $first
+     * @param int $last
+     * @return SequenceSet
+     */
+    public static function range(int $first, int $last): self
+    {
+        $set = new self();
+        $set->set = [(string)$first.':'.(string)$last];
+        return $set;
+    }
+
+    /**
+     * @param int $first
+     * @return SequenceSet
+     */
+    public static function infiniteRange(int $first): self
+    {
+        $set = new self();
+        $set->set = [(string)$first.':*'];
         return $set;
     }
 }

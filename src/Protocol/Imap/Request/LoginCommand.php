@@ -30,6 +30,10 @@ final class LoginCommand extends AbstractCommand
      */
     public function __construct(Tag $tag, string $username, string $password)
     {
+        if (preg_match('/\s/', $username . $password) === 1) {
+            throw new \InvalidArgumentException('Username and/or password may not contain any whitespace');
+        }
+
         $this->username = $username;
         $this->password = $password;
         $this->tag = $tag;

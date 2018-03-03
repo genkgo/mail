@@ -30,4 +30,31 @@ final class HeaderCriterionTest extends AbstractTestCase
             (string)new HeaderCriterion(new HeaderName('X-Custom-Header'), '"Test"')
         );
     }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_empty_query()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        new HeaderCriterion(new HeaderName('X-Custom-Header'), '');
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_query_contains_cr()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        new HeaderCriterion(new HeaderName('X-Custom-Header'), "\r");
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_query_contains_lf()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        new HeaderCriterion(new HeaderName('X-Custom-Header'), "\n");
+    }
 }

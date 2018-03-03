@@ -48,10 +48,26 @@ final class MailboxName
             throw new \InvalidArgumentException('Mailbox name cannot be empty');
         }
 
-        if (isset(self::RFC_3501_FIXED[$name])) {
-            return;
+        if (!isset(self::RFC_3501_FIXED[$name])) {
+            $this->validateNonRfcName($name);
         }
 
+        $this->name = $name;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string $name
+     */
+    private function validateNonRfcName(string $name): void
+    {
         $index = 0;
         $state = self::PARSE_STATE_UNQUOTED;
         while (isset($name[$index])) {
@@ -91,15 +107,5 @@ final class MailboxName
         if ($state === self::PARSE_STATE_QUOTED) {
             throw new \InvalidArgumentException('Unfinished quoted literal');
         }
-
-        $this->name = $name;
-    }
-
-    /**
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->name;
     }
 }

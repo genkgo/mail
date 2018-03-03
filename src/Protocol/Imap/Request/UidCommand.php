@@ -5,7 +5,6 @@ namespace Genkgo\Mail\Protocol\Imap\Request;
 
 use Genkgo\Mail\Protocol\Imap\RequestInterface;
 use Genkgo\Mail\Protocol\Imap\Tag;
-use Genkgo\Mail\Stream\ConcatenatedStream;
 use Genkgo\Mail\Stream\StringStream;
 use Genkgo\Mail\StreamInterface;
 
@@ -31,10 +30,13 @@ final class UidCommand implements RequestInterface
      */
     public function toStream(): StreamInterface
     {
-        return new ConcatenatedStream([
-            new StringStream('UID '),
-            $this->request->toStream()
-        ]);
+        return new StringStream(
+            sprintf(
+                '%s UID %s',
+                (string)$this->getTag(),
+                $this->getTag()->extractBodyFromLine((string) $this->request->toStream())
+            )
+        );
     }
 
     /**

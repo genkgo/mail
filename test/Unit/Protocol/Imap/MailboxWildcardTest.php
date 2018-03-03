@@ -68,10 +68,10 @@ final class MailboxWildcardTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throws_an_empty_string()
+    public function it_allows_an_empty_string()
     {
-        $this->expectException(\InvalidArgumentException::class);
         new MailboxWildcard('');
+        $this->addToAssertionCount(1);
     }
 
     /**

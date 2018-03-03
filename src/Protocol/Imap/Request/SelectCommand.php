@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Genkgo\Mail\Protocol\Imap\Request;
 
+use Genkgo\Mail\Protocol\Imap\MailboxName;
 use Genkgo\Mail\Protocol\Imap\Tag;
 use Genkgo\Mail\Stream\StringStream;
 use Genkgo\Mail\StreamInterface;
@@ -14,23 +15,23 @@ use Genkgo\Mail\StreamInterface;
 final class SelectCommand extends AbstractCommand
 {
     /**
-     * @var string
-     */
-    private $name;
-    /**
      * @var Tag
      */
     private $tag;
+    /**
+     * @var MailboxName
+     */
+    private $mailbox;
 
     /**
      * SelectCommand constructor.
      * @param Tag $tag
-     * @param string $name
+     * @param MailboxName $mailbox
      */
-    public function __construct(Tag $tag, string $name)
+    public function __construct(Tag $tag, MailboxName $mailbox)
     {
-        $this->name = $name;
         $this->tag = $tag;
+        $this->mailbox = $mailbox;
     }
 
     /**
@@ -41,7 +42,7 @@ final class SelectCommand extends AbstractCommand
         return new StringStream(
             sprintf(
                 'SELECT %s',
-                $this->name
+                (string)$this->mailbox
             )
         );
     }

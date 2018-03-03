@@ -44,10 +44,6 @@ final class MailboxWildcard
      */
     public function __construct(string $name)
     {
-        if ($name === '') {
-            throw new \InvalidArgumentException('Mailbox name cannot be empty');
-        }
-
         if (isset(self::RFC_3501_FIXED[$name])) {
             return;
         }
@@ -100,6 +96,10 @@ final class MailboxWildcard
      */
     public function __toString(): string
     {
+        if ($this->name === '') {
+            return '""';
+        }
+
         return $this->name;
     }
 }

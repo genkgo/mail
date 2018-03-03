@@ -39,7 +39,7 @@ final class SearchCommand extends AbstractCommand
      */
     public function __construct(Tag $tag, Query $query, string $charset = '')
     {
-        if (strlen($this->charset) !== strcspn($charset, self::CHARSET_VALID)) {
+        if (strlen($charset) !== strspn($charset, self::CHARSET_VALID)) {
             throw new \InvalidArgumentException("Invalid charset");
         }
 
