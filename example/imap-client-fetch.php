@@ -54,7 +54,7 @@ try {
     $index = 0;
 
     while (true) {
-        $list[] = FetchCommandResponse::fromResponse($responseList->at($index))->getDataItemList();
+        $list[] = FetchCommandResponse::fromString($responseList->at($index))->getDataItemList();
         $index++;
     }
 } catch (\InvalidArgumentException $e) {

@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace Genkgo\Mail\Protocol\Imap\Response\Command;
 
 use Genkgo\Mail\Protocol\Imap\MessageData\ItemList;
-use Genkgo\Mail\Protocol\Imap\ResponseInterface;
 
 /**
  * Class FetchCommandResponse
@@ -49,15 +48,25 @@ final class FetchCommandResponse
     }
 
     /**
-     * @param ResponseInterface $response
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return sprintf(
+            "%s FETCH %s",
+            $this->number,
+            (string)$this->dataItemList
+        );
+    }
+
+    /**
+     * @param string$response
      * @return FetchCommandResponse
      */
-    public static function fromResponse(ResponseInterface $response): self
+    public static function fromString(string $response): self
     {
-        $body = $response->getBody();
-
         $matches = [];
-        $result = preg_match('/^([0-9]+) FETCH ((\()?.*?(\))?)\s*$/s', $body, $matches);
+        $result = preg_match('/^([0-9]+) FETCH ((\()?.*?(\))?)\s*$/s', $response, $matches);
         if ($result !== 1) {
             throw new \InvalidArgumentException('Not a fetch command');
         }

@@ -1,0 +1,21 @@
+10588 FETCH (BODY[HEADER] {1344}
+Return-Path: <test_nospam@test.priv>
+Received: from ms1.busylog.priv (192.168.2.1) by ms2.busylog.priv
+ id ADR9398458A00a for giovanni_nospam@busylog.net; Fri, 8 Jul 2016 19:37:33 +0200
+Received: from be02.busylog.net.priv (192.168.2.2) by ms1.busylog.priv
+ id ADR9398458d838 for giovanni_nospam@busylog.net; Fri, 8 Jul 2016 19:37:33 +0200
+Message-ID: <344775Q_d932858_212AT34@be02.busylog.net.priv>
+Date: Fri, 8 Jul 2016 19:37:28 +0200 (CEST)
+From: test_nospam <test_nospam@test.priv>
+Reply-To: test_nospam <test_nospam@test.priv>
+To: giovanni_nospam@busylog.net
+Subject: Test 28/07/2016 - 2
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+Sender: test_nospam@test.priv
+Content-Language: it
+X-Busy-Expiry: 2016-07-09T13:37:23.533Z
+X-Busy-Type: Protected
+
+)

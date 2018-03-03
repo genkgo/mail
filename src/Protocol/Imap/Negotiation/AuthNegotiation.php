@@ -50,7 +50,7 @@ final class AuthNegotiation implements NegotiationInterface
         if ($method === Client::AUTH_AUTO) {
             $responseList = $client->emit(new CapabilityCommand($client->newTag()));
 
-            $capabilities = CapabilityCommandResponse::fromResponse($responseList->first());
+            $capabilities = CapabilityCommandResponse::fromString($responseList->first()->getBody());
 
             $responseList
                 ->last()

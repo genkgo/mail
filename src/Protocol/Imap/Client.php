@@ -104,7 +104,7 @@ final class Client
 
         $this->connection->send($bytes);
 
-        $response = new AggregateResponse($request);
+        $response = new AggregateResponse($request->getTag());
 
         while (!$response->hasCompleted()) {
             $response = $response->withLine($this->connection->receive());

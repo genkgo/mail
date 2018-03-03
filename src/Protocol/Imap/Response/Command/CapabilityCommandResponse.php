@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace Genkgo\Mail\Protocol\Imap\Response\Command;
 
-use Genkgo\Mail\Protocol\Imap\ResponseInterface;
-
 final class CapabilityCommandResponse
 {
     /**
@@ -35,22 +33,32 @@ final class CapabilityCommandResponse
     }
 
     /**
-     * @param ResponseInterface $response
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return sprintf(
+            'CAPABILITY %s',
+            implode(' ', array_keys($this->advertisements))
+        );
+    }
+
+    /**
+     * @param string $response
      * @return CapabilityCommandResponse
      */
-    public static function fromResponse(ResponseInterface $response): self
+    public static function fromString(string $response): self
     {
         $command = 'CAPABILITY ';
         $commandLength = strlen($command);
 
-        $body = $response->getBody();
-        if (substr($body,0, $commandLength) !== $command) {
+        if (substr($response,0, $commandLength) !== $command) {
             throw new \InvalidArgumentException(
-                sprintf('Expected CAPABILITY command, got %s', $body)
+                sprintf('Expected CAPABILITY command, got %s', $response)
             );
         }
 
-        $advertisements = preg_split('/[\s]+/', substr($body, $commandLength));
+        $advertisements = preg_split('/[\s]+/', substr($response, $commandLength));
 
         return new self(
             array_combine(

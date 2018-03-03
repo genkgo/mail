@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace Genkgo\Mail\Protocol\Imap\Response;
 
 use Genkgo\Mail\Exception\AssertionFailedException;
-use Genkgo\Mail\Protocol\Imap\RequestInterface;
 use Genkgo\Mail\Protocol\Imap\ResponseInterface;
+use Genkgo\Mail\Protocol\Imap\Tag;
 
 /**
  * Class Response
@@ -19,17 +19,17 @@ final class AggregateResponse implements \IteratorAggregate
     private $lines = [];
 
     /**
-     * @var RequestInterface
+     * @var Tag
      */
-    private $request;
+    private $tag;
 
     /**
      * Reply constructor.
-     * @param RequestInterface $request
+     * @param Tag $tag
      */
-    public function __construct(RequestInterface $request)
+    public function __construct(Tag $tag)
     {
-        $this->request = $request;
+        $this->tag = $tag;
     }
 
     /**
@@ -46,7 +46,7 @@ final class AggregateResponse implements \IteratorAggregate
     public function first(): ResponseInterface
     {
         if (empty($this->lines)) {
-            throw new \UnexpectedValueException('Cannot return item of empty response');
+            throw new \OutOfBoundsException('Cannot return item of empty response');
         }
 
         return reset($this->lines);
@@ -58,7 +58,7 @@ final class AggregateResponse implements \IteratorAggregate
     public function last(): ResponseInterface
     {
         if (empty($this->lines)) {
-            throw new \UnexpectedValueException('Cannot return item of empty response');
+            throw new \OutOfBoundsException('Cannot return item of empty response');
         }
 
         return end($this->lines);
@@ -71,7 +71,7 @@ final class AggregateResponse implements \IteratorAggregate
     public function at(int $index): ResponseInterface
     {
         if (!isset($this->lines[$index])) {
-            throw new \UnexpectedValueException('GenericItem not in response');
+            throw new \OutOfBoundsException('GenericItem not in response');
         }
 
         return $this->lines[$index];
@@ -110,10 +110,6 @@ final class AggregateResponse implements \IteratorAggregate
     {
         $clone = clone $this;
 
-        if (!isset($line[0])) {
-            throw new \InvalidArgumentException('Empty line');
-        }
-
         switch (substr($line, 0, 2)) {
             case '+ ':
                 $clone->lines[] = new CommandContinuationRequestResponse(
@@ -127,9 +123,11 @@ final class AggregateResponse implements \IteratorAggregate
                 break;
             default:
                 try {
-                    $tag = $this->request->getTag();
-                    $clone->lines[] = new TaggedResponse($tag, $tag->extractBodyFromLine($line));
-                } catch (\InvalidArgumentException | \BadMethodCallException $e) {
+                    $clone->lines[] = new TaggedResponse(
+                        $this->tag,
+                        $this->tag->extractBodyFromLine($line)
+                    );
+                } catch (\InvalidArgumentException $e) {
                     $keys = array_keys($clone->lines);
                     $lastKey = end($keys);
                     $clone->lines[$lastKey] = $clone->lines[$lastKey]->withBody($line);
