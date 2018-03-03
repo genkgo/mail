@@ -85,13 +85,13 @@ final class CompletionResult
      */
     public static function fromLine(string $line): self
     {
-        $space = strpos($line, ' ');
+        $found = preg_match('/^([A-Z]{0,3})\s/', $line, $matches);
 
-        if ($space === false) {
+        if ($found === 0) {
             return new self($line);
         }
 
-        return new self(substr($line, 0, $space));
+        return new self($matches[1]);
     }
 
     /**

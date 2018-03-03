@@ -5,7 +5,7 @@ namespace Genkgo\Mail\Transport;
 
 use Genkgo\Mail\MessageInterface;
 use Genkgo\Mail\Protocol\Imap\Client;
-use Genkgo\Mail\Protocol\Imap\ParenthesizedList;
+use Genkgo\Mail\Protocol\Imap\MailboxName;
 use Genkgo\Mail\Protocol\Imap\Request\AppendCommand;
 use Genkgo\Mail\Protocol\Imap\Request\AppendDataRequest;
 use Genkgo\Mail\Protocol\Imap\Response\CompletionResult;
@@ -18,18 +18,18 @@ final class ImapTransport implements TransportInterface
      */
     private $client;
     /**
-     * @var string
+     * @var MailboxName
      */
     private $mailbox;
 
     /**
      * SmtpTransport constructor.
      * @param Client $client
-     * @param string $inbox
+     * @param MailboxName $inbox
      */
     public function __construct(
         Client $client,
-        string $inbox
+        MailboxName $inbox
     ) {
         $this->client = $client;
         $this->mailbox = $inbox;
@@ -44,7 +44,7 @@ final class ImapTransport implements TransportInterface
         $tag = $this->client->newTag();
 
         $this->client
-            ->emit(new AppendCommand($tag, $this->mailbox, strlen((string)$message), new ParenthesizedList()))
+            ->emit(new AppendCommand($tag, $this->mailbox, strlen((string)$message)))
             ->last()
             ->assertContinuation();
 
