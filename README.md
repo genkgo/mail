@@ -59,7 +59,8 @@ $ composer require genkgo/mail
 - Only uses TLS < 1.2 if not otherwise possible 
 - Discourages SSL
 - DKIM signed message
-- Security is high prioritized
+- Security is highly prioritized
+- Use IMAPv4 to read messages from your mailbox 
 - SMTP server for testing purposes
 - Great RFC compliance
 - Cast messages to valid string source
@@ -70,7 +71,6 @@ $ composer require genkgo/mail
 ## Upcoming features
 
 - Encrypted and signed messages
-- IMAP support
 
 
 ## Documentation
