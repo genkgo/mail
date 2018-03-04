@@ -1,13 +1,11 @@
-<?php
-
+<?php declare(strict_types=1);
 namespace Genkgo\TestMail\Unit\Header;
 
-use Genkgo\TestMail\AbstractTestCase;;
+use Genkgo\TestMail\AbstractTestCase;
 use Genkgo\Mail\Header\Date;
 
 final class DateTest extends AbstractTestCase
 {
-
     /**
      * @test
      * @dataProvider provideValues
@@ -28,6 +26,4 @@ final class DateTest extends AbstractTestCase
             ['2017-01-01 18:15:00', 'Date', 'Sun, 01 Jan 2017 18:15:00 +0000'],
         ];
     }
-
-
 }

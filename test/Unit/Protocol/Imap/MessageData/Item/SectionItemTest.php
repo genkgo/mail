@@ -27,5 +27,4 @@ final class SectionItemTest extends AbstractTestCase
         $item = new SectionItem(new NameItem('TEST'), new SectionList());
         $this->assertSame('TEST[]', (string)$item);
     }
-
 }

@@ -14,7 +14,7 @@ final class FetchCommandResponseTest extends AbstractTestCase
      */
     public function it_can_be_constructed_from_string()
     {
-        $stub = file_get_contents(__DIR__. '/../../../../../Stub/Imap/fetch-response.txt');
+        $stub = \file_get_contents(__DIR__. '/../../../../../Stub/Imap/fetch-response.txt');
 
         $response = FetchCommandResponse::fromString($stub);
 
@@ -26,7 +26,7 @@ final class FetchCommandResponseTest extends AbstractTestCase
      */
     public function it_contains_message_data()
     {
-        $stub = file_get_contents(__DIR__. '/../../../../../Stub/Imap/fetch-response.txt');
+        $stub = \file_get_contents(__DIR__. '/../../../../../Stub/Imap/fetch-response.txt');
         $response = FetchCommandResponse::fromString($stub);
 
         $this->assertSame(10588, $response->getNumber());

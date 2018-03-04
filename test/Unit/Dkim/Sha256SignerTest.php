@@ -44,7 +44,7 @@ final class Sha256SignerTest extends AbstractTestCase
     public function it_throws_on_invalid_constructor_argument()
     {
         $this->expectException(\InvalidArgumentException::class);
-        new Sha256Signer(fopen('data://text/plain;base64,SSBsb3ZlIFBIUAo=', 'r+'));
+        new Sha256Signer(\fopen('data://text/plain;base64,SSBsb3ZlIFBIUAo=', 'r+'));
     }
 
     /**
@@ -69,13 +69,13 @@ final class Sha256SignerTest extends AbstractTestCase
         $bodyHash = $signer->hashBody($body);
         $headerHash = $signer->signHeaders($header);
 
-        $this->assertEquals(hash('sha256', $body, true), $bodyHash);
+        $this->assertEquals(\hash('sha256', $body, true), $bodyHash);
         $this->assertEquals(
             1,
-            openssl_verify(
+            \openssl_verify(
                 $header,
                 $headerHash,
-                file_get_contents(__DIR__ . '/../../Stub/Dkim/dkim.test.pub'),
+                \file_get_contents(__DIR__ . '/../../Stub/Dkim/dkim.test.pub'),
                 OPENSSL_ALGO_SHA256
             )
         );
@@ -96,13 +96,13 @@ final class Sha256SignerTest extends AbstractTestCase
         $bodyHash =$signer->hashBody($body);
         $headerHash = $signer->signHeaders($header);
 
-        $this->assertEquals(hash('sha256', $body, true), $bodyHash);
+        $this->assertEquals(\hash('sha256', $body, true), $bodyHash);
         $this->assertEquals(
             1,
-            openssl_verify(
+            \openssl_verify(
                 $header,
                 $headerHash,
-                file_get_contents(__DIR__ . '/../../Stub/Dkim/dkim.test.protected.pub'),
+                \file_get_contents(__DIR__ . '/../../Stub/Dkim/dkim.test.protected.pub'),
                 OPENSSL_ALGO_SHA256
             )
         );

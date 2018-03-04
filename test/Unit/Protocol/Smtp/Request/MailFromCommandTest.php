@@ -24,5 +24,4 @@ final class MailFromCommandTest extends AbstractTestCase
         $command = new MailFromCommand(new EmailAddress('me@localhost'));
         $command->execute($connection);
     }
-
 }

@@ -22,7 +22,7 @@ final class DataTest extends AbstractTestCase
     {
         $capability = new DataCapability(
             new ArrayBackend(['test@genkgo.nl'], new \ArrayObject()),
-            new ForbiddenWordSpamScore(['word'],1),
+            new ForbiddenWordSpamScore(['word'], 1),
             new ArrayGreyList(),
             new SpamDecideScore(4, 15)
         );
@@ -63,7 +63,7 @@ final class DataTest extends AbstractTestCase
 
         $capability = new DataCapability(
             new ArrayBackend(['test@genkgo.nl'], new \ArrayObject()),
-            new ForbiddenWordSpamScore(['word'],1),
+            new ForbiddenWordSpamScore(['word'], 1),
             new ArrayGreyList(),
             new SpamDecideScore(4, 15)
         );
@@ -105,7 +105,7 @@ final class DataTest extends AbstractTestCase
 
         $capability = new DataCapability(
             new ArrayBackend(['test@genkgo.nl'], new \ArrayObject()),
-            new ForbiddenWordSpamScore(['word'],1),
+            new ForbiddenWordSpamScore(['word'], 1),
             new ArrayGreyList(),
             new SpamDecideScore(4, 15)
         );
@@ -152,7 +152,7 @@ final class DataTest extends AbstractTestCase
 
         $capability = new DataCapability(
             new ArrayBackend(['test@genkgo.nl'], new \ArrayObject()),
-            new ForbiddenWordSpamScore(['word'],3),
+            new ForbiddenWordSpamScore(['word'], 3),
             new ArrayGreyList(),
             new SpamDecideScore(4, 15)
         );
@@ -199,7 +199,7 @@ final class DataTest extends AbstractTestCase
 
         $capability = new DataCapability(
             new ArrayBackend(['test@genkgo.nl'], new \ArrayObject()),
-            new ForbiddenWordSpamScore(['word'],3),
+            new ForbiddenWordSpamScore(['word'], 3),
             new ArrayGreyList(),
             new SpamDecideScore(4, 15)
         );
@@ -247,7 +247,7 @@ final class DataTest extends AbstractTestCase
 
             $capability = new DataCapability(
                 $backend,
-                new ForbiddenWordSpamScore(['word'],3),
+                new ForbiddenWordSpamScore(['word'], 3),
                 $greylist,
                 new SpamDecideScore(4, 15)
             );

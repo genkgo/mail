@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Genkgo\TestMail\Unit\Transport;
 
 use Genkgo\Mail\Exception\EnvelopeException;
-use Genkgo\TestMail\AbstractTestCase;;
+use Genkgo\TestMail\AbstractTestCase;
 use Genkgo\Mail\Address;
 use Genkgo\Mail\EmailAddress;
 use Genkgo\Mail\GenericMessage;

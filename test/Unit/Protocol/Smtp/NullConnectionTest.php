@@ -14,7 +14,8 @@ class NullConnectionTest extends TestCase
     public function it_does_nothing_when_listener_added(): void
     {
         $connection = new NullConnection();
-        $connection->addListener('test', function () {});
+        $connection->addListener('test', function () {
+        });
 
         // Test that no exception is thrown
         $this->addToAssertionCount(1);

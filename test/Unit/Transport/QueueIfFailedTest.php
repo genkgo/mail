@@ -1,8 +1,7 @@
-<?php
-
+<?php declare(strict_types=1);
 namespace Genkgo\TestMail\Unit\Transport;
 
-use Genkgo\TestMail\AbstractTestCase;;
+use Genkgo\TestMail\AbstractTestCase;
 use Genkgo\Mail\Exception\ConnectionRefusedException;
 use Genkgo\Mail\Exception\QueueIfFailedException;
 use Genkgo\Mail\Exception\QueueStoreException;
@@ -169,5 +168,4 @@ final class QueueIfFailedTest extends AbstractTestCase
         $wrapper->send($message);
         $wrapper->send($queuedMessage);
     }
-
 }

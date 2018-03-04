@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Genkgo\TestMail\Unit\Mime;
 
-use Genkgo\TestMail\AbstractTestCase;;
+use Genkgo\TestMail\AbstractTestCase;
 use Genkgo\Mail\Header\ContentType;
 use Genkgo\Mail\Mime\HtmlPart;
 use Genkgo\Mail\Stream\AsciiEncodedStream;

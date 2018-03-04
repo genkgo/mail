@@ -106,7 +106,7 @@ final class DataRequestTest extends AbstractTestCase
             ->method('send')
             ->with(".");
 
-        $command = new DataRequest(new StringStream(str_repeat("test\r\ntest\r\n", 2)));
+        $command = new DataRequest(new StringStream(\str_repeat("test\r\ntest\r\n", 2)));
         $command->execute($connection);
     }
 
@@ -120,7 +120,7 @@ final class DataRequestTest extends AbstractTestCase
             ->expects($this->exactly(3))
             ->method('send');
 
-        $command = new DataRequest(new StringStream(str_repeat("a", 996) . "\r\naaaaa"));
+        $command = new DataRequest(new StringStream(\str_repeat("a", 996) . "\r\naaaaa"));
         $command->execute($connection);
     }
 
@@ -158,5 +158,4 @@ final class DataRequestTest extends AbstractTestCase
         $command2 = new DataRequest($stream);
         $command2->execute($connection);
     }
-
 }

@@ -1,8 +1,7 @@
-<?php
-
+<?php declare(strict_types=1);
 namespace Genkgo\TestMail\Unit\Queue;
 
-use Genkgo\TestMail\AbstractTestCase;;
+use Genkgo\TestMail\AbstractTestCase;
 use Genkgo\Mail\Exception\EmptyQueueException;
 use Genkgo\Mail\GenericMessage;
 use Genkgo\Mail\Header\Date;
@@ -82,5 +81,4 @@ final class ArrayObjectQueueTest extends AbstractTestCase
         $queue->store($message);
         $this->assertCount(2, $queue);
     }
-
 }

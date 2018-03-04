@@ -14,7 +14,6 @@ use Genkgo\TestMail\AbstractTestCase;
 
 final class ServerTest extends AbstractTestCase
 {
-
     /**
      * @test
      */

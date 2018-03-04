@@ -1,8 +1,7 @@
-<?php
-
+<?php declare(strict_types=1);
 namespace Genkgo\TestMail\Unit\Transport;
 
-use Genkgo\TestMail\AbstractTestCase;;
+use Genkgo\TestMail\AbstractTestCase;
 use Genkgo\Mail\GenericMessage;
 use Genkgo\Mail\Transport\NullTransport;
 
@@ -20,5 +19,4 @@ final class NullTransportTest extends AbstractTestCase
 
         $this->assertTrue(true);
     }
-
 }

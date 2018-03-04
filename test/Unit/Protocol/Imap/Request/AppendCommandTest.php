@@ -79,5 +79,4 @@ final class AppendCommandTest extends AbstractTestCase
             (string)$command->toStream()
         );
     }
-
 }

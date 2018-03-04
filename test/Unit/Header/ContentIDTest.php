@@ -1,9 +1,8 @@
-<?php
-
+<?php declare(strict_types=1);
 namespace Genkgo\TestMail\Unit\Header;
 
 use Genkgo\Mail\Header\ContentID;
-use Genkgo\TestMail\AbstractTestCase;;
+use Genkgo\TestMail\AbstractTestCase;
 
 final class ContentIDTest extends AbstractTestCase
 {

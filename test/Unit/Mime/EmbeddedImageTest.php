@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Genkgo\TestMail\Unit\Mime;
 
-use Genkgo\TestMail\AbstractTestCase;;
+use Genkgo\TestMail\AbstractTestCase;
 use Genkgo\Mail\Header\ContentDisposition;
 use Genkgo\Mail\Header\ContentID;
 use Genkgo\Mail\Header\ContentType;
@@ -20,7 +20,7 @@ final class EmbeddedImageTest extends AbstractTestCase
     {
         $part = new EmbeddedImage(
             new AsciiEncodedStream(
-                base64_decode('R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==')
+                \base64_decode('R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==')
             ),
             'image.png',
             new ContentType('image/png'),
@@ -40,7 +40,7 @@ final class EmbeddedImageTest extends AbstractTestCase
 
         $part = new EmbeddedImage(
             new AsciiEncodedStream(
-                base64_decode('R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==')
+                \base64_decode('R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==')
             ),
             'image.png',
             new ContentType('image/png'),
@@ -56,7 +56,7 @@ final class EmbeddedImageTest extends AbstractTestCase
     {
         $part = new EmbeddedImage(
             new AsciiEncodedStream(
-                base64_decode('R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==')
+                \base64_decode('R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==')
             ),
             'image.png',
             new ContentType('image/png'),
@@ -80,7 +80,7 @@ final class EmbeddedImageTest extends AbstractTestCase
 
         $attachment = new EmbeddedImage(
             new AsciiEncodedStream(
-                base64_decode('R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==')
+                \base64_decode('R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==')
             ),
             'image.png',
             new ContentType('image/png'),
@@ -99,7 +99,7 @@ final class EmbeddedImageTest extends AbstractTestCase
 
         $attachment = new EmbeddedImage(
             new AsciiEncodedStream(
-                base64_decode('R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==')
+                \base64_decode('R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==')
             ),
             'image.png',
             new ContentType('image/png'),
@@ -116,7 +116,7 @@ final class EmbeddedImageTest extends AbstractTestCase
     {
         $attachment = new EmbeddedImage(
             new AsciiEncodedStream(
-                base64_decode('R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==')
+                \base64_decode('R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==')
             ),
             'image.png',
             new ContentType('image/png'),

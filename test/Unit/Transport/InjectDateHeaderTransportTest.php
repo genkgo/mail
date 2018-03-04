@@ -1,8 +1,7 @@
-<?php
-
+<?php declare(strict_types=1);
 namespace Genkgo\TestMail\Unit\Transport;
 
-use Genkgo\TestMail\AbstractTestCase;;
+use Genkgo\TestMail\AbstractTestCase;
 use Genkgo\Mail\GenericMessage;
 use Genkgo\Mail\Header\Date;
 use Genkgo\Mail\Transport\ArrayObjectTransport;
@@ -27,5 +26,4 @@ final class InjectDateHeaderTransportTest extends AbstractTestCase
         $this->assertTrue($storage[0]->hasHeader('date'));
         $this->assertInstanceOf(Date::class, $storage[0]->getHeader('date')[0]);
     }
-
 }

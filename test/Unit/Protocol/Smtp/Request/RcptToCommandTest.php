@@ -24,5 +24,4 @@ final class RcptToCommandTest extends AbstractTestCase
         $command = new RcptToCommand(new EmailAddress('me@localhost'));
         $command->execute($connection);
     }
-
 }

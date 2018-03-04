@@ -11,7 +11,6 @@ use Genkgo\TestMail\Stub\FakeSmtpConnection;
 
 final class EhloResponseTest extends AbstractTestCase
 {
-
     /**
      * @test
      */
@@ -40,5 +39,4 @@ final class EhloResponseTest extends AbstractTestCase
         $this->assertFalse($response->isAdvertising('XYZ'));
         $this->assertFalse($response->isAdvertising(''));
     }
-
 }

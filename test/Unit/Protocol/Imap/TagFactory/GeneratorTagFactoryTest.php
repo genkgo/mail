@@ -23,5 +23,4 @@ final class GeneratorTagFactoryTest extends AbstractTestCase
         $this->assertSame('TAG2', (string)$factory->newTag());
         $this->assertSame('TAG3', (string)$factory->newTag());
     }
-
 }

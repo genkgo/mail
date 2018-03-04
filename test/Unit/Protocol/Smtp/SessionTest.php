@@ -10,7 +10,6 @@ use Genkgo\TestMail\AbstractTestCase;
 
 final class SessionTest extends AbstractTestCase
 {
-
     /**
      * @test
      */
@@ -73,7 +72,7 @@ final class SessionTest extends AbstractTestCase
             ->getRecipients();
 
         $this->assertCount(1, $recipients);
-        $this->assertTrue(reset($recipients)->equals(new EmailAddress('test@genkgo.nl')));
+        $this->assertTrue(\reset($recipients)->equals(new EmailAddress('test@genkgo.nl')));
 
         $recipients = $session
             ->withRecipient(new EmailAddress('test@genkgo.nl'))

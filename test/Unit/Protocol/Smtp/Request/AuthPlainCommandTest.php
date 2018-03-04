@@ -23,5 +23,4 @@ final class AuthPlainCommandTest extends AbstractTestCase
         $command = new AuthPlainCommand();
         $command->execute($connection);
     }
-
 }

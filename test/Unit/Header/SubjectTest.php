@@ -1,13 +1,11 @@
-<?php
-
+<?php declare(strict_types=1);
 namespace Genkgo\TestMail\Unit\Header;
 
-use Genkgo\TestMail\AbstractTestCase;;
+use Genkgo\TestMail\AbstractTestCase;
 use Genkgo\Mail\Header\Subject;
 
 final class SubjectTest extends AbstractTestCase
 {
-
     /**
      * @test
      * @dataProvider provideValues
@@ -36,6 +34,4 @@ final class SubjectTest extends AbstractTestCase
             ["x \r y", false, '', ''],
         ];
     }
-
-
 }

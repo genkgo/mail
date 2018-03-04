@@ -1,13 +1,11 @@
-<?php
-
+<?php declare(strict_types=1);
 namespace Genkgo\TestMail\Unit\Header;
 
 use Genkgo\Mail\Header\MessageId;
-use Genkgo\TestMail\AbstractTestCase;;
+use Genkgo\TestMail\AbstractTestCase;
 
 final class MessageIdTest extends AbstractTestCase
 {
-
     /**
      * @test
      * @dataProvider provideValues
@@ -29,6 +27,4 @@ final class MessageIdTest extends AbstractTestCase
             ['left', 'münchen.com', 'Message-ID', '<left@xn--mnchen-3ya.com>'],
         ];
     }
-
-
 }

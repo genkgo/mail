@@ -37,7 +37,7 @@ final class AuthLoginTest extends AbstractTestCase
         $connection
             ->expects($this->at(1))
             ->method('receive')
-            ->willReturn(base64_encode('test'));
+            ->willReturn(\base64_encode('test'));
 
         $connection
             ->expects($this->at(2))
@@ -46,7 +46,7 @@ final class AuthLoginTest extends AbstractTestCase
         $connection
             ->expects($this->at(3))
             ->method('receive')
-            ->willReturn(base64_encode('test'));
+            ->willReturn(\base64_encode('test'));
 
         $capability = new AuthLoginCapability(
             new ArrayAuthentication(['test' => 'test'])
@@ -70,7 +70,7 @@ final class AuthLoginTest extends AbstractTestCase
         $connection
             ->expects($this->at(1))
             ->method('receive')
-            ->willReturn(base64_encode('test'));
+            ->willReturn(\base64_encode('test'));
 
         $connection
             ->expects($this->at(2))
@@ -79,7 +79,7 @@ final class AuthLoginTest extends AbstractTestCase
         $connection
             ->expects($this->at(3))
             ->method('receive')
-            ->willReturn(base64_encode('test'));
+            ->willReturn(\base64_encode('test'));
 
         $connection
             ->expects($this->at(4))

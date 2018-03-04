@@ -21,7 +21,7 @@ final class AuthPlainCredentialsRequestTest extends AbstractTestCase
         );
 
         $this->assertSame(
-            base64_encode("\0username\0password"),
+            \base64_encode("\0username\0password"),
             (string)$command->toStream()
         );
     }

@@ -1,13 +1,11 @@
-<?php
-
+<?php declare(strict_types=1);
 namespace Genkgo\TestMail\Unit\Header;
 
-use Genkgo\TestMail\AbstractTestCase;;
+use Genkgo\TestMail\AbstractTestCase;
 use Genkgo\Mail\Header\ContentType;
 
 final class ContentTypeTest extends AbstractTestCase
 {
-
     /**
      * @test
      * @dataProvider provideValues
@@ -28,6 +26,4 @@ final class ContentTypeTest extends AbstractTestCase
             ['text/html', 'UTF-8', 'Content-Type', 'text/html; charset=UTF-8'],
         ];
     }
-
-
 }

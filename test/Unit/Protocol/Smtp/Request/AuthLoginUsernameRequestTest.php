@@ -23,5 +23,4 @@ final class AuthLoginUsernameRequestTest extends AbstractTestCase
         $command = new AuthLoginUsernameRequest('test');
         $command->execute($connection);
     }
-
 }

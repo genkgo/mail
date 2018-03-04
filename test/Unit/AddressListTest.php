@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Genkgo\TestMail\Unit;
 
-use Genkgo\TestMail\AbstractTestCase;;
+use Genkgo\TestMail\AbstractTestCase;
 use Genkgo\Mail\Address;
 use Genkgo\Mail\AddressList;
 use Genkgo\Mail\EmailAddress;
@@ -51,12 +51,18 @@ final class AddressListTest extends AbstractTestCase
             new Address(new EmailAddress('me1@example.com'), 'name'),
         ]);
 
-        $this->assertNotSame($addressList, $addressList->withAddress(
-            new Address(new EmailAddress('me1@example.com'), 'name'))
+        $this->assertNotSame(
+            $addressList,
+            $addressList->withAddress(
+            new Address(new EmailAddress('me1@example.com'), 'name')
+        )
         );
 
-        $this->assertNotSame($addressList, $addressList->withoutAddress(
-            new Address(new EmailAddress('me1@example.com'), 'name'))
+        $this->assertNotSame(
+            $addressList,
+            $addressList->withoutAddress(
+            new Address(new EmailAddress('me1@example.com'), 'name')
+        )
         );
     }
 

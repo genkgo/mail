@@ -27,5 +27,4 @@ final class PartialItemTest extends AbstractTestCase
         $item = new PartialItem(new NameItem('TEST'), new Partial(0, 15));
         $this->assertSame('TEST<0.15>', (string)$item);
     }
-
 }

@@ -64,7 +64,8 @@ final class AppendCrlfConnectionTest extends AbstractTestCase
             ->with(['xyz']);
 
         $connection = new AppendCrlfConnection($decorated);
-        $connection->addListener('xyz', function  () {});
+        $connection->addListener('xyz', function () {
+        });
         $connection->connect();
         $connection->disconnect();
         $connection->receive();
@@ -72,5 +73,4 @@ final class AppendCrlfConnectionTest extends AbstractTestCase
         $connection->timeout(2);
         $connection->getMetaData(['xyz']);
     }
-
 }

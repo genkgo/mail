@@ -23,5 +23,4 @@ final class NoopCommandTest extends AbstractTestCase
         $command = new NoopCommand();
         $command->execute($connection);
     }
-
 }

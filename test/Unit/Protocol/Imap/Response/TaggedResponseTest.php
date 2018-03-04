@@ -89,5 +89,4 @@ final class TaggedResponseTest extends AbstractTestCase
         $response->assertTagged();
         $this->addToAssertionCount(1);
     }
-
 }

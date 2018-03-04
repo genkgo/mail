@@ -1,8 +1,7 @@
-<?php
-
+<?php declare(strict_types=1);
 namespace Genkgo\TestMail\Unit\Transport;
 
-use Genkgo\TestMail\AbstractTestCase;;
+use Genkgo\TestMail\AbstractTestCase;
 use Genkgo\Mail\GenericMessage;
 use Genkgo\Mail\Transport\ArrayObjectTransport;
 
@@ -21,5 +20,4 @@ final class ArrayObjectTransportTest extends AbstractTestCase
 
         $this->assertCount(1, $storage);
     }
-
 }

@@ -24,5 +24,4 @@ final class HeloCommandTest extends AbstractTestCase
         $command = new HeloCommand('host.example.com');
         $command->execute($connection);
     }
-
 }

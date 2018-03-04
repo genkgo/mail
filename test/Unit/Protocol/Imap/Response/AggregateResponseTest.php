@@ -17,7 +17,7 @@ final class AggregateResponseTest extends AbstractTestCase
      */
     public function it_can_be_iterated()
     {
-        $this->assertTrue(is_iterable(new AggregateResponse(Tag::fromNonce(1))));
+        $this->assertTrue(\is_iterable(new AggregateResponse(Tag::fromNonce(1))));
         $this->assertInstanceOf(
             \Traversable::class,
             (new AggregateResponse(Tag::fromNonce(1)))->getIterator()
@@ -211,10 +211,10 @@ final class AggregateResponseTest extends AbstractTestCase
     public function it_deals_with_multi_line_untagged_response()
     {
         $response = new AggregateResponse(Tag::fromNonce(1));
-        $fetch = file_get_contents(__DIR__. '/../../../../Stub/Imap/fetch-response.txt');
+        $fetch = \file_get_contents(__DIR__. '/../../../../Stub/Imap/fetch-response.txt');
 
         $responseString = '* ' . $fetch;
-        foreach (preg_split('/(\n)/', $responseString, -1, PREG_SPLIT_DELIM_CAPTURE) as $line) {
+        foreach (\preg_split('/(\n)/', $responseString, -1, PREG_SPLIT_DELIM_CAPTURE) as $line) {
             $response = $response->withLine($line);
         }
 

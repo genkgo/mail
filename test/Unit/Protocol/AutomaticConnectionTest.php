@@ -78,7 +78,8 @@ final class AutomaticConnectionTest extends AbstractTestCase
             ->with(['xyz']);
 
         $connection = new AutomaticConnection($decorated, new \DateInterval('P1M'));
-        $connection->addListener('xyz', function  () {});
+        $connection->addListener('xyz', function () {
+        });
         $connection->connect();
         $connection->upgrade(STREAM_CRYPTO_METHOD_TLS_CLIENT);
         $connection->timeout(2);

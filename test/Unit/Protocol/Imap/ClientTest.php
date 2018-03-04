@@ -41,7 +41,7 @@ final class ClientTest extends AbstractTestCase
                 )
             );
 
-        new Client($connection, new GeneratorTagFactory(),[$negotiator]);
+        new Client($connection, new GeneratorTagFactory(), [$negotiator]);
     }
 
     /**
@@ -126,5 +126,4 @@ final class ClientTest extends AbstractTestCase
         $client = new Client($connection, new GeneratorTagFactory());
         $client->emit($command);
     }
-
 }

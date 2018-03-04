@@ -59,5 +59,4 @@ final class ParametersTest extends AbstractTestCase
 
         $this->assertEquals("v=1; q=dns/txt;\r\n d=example.com; s=x; x=1483268400", (string)$headerValue);
     }
-
 }

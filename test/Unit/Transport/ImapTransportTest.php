@@ -7,7 +7,7 @@ use Genkgo\Mail\Protocol\Imap\Client;
 use Genkgo\Mail\Protocol\Imap\MailboxName;
 use Genkgo\Mail\Protocol\Imap\TagFactory\GeneratorTagFactory;
 use Genkgo\Mail\Transport\ImapTransport;
-use Genkgo\TestMail\AbstractTestCase;;
+use Genkgo\TestMail\AbstractTestCase;
 use Genkgo\Mail\Address;
 use Genkgo\Mail\AddressList;
 use Genkgo\Mail\EmailAddress;

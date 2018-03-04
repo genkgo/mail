@@ -26,7 +26,7 @@ final class CommandContinuationRequestResponseTest extends AbstractTestCase
      */
     public function it_is_immutable()
     {
-        $response = new CommandContinuationRequestResponse( 'OK successful');
+        $response = new CommandContinuationRequestResponse('OK successful');
         $this->assertNotSame($response, $response->withAddedBody('body'));
     }
 
@@ -68,5 +68,4 @@ final class CommandContinuationRequestResponseTest extends AbstractTestCase
         $response = new CommandContinuationRequestResponse('NO unsuccessful');
         $response->assertTagged();
     }
-
 }

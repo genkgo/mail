@@ -5,55 +5,67 @@ namespace Genkgo\TestMail\Stub;
 
 use Genkgo\Mail\Protocol\ConnectionInterface;
 
-/**
- *
- * @package Genkgo\TestMail\Stub
- */
 final class FakeSmtpConnection implements ConnectionInterface
 {
-    public CONST STATE_NONE = 0;
-    public CONST STATE_CONNECTED = 1;
-    public CONST STATE_EHLO = 2;
-    public CONST STATE_AUTHORIZING = 3;
-    public CONST STATE_AUTHORIZED = 4;
-    public CONST STATE_DATA_RECEIVING = 5;
-    public CONST STATE_DATA_RECEIVED = 6;
+    public const STATE_NONE = 0;
+
+    public const STATE_CONNECTED = 1;
+
+    public const STATE_EHLO = 2;
+
+    public const STATE_AUTHORIZING = 3;
+
+    public const STATE_AUTHORIZED = 4;
+
+    public const STATE_DATA_RECEIVING = 5;
+
+    public const STATE_DATA_RECEIVED = 6;
+
     /**
      * @var array
      */
     private $advertisements = [];
+
     /**
      * @var string
      */
     private $greeting = '250-welcome to fake connection';
+
     /**
      * @var bool
      */
     private $secure = false;
+
     /**
      * @var array
      */
     private $listeners = ['connect' => []];
+
     /**
      * @var int
      */
     private $state = self::STATE_NONE;
+
     /**
      * @var array
      */
     private $buffer = [];
+
     /**
      * @var string
      */
     private $from = '';
+
     /**
      * @var array
      */
     private $to = [];
+
     /**
      * @var array
      */
     private $metaData = [];
+
     /**
      * @var bool
      */
@@ -132,9 +144,9 @@ final class FakeSmtpConnection implements ConnectionInterface
             $this->buffer = ['554 Synchronization error'];
         }
 
-        $request = trim($request);
-        $parameters = explode(' ', $request);
-        $command = reset($parameters);
+        $request = \trim($request);
+        $parameters = \explode(' ', $request);
+        $command = \reset($parameters);
 
         switch ($command) {
             case 'HELO':
@@ -146,14 +158,14 @@ final class FakeSmtpConnection implements ConnectionInterface
                 if ($this->isLegacy) {
                     $this->buffer = ['502 Command not implemented'];
                 } else {
-                    $this->buffer = array_merge([$this->greeting], $this->advertisements);
+                    $this->buffer = \array_merge([$this->greeting], $this->advertisements);
                 }
                 break;
             case 'STARTTLS':
                 $this->buffer = ['220 OK'];
                 break;
             case 'AUTH':
-                if (isset($parameters[1]) && in_array($parameters[1], ['LOGIN', 'PLAIN'])) {
+                if (isset($parameters[1]) && \in_array($parameters[1], ['LOGIN', 'PLAIN'])) {
                     $this->buffer = ['330 Send credentials'];
                 } else {
                     $this->buffer = ['400 Not supported'];
@@ -164,14 +176,14 @@ final class FakeSmtpConnection implements ConnectionInterface
                 break;
             case 'MAIL':
                 $this->buffer = ['220 OK'];
-                $this->from = substr($parameters[1], 5, -1);
+                $this->from = \substr($parameters[1], 5, -1);
                 break;
             case 'RCPT':
                 if ($this->from === '') {
                     throw new \RuntimeException('Invalid command at this state');
                 }
 
-                $this->to[] = substr($parameters[1], 3, -1);
+                $this->to[] = \substr($parameters[1], 3, -1);
                 $this->buffer = ['220 OK'];
                 break;
             case 'DATA':
@@ -188,7 +200,7 @@ final class FakeSmtpConnection implements ConnectionInterface
                 $this->buffer = ['220 OK'];
                 break;
             case '.':
-                $this->buffer = [sprintf('220 Sent from %s to %s recipients', $this->from, count($this->to))];
+                $this->buffer = [\sprintf('220 Sent from %s to %s recipients', $this->from, \count($this->to))];
                 $this->from = '';
                 $this->to = [];
                 break;
@@ -208,7 +220,7 @@ final class FakeSmtpConnection implements ConnectionInterface
                 break;
         }
 
-        return strlen($request);
+        return \strlen($request);
     }
 
     /**
@@ -220,7 +232,7 @@ final class FakeSmtpConnection implements ConnectionInterface
             throw new \RuntimeException('Cannot communicate while not connected');
         }
 
-        $message = array_shift($this->buffer);
+        $message = \array_shift($this->buffer);
         return $message . "\r\n";
     }
 
@@ -251,7 +263,7 @@ final class FakeSmtpConnection implements ConnectionInterface
      */
     public function getMetaData(array $keys = []): array
     {
-        $metaData = array_merge(
+        $metaData = \array_merge(
             $this->metaData,
             [
                 'state' => $this->state,
@@ -264,12 +276,12 @@ final class FakeSmtpConnection implements ConnectionInterface
             return $metaData;
         }
 
-        $keys = array_map('strtolower', $keys);
+        $keys = \array_map('strtolower', $keys);
 
-        return array_filter(
+        return \array_filter(
             $metaData,
             function ($key) use ($keys) {
-                return in_array(strtolower($key), $keys);
+                return \in_array(\strtolower($key), $keys);
             },
             ARRAY_FILTER_USE_KEY
         );
@@ -285,26 +297,24 @@ final class FakeSmtpConnection implements ConnectionInterface
             $this->metaData['auth']['state'] = true;
             $this->state = self::STATE_AUTHORIZED;
 
-            [$null, $username, $password] = explode("\0", base64_decode($request));
+            [$null, $username, $password] = \explode("\0", \base64_decode($request));
             $this->metaData['auth']['username'] = $username;
             $this->metaData['auth']['password'] = $password;
         } else {
             if (isset($this->metaData['auth']['username'])) {
-                $this->metaData['auth']['password'] = base64_decode($request);
+                $this->metaData['auth']['password'] = \base64_decode($request);
                 $this->metaData['auth']['state'] = true;
                 $this->buffer = ['220 OK'];
                 $this->state = self::STATE_AUTHORIZED;
             } else {
-                $this->metaData['auth']['username'] = base64_decode($request);
+                $this->metaData['auth']['username'] = \base64_decode($request);
                 $this->buffer = ['330 Send password'];
                 $this->state = self::STATE_AUTHORIZING;
             }
         }
     }
 
-    /**
-     *
-     */
+    
     private function reset()
     {
         $this->buffer = [];

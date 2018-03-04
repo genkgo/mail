@@ -1,8 +1,7 @@
-<?php
-
+<?php declare(strict_types=1);
 namespace Genkgo\TestMail\Integration;
 
-use Genkgo\TestMail\AbstractTestCase;;
+use Genkgo\TestMail\AbstractTestCase;
 use Genkgo\Mail\Address;
 use Genkgo\Mail\AddressList;
 use Genkgo\Mail\EmailAddress;
@@ -17,13 +16,8 @@ use Genkgo\Mail\Mime\EmbeddedImage;
 use Genkgo\Mail\Mime\ResourceAttachment;
 use Genkgo\Mail\Stream\AsciiEncodedStream;
 
-/**
- *
- * @package Genkgo\Mail\Integration
- */
 final class ParseFormattedMessageTest extends AbstractTestCase
 {
-
     /**
      * @test
      */
@@ -41,7 +35,7 @@ final class ParseFormattedMessageTest extends AbstractTestCase
             ->withEmbeddedImage(
                 new EmbeddedImage(
                     new AsciiEncodedStream(
-                        base64_decode('R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==')
+                        \base64_decode('R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==')
                     ),
                     'pixel.gif',
                     new ContentType('image/gif'),
@@ -61,5 +55,4 @@ final class ParseFormattedMessageTest extends AbstractTestCase
             (string) GenericMessage::fromString($messageString)
         );
     }
-
 }

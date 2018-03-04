@@ -8,7 +8,6 @@ use Genkgo\TestMail\AbstractTestCase;
 
 final class SpamDecideScoreTest extends AbstractTestCase
 {
-
     /**
      * @test
      */

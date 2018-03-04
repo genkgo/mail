@@ -19,7 +19,8 @@ abstract class AbstractQueueProcessorTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_transport_messages_from_queue () {
+    public function it_transport_messages_from_queue()
+    {
         $queue = new ArrayObjectQueue(new \ArrayObject());
         $queue->store($this->newMessage('Test 1'));
         $queue->store($this->newMessage('Test 2'));
@@ -59,7 +60,8 @@ abstract class AbstractQueueProcessorTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_will_readd_failed_messages_to_queue() {
+    public function it_will_readd_failed_messages_to_queue()
+    {
         $storage = new \ArrayObject();
 
         $queue = new ArrayObjectQueue($storage);
@@ -88,7 +90,8 @@ abstract class AbstractQueueProcessorTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_will_readd_messages_resulting_in_any_protocol_exception() {
+    public function it_will_readd_messages_resulting_in_any_protocol_exception()
+    {
         $storage = new \ArrayObject();
 
         $queue = new ArrayObjectQueue($storage);
@@ -104,7 +107,8 @@ abstract class AbstractQueueProcessorTest extends AbstractTestCase
                 $this->assertEquals('Test 1', $message->getHeader('subject')[0]->getValue());
                 return true;
             }))
-            ->willThrowException(new class extends AbstractProtocolException{})
+            ->willThrowException(new class extends AbstractProtocolException {
+            })
         ;
 
         $processor = $this->getQueueProcessor($transport, [$queue]);

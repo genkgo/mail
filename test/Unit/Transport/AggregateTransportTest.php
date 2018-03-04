@@ -1,5 +1,4 @@
-<?php
-
+<?php declare(strict_types=1);
 namespace Genkgo\TestMail\Unit\Transport;
 
 use Genkgo\Mail\Transport\AggregateTransport;
@@ -27,5 +26,4 @@ final class AggregateTransportTest extends AbstractTestCase
         $this->assertCount(1, $storage1);
         $this->assertCount(1, $storage2);
     }
-
 }

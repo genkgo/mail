@@ -1,8 +1,7 @@
-<?php
-
+<?php declare(strict_types=1);
 namespace Genkgo\TestMail\Unit\Transport;
 
-use Genkgo\TestMail\AbstractTestCase;;
+use Genkgo\TestMail\AbstractTestCase;
 use Genkgo\Mail\Exception\ConnectionRefusedException;
 use Genkgo\Mail\GenericMessage;
 use Genkgo\Mail\Transport\RetryIfFailedTransport;
@@ -97,5 +96,4 @@ final class RetryIfFailedTransportTest extends AbstractTestCase
         $sender = new RetryIfFailedTransport($decoratedTransport, 3);
         $sender->send(new GenericMessage());
     }
-
 }

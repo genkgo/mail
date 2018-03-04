@@ -26,7 +26,7 @@ final class UntaggedResponseTest extends AbstractTestCase
      */
     public function it_is_immutable()
     {
-        $response = new UntaggedResponse( 'OK successful');
+        $response = new UntaggedResponse('OK successful');
         $this->assertNotSame($response, $response->withAddedBody('body'));
     }
 
@@ -88,5 +88,4 @@ final class UntaggedResponseTest extends AbstractTestCase
         $response = new UntaggedResponse('NO unsuccessful');
         $response->assertTagged();
     }
-
 }

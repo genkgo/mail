@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Genkgo\TestMail\Unit\Transport;
 
-use Genkgo\TestMail\AbstractTestCase;;
+use Genkgo\TestMail\AbstractTestCase;
 use Genkgo\Mail\Address;
 use Genkgo\Mail\AddressList;
 use Genkgo\Mail\EmailAddress;
@@ -78,7 +78,7 @@ final class SmtpTransportTest extends AbstractTestCase
                 $connection
                     ->expects($this->at(++$at))
                     ->method('send')
-                    ->with(sprintf("%s\r\n", (string)(new HeaderLine($header))))
+                    ->with(\sprintf("%s\r\n", (string)(new HeaderLine($header))))
                     ->willReturn(1);
             }
         }
@@ -89,11 +89,11 @@ final class SmtpTransportTest extends AbstractTestCase
             ->with("\r\n")
             ->willReturn(1);
 
-        foreach (explode("\r\n", (string)$message->getBody()) as $line) {
+        foreach (\explode("\r\n", (string)$message->getBody()) as $line) {
             $connection
                 ->expects($this->at(++$at))
                 ->method('send')
-                ->with(sprintf("%s\r\n", $line))
+                ->with(\sprintf("%s\r\n", $line))
                 ->willReturn(1);
         }
 

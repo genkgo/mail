@@ -31,5 +31,4 @@ final class CanonicalizeBodySimpleTest extends AbstractTestCase
 
         $this->assertEquals('simple', $canonicalization->name());
     }
-
 }

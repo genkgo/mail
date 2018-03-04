@@ -8,7 +8,6 @@ use Genkgo\TestMail\AbstractTestCase;
 
 final class HeaderValueParameterTest extends AbstractTestCase
 {
-
     /**
      * @test
      */
@@ -68,5 +67,4 @@ final class HeaderValueParameterTest extends AbstractTestCase
         $this->expectException(\InvalidArgumentException::class);
         HeaderValueParameter::fromString('charset,utf-8');
     }
-
 }

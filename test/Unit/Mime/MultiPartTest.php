@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Genkgo\TestMail\Unit\Mime;
 
-use Genkgo\TestMail\AbstractTestCase;;
+use Genkgo\TestMail\AbstractTestCase;
 use Genkgo\Mail\Header\ContentType;
 use Genkgo\Mail\Header\GenericHeader;
 use Genkgo\Mail\Mime\Boundary;
@@ -34,7 +34,6 @@ final class MultiPartTest extends AbstractTestCase
         $part = new MultiPart(new Boundary('test'), new ContentType('multipart/mixed'));
         $part->withHeader(new GenericHeader('x', 'y'));
     }
-
 
     /**
      * @test

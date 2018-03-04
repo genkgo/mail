@@ -1,5 +1,4 @@
-<?php
-
+<?php declare(strict_types=1);
 namespace Genkgo\TestMail\Unit\Transport;
 
 use Genkgo\Mail\Address;
@@ -10,7 +9,7 @@ use Genkgo\Mail\Header\GenericHeader;
 use Genkgo\Mail\Header\MessageId;
 use Genkgo\Mail\Header\Sender;
 use Genkgo\Mail\Transport\InjectStandardHeadersTransport;
-use Genkgo\TestMail\AbstractTestCase;;
+use Genkgo\TestMail\AbstractTestCase;
 use Genkgo\Mail\GenericMessage;
 use Genkgo\Mail\Transport\ArrayObjectTransport;
 

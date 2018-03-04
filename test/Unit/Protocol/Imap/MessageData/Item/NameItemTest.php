@@ -34,5 +34,4 @@ final class NameItemTest extends AbstractTestCase
         $this->expectException(\InvalidArgumentException::class);
         new NameItem('TEST' . "\u{1000}");
     }
-
 }

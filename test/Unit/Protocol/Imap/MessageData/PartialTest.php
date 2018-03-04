@@ -64,5 +64,4 @@ final class PartialTest extends AbstractTestCase
         $this->expectException(\InvalidArgumentException::class);
         Partial::fromString('<1,5>');
     }
-
 }
