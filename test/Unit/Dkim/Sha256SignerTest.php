@@ -44,7 +44,7 @@ final class Sha256SignerTest extends AbstractTestCase
     public function it_throws_on_invalid_constructor_argument()
     {
         $this->expectException(\InvalidArgumentException::class);
-        new Sha256Signer('invalid');
+        new Sha256Signer(fopen('data://text/plain;base64,SSBsb3ZlIFBIUAo=', 'r+'));
     }
 
     /**

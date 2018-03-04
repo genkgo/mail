@@ -120,7 +120,8 @@ final class AutomaticConnection implements ConnectionInterface
             $this->connect();
         }
 
-        if ($this->connecting === false && $this->connectedAt->add($this->interval) < new \DateTimeImmutable()) {
+        $now = new \DateTimeImmutable();
+        if ($this->connecting === false && $this->connectedAt && $this->connectedAt->add($this->interval) < $now) {
             $this->disconnect();
             $this->connect();
         }

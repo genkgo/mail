@@ -1,9 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Genkgo\TestMail;
+namespace Genkgo\TestMail\Unit;
 
 use Genkgo\Mail\AlternativeText;
+use Genkgo\TestMail\AbstractTestCase;
 
 final class AlternativeTextTest extends AbstractTestCase
 {

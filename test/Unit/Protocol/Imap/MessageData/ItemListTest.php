@@ -105,7 +105,7 @@ final class ItemListTest extends AbstractTestCase
         $list = ItemList::fromString("(TEST[HEADER] {100}\nHello World.)");
 
         $this->assertSame('TEST[HEADER]', (string)$list->getItem('TEST'));
-        $this->assertSame('Hello World.', (string)$list->getBody());
+        $this->assertSame('Hello World.', $list->getBody());
     }
 
     /**

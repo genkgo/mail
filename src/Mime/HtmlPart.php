@@ -30,8 +30,8 @@ final class HtmlPart implements PartInterface
 
         $this->decoratedPart = (new GenericPart())
             ->withHeader(new ContentType('text/html', $charset))
-            ->withBody($stream)
-            ->withHeader(new ContentTransferEncoding($encoding));
+            ->withHeader(new ContentTransferEncoding($encoding))
+            ->withBody($stream);
     }
 
     /**

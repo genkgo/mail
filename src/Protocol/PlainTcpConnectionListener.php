@@ -53,7 +53,7 @@ final class PlainTcpConnectionListener implements ConnectionListenerInterface
             return new class($resource) extends AbstractConnection {
 
                 /**
-                 * @param $resource
+                 * @param resource $resource
                  */
                 public function __construct($resource)
                 {

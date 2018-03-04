@@ -21,7 +21,7 @@ final class OptimalEncodedHeaderValue
      */
     private $value;
     /**
-     * @var array
+     * @var bool
      */
     private $phrase = false;
 

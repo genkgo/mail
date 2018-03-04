@@ -90,7 +90,7 @@ final class EmptyStream implements StreamInterface
     }
 
     /**
-     * @param $string
+     * @param string $string
      * @return int on failure.
      */
     public function write($string): int

@@ -3,11 +3,11 @@
 namespace Genkgo\TestMail\Unit\Transport;
 
 use Genkgo\Mail\Transport\AggregateTransport;
-use Genkgo\TestMail\AbstractTestCase;;
 use Genkgo\Mail\GenericMessage;
 use Genkgo\Mail\Transport\ArrayObjectTransport;
+use Genkgo\TestMail\AbstractTestCase;
 
-final class AggreateTransportTest extends AbstractTestCase
+final class AggregateTransportTest extends AbstractTestCase
 {
     /**
      * @test

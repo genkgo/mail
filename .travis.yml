@@ -15,6 +15,10 @@ matrix:
       env: dependencies=highest
   allow_failures:
     - php: nightly
+script:
+    - ./vendor/bin/phpunit -c phpunit.xml
+    - ./vendor/bin/phpstan analyse -l max src
+    - ./vendor/bin/phpstan analyse -l max -c .phpstan.test.neon test
 before_script:
   - composer self-update
   - if [ -z "$dependencies" ]; then composer install; fi;

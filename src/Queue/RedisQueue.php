@@ -40,7 +40,7 @@ final class RedisQueue implements QueueInterface, \Countable
     public function store(MessageInterface $message): void
     {
         try {
-            $this->client->rpush($this->key, (string)$message);
+            $this->client->rpush($this->key, ...[(string)$message]);
         } catch (ConnectionException $e) {
             throw new QueueStoreException('Cannot add message to redis queue: ' . $e->getMessage());
         }

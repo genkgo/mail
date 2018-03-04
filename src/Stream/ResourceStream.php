@@ -19,7 +19,7 @@ final class ResourceStream implements StreamInterface
 
     /**
      * ResourceStream constructor.
-     * @param $resource
+     * @param resource $resource
      */
     public function __construct($resource)
     {
@@ -126,7 +126,7 @@ final class ResourceStream implements StreamInterface
     }
 
     /**
-     * @param $string
+     * @param string $string
      * @return int
      */
     public function write($string): int

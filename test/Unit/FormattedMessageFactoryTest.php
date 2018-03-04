@@ -205,8 +205,8 @@ final class FormattedMessageFactoryTest extends AbstractTestCase
     }
 
     /**
-     * @param $messageString
-     * @param $boundary
+     * @param string $messageString
+     * @param string $boundary
      * @return string
      */
     private function replaceBoundaries(string $messageString, string $boundary): string

@@ -31,7 +31,7 @@ final class AddressList implements \Countable, \IteratorAggregate
     {
         foreach ($recipients as $recipient) {
             if ($recipient instanceof Address === false) {
-                throw new \InvalidArgumentException('Recipient must be EmailAddressAndName object');
+                throw new \InvalidArgumentException('Recipient must be Address object');
             }
 
             $this->addresses[] = $recipient;
