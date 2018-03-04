@@ -312,7 +312,6 @@ final class FakeSmtpConnection implements ConnectionInterface
             }
         }
     }
-
     
     private function reset()
     {
