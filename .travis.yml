@@ -19,7 +19,7 @@ script:
     - ./vendor/bin/phpunit -c phpunit.xml
     - ./vendor/bin/phpstan analyse -l max src
     - ./vendor/bin/phpstan analyse -l max -c .phpstan.test.neon test
-    - if [ "$TRAVIS_PHP_VERSION" != "nightly" ]; then ./vendor/bin/php-cs-fixer fix --dry-run --verbose --config .php_cs.dist ./src ./test ; fi
+    - if [ "$TRAVIS_PHP_VERSION" != "nightly" ] && [ -z "$dependencies" ]; then ./vendor/bin/php-cs-fixer fix --dry-run --verbose --config .php_cs.dist ./src ./test ; fi
 before_script:
   - composer self-update
   - if [ "$TRAVIS_PHP_VERSION" = "nightly" ]; then composer remove --dev --no-update friendsofphp/php-cs-fixer ; fi

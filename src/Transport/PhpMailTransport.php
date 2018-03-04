@@ -144,8 +144,7 @@ final class PhpMailTransport implements TransportInterface
         \Closure $callback,
         EnvelopeFactory $envelopeFactory,
         array $parameters = []
-    ): PhpMailTransport
-    {
+    ): PhpMailTransport {
         $transport = new self($envelopeFactory, $parameters);
         $transport->replacedMailMethod = $callback;
         return $transport;
