@@ -4,13 +4,13 @@
     "license": "MIT License",
     "require": {
         "php": "^7.1",
-        "ext-intl": "*",
-        "phpstan/phpstan-phpunit": "^0.9.4"
+        "ext-intl": "*"
     },
     "require-dev": {
-        "phpunit/phpunit": "~6",
-        "predis/predis": "~1.0",
+        "phpunit/phpunit": "^6.0",
+        "predis/predis": "^1.0",
         "phpstan/phpstan": "^0.9",
+        "phpstan/phpstan-phpunit": "^0.9",
         "psr/log": "^1.0",
         "ext-openssl": "*"
     },
