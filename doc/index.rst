@@ -17,36 +17,36 @@ Use this if you want to send e-mails over different transports and protocols usi
 
 
 .. toctree::
-:hidden:
+    :hidden:
 
-       Home <self>
-       getting-started
-
-.. toctree::
-:hidden:
-       :caption: Transport
-       :maxdepth: 3
-
-       transport/smtp
-       transport/mail
-       transport/imap
-       transport/file
-       transport/other
+    Home <self>
+    getting-started
 
 .. toctree::
-:hidden:
-       :caption: Protocol
-       :maxdepth: 3
+    :hidden:
+    :caption: Transport
+    :maxdepth: 3
 
-       protocol/imap
-       protocol/smtp
+    transport/smtp
+    transport/mail
+    transport/imap
+    transport/file
+    transport/other
 
 .. toctree::
-:hidden:
-       :caption: Advanced
-       :maxdepth: 3
+    :hidden:
+    :caption: Protocol
+    :maxdepth: 3
 
-       advanced/dkim
+    protocol/imap
+    protocol/smtp
+
+.. toctree::
+    :hidden:
+    :caption: Advanced
+    :maxdepth: 3
+
+    advanced/dkim
 
 .. |clearfloat|  raw:: html
 
