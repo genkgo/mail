@@ -22,15 +22,15 @@ final class MessageStream implements StreamInterface
     public function __construct(MessageInterface $message)
     {
         $this->decoratedStream = new LazyStream(function () use ($message) {
-            $headerString = implode(
+            $headerString = \implode(
                 "\r\n",
-                array_values(
-                    array_filter(
-                        array_map(
+                \array_values(
+                    \array_filter(
+                        \array_map(
                             function (array $headers) {
-                                return implode(
+                                return \implode(
                                     "\r\n",
-                                    array_map(
+                                    \array_map(
                                         function (HeaderInterface $header) {
                                             return (string) (new HeaderLine($header));
                                         },

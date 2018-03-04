@@ -29,6 +29,6 @@ final class MailFromCommand implements RequestInterface
      */
     public function execute(ConnectionInterface $connection): void
     {
-        $connection->send(sprintf("MAIL FROM:<%s>", (string)$this->envelope));
+        $connection->send(\sprintf("MAIL FROM:<%s>", (string)$this->envelope));
     }
 }

@@ -39,7 +39,7 @@ final class Query implements \Countable
      */
     public function __toString(): string
     {
-        return trim(implode(' ', $this->criteria));
+        return \trim(\implode(' ', $this->criteria));
     }
 
     /**
@@ -47,6 +47,6 @@ final class Query implements \Countable
      */
     public function count()
     {
-        return count($this->criteria);
+        return \count($this->criteria);
     }
 }

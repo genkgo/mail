@@ -40,7 +40,7 @@ final class DeleteCommand extends AbstractCommand
     protected function createStream(): StreamInterface
     {
         return new StringStream(
-            sprintf(
+            \sprintf(
                 'DELETE %s',
                 (string)$this->mailbox
             )

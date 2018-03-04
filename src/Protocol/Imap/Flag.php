@@ -80,7 +80,7 @@ final class Flag
         }
 
         if ($flag[0] === '\\') {
-            $this->validateAtom(substr($flag, 1));
+            $this->validateAtom(\substr($flag, 1));
         } else {
             $this->validateAtom($flag);
         }
@@ -91,7 +91,7 @@ final class Flag
      */
     private function validateAtom(string $flag): void
     {
-        if (strcspn($flag, self::RFC_3501_ATOM) !== strlen($flag)) {
+        if (\strcspn($flag, self::RFC_3501_ATOM) !== \strlen($flag)) {
             throw new \InvalidArgumentException(
                 'You are not allowed to use any atom-specials within a flag'
             );

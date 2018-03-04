@@ -47,7 +47,7 @@ final class StatusCommand extends AbstractCommand
     protected function createStream(): StreamInterface
     {
         return new StringStream(
-            sprintf(
+            \sprintf(
                 'STATUS %s %s',
                 (string)$this->mailbox,
                 (string)$this->list

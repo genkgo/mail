@@ -23,11 +23,11 @@ final class ResourceStream implements StreamInterface
      */
     public function __construct($resource)
     {
-        if (!is_resource($resource)) {
+        if (!\is_resource($resource)) {
             throw new \InvalidArgumentException('Argument 0 must be a resource');
         }
 
-        rewind($resource);
+        \rewind($resource);
         $this->resource = $resource;
     }
 
@@ -36,8 +36,8 @@ final class ResourceStream implements StreamInterface
      */
     public function __toString(): string
     {
-        rewind($this->resource);
-        return stream_get_contents($this->resource);
+        \rewind($this->resource);
+        return \stream_get_contents($this->resource);
     }
 
     /**
@@ -45,7 +45,7 @@ final class ResourceStream implements StreamInterface
      */
     public function close(): void
     {
-        fclose($this->resource);
+        \fclose($this->resource);
     }
 
     /**
@@ -61,7 +61,7 @@ final class ResourceStream implements StreamInterface
      */
     public function getSize(): ?int
     {
-        return fstat($this->resource)['size'];
+        return \fstat($this->resource)['size'];
     }
 
     /**
@@ -70,7 +70,7 @@ final class ResourceStream implements StreamInterface
      */
     public function tell(): int
     {
-        return ftell($this->resource);
+        return \ftell($this->resource);
     }
 
     /**
@@ -78,7 +78,7 @@ final class ResourceStream implements StreamInterface
      */
     public function eof(): bool
     {
-        return feof($this->resource);
+        return \feof($this->resource);
     }
 
     /**
@@ -86,7 +86,7 @@ final class ResourceStream implements StreamInterface
      */
     public function isSeekable(): bool
     {
-        $metaData = stream_get_meta_data($this->resource);
+        $metaData = \stream_get_meta_data($this->resource);
         if (!$metaData || !isset($metaData['seekable'])) {
             return false;
         }
@@ -101,7 +101,7 @@ final class ResourceStream implements StreamInterface
      */
     public function seek(int $offset, int $whence = SEEK_SET): int
     {
-        return fseek($this->resource, $offset, $whence);
+        return \fseek($this->resource, $offset, $whence);
     }
 
     /**
@@ -109,7 +109,7 @@ final class ResourceStream implements StreamInterface
      */
     public function rewind(): bool
     {
-        return rewind($this->resource);
+        return \rewind($this->resource);
     }
 
     /**
@@ -117,12 +117,12 @@ final class ResourceStream implements StreamInterface
      */
     public function isWritable(): bool
     {
-        $metaData = stream_get_meta_data($this->resource);
+        $metaData = \stream_get_meta_data($this->resource);
         if (!$metaData || !isset($metaData['uri'])) {
             return false;
         }
 
-        return is_writable($metaData['uri']) || $metaData['uri'] === 'php://memory';
+        return \is_writable($metaData['uri']) || $metaData['uri'] === 'php://memory';
     }
 
     /**
@@ -131,7 +131,7 @@ final class ResourceStream implements StreamInterface
      */
     public function write($string): int
     {
-        return fwrite($this->resource, $string);
+        return \fwrite($this->resource, $string);
     }
 
     /**
@@ -148,7 +148,7 @@ final class ResourceStream implements StreamInterface
      */
     public function read(int $length): string
     {
-        return fread($this->resource, $length);
+        return \fread($this->resource, $length);
     }
 
     /**
@@ -156,7 +156,7 @@ final class ResourceStream implements StreamInterface
      */
     public function getContents(): string
     {
-        return stream_get_contents($this->resource);
+        return \stream_get_contents($this->resource);
     }
 
     /**
@@ -165,17 +165,17 @@ final class ResourceStream implements StreamInterface
      */
     public function getMetadata(array $keys = []): array
     {
-        $metaData = stream_get_meta_data($this->resource);
+        $metaData = \stream_get_meta_data($this->resource);
         if (!$metaData) {
             return [];
         }
 
-        $keys = array_map('strtolower', $keys);
+        $keys = \array_map('strtolower', $keys);
 
-        return array_filter(
+        return \array_filter(
             $metaData,
             function ($key) use ($keys) {
-                return in_array(strtolower($key), $keys);
+                return \in_array(\strtolower($key), $keys);
             },
             ARRAY_FILTER_USE_KEY
         );

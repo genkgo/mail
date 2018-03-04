@@ -64,7 +64,7 @@ final class AppendCommand extends AbstractCommand
     protected function createStream(): StreamInterface
     {
         return new StringStream(
-            sprintf(
+            \sprintf(
                 'APPEND %s %s%s{%s}',
                 (string)$this->mailbox,
                 $this->flags ? (string)$this->flags . ' ' : '',

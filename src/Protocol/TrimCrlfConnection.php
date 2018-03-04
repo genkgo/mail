@@ -59,7 +59,7 @@ final class TrimCrlfConnection implements ConnectionInterface
      */
     public function receive(): string
     {
-        return rtrim($this->decoratedConnection->receive(), "\r\n");
+        return \rtrim($this->decoratedConnection->receive(), "\r\n");
     }
 
     /**

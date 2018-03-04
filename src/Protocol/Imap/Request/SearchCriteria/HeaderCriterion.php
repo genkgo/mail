@@ -24,7 +24,7 @@ final class HeaderCriterion implements CriterionInterface
      */
     public function __construct(HeaderName $headerName, string $query)
     {
-        if ($query === '' || strlen($query) !== strcspn($query, "\r\n")) {
+        if ($query === '' || \strlen($query) !== \strcspn($query, "\r\n")) {
             throw new \InvalidArgumentException('CR and LF are not allowed in quoted strings');
         }
 
@@ -37,10 +37,10 @@ final class HeaderCriterion implements CriterionInterface
      */
     public function __toString(): string
     {
-        return sprintf(
+        return \sprintf(
             'HEADER %s "%s"',
             (string)$this->headerName,
-            addslashes($this->query)
+            \addslashes($this->query)
         );
     }
 }

@@ -48,17 +48,17 @@ final class OptimalTransferEncodedPhraseStream implements StreamInterface
      */
     private function calculateOptimalStream(string $text): StreamInterface
     {
-        if (strcspn($text, self::NON_7BIT_CHARS) === strlen($text)) {
+        if (\strcspn($text, self::NON_7BIT_CHARS) === \strlen($text)) {
             $this->encoding = '7bit';
             return new AsciiEncodedStream($text, $this->lineLength, $this->lineBreak);
         }
 
-        if (strcspn($text, HeaderValueParameter::RFC_822_T_SPECIAL) !== strlen($text)) {
+        if (\strcspn($text, HeaderValueParameter::RFC_822_T_SPECIAL) !== \strlen($text)) {
             $this->encoding = 'base64';
             return Base64EncodedStream::fromString($text, $this->lineLength, $this->lineBreak);
         }
 
-        if (preg_match_all('/[\000-\010\013\014\016-\037\177-\377]/', $text) > (strlen($text) / 3)) {
+        if (\preg_match_all('/[\000-\010\013\014\016-\037\177-\377]/', $text) > (\strlen($text) / 3)) {
             $this->encoding = 'base64';
             return Base64EncodedStream::fromString($text, $this->lineLength, $this->lineBreak);
         }
@@ -193,12 +193,12 @@ final class OptimalTransferEncodedPhraseStream implements StreamInterface
         $metaData = $this->decoratedStream->getMetadata($keys);
         $metaData['transfer-encoding'] = $this->encoding;
 
-        $keys = array_map('strtolower', $keys);
+        $keys = \array_map('strtolower', $keys);
 
-        return array_filter(
+        return \array_filter(
             $metaData,
             function ($key) use ($keys) {
-                return in_array(strtolower($key), $keys);
+                return \in_array(\strtolower($key), $keys);
             },
             ARRAY_FILTER_USE_KEY
         );

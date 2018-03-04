@@ -39,7 +39,7 @@ final class SearchCommand extends AbstractCommand
      */
     public function __construct(Tag $tag, Query $query, string $charset = '')
     {
-        if (strlen($charset) !== strspn($charset, self::CHARSET_VALID)) {
+        if (\strlen($charset) !== \strspn($charset, self::CHARSET_VALID)) {
             throw new \InvalidArgumentException("Invalid charset");
         }
 
@@ -54,7 +54,7 @@ final class SearchCommand extends AbstractCommand
     protected function createStream(): StreamInterface
     {
         return new StringStream(
-            sprintf(
+            \sprintf(
                 'SEARCH %s%s',
                 $this->charset ? 'CHARSET ' . $this->charset . ' ' : '',
                 (string)$this->query

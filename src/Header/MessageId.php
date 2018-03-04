@@ -40,7 +40,7 @@ final class MessageId implements HeaderInterface
      */
     public function getValue(): HeaderValue
     {
-        return new HeaderValue(sprintf('<%s@%s>', $this->leftHand, $this->rightHand));
+        return new HeaderValue(\sprintf('<%s@%s>', $this->leftHand, $this->rightHand));
     }
 
     /**
@@ -49,6 +49,6 @@ final class MessageId implements HeaderInterface
      */
     public static function newRandom(string $rightHand): MessageId
     {
-        return new self(bin2hex(random_bytes(8)), $rightHand);
+        return new self(\bin2hex(\random_bytes(8)), $rightHand);
     }
 }

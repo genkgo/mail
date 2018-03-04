@@ -55,9 +55,9 @@ final class ParenthesizedList
             return '';
         }
 
-        return sprintf(
+        return \sprintf(
             '(%s)',
-            implode(' ', $this->list)
+            \implode(' ', $this->list)
         );
     }
 }

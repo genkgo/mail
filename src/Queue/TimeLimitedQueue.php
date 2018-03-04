@@ -72,6 +72,6 @@ final class TimeLimitedQueue implements QueueInterface
     {
         $queuedAt = $message->getHeader(QueueIfFailedTransport::QUEUED_HEADER);
 
-        return (int) \strtotime(reset($queuedAt)->getValue()->getRaw());
+        return (int) \strtotime(\reset($queuedAt)->getValue()->getRaw());
     }
 }

@@ -55,9 +55,9 @@ final class FlagParenthesizedList
             return '';
         }
 
-        return sprintf(
+        return \sprintf(
             '(%s)',
-            implode(' ', $this->flags)
+            \implode(' ', $this->flags)
         );
     }
 }

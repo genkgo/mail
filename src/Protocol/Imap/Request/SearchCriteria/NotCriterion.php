@@ -33,7 +33,7 @@ final class NotCriterion implements CriterionInterface
      */
     public function __toString(): string
     {
-        return sprintf(
+        return \sprintf(
             '(NOT %s)',
             (string)$this->query
         );

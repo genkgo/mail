@@ -72,7 +72,7 @@ abstract class AbstractConnection implements ConnectionInterface
     final public function disconnect(): void
     {
         if ($this->resource !== null) {
-            fclose($this->resource);
+            \fclose($this->resource);
             $this->resource = null;
         }
     }
@@ -82,7 +82,7 @@ abstract class AbstractConnection implements ConnectionInterface
      */
     final public function timeout(float $timeout): void
     {
-        stream_set_timeout($this->resource, $timeout);
+        \stream_set_timeout($this->resource, $timeout);
     }
 
     /**
@@ -94,7 +94,7 @@ abstract class AbstractConnection implements ConnectionInterface
     {
         $this->verifyConnection();
 
-        $bytesWritten = fwrite($this->resource, $request);
+        $bytesWritten = \fwrite($this->resource, $request);
 
         if ($bytesWritten === false) {
             throw new CannotWriteToStreamException();
@@ -110,7 +110,7 @@ abstract class AbstractConnection implements ConnectionInterface
     {
         $this->verifyConnection();
 
-        $response = fgets($this->resource, self::RECEIVE_BYTES);
+        $response = \fgets($this->resource, self::RECEIVE_BYTES);
 
         $this->verifyAlive();
 
@@ -130,17 +130,17 @@ abstract class AbstractConnection implements ConnectionInterface
         $this->verifyConnection();
         $this->verifyAlive();
 
-        $metaData = stream_get_meta_data($this->resource);
+        $metaData = \stream_get_meta_data($this->resource);
         if (!$metaData) {
             return [];
         }
 
-        $keys = array_map('strtolower', $keys);
+        $keys = \array_map('strtolower', $keys);
 
-        return array_filter(
+        return \array_filter(
             $metaData,
             function ($key) use ($keys) {
-                return in_array(strtolower($key), $keys);
+                return \in_array(\strtolower($key), $keys);
             },
             ARRAY_FILTER_USE_KEY
         );
@@ -161,7 +161,7 @@ abstract class AbstractConnection implements ConnectionInterface
      */
     private function verifyAlive()
     {
-        $info = stream_get_meta_data($this->resource);
+        $info = \stream_get_meta_data($this->resource);
         if ($info['timed_out']) {
             throw new ConnectionTimeoutException('Connection has timed out');
         }

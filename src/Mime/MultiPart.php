@@ -34,7 +34,7 @@ final class MultiPart implements MultiPartInterface
     {
         $this->boundary = $boundary;
 
-        if (substr((string)$contentType->getValue(), 0, 10) !== 'multipart/') {
+        if (\substr((string)$contentType->getValue(), 0, 10) !== 'multipart/') {
             throw new \InvalidArgumentException('Content type must be of type multipart/type');
         }
 

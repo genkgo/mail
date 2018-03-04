@@ -40,7 +40,7 @@ final class SubscribeCommand extends AbstractCommand
     protected function createStream(): StreamInterface
     {
         return new StringStream(
-            sprintf(
+            \sprintf(
                 'SUBSCRIBE %s',
                 (string)$this->mailbox
             )

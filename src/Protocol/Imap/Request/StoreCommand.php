@@ -49,7 +49,7 @@ final class StoreCommand extends AbstractCommand
     protected function createStream(): StreamInterface
     {
         return new StringStream(
-            sprintf(
+            \sprintf(
                 'STORE %s %s',
                 (string)$this->sequenceSet,
                 (string)$this->flagsItem

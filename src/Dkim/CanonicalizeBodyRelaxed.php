@@ -19,7 +19,7 @@ final class CanonicalizeBodyRelaxed implements CanonicalizeBodyInterface
             return $string;
         }
 
-        $length = strlen($string);
+        $length = \strlen($string);
         $canon = '';
         $lastChar = null;
         $space = false;
@@ -55,7 +55,7 @@ final class CanonicalizeBodyRelaxed implements CanonicalizeBodyInterface
 
                 default:
                     if ($emptyCounter > 0) {
-                        $canon .= str_repeat("\r\n", $emptyCounter);
+                        $canon .= \str_repeat("\r\n", $emptyCounter);
                         $emptyCounter = 0;
                     }
 
@@ -71,7 +71,7 @@ final class CanonicalizeBodyRelaxed implements CanonicalizeBodyInterface
             }
         }
 
-        return rtrim($canon, "\r\n") . "\r\n";
+        return \rtrim($canon, "\r\n") . "\r\n";
     }
 
     /**

@@ -52,7 +52,7 @@ final class FetchCommandResponse
      */
     public function __toString(): string
     {
-        return sprintf(
+        return \sprintf(
             "%s FETCH %s",
             $this->number,
             (string)$this->dataItemList
@@ -66,7 +66,7 @@ final class FetchCommandResponse
     public static function fromString(string $response): self
     {
         $matches = [];
-        $result = preg_match('/^([0-9]+) FETCH ((\()?.*?(\))?)\s*$/s', $response, $matches);
+        $result = \preg_match('/^([0-9]+) FETCH ((\()?.*?(\))?)\s*$/s', $response, $matches);
         if ($result !== 1) {
             throw new \InvalidArgumentException('Not a fetch command');
         }

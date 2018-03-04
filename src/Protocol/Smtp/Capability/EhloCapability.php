@@ -51,8 +51,8 @@ final class EhloCapability implements CapabilityInterface
     {
         $command = $session->getCommand();
 
-        $advertisements = array_filter(
-            array_map(
+        $advertisements = \array_filter(
+            \array_map(
                 function (CapabilityInterface $capability) {
                     return $capability->advertise();
                 },
@@ -63,13 +63,13 @@ final class EhloCapability implements CapabilityInterface
             }
         );
 
-        $messages = array_merge(
-            [$this->serverName . ' Hello ' . substr($command, 5)],
+        $messages = \array_merge(
+            [$this->serverName . ' Hello ' . \substr($command, 5)],
             $advertisements
         );
 
         foreach ($messages as $message) {
-            if (next($messages) === false) {
+            if (\next($messages) === false) {
                 $connection->send('250 ' . $message);
             } else {
                 $connection->send('250-' . $message);

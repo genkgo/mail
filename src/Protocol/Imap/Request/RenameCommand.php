@@ -46,7 +46,7 @@ final class RenameCommand extends AbstractCommand
     protected function createStream(): StreamInterface
     {
         return new StringStream(
-            sprintf(
+            \sprintf(
                 'RENAME %s %s',
                 (string)$this->mailbox,
                 (string)$this->newName

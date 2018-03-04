@@ -34,7 +34,7 @@ final class Boundary
      */
     public static function newRandom()
     {
-        return new self('GenkgoMailV2Part' . bin2hex(random_bytes(6)));
+        return new self('GenkgoMailV2Part' . \bin2hex(\random_bytes(6)));
     }
 
     /**
@@ -57,7 +57,7 @@ final class Boundary
             return false;
         }
 
-        $length = strlen($value);
+        $length = \strlen($value);
         if ($length > 70) {
             return false;
         }
@@ -66,6 +66,6 @@ final class Boundary
             return false;
         }
 
-        return preg_match('/[^A-Za-z0-9\'\,\(\)\+\_\,\-\.\/\:\=\? ]/', $value) !== 1;
+        return \preg_match('/[^A-Za-z0-9\'\,\(\)\+\_\,\-\.\/\:\=\? ]/', $value) !== 1;
     }
 }

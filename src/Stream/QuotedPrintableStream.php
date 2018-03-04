@@ -47,14 +47,14 @@ final class QuotedPrintableStream implements StreamInterface
      */
     public static function fromString(string $string, int $lineLength = 75, string $lineBreak = "\r\n"): QuotedPrintableStream
     {
-        $string = str_replace(
+        $string = \str_replace(
             ["\r\n", "\r", "\n", "\t\r\n", " \r\n"],
             ["\n", "\n", "\r\n", "\r\n", "\r\n"],
             $string
         );
 
-        $resource = fopen('php://memory', 'r+');
-        fwrite($resource, $string);
+        $resource = \fopen('php://memory', 'r+');
+        \fwrite($resource, $string);
         return new self($resource, $lineLength, $lineBreak);
     }
 
@@ -63,7 +63,7 @@ final class QuotedPrintableStream implements StreamInterface
      */
     private function applyFilter(): void
     {
-        $this->filter = stream_filter_prepend(
+        $this->filter = \stream_filter_prepend(
             $this->decoratedStream->detach(),
             'convert.quoted-printable-encode',
             STREAM_FILTER_READ,
@@ -80,7 +80,7 @@ final class QuotedPrintableStream implements StreamInterface
     private function removeFilter(): void
     {
         if ($this->filter !== null) {
-            stream_filter_remove($this->filter);
+            \stream_filter_remove($this->filter);
         }
     }
 

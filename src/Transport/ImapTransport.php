@@ -44,7 +44,7 @@ final class ImapTransport implements TransportInterface
         $tag = $this->client->newTag();
 
         $this->client
-            ->emit(new AppendCommand($tag, $this->mailbox, strlen((string)$message)))
+            ->emit(new AppendCommand($tag, $this->mailbox, \strlen((string)$message)))
             ->last()
             ->assertContinuation();
 

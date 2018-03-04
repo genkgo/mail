@@ -41,11 +41,11 @@ final class HeaderValueParameter
      */
     public function __construct(string $name, string $value)
     {
-        if ($name === '' || strcspn($name, self::ANY_ASCII_EXCEPT_SPACE_CTL) !== strlen($name)) {
+        if ($name === '' || \strcspn($name, self::ANY_ASCII_EXCEPT_SPACE_CTL) !== \strlen($name)) {
             throw new \InvalidArgumentException('Incorrect name');
         }
 
-        if (strcspn($value, self::ANY_ASCII_EXCEPT_SPACE_CTL) !== strlen($value)) {
+        if (\strcspn($value, self::ANY_ASCII_EXCEPT_SPACE_CTL) !== \strlen($value)) {
             throw new \InvalidArgumentException('Incorrect value');
         }
 
@@ -85,11 +85,11 @@ final class HeaderValueParameter
      */
     public function __toString(): string
     {
-        if (strcspn($this->value, $this->specials) !== strlen($this->value)) {
-            return sprintf('%s="%s"', $this->name, $this->value);
+        if (\strcspn($this->value, $this->specials) !== \strlen($this->value)) {
+            return \sprintf('%s="%s"', $this->name, $this->value);
         }
 
-        return sprintf('%s=%s', $this->name, $this->value);
+        return \sprintf('%s=%s', $this->name, $this->value);
     }
 
     /**
@@ -98,17 +98,17 @@ final class HeaderValueParameter
      */
     public static function fromString(string $parameterString): HeaderValueParameter
     {
-        $nameValue = explode('=', $parameterString);
-        if (count($nameValue) !== 2) {
+        $nameValue = \explode('=', $parameterString);
+        if (\count($nameValue) !== 2) {
             throw new \InvalidArgumentException(
-                sprintf('Invalid parameter string value %s', $parameterString)
+                \sprintf('Invalid parameter string value %s', $parameterString)
             );
         }
 
         [$name, $value] = $nameValue;
 
         if ($value[0] === '"' && $value[-1] === '"') {
-            $value = substr($value, 1, -1);
+            $value = \substr($value, 1, -1);
         }
 
         return new self($name, $value);

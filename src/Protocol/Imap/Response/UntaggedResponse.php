@@ -35,7 +35,7 @@ final class UntaggedResponse implements ResponseInterface
      */
     public function __toString(): string
     {
-        return '* ' . trim(implode(' ', [$this->command, $this->line]));
+        return '* ' . \trim(\implode(' ', [$this->command, $this->line]));
     }
 
     /**
@@ -60,7 +60,7 @@ final class UntaggedResponse implements ResponseInterface
             $completionResult = CompletionResult::fromLine($this->line);
             if (!$completionResult->equals($expectedResult)) {
                 throw new AssertionFailedException(
-                    sprintf(
+                    \sprintf(
                         'Returned completion, but %s is not equals to expected %s',
                         (string)$completionResult,
                         (string)$expectedResult

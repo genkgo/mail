@@ -46,7 +46,7 @@ final class LsubCommand extends AbstractCommand
     protected function createStream(): StreamInterface
     {
         return new StringStream(
-            sprintf(
+            \sprintf(
                 'LSUB %s %s',
                 (string)$this->referenceName,
                 (string)$this->mailbox

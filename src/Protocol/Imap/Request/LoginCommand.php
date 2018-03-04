@@ -30,7 +30,7 @@ final class LoginCommand extends AbstractCommand
      */
     public function __construct(Tag $tag, string $username, string $password)
     {
-        if (preg_match('/\s/', $username . $password) === 1) {
+        if (\preg_match('/\s/', $username . $password) === 1) {
             throw new \InvalidArgumentException('Username and/or password may not contain any whitespace');
         }
 
@@ -45,7 +45,7 @@ final class LoginCommand extends AbstractCommand
     protected function createStream(): StreamInterface
     {
         return new StringStream(
-            sprintf(
+            \sprintf(
                 'LOGIN %s %s',
                 $this->username,
                 $this->password

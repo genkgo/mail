@@ -46,7 +46,7 @@ final class ListCommand extends AbstractCommand
     protected function createStream(): StreamInterface
     {
         return new StringStream(
-            sprintf(
+            \sprintf(
                 'LIST %s %s',
                 (string)$this->referenceName,
                 (string)$this->mailbox

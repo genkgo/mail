@@ -24,7 +24,7 @@ final class ResourceAttachment implements PartInterface
      */
     public function __construct($resource, string $filename, ContentType $contentType)
     {
-        if (!is_resource($resource)) {
+        if (!\is_resource($resource)) {
             throw new \InvalidArgumentException('Resource must be a resource');
         }
 
@@ -43,8 +43,8 @@ final class ResourceAttachment implements PartInterface
      */
     public static function fromString(string $string, string $filename, ContentType $contentType)
     {
-        $resource = fopen('php://memory', 'r+');
-        fwrite($resource, $string);
+        $resource = \fopen('php://memory', 'r+');
+        \fwrite($resource, $string);
         return new self($resource, $filename, $contentType);
     }
 

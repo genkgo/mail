@@ -38,7 +38,7 @@ final class TaggedResponse implements ResponseInterface
      */
     public function __toString(): string
     {
-        return implode(' ', [(string)$this->tag, $this->line]);
+        return \implode(' ', [(string)$this->tag, $this->line]);
     }
 
     /**
@@ -63,7 +63,7 @@ final class TaggedResponse implements ResponseInterface
             $completionResult = CompletionResult::fromLine($this->line);
             if (!$completionResult->equals($expectedResult)) {
                 throw new AssertionFailedException(
-                    sprintf(
+                    \sprintf(
                         'Returned completion, but %s is not equals to expected %s',
                         (string)$completionResult,
                         (string)$expectedResult
@@ -72,7 +72,7 @@ final class TaggedResponse implements ResponseInterface
             }
         } catch (\InvalidArgumentException $e) {
             throw new AssertionFailedException(
-                sprintf(
+                \sprintf(
                     'Response %s does not include a completion result',
                     $this->line
                 )

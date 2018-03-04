@@ -45,7 +45,7 @@ final class Address
      */
     public function __construct(EmailAddress $address, string $name = '')
     {
-        if (preg_match('/\v/', $name) !== 0) {
+        if (\preg_match('/\v/', $name) !== 0) {
             throw new \InvalidArgumentException('Cannot use vertical white space within name of email address');
         }
 
@@ -89,14 +89,14 @@ final class Address
 
         $encodedName = (string) OptimalEncodedHeaderValue::forPhrase($this->name);
         if ($encodedName === $this->name) {
-            $encodedName = addcslashes($encodedName, "\0..\37\177\\\"");
+            $encodedName = \addcslashes($encodedName, "\0..\37\177\\\"");
 
-            if ($encodedName !== $this->name || preg_match('/[^A-Za-z0-9!#$%&\'*+\/=?^_`{|}~ -]/', $this->name) === 1) {
-                $encodedName = sprintf('"%s"', $encodedName);
+            if ($encodedName !== $this->name || \preg_match('/[^A-Za-z0-9!#$%&\'*+\/=?^_`{|}~ -]/', $this->name) === 1) {
+                $encodedName = \sprintf('"%s"', $encodedName);
             }
         }
 
-        return sprintf('%s <%s>', $encodedName, $this->address->getPunyCode());
+        return \sprintf('%s <%s>', $encodedName, $this->address->getPunyCode());
     }
 
     /**
@@ -109,11 +109,11 @@ final class Address
         }
 
         $encodedName = $this->name;
-        if ($encodedName !== $this->name || preg_match('/[^A-Za-z0-9!#$%&\'*+\/=?^_`{|}~ -]/', $this->name) === 1) {
-            $encodedName = sprintf('"%s"', $encodedName);
+        if ($encodedName !== $this->name || \preg_match('/[^A-Za-z0-9!#$%&\'*+\/=?^_`{|}~ -]/', $this->name) === 1) {
+            $encodedName = \sprintf('"%s"', $encodedName);
         }
 
-        return sprintf('%s <%s>', $encodedName, $this->address->getAddress());
+        return \sprintf('%s <%s>', $encodedName, $this->address->getAddress());
     }
 
     /**
@@ -122,14 +122,14 @@ final class Address
      */
     public static function fromString(string $addressAsString)
     {
-        $addressAsString = trim($addressAsString);
+        $addressAsString = \trim($addressAsString);
 
         if ($addressAsString === '') {
             throw new \InvalidArgumentException('Address cannot be empty');
         }
 
         $sequence = '';
-        $length = strlen($addressAsString) - 1;
+        $length = \strlen($addressAsString) - 1;
         $n = -1;
         $state = self::PARSE_STATE_EMAIL;
         $position = self::PARSE_POSITION_START;
@@ -177,7 +177,7 @@ final class Address
                 case self::PARSE_STATE_TAGGED_EMAIL:
                     if ($position !== self::PARSE_POSITION_QUOTE && $char === '>') {
                         $state = self::PARSE_STATE_EMAIL;
-                        $email = substr($sequence, 0, -1);
+                        $email = \substr($sequence, 0, -1);
                     }
 
                     break;
@@ -188,7 +188,7 @@ final class Address
 
                     if ($position !== self::PARSE_POSITION_QUOTE && $char === '<') {
                         $state = self::PARSE_STATE_TAGGED_EMAIL;
-                        $name = trim(substr($sequence, 0, -1));
+                        $name = \trim(\substr($sequence, 0, -1));
                         $sequence = '';
                     }
                     break;
@@ -212,10 +212,10 @@ final class Address
         }
 
         if ($nameQuoted) {
-            $name = substr($name, 1, -1);
+            $name = \substr($name, 1, -1);
         }
 
-        $name = @iconv_mime_decode($name);
+        $name = @\iconv_mime_decode($name);
         if ($name === false) {
             throw new \InvalidArgumentException('Failed to mime decode the name');
         }

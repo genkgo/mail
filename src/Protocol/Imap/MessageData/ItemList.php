@@ -100,7 +100,7 @@ final class ItemList
     {
         if (!isset($this->list[$name])) {
             throw new \UnexpectedValueException(
-                sprintf('Unknown name %s', $name)
+                \sprintf('Unknown name %s', $name)
             );
         }
 
@@ -116,7 +116,7 @@ final class ItemList
             throw new \OutOfBoundsException('Cannot return last item from empty list');
         }
 
-        return end($this->list);
+        return \end($this->list);
     }
 
     /**
@@ -124,9 +124,9 @@ final class ItemList
      */
     public function __toString(): string
     {
-        $items = implode(
+        $items = \implode(
             ' ',
-            array_map(
+            \array_map(
                 function (ItemInterface $item) {
                     return (string)$item;
                 },
@@ -142,7 +142,7 @@ final class ItemList
             $items .= "\n" . $this->body;
         }
 
-        if (count($this->list) > 1 || $this->body) {
+        if (\count($this->list) > 1 || $this->body) {
             return '(' . $items . ')';
         }
 
@@ -166,7 +166,7 @@ final class ItemList
         }
 
         if ($serializedList[0] === '(' && $serializedList[-1] === ')') {
-            $serializedList = substr($serializedList, 1, -1);
+            $serializedList = \substr($serializedList, 1, -1);
         }
 
         while (isset($serializedList[$index])) {
@@ -179,7 +179,7 @@ final class ItemList
                         throw new \InvalidArgumentException('Invalid character [ found');
                     }
 
-                    $list = $list->withItem(new NameItem(substr($sequence, 0, -1)));
+                    $list = $list->withItem(new NameItem(\substr($sequence, 0, -1)));
                     $sequence = '[';
                     $state = self::STATE_SECTION;
                     break;
@@ -226,7 +226,7 @@ final class ItemList
                         throw new \InvalidArgumentException('Invalid characters } found');
                     }
 
-                    $list = $list->withOctet((int)substr($sequence, 1, -1));
+                    $list = $list->withOctet((int)\substr($sequence, 1, -1));
                     $sequence = '';
 
                     $state = self::STATE_NAME;
@@ -241,14 +241,14 @@ final class ItemList
                     }
 
                     if ($state === self::STATE_NAME) {
-                        $list = $list->withItem(new NameItem(substr($sequence, 0, -1)));
+                        $list = $list->withItem(new NameItem(\substr($sequence, 0, -1)));
                         $sequence = '';
                         $state = self::STATE_NONE;
                     }
 
                     break;
                 case "\n":
-                    $list = $list->withBody(substr($serializedList, $index + 1));
+                    $list = $list->withBody(\substr($serializedList, $index + 1));
                     $sequence = '';
                     break 2;
             }

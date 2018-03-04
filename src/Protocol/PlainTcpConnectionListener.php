@@ -48,8 +48,8 @@ final class PlainTcpConnectionListener implements ConnectionListenerInterface
     {
         $this->validateResource();
 
-        $resource = @stream_socket_accept($this->resource, $this->timeout);
-        if (is_resource($resource)) {
+        $resource = @\stream_socket_accept($this->resource, $this->timeout);
+        if (\is_resource($resource)) {
             return new class($resource) extends AbstractConnection {
 
                 /**
@@ -73,7 +73,7 @@ final class PlainTcpConnectionListener implements ConnectionListenerInterface
                  */
                 public function upgrade(int $type): void
                 {
-                    if (stream_socket_enable_crypto($this->resource, true, $type) === false) {
+                    if (\stream_socket_enable_crypto($this->resource, true, $type) === false) {
                         throw new \InvalidArgumentException('Cannot upgrade connection to requested encryption type');
                     }
                 }
@@ -89,7 +89,7 @@ final class PlainTcpConnectionListener implements ConnectionListenerInterface
     private function validateResource(): void
     {
         if ($this->resource === null) {
-            $this->resource = @stream_socket_server(
+            $this->resource = @\stream_socket_server(
                 'tcp://' . $this->host . ':' . $this->port,
                 $errorCode,
                 $errorMessage

@@ -29,6 +29,6 @@ final class AuthLoginUsernameRequest implements RequestInterface
      */
     public function execute(ConnectionInterface $connection): void
     {
-        $connection->send(base64_encode($this->username));
+        $connection->send(\base64_encode($this->username));
     }
 }

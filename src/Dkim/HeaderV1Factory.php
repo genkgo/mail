@@ -69,7 +69,7 @@ final class HeaderV1Factory
         foreach ($message->getHeaders() as $headers) {
             /** @var HeaderInterface $header */
             foreach ($headers as $header) {
-                $headerName = strtolower((string)$header->getName());
+                $headerName = \strtolower((string)$header->getName());
                 if (isset(self::HEADERS_IGNORED[$headerName])) {
                     break;
                 }
@@ -88,17 +88,17 @@ final class HeaderV1Factory
 
         $headerValue = $parameters->newHeaderValue()
             ->withParameter($this->newUnquotedParameter('a', $this->sign->name()))
-            ->withParameter($this->newUnquotedParameter('c', implode('/', $canonicalization)))
-            ->withParameter($this->newUnquotedParameter('h', implode(':', $headerNames)), true)
-            ->withParameter($this->newUnquotedParameter('bh', base64_encode($bodyHash)), true)
+            ->withParameter($this->newUnquotedParameter('c', \implode('/', $canonicalization)))
+            ->withParameter($this->newUnquotedParameter('h', \implode(':', $headerNames)), true)
+            ->withParameter($this->newUnquotedParameter('bh', \base64_encode($bodyHash)), true)
             ->withParameter($this->newUnquotedParameter('b', ''), true);
 
-        $headerCanonicalized[strtolower(self::HEADER_NAME)] = $this->canonicalizeHeader->canonicalize(
+        $headerCanonicalized[\strtolower(self::HEADER_NAME)] = $this->canonicalizeHeader->canonicalize(
             $this->newHeader($headerValue)
         );
 
-        $headers = implode("\r\n", $headerCanonicalized);
-        $signature = base64_encode($this->sign->signHeaders($headers));
+        $headers = \implode("\r\n", $headerCanonicalized);
+        $signature = \base64_encode($this->sign->signHeaders($headers));
         $headerValue = $headerValue->withParameter(new HeaderValueParameter('b', $signature), true);
 
         return $this->newHeader($headerValue);

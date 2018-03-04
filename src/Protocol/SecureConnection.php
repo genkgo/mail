@@ -51,13 +51,13 @@ final class SecureConnection extends AbstractConnection
      */
     public function connect(): void
     {
-        $context = stream_context_create([
+        $context = \stream_context_create([
             'ssl' => [
                 'crypto_method' => $this->options->getMethod(),
             ]
         ]);
 
-        $resource = @stream_socket_client(
+        $resource = @\stream_socket_client(
             'tls://' . $this->host . ':' . $this->port,
             $errorCode,
             $errorMessage,
@@ -68,7 +68,7 @@ final class SecureConnection extends AbstractConnection
 
         if ($resource === false) {
             throw new ConnectionRefusedException(
-                sprintf('Could not create secure connection. %s.', $errorMessage),
+                \sprintf('Could not create secure connection. %s.', $errorMessage),
                 $errorCode
             );
         }

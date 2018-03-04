@@ -38,8 +38,8 @@ final class DataRequest implements RequestInterface
             $index = 0;
             while (isset($bytes[$index])) {
                 if ($bytes[$index] === "\r" && isset($bytes[$index+1]) && $bytes[$index+1] === "\n") {
-                    $line = substr($bytes, 0, $index);
-                    $bytes = substr($bytes, $index + 2);
+                    $line = \substr($bytes, 0, $index);
+                    $bytes = \substr($bytes, $index + 2);
                     $index = -1;
 
                     $this->sendLine($connection, $line);
@@ -60,7 +60,7 @@ final class DataRequest implements RequestInterface
      */
     private function sendLine(ConnectionInterface $connection, string $line): void
     {
-        $line = rtrim($line, "\r");
+        $line = \rtrim($line, "\r");
 
         if (isset($line[0]) && $line[0] === '.') {
             $line = '.' . $line;

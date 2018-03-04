@@ -44,7 +44,7 @@ final class FlagCriterion implements CriterionInterface
             );
         }
 
-        return $prefix . \strtoupper(substr((string)$this->flag, 1));
+        return $prefix . \strtoupper(\substr((string)$this->flag, 1));
     }
 
     /**

@@ -66,9 +66,9 @@ abstract class AbstractRecipient implements HeaderInterface
     {
         return new static(
             new AddressList(
-                array_map(
+                \array_map(
                     function (array $pair) {
-                        $count = count($pair);
+                        $count = \count($pair);
                         if ($count !== 1 && $count !== 2) {
                             throw new \InvalidArgumentException('Each recipient should have one or two elements: [<EmailAddress>] or [<EmailAddress>, <Name>]');
                         }

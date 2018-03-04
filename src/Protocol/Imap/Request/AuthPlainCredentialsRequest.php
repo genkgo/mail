@@ -42,8 +42,8 @@ final class AuthPlainCredentialsRequest implements RequestInterface
     public function toStream(): StreamInterface
     {
         return new StringStream(
-            base64_encode(
-                sprintf("\0%s\0%s", $this->username, $this->password)
+            \base64_encode(
+                \sprintf("\0%s\0%s", $this->username, $this->password)
             )
         );
     }

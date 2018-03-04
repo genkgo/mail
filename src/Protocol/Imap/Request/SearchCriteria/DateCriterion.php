@@ -34,7 +34,7 @@ final class DateCriterion implements CriterionInterface
      */
     public function __toString(): string
     {
-        return sprintf(
+        return \sprintf(
             '%s %s',
             $this->name,
             $this->moment->format('j-D-Y')

@@ -33,11 +33,11 @@ final class AlternativeText
      */
     private function normalizeSpace(string $string): string
     {
-        return wordwrap(
-            str_replace(
+        return \wordwrap(
+            \str_replace(
                 ["  ", "\n ", " \n", "\t"],
                 [" ", "\n", "\n", "    "],
-                trim($string)
+                \trim($string)
             )
         );
     }
@@ -48,8 +48,8 @@ final class AlternativeText
      */
     public static function fromHtml(string $html): AlternativeText
     {
-        $html = preg_replace('/\h\h+/', ' ', $html);
-        $html = preg_replace('/\v/', '', $html);
+        $html = \preg_replace('/\h\h+/', ' ', $html);
+        $html = \preg_replace('/\v/', '', $html);
         $text = new self($html);
 
         try {
@@ -69,7 +69,7 @@ final class AlternativeText
 
             $text->text = $document->textContent;
         } catch (\DOMException $e) {
-            $text->text = strip_tags($text->text);
+            $text->text = \strip_tags($text->text);
         }
 
         return $text;
@@ -163,7 +163,7 @@ final class AlternativeText
         foreach ($xpath->query('//ol/li') as $element) {
             $itemPath = new \DOMXPath($document);
             $itemNumber = (int)$itemPath->evaluate('string(count(preceding-sibling::li))', $element) + 1;
-            $text = sprintf("\t%d. ", $itemNumber);
+            $text = \sprintf("\t%d. ", $itemNumber);
 
             if ($element->firstChild !== null) {
                 $element->insertBefore(
@@ -221,7 +221,7 @@ final class AlternativeText
 
         /** @var \DOMElement $element */
         foreach ($xpath->query('//hr') as $element) {
-            $element->textContent = str_repeat('=', 78);
+            $element->textContent = \str_repeat('=', 78);
         }
     }
 
@@ -249,13 +249,13 @@ final class AlternativeText
         foreach ($xpath->query('//a[@href and @href != .]') as $element) {
             $itemString = (string) $item;
             $itemUnicode = '';
-            for ($i = 0, $j = strlen($itemString); $i < $j; $i++) {
+            for ($i = 0, $j = \strlen($itemString); $i < $j; $i++) {
                 $itemUnicode .= $conversion[$itemString[$i]];
             }
 
             $document->documentElement->appendChild(
                 $document->createTextNode(
-                    sprintf(
+                    \sprintf(
                         "[%s] %s\n",
                         $itemUnicode,
                         $element->getAttribute('href')

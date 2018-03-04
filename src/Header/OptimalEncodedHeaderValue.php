@@ -54,10 +54,10 @@ final class OptimalEncodedHeaderValue
         }
 
         if ($encoding === 'base64') {
-            return sprintf('=?%s?B?%s?=', 'UTF-8', (string) $encoded);
+            return \sprintf('=?%s?B?%s?=', 'UTF-8', (string) $encoded);
         }
 
-        return sprintf('=?%s?Q?%s?=', 'UTF-8', (string) $encoded);
+        return \sprintf('=?%s?Q?%s?=', 'UTF-8', (string) $encoded);
     }
 
     /**

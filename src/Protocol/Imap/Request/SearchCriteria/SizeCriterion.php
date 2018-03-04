@@ -34,7 +34,7 @@ final class SizeCriterion implements CriterionInterface
      */
     public function __toString(): string
     {
-        return sprintf('%s %s', $this->name, $this->size);
+        return \sprintf('%s %s', $this->name, $this->size);
     }
 
     /**

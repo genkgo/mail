@@ -95,10 +95,10 @@ final class MimeMessageFactory
      */
     private function createHeaderLines(PartInterface $part): string
     {
-        return implode(
+        return \implode(
             "\r\n",
-            array_values(
-                array_map(
+            \array_values(
+                \array_map(
                     function (HeaderInterface $header) {
                         return (string) (new HeaderLine($header));
                     },
@@ -121,7 +121,7 @@ final class MimeMessageFactory
         }
 
         $contentTypeHeader = $part->getHeader('Content-Type')->getValue();
-        if ($transferEncoding !== '7bit' || substr((string)$contentTypeHeader, 0, 5) !== 'text/') {
+        if ($transferEncoding !== '7bit' || \substr((string)$contentTypeHeader, 0, 5) !== 'text/') {
             return $part;
         }
 

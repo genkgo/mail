@@ -76,7 +76,7 @@ final class FormattedMessageFactory
     {
         try {
             $disposition = (string) $part->getHeader('Content-Disposition')->getValue();
-            if (substr($disposition, 0, strpos($disposition, ';')) !== 'attachment') {
+            if (\substr($disposition, 0, \strpos($disposition, ';')) !== 'attachment') {
                 throw new \InvalidArgumentException(
                     'An attachment must have Content-Disposition header with value `attachment`'
                 );

@@ -52,8 +52,8 @@ final class StringStream implements StreamInterface
      */
     public function detach()
     {
-        $handle = fopen('php://memory', 'r+');
-        fwrite($handle, $this->text);
+        $handle = \fopen('php://memory', 'r+');
+        \fwrite($handle, $this->text);
         return $handle;
     }
 
@@ -62,7 +62,7 @@ final class StringStream implements StreamInterface
      */
     public function getSize(): ?int
     {
-        return strlen($this->text);
+        return \strlen($this->text);
     }
 
     /**
@@ -79,7 +79,7 @@ final class StringStream implements StreamInterface
      */
     public function eof(): bool
     {
-        return $this->position >= strlen($this->text);
+        return $this->position >= \strlen($this->text);
     }
 
     /**
@@ -97,7 +97,7 @@ final class StringStream implements StreamInterface
      */
     public function seek(int $offset, int $whence = SEEK_SET): int
     {
-        $length = strlen($this->text);
+        $length = \strlen($this->text);
         if ($length < $offset) {
             $offset = $length;
         }
@@ -129,8 +129,8 @@ final class StringStream implements StreamInterface
      */
     public function write($string): int
     {
-        $this->text = substr_replace($this->text, $string, $this->position, strlen($string));
-        $bytesWritten = strlen($string);
+        $this->text = \substr_replace($this->text, $string, $this->position, \strlen($string));
+        $bytesWritten = \strlen($string);
         $this->position += $bytesWritten;
         return $bytesWritten;
     }
@@ -149,8 +149,8 @@ final class StringStream implements StreamInterface
      */
     public function read(int $length): string
     {
-        $result = substr($this->text, $this->position, $length);
-        $this->position += strlen($result);
+        $result = \substr($this->text, $this->position, $length);
+        $this->position += \strlen($result);
         return $result;
     }
 
@@ -159,7 +159,7 @@ final class StringStream implements StreamInterface
      */
     public function getContents(): string
     {
-        return substr($this->text, $this->position);
+        return \substr($this->text, $this->position);
     }
 
     /**

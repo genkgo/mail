@@ -46,7 +46,7 @@ final class CopyCommand extends AbstractCommand
     protected function createStream(): StreamInterface
     {
         return new StringStream(
-            sprintf(
+            \sprintf(
                 'COPY %s %s',
                 (string)$this->set,
                 (string)$this->mailbox

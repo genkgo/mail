@@ -28,6 +28,6 @@ final class HeloCommand implements RequestInterface
      */
     public function execute(ConnectionInterface $connection): void
     {
-        $connection->send(sprintf('HELO %s', $this->hostName));
+        $connection->send(\sprintf('HELO %s', $this->hostName));
     }
 }

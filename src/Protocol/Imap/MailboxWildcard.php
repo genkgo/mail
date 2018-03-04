@@ -60,7 +60,7 @@ final class MailboxWildcard
                         break;
                     }
 
-                    if (strlen($char) !== strcspn($char, self::RFC_3501_ASTRING)) {
+                    if (\strlen($char) !== \strcspn($char, self::RFC_3501_ASTRING)) {
                         throw new \InvalidArgumentException(
                             \sprintf(
                                 'Invalid mailbox character %s, use a quoted string for a broader range of allowed character',
@@ -75,7 +75,7 @@ final class MailboxWildcard
                         break;
                     }
 
-                    if (strlen($char) !== strcspn($char, self::RFC_3501_TEXT_CHAR)) {
+                    if (\strlen($char) !== \strcspn($char, self::RFC_3501_TEXT_CHAR)) {
                         throw new \InvalidArgumentException('Invalid mailbox name');
                     }
                     break;

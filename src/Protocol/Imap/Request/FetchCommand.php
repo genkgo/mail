@@ -46,7 +46,7 @@ final class FetchCommand extends AbstractCommand
     protected function createStream(): StreamInterface
     {
         return new StringStream(
-            sprintf(
+            \sprintf(
                 'FETCH %s %s',
                 (string)$this->set,
                 (string)$this->list

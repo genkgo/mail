@@ -71,7 +71,7 @@ final class DataCapability implements CapabilityInterface
         }
 
         try {
-            $message = GenericMessage::fromString(implode("\r\n", $data));
+            $message = GenericMessage::fromString(\implode("\r\n", $data));
         } catch (\InvalidArgumentException $e) {
             $connection->send('500 Malformed message');
             return $session;

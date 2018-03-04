@@ -80,14 +80,14 @@ final class HeaderValue
         $parameters = [];
 
         foreach ($this->parameters as $name => $parameter) {
-            $parameters[] = sprintf(
+            $parameters[] = \sprintf(
                 ';%s%s',
                 empty($this->parametersForceNewLine[$name]) ? ' ' : "\r\n ",
                 (string) $parameter
             );
         }
 
-        return implode('', array_merge([$value], $parameters));
+        return \implode('', \array_merge([$value], $parameters));
     }
 
     /**
@@ -106,10 +106,10 @@ final class HeaderValue
      */
     private function validate(string $value): bool
     {
-        $total = strlen($value);
+        $total = \strlen($value);
 
         for ($i = 0; $i < $total; $i += 1) {
-            $ord = ord($value[$i]);
+            $ord = \ord($value[$i]);
             if ($ord === 10) {
                 return false;
             }
@@ -117,9 +117,9 @@ final class HeaderValue
                 if ($i + 2 >= $total) {
                     return false;
                 }
-                $lf = ord($value[$i + 1]);
-                $sp = ord($value[$i + 2]);
-                if ($lf !== 10 || ! in_array($sp, [9, 32], true)) {
+                $lf = \ord($value[$i + 1]);
+                $sp = \ord($value[$i + 2]);
+                if ($lf !== 10 || ! \in_array($sp, [9, 32], true)) {
                     return false;
                 }
                 // skip over the LF following this
@@ -162,9 +162,9 @@ final class HeaderValue
     {
         $values = [];
 
-        $headerValueAsString = trim($headerValueAsString);
+        $headerValueAsString = \trim($headerValueAsString);
 
-        $length = strlen($headerValueAsString) - 1;
+        $length = \strlen($headerValueAsString) - 1;
         $n = -1;
         $state = self::PARSE_START;
         $escapeNext = false;
@@ -200,7 +200,7 @@ final class HeaderValue
                     }
 
                     if ($char === ';') {
-                        $values[] = trim(substr($sequence, 0, -1));
+                        $values[] = \trim(\substr($sequence, 0, -1));
                         $sequence = '';
                         $state = self::PARSE_START;
                     }
@@ -208,12 +208,12 @@ final class HeaderValue
             }
         }
 
-        $values[] = trim($sequence);
+        $values[] = \trim($sequence);
 
         $headerValue = new self($values[0]);
 
         $parameters = [];
-        foreach (array_slice($values, 1) as $parameterString) {
+        foreach (\array_slice($values, 1) as $parameterString) {
             $parameter = HeaderValueParameter::fromString($parameterString);
             $parameters[$parameter->getName()] = $parameter;
         }

@@ -50,7 +50,7 @@ final class ConcatenatedStream implements StreamInterface
             $result[] = $stream->__toString();
         }
 
-        return implode('', $result);
+        return \implode('', $result);
     }
 
     /**
@@ -205,14 +205,14 @@ final class ConcatenatedStream implements StreamInterface
     public function read(int $length): string
     {
         $result = '';
-        while (strlen($result) < $length && isset($this->streams[$this->index])) {
+        while (\strlen($result) < $length && isset($this->streams[$this->index])) {
             $result .= $this->streams[$this->index]->read($length);
             if ($this->streams[$this->index]->eof()) {
                 $this->index++;
             }
         }
 
-        $this->position += strlen($result);
+        $this->position += \strlen($result);
         return $result;
     }
 

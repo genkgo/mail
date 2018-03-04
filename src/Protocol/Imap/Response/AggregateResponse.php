@@ -49,7 +49,7 @@ final class AggregateResponse implements \IteratorAggregate
             throw new \OutOfBoundsException('Cannot return item of empty response');
         }
 
-        return reset($this->lines);
+        return \reset($this->lines);
     }
 
     /**
@@ -61,7 +61,7 @@ final class AggregateResponse implements \IteratorAggregate
             throw new \OutOfBoundsException('Cannot return item of empty response');
         }
 
-        return end($this->lines);
+        return \end($this->lines);
     }
 
     /**
@@ -86,7 +86,7 @@ final class AggregateResponse implements \IteratorAggregate
             return false;
         }
 
-        $lastCommand = end($this->lines);
+        $lastCommand = \end($this->lines);
         try {
             $lastCommand->assertTagged();
             return true;
@@ -110,15 +110,15 @@ final class AggregateResponse implements \IteratorAggregate
     {
         $clone = clone $this;
 
-        switch (substr($line, 0, 2)) {
+        switch (\substr($line, 0, 2)) {
             case '+ ':
                 $clone->lines[] = new CommandContinuationRequestResponse(
-                    substr($line, 2)
+                    \substr($line, 2)
                 );
                 break;
             case '* ':
                 $clone->lines[] = new UntaggedResponse(
-                    substr($line, 2)
+                    \substr($line, 2)
                 );
                 break;
             default:
@@ -134,8 +134,8 @@ final class AggregateResponse implements \IteratorAggregate
                         );
                     }
 
-                    $keys = array_keys($clone->lines);
-                    $lastKey = end($keys);
+                    $keys = \array_keys($clone->lines);
+                    $lastKey = \end($keys);
                     $clone->lines[$lastKey] = $clone->lines[$lastKey]->withAddedBody($line);
                 }
                 break;

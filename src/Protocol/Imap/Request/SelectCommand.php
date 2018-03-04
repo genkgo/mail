@@ -40,7 +40,7 @@ final class SelectCommand extends AbstractCommand
     public function createStream(): StreamInterface
     {
         return new StringStream(
-            sprintf(
+            \sprintf(
                 'SELECT %s',
                 (string)$this->mailbox
             )

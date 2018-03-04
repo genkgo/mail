@@ -125,7 +125,7 @@ final class Reply
         }
 
         throw new AssertionFailedException(
-            sprintf(
+            \sprintf(
                 'Cannot assert reply code between %s and %s. Server replied %s.',
                 $min,
                 $max,
@@ -139,11 +139,11 @@ final class Reply
      */
     private function createErrorMessage(): string
     {
-        return implode(
+        return \implode(
             "\r\n",
-            array_map(
+            \array_map(
                 function ($values) {
-                    return implode(' ', $values);
+                    return \implode(' ', $values);
                 },
                 $this->lines
             )

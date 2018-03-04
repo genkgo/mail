@@ -33,7 +33,7 @@ final class OrCriterion implements CriterionInterface
      */
     public function __toString(): string
     {
-        return sprintf(
+        return \sprintf(
             '(OR %s)',
             (string)$this->query
         );

@@ -31,7 +31,7 @@ final class UidCommand implements RequestInterface
     public function toStream(): StreamInterface
     {
         return new StringStream(
-            sprintf(
+            \sprintf(
                 '%s UID %s',
                 (string)$this->getTag(),
                 $this->getTag()->extractBodyFromLine((string) $this->request->toStream())

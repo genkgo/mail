@@ -43,7 +43,7 @@ final class CompletionResult
     {
         if (!isset(self::ENUM[$value])) {
             throw new \InvalidArgumentException(
-                sprintf(
+                \sprintf(
                     'Invalid completion result %s',
                     $value
                 )
@@ -85,7 +85,7 @@ final class CompletionResult
      */
     public static function fromLine(string $line): self
     {
-        $found = preg_match('/^([A-Z]{0,3})\s/', $line, $matches);
+        $found = \preg_match('/^([A-Z]{0,3})\s/', $line, $matches);
 
         if ($found === 0) {
             return new self($line);

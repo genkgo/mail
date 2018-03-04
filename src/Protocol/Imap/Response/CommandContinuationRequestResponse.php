@@ -27,7 +27,7 @@ final class CommandContinuationRequestResponse implements ResponseInterface
      */
     public function __toString(): string
     {
-        return trim('+ ' . $this->line);
+        return \trim('+ ' . $this->line);
     }
 
     /**

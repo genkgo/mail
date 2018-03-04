@@ -40,7 +40,7 @@ final class UnsubscribeCommand extends AbstractCommand
     protected function createStream(): StreamInterface
     {
         return new StringStream(
-            sprintf(
+            \sprintf(
                 'UNSUBSCRIBE %s',
                 (string)$this->mailbox
             )

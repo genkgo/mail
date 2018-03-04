@@ -29,7 +29,7 @@ final class ContentType implements HeaderInterface
     {
         $this->contentType = $contentType;
 
-        if ($charset === '' && substr($contentType, 0, 5) === 'text/') {
+        if ($charset === '' && \substr($contentType, 0, 5) === 'text/') {
             $charset = 'UTF-8';
         }
 

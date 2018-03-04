@@ -63,7 +63,7 @@ final class SequenceSet
      */
     public function __toString(): string
     {
-        return implode(',', $this->set);
+        return \implode(',', $this->set);
     }
 
     /**

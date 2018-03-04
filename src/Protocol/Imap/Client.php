@@ -95,8 +95,8 @@ final class Client
             $index = 0;
             while (isset($bytes[$index])) {
                 if ($bytes[$index] === "\r" && isset($bytes[$index + 1]) && $bytes[$index + 1] === "\n") {
-                    $line = substr($bytes, 0, $index);
-                    $bytes = substr($bytes, $index + 2);
+                    $line = \substr($bytes, 0, $index);
+                    $bytes = \substr($bytes, $index + 2);
                     $index = -1;
 
                     $this->connection->send($line);

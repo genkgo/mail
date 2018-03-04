@@ -40,14 +40,14 @@ final class FilesystemQueue implements QueueInterface, \Countable
     public function store(MessageInterface $message): void
     {
         $messageString = (string)$message;
-        $filename = hash('sha256', $messageString) . '.eml';
+        $filename = \hash('sha256', $messageString) . '.eml';
 
-        file_put_contents(
+        \file_put_contents(
             $this->directory . '/' . $filename,
             $messageString
         );
 
-        chmod($this->directory . '/' . $filename, $this->mode);
+        \chmod($this->directory . '/' . $filename, $this->mode);
     }
 
     /**
@@ -59,8 +59,8 @@ final class FilesystemQueue implements QueueInterface, \Countable
         $queue = new \GlobIterator($this->directory . '/*.eml');
         /** @var \SplFileInfo $item */
         foreach ($queue as $item) {
-            $messageString = file_get_contents($item->getPathname());
-            unlink($item->getPathname());
+            $messageString = \file_get_contents($item->getPathname());
+            \unlink($item->getPathname());
             return GenericMessage::fromString($messageString);
         }
 

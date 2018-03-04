@@ -40,7 +40,7 @@ final class CreateCommand extends AbstractCommand
     protected function createStream(): StreamInterface
     {
         return new StringStream(
-            sprintf(
+            \sprintf(
                 'CREATE %s',
                 (string)$this->mailbox
             )

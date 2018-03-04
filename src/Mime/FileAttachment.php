@@ -25,15 +25,15 @@ final class FileAttachment implements PartInterface
      */
     public function __construct(string $filename, ContentType $contentType, string $attachmentName = '')
     {
-        if (!file_exists($filename) || !is_file($filename)) {
+        if (!\file_exists($filename) || !\is_file($filename)) {
             throw new \InvalidArgumentException('Attachment does not exists');
         }
 
         if ($attachmentName === '') {
-            $attachmentName = basename($filename);
+            $attachmentName = \basename($filename);
         }
 
-        $resource = fopen($filename, 'r');
+        $resource = \fopen($filename, 'r');
 
         $this->decoratedPart = (new GenericPart())
             ->withBody(new Base64EncodedStream($resource))
@@ -104,7 +104,7 @@ final class FileAttachment implements PartInterface
      */
     public function withHeader(HeaderInterface $header): PartInterface
     {
-        if (strtolower((string)$header->getName()) === 'content-disposition') {
+        if (\strtolower((string)$header->getName()) === 'content-disposition') {
             throw new \InvalidArgumentException('Cannot modify content disposition for file attachment');
         }
 
@@ -119,7 +119,7 @@ final class FileAttachment implements PartInterface
      */
     public function withoutHeader(string $name): PartInterface
     {
-        if (strtolower($name) === 'content-disposition') {
+        if (\strtolower($name) === 'content-disposition') {
             throw new \InvalidArgumentException('Cannot modify content disposition for file attachment');
         }
 

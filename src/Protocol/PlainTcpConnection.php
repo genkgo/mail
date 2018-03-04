@@ -43,7 +43,7 @@ final class PlainTcpConnection extends AbstractConnection
      */
     public function upgrade(int $type): void
     {
-        if (stream_socket_enable_crypto($this->resource, true, $type) === false) {
+        if (\stream_socket_enable_crypto($this->resource, true, $type) === false) {
             throw new \InvalidArgumentException('Cannot upgrade connection to requested encryption type');
         }
     }
@@ -53,7 +53,7 @@ final class PlainTcpConnection extends AbstractConnection
      */
     public function connect(): void
     {
-        $resource = @stream_socket_client(
+        $resource = @\stream_socket_client(
             'tcp://' . $this->host . ':' . $this->port,
             $errorCode,
             $errorMessage,
@@ -62,7 +62,7 @@ final class PlainTcpConnection extends AbstractConnection
 
         if ($resource === false) {
             throw new ConnectionRefusedException(
-                sprintf('Could not create plain tcp connection. %s.', $errorMessage),
+                \sprintf('Could not create plain tcp connection. %s.', $errorMessage),
                 $errorCode
             );
         }

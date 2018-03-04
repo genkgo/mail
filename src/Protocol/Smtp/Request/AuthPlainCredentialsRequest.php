@@ -37,8 +37,8 @@ final class AuthPlainCredentialsRequest implements RequestInterface
     public function execute(ConnectionInterface $connection): void
     {
         $connection->send(
-            base64_encode(
-                sprintf("\0%s\0%s", $this->username, $this->password)
+            \base64_encode(
+                \sprintf("\0%s\0%s", $this->username, $this->password)
             )
         );
     }

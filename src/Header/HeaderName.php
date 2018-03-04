@@ -43,14 +43,14 @@ final class HeaderName
      */
     private function validate(string $name): bool
     {
-        $tot = strlen($name);
+        $tot = \strlen($name);
 
         if ($tot > 74) {
             return false;
         }
 
         for ($i = 0; $i < $tot; $i += 1) {
-            $ord = ord($name[$i]);
+            $ord = \ord($name[$i]);
             if ($ord < 33 || $ord > 126 || $ord === 58) {
                 return false;
             }

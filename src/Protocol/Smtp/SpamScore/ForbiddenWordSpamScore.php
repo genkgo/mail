@@ -33,12 +33,12 @@ final class ForbiddenWordSpamScore implements SpamScoreInterface
      */
     public function calculate(MessageInterface $message): int
     {
-        $messageBody = strtolower((string)$message);
+        $messageBody = \strtolower((string)$message);
 
         $score = 0;
 
         foreach ($this->words as $word) {
-            $score += $this->pointsPerMatchedWord * substr_count($messageBody, strtolower($word));
+            $score += $this->pointsPerMatchedWord * \substr_count($messageBody, \strtolower($word));
         }
 
         return $score;

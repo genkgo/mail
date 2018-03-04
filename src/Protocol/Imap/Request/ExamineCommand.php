@@ -40,7 +40,7 @@ final class ExamineCommand extends AbstractCommand
     protected function createStream(): StreamInterface
     {
         return new StringStream(
-            sprintf(
+            \sprintf(
                 'EXAMINE %s',
                 (string)$this->mailbox
             )

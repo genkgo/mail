@@ -23,9 +23,9 @@ final class ArrayBackend implements BackendInterface
      */
     public function __construct(array $addresses, \ArrayAccess $backend)
     {
-        $this->addresses = array_combine(
+        $this->addresses = \array_combine(
             $addresses,
-            array_fill(0, count($addresses), true)
+            \array_fill(0, \count($addresses), true)
         );
         $this->backend = $backend;
     }

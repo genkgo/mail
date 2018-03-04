@@ -41,7 +41,7 @@ final class Server
         $this->listener = $connection;
         $this->serverName = $serverName;
 
-        $this->capabilities = array_merge(
+        $this->capabilities = \array_merge(
             $capabilities,
             [
                 new EhloCapability($this->serverName, $capabilities),
@@ -116,7 +116,7 @@ final class Server
 
         foreach ($this->capabilities as $capability) {
             $advertised = $capability->advertise();
-            if (substr($command, 0, strlen($advertised)) === $advertised) {
+            if (\substr($command, 0, \strlen($advertised)) === $advertised) {
                 return $capability->manifest($connection, $session);
             }
         }

@@ -49,7 +49,7 @@ final class PhpMailTransport implements TransportInterface
 
         if ($this->replacedMailMethod === null) {
             // @codeCoverageIgnoreStart
-            mail(
+            \mail(
                 $to,
                 $subject,
                 (string)$message->getBody(),
@@ -91,15 +91,15 @@ final class PhpMailTransport implements TransportInterface
      */
     private function extractHeaders(MessageInterface $message): string
     {
-        return implode(
+        return \implode(
             "\r\n",
-            array_values(
-                array_filter(
-                    array_map(
+            \array_values(
+                \array_filter(
+                    \array_map(
                         function (array $headers) {
-                            return implode(
+                            return \implode(
                                 "\r\n",
-                                array_map(
+                                \array_map(
                                     function (HeaderInterface $header) {
                                         return (string)(new HeaderLine($header));
                                     },
@@ -125,13 +125,13 @@ final class PhpMailTransport implements TransportInterface
     private function constructParameters(MessageInterface $message): string
     {
         $envelop = $this->envelopeFactory->make($message);
-        if (preg_match('/\"/', $envelop->getAddress())) {
+        if (\preg_match('/\"/', $envelop->getAddress())) {
             throw new EnvelopeException(
                 'Unable to guarantee injection-free envelop'
             );
         }
 
-        return implode(' ', array_merge($this->parameters, ['-f' . (string)$envelop]));
+        return \implode(' ', \array_merge($this->parameters, ['-f' . (string)$envelop]));
     }
 
     /**
