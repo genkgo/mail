@@ -59,7 +59,8 @@ $ composer require genkgo/mail
 - Only uses TLS < 1.2 if not otherwise possible 
 - Discourages SSL
 - DKIM signed message
-- Security is high prioritized
+- Security is highly prioritized
+- Use IMAPv4 to read messages from your mailbox (no unmaintained extension required) 
 - SMTP server for testing purposes
 - Great RFC compliance
 - Cast messages to valid string source
@@ -70,7 +71,6 @@ $ composer require genkgo/mail
 ## Upcoming features
 
 - Encrypted and signed messages
-- IMAP support
 
 
 ## Documentation
@@ -91,6 +91,7 @@ This library tends to be as compliant with e-mail RFCs as possible. It should be
 - [RFC 2048, Multipurpose Internet Mail Extensions (MIME) Part Four](https://tools.ietf.org/html/rfc2048)
 - [RFC 2049, Multipurpose Internet Mail Extensions (MIME) Part Five](https://tools.ietf.org/html/rfc2049)
 - [RFC 2821, Simple Mail Transfer Protocol](https://tools.ietf.org/html/rfc2821)
+- [RFC 3501, Internet Message Access Protocol - version 4rev1](https://tools.ietf.org/html/rfc3501)
 - [RCC 4954, SMTP Service Extension for Authentication](https://tools.ietf.org/html/rfc4954)
 - [RFC 5321, Simple Mail Transfer Protocol](https://tools.ietf.org/html/rfc5321)
 
