@@ -19,6 +19,7 @@ script:
     - ./vendor/bin/phpunit -c phpunit.xml
     - ./vendor/bin/phpstan analyse -l max src
     - ./vendor/bin/phpstan analyse -l max -c .phpstan.test.neon test
+    - ./vendor/bin/php-cs-fixer fix --dry-run --config .php_cs.dist ./src/ ./test/
 before_script:
   - composer self-update
   - if [ "$TRAVIS_PHP_VERSION" = "nightly" ]; then composer remove --dev --no-update friendsofphp/php-cs-fixer ; fi

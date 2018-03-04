@@ -44,7 +44,7 @@ final class ContentID implements HeaderInterface
     public static function fromUrlAddress(string $localPart, string $domain): self
     {
         return new self(
-            sprintf(
+            \sprintf(
                 '<%s@%s>',
                 $localPart,
                 \idn_to_ascii($domain, 0, INTL_IDNA_VARIANT_UTS46) ?: $domain
