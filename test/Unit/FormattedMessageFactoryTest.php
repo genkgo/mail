@@ -19,7 +19,7 @@ use Genkgo\Mail\Mime\ResourceAttachment;
 use Genkgo\Mail\Stream\AsciiEncodedStream;
 
 /**
- * Class FormattedMessageFactoryTest
+ *
  * @package Genkgo\Mail\Unit
  */
 final class FormattedMessageFactoryTest extends AbstractTestCase

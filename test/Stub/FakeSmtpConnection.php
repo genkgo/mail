@@ -6,7 +6,7 @@ namespace Genkgo\TestMail\Stub;
 use Genkgo\Mail\Protocol\ConnectionInterface;
 
 /**
- * Class FakeSmtpConnection
+ *
  * @package Genkgo\TestMail\Stub
  */
 final class FakeSmtpConnection implements ConnectionInterface

@@ -18,7 +18,7 @@ use Genkgo\Mail\Mime\ResourceAttachment;
 use Genkgo\Mail\Stream\AsciiEncodedStream;
 
 /**
- * Class ParseFormattedMessageTest
+ *
  * @package Genkgo\Mail\Integration
  */
 final class ParseFormattedMessageTest extends AbstractTestCase
