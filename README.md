@@ -56,11 +56,12 @@ $ composer require genkgo/mail
 - Streams make sure the library has a low memory burden
 - Many objects but still easy API
 - 90%+ test coverage
+- Uses highest PHPStan detection level
 - Only uses TLS < 1.2 if not otherwise possible 
 - Discourages SSL
 - DKIM signed message
 - Security is highly prioritized
-- Use IMAPv4 to read messages from your mailbox (no unmaintained extension required) 
+- Use IMAPv4 to read messages from your mailbox (no extension required) 
 - SMTP server for testing purposes
 - Great RFC compliance
 - Cast messages to valid string source
