@@ -7,7 +7,6 @@ use Genkgo\Mail\HeaderInterface;
 
 final class ContentTransferEncoding implements HeaderInterface
 {
-
     private const VALID_ENCODINGS = [
         '7bit' => true,
         '8bit' => true,
@@ -24,7 +23,6 @@ final class ContentTransferEncoding implements HeaderInterface
     private $encoding;
 
     /**
-     * ContentTypeEncoding constructor.
      * @param string $encoding
      */
     public function __construct($encoding)
@@ -35,7 +33,6 @@ final class ContentTransferEncoding implements HeaderInterface
 
         $this->encoding = $encoding;
     }
-
 
     /**
      * @return HeaderName

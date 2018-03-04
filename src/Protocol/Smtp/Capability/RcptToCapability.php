@@ -11,14 +11,12 @@ use Genkgo\Mail\Protocol\Smtp\Session;
 
 final class RcptToCapability implements CapabilityInterface
 {
-
     /**
      * @var BackendInterface
      */
     private $backend;
 
     /**
-     * RcptToCapability constructor.
      * @param BackendInterface $backend
      */
     public function __construct(BackendInterface $backend)
@@ -34,7 +32,7 @@ final class RcptToCapability implements CapabilityInterface
     public function manifest(ConnectionInterface $connection, Session $session): Session
     {
         try {
-            $address = new EmailAddress(substr($session->getCommand(), 9, -1));
+            $address = new EmailAddress(\substr($session->getCommand(), 9, -1));
 
             if ($this->backend->contains($address) === false) {
                 $connection->send('550 Unknown mailbox');

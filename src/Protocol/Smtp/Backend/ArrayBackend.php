@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Genkgo\Mail\Protocol\Smtp\Backend;
 
@@ -12,21 +13,21 @@ final class ArrayBackend implements BackendInterface
      * @var array
      */
     private $addresses;
+
     /**
      * @var \ArrayAccess
      */
     private $backend;
 
     /**
-     * ArrayBackend constructor.
      * @param array $addresses
      * @param \ArrayAccess $backend
      */
     public function __construct(array $addresses, \ArrayAccess $backend)
     {
-        $this->addresses = array_combine(
+        $this->addresses = \array_combine(
             $addresses,
-            array_fill(0, count($addresses), true)
+            \array_fill(0, \count($addresses), true)
         );
         $this->backend = $backend;
     }

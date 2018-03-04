@@ -3,15 +3,10 @@ declare(strict_types=1);
 
 namespace Genkgo\Mail\Protocol;
 
-/**
- * Class CryptoConstant
- * @package Genkgo\Mail\Protocol
- */
 final class CryptoConstant
 {
     /**
      * This might be changed after https://github.com/php/php-src/pull/2518
-     *
      * @param string $phpVersion
      * @return int
      */

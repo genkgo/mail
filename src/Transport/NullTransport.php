@@ -8,8 +8,6 @@ use Genkgo\Mail\TransportInterface;
 
 final class NullTransport implements TransportInterface
 {
-
-
     /**
      * @param MessageInterface $message
      * @return void

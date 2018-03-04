@@ -11,13 +11,13 @@ final class GenericHeader implements HeaderInterface
      * @var HeaderName
      */
     private $name;
+
     /**
      * @var HeaderValue
      */
     private $value;
 
     /**
-     * CustomHeader constructor.
      * @param string $name
      * @param string $value
      */

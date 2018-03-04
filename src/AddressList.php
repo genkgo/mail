@@ -3,20 +3,11 @@ declare(strict_types=1);
 
 namespace Genkgo\Mail;
 
-/**
- * Class AddressList
- * @package Genkgo\Mail
- */
 final class AddressList implements \Countable, \IteratorAggregate
 {
-    /**
-     *
-     */
-    private CONST PARSE_START = 1;
-    /**
-     *
-     */
-    private CONST PARSE_QUOTE = 2;
+    private const PARSE_START = 1;
+    
+    private const PARSE_QUOTE = 2;
 
     /**
      * @var array|Address[]
@@ -24,7 +15,6 @@ final class AddressList implements \Countable, \IteratorAggregate
     private $addresses = [];
 
     /**
-     * To constructor.
      * @param array|Address[] $recipients
      */
     public function __construct(array $recipients = [])
@@ -73,7 +63,7 @@ final class AddressList implements \Countable, \IteratorAggregate
     public function withList(AddressList $addressList): AddressList
     {
         $clone = clone $this;
-        $clone->addresses = array_merge($this->addresses, $addressList->addresses);
+        $clone->addresses = \array_merge($this->addresses, $addressList->addresses);
         return $clone;
     }
 
@@ -86,7 +76,7 @@ final class AddressList implements \Countable, \IteratorAggregate
             throw new \OutOfRangeException();
         }
 
-        return reset($this->addresses);
+        return \reset($this->addresses);
     }
 
     /**
@@ -94,7 +84,7 @@ final class AddressList implements \Countable, \IteratorAggregate
      */
     public function count(): int
     {
-        return count($this->addresses);
+        return \count($this->addresses);
     }
 
     /**
@@ -110,9 +100,9 @@ final class AddressList implements \Countable, \IteratorAggregate
      */
     public function __toString(): string
     {
-        return implode(
+        return \implode(
             ",\r\n ",
-            array_map(
+            \array_map(
                 function (Address $addressAndName) {
                     return (string) $addressAndName;
                 },
@@ -127,13 +117,13 @@ final class AddressList implements \Countable, \IteratorAggregate
      */
     public static function fromString(string $addressListAsString)
     {
-        $addressListAsString = trim($addressListAsString);
+        $addressListAsString = \trim($addressListAsString);
         if ($addressListAsString === '') {
             return new self([]);
         }
 
         $addresses = [];
-        $length = strlen($addressListAsString) - 1;
+        $length = \strlen($addressListAsString) - 1;
         $n = -1;
         $state = self::PARSE_START;
         $escapeNext = false;
@@ -169,7 +159,7 @@ final class AddressList implements \Countable, \IteratorAggregate
                     }
 
                     if ($char === ',') {
-                        $addresses[] = Address::fromString(substr($sequence, 0, -1));
+                        $addresses[] = Address::fromString(\substr($sequence, 0, -1));
                         $sequence = '';
                         $state = self::PARSE_START;
                     }

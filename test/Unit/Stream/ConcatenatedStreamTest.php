@@ -1,14 +1,12 @@
-<?php
-
+<?php declare(strict_types=1);
 namespace Genkgo\TestMail\Unit\Stream;
 
-use Genkgo\TestMail\AbstractTestCase;;
+use Genkgo\TestMail\AbstractTestCase;
 use Genkgo\Mail\Stream\ConcatenatedStream;
 use Genkgo\Mail\Stream\AsciiEncodedStream;
 
 final class ConcatenatedStreamTest extends AbstractTestCase
 {
-
     /**
      * @test
      */
@@ -114,5 +112,4 @@ final class ConcatenatedStreamTest extends AbstractTestCase
         $this->assertFalse($stream->isWritable());
         $stream->write('x');
     }
-
 }

@@ -9,9 +9,6 @@ use Genkgo\Mail\StreamInterface;
 
 final class GenericPart implements PartInterface
 {
-    /**
-     *
-     */
     private const ALLOWED_HEADERS = [
         'content-type' => true,
         'content-transfer-encoding' => true,
@@ -21,18 +18,17 @@ final class GenericPart implements PartInterface
         'content-location' => true,
         'content-language' => true,
     ];
+
     /**
      * @var array|HeaderInterface[]
      */
     private $headers = [];
+
     /**
      * @var StreamInterface
      */
     private $body;
-
-    /**
-     * Part constructor.
-     */
+    
     public function __construct()
     {
         $this->body = new EmptyStream();
@@ -52,7 +48,7 @@ final class GenericPart implements PartInterface
      */
     public function hasHeader(string $name): bool
     {
-        $name = strtolower($name);
+        $name = \strtolower($name);
 
         return isset($this->headers[$name]);
     }
@@ -63,7 +59,7 @@ final class GenericPart implements PartInterface
      */
     public function getHeader(string $name): HeaderInterface
     {
-        $name = strtolower($name);
+        $name = \strtolower($name);
 
         if (!isset($this->headers[$name])) {
             throw new \UnexpectedValueException('No header with name ' . $name);
@@ -78,7 +74,7 @@ final class GenericPart implements PartInterface
      */
     public function withHeader(HeaderInterface $header): PartInterface
     {
-        $name = strtolower((string)$header->getName());
+        $name = \strtolower((string)$header->getName());
         $this->assertValidHeader($name);
 
         $clone = clone $this;
@@ -92,7 +88,7 @@ final class GenericPart implements PartInterface
      */
     public function withoutHeader(string $name): PartInterface
     {
-        $name = strtolower($name);
+        $name = \strtolower($name);
 
         $clone = clone $this;
         unset($clone->headers[$name]);

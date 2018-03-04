@@ -23,5 +23,4 @@ final class AuthPlainCredentialsRequestTest extends AbstractTestCase
         $command = new AuthPlainCredentialsRequest('test', 'test');
         $command->execute($connection);
     }
-
 }

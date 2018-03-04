@@ -8,27 +8,24 @@ use Genkgo\Mail\Protocol\Imap\Tag;
 use Genkgo\Mail\Stream\StringStream;
 use Genkgo\Mail\StreamInterface;
 
-/**
- * Class CopyCommand
- * @package Genkgo\Mail\Protocol\Imap\Request
- */
 final class CopyCommand extends AbstractCommand
 {
     /**
      * @var SequenceSet
      */
     private $set;
+
     /**
      * @var Tag
      */
     private $tag;
+
     /**
      * @var MailboxName
      */
     private $mailbox;
 
     /**
-     * CopyCommand constructor.
      * @param Tag $tag
      * @param SequenceSet $set
      * @param MailboxName $mailbox
@@ -46,7 +43,7 @@ final class CopyCommand extends AbstractCommand
     protected function createStream(): StreamInterface
     {
         return new StringStream(
-            sprintf(
+            \sprintf(
                 'COPY %s %s',
                 (string)$this->set,
                 (string)$this->mailbox

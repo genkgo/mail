@@ -15,7 +15,6 @@ final class ReceiveWelcomeNegotiation implements NegotiationInterface
     private $connection;
 
     /**
-     * ReceiveWelcomeNegotiation constructor.
      * @param ConnectionInterface $connection
      */
     public function __construct(ConnectionInterface $connection)

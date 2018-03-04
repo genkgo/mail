@@ -6,16 +6,13 @@ namespace Genkgo\Mail\Protocol\Imap\MessageData\Item;
 use Genkgo\Mail\Protocol\Imap\MessageData\ItemInterface;
 use Genkgo\Mail\Protocol\Imap\MessageData\Partial;
 
-/**
- * Class PartialItem
- * @package Genkgo\Mail\Protocol\Imap\MessageData\GenericItem
- */
 final class PartialItem implements ItemInterface
 {
     /**
      * @var ItemInterface
      */
     private $decoratedItem;
+
     /**
      * @var Partial
      */

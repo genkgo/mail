@@ -5,11 +5,11 @@ namespace Genkgo\Mail\Protocol\Imap\Request\SearchCriteria;
 
 final class MatchContentCriterion implements CriterionInterface
 {
-
     /**
      * @var string
      */
     private $query;
+
     /**
      * @var string
      */
@@ -22,7 +22,7 @@ final class MatchContentCriterion implements CriterionInterface
      */
     private function __construct(string $name, string $query)
     {
-        if ($query === '' || strlen($query) !== strcspn($query, "\r\n")) {
+        if ($query === '' || \strlen($query) !== \strcspn($query, "\r\n")) {
             throw new \InvalidArgumentException('CR and LF are not allowed in quoted strings');
         }
 
@@ -35,10 +35,10 @@ final class MatchContentCriterion implements CriterionInterface
      */
     public function __toString(): string
     {
-        return sprintf(
+        return \sprintf(
             '%s "%s"',
             $this->name,
-            addslashes($this->query)
+            \addslashes($this->query)
         );
     }
 

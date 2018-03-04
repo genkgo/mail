@@ -13,13 +13,13 @@ final class InjectMessageIdHeaderTransport implements TransportInterface
      * @var TransportInterface
      */
     private $decoratedTransport;
+
     /**
      * @var string
      */
     private $domainName;
 
     /**
-     * InjectDateHeaderTransport constructor.
      * @param TransportInterface $transport
      * @param string $domainName
      */

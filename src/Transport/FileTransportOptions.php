@@ -9,13 +9,13 @@ final class FileTransportOptions
      * @var string
      */
     private $directory;
+
     /**
      * @var \Closure
      */
     private $fileNameGenerator;
 
     /**
-     * FileTransportOptions constructor.
      * @param string $directory
      * @param \Closure $fileNameGenerator
      */

@@ -1,11 +1,10 @@
-<?php
-
+<?php declare(strict_types=1);
 namespace Genkgo\TestMail\Unit\Transport;
 
 use Genkgo\Mail\Header\MessageId;
 use Genkgo\Mail\HeaderInterface;
 use Genkgo\Mail\Transport\InjectMessageIdHeaderTransport;
-use Genkgo\TestMail\AbstractTestCase;;
+use Genkgo\TestMail\AbstractTestCase;
 use Genkgo\Mail\GenericMessage;
 use Genkgo\Mail\Transport\ArrayObjectTransport;
 
@@ -54,5 +53,4 @@ final class InjectMessageIdHeaderTransportTest extends AbstractTestCase
         $header = $storage[0]->getHeader('message-id')[0];
         $this->assertEquals('<left@right>', (string)$header->getValue());
     }
-
 }

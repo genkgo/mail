@@ -3,10 +3,6 @@ declare(strict_types=1);
 
 namespace Genkgo\Mail;
 
-/**
- * Interface TransportInterface
- * @package Genkgo\Mail
- */
 interface TransportInterface
 {
     /**

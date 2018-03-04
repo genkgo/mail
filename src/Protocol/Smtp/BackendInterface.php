@@ -8,7 +8,6 @@ use Genkgo\Mail\MessageInterface;
 
 interface BackendInterface
 {
-
     /**
      * @param EmailAddress $mailbox
      * @return bool
@@ -21,5 +20,4 @@ interface BackendInterface
      * @param string $folder
      */
     public function store(EmailAddress $mailbox, MessageInterface $message, string $folder): void;
-
 }

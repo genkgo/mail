@@ -11,7 +11,6 @@ use Genkgo\TestMail\Stub\FakeSmtpConnection;
 
 final class ClientTest extends AbstractTestCase
 {
-
     /**
      * @test
      */
@@ -46,5 +45,4 @@ final class ClientTest extends AbstractTestCase
             $reply->getMessages()
         );
     }
-
 }

@@ -11,25 +11,20 @@ use Genkgo\Mail\MessageInterface;
 use Genkgo\Mail\Queue\QueueInterface;
 use Genkgo\Mail\TransportInterface;
 
-/**
- * Class QueueIfFailedTransport
- * @package Genkgo\Mail\Transport
- */
 final class QueueIfFailedTransport implements TransportInterface
 {
-    /**
-     *
-     */
     public const QUEUED_HEADER = 'X-Queued-At';
 
     /**
      * @var array|TransportInterface[]
      */
     private $transports;
+
     /**
      * @var array|QueueInterface[]
      */
     private $queueStorage;
+
     /**
      * @var bool
      */

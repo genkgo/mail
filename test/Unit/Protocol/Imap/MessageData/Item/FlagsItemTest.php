@@ -43,5 +43,4 @@ final class FlagsItemTest extends AbstractTestCase
     {
         $this->assertSame('FLAGS.SILENT (\Seen)', (string)FlagsItem::silent(new FlagParenthesizedList(['\\Seen'])));
     }
-
 }

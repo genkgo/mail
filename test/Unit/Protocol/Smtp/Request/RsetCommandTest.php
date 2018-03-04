@@ -24,5 +24,4 @@ final class RsetCommandTest extends AbstractTestCase
         $command = new RsetCommand();
         $command->execute($connection);
     }
-
 }

@@ -23,5 +23,4 @@ final class AuthLoginPasswordRequestTest extends AbstractTestCase
         $command = new AuthLoginPasswordRequest('test');
         $command->execute($connection);
     }
-
 }

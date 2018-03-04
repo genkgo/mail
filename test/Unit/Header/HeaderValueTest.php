@@ -1,8 +1,7 @@
-<?php
-
+<?php declare(strict_types=1);
 namespace Genkgo\TestMail\Unit\Header;
 
-use Genkgo\TestMail\AbstractTestCase;;
+use Genkgo\TestMail\AbstractTestCase;
 use Genkgo\Mail\Header\HeaderValue;
 use Genkgo\Mail\Header\HeaderValueParameter;
 

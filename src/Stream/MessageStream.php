@@ -16,21 +16,20 @@ final class MessageStream implements StreamInterface
     private $decoratedStream;
 
     /**
-     * MessageStream constructor.
      * @param MessageInterface $message
      */
     public function __construct(MessageInterface $message)
     {
         $this->decoratedStream = new LazyStream(function () use ($message) {
-            $headerString = implode(
+            $headerString = \implode(
                 "\r\n",
-                array_values(
-                    array_filter(
-                        array_map(
+                \array_values(
+                    \array_filter(
+                        \array_map(
                             function (array $headers) {
-                                return implode(
+                                return \implode(
                                     "\r\n",
-                                    array_map(
+                                    \array_map(
                                         function (HeaderInterface $header) {
                                             return (string) (new HeaderLine($header));
                                         },
@@ -61,10 +60,7 @@ final class MessageStream implements StreamInterface
     {
         return $this->decoratedStream->__toString();
     }
-
-    /**
-     *
-     */
+    
     public function close(): void
     {
         $this->decoratedStream->close();

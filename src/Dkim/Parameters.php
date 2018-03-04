@@ -1,17 +1,13 @@
 <?php
+declare(strict_types=1);
 
 namespace Genkgo\Mail\Dkim;
 
 use Genkgo\Mail\Header\HeaderValue;
 use Genkgo\Mail\Header\HeaderValueParameter;
 
-/**
- * Class Parameters
- * @package Genkgo\Mail\Dkim
- */
 final class Parameters
 {
-
     /**
      * @var string
      */
@@ -32,9 +28,7 @@ final class Parameters
      */
     private $signatureExpiration;
 
-
     /**
-     * Parameters constructor.
      * @param string $selector
      * @param string $domain
      */

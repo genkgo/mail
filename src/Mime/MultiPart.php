@@ -16,17 +16,18 @@ final class MultiPart implements MultiPartInterface
      * @var PartInterface
      */
     private $decoratedPart;
+
     /**
      * @var Boundary
      */
     private $boundary;
+
     /**
      * @var iterable|PartInterface[]
      */
     private $parts = [];
 
     /**
-     * MultiPart constructor.
      * @param Boundary $boundary
      * @param ContentType $contentType
      */
@@ -34,7 +35,7 @@ final class MultiPart implements MultiPartInterface
     {
         $this->boundary = $boundary;
 
-        if (substr((string)$contentType->getValue(), 0, 10) !== 'multipart/') {
+        if (\substr((string)$contentType->getValue(), 0, 10) !== 'multipart/') {
             throw new \InvalidArgumentException('Content type must be of type multipart/type');
         }
 

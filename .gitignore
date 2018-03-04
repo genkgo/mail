@@ -2,3 +2,4 @@
 /vendor/
 /composer.lock
 /example/config.php
+/.php_cs.cache

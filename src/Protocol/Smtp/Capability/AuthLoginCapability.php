@@ -16,7 +16,6 @@ final class AuthLoginCapability implements CapabilityInterface
     private $authentication;
 
     /**
-     * AuthLoginCapability constructor.
      * @param AuthenticationInterface $authentication
      */
     public function __construct(AuthenticationInterface $authentication)
@@ -32,9 +31,9 @@ final class AuthLoginCapability implements CapabilityInterface
     public function manifest(ConnectionInterface $connection, Session $session): Session
     {
         $connection->send('330 Please send me your username');
-        $username = base64_decode($connection->receive());
+        $username = \base64_decode($connection->receive());
         $connection->send('330 Please send me your password');
-        $password = base64_decode($connection->receive());
+        $password = \base64_decode($connection->receive());
 
         if ($this->authentication->authenticate($username, $password) === false) {
             $connection->send('535 Authentication failed');

@@ -1,9 +1,8 @@
-<?php
-
+<?php declare(strict_types=1);
 namespace Genkgo\TestMail\Unit;
 
 use Genkgo\Mail\AlternativeText;
-use Genkgo\TestMail\AbstractTestCase;;
+use Genkgo\TestMail\AbstractTestCase;
 use Genkgo\Mail\Address;
 use Genkgo\Mail\AddressList;
 use Genkgo\Mail\EmailAddress;
@@ -18,10 +17,6 @@ use Genkgo\Mail\Mime\HtmlPart;
 use Genkgo\Mail\Mime\ResourceAttachment;
 use Genkgo\Mail\Stream\AsciiEncodedStream;
 
-/**
- * Class FormattedMessageFactoryTest
- * @package Genkgo\Mail\Unit
- */
 final class FormattedMessageFactoryTest extends AbstractTestCase
 {
     /**
@@ -36,7 +31,7 @@ final class FormattedMessageFactoryTest extends AbstractTestCase
             $message->withEmbeddedImage(
                 new EmbeddedImage(
                     new AsciiEncodedStream(
-                        base64_decode('R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==')
+                        \base64_decode('R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==')
                     ),
                     'pixel.gif',
                     new ContentType('image/gif'),
@@ -98,7 +93,7 @@ final class FormattedMessageFactoryTest extends AbstractTestCase
         $message->withAttachment(
             new EmbeddedImage(
                 new AsciiEncodedStream(
-                    base64_decode('R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==')
+                    \base64_decode('R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==')
                 ),
                 'pixel.gif',
                 new ContentType('image/gif'),
@@ -110,7 +105,7 @@ final class FormattedMessageFactoryTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_should_equal_file_when_html_only ()
+    public function it_should_equal_file_when_html_only()
     {
         $factory = (new FormattedMessageFactory())
             ->withHtmlAndNoGeneratedAlternativeText('<html><body><p>Hello World</p></body></html>');
@@ -121,7 +116,7 @@ final class FormattedMessageFactoryTest extends AbstractTestCase
             ->withHeader((new Cc(new AddressList([new Address(new EmailAddress('other@example.com'), 'other')]))));
 
         $this->assertEquals(
-            file_get_contents(__DIR__ . '/../Stub/FormattedMessageFactoryTest/html-only.eml'),
+            \file_get_contents(__DIR__ . '/../Stub/FormattedMessageFactoryTest/html-only.eml'),
             (string) $message
         );
     }
@@ -129,7 +124,7 @@ final class FormattedMessageFactoryTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_should_equal_file_when_text_only ()
+    public function it_should_equal_file_when_text_only()
     {
         $factory = (new FormattedMessageFactory())
             ->withAlternativeText(new AlternativeText('Hello World'));
@@ -140,7 +135,7 @@ final class FormattedMessageFactoryTest extends AbstractTestCase
             ->withHeader((new Cc(new AddressList([new Address(new EmailAddress('other@example.com'), 'other')]))));
 
         $this->assertEquals(
-            file_get_contents(__DIR__ . '/../Stub/FormattedMessageFactoryTest/text-only.eml'),
+            \file_get_contents(__DIR__ . '/../Stub/FormattedMessageFactoryTest/text-only.eml'),
             (string) $message
         );
     }
@@ -148,7 +143,7 @@ final class FormattedMessageFactoryTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_should_equal_empty_text_plain_message_when_no_and_no_text ()
+    public function it_should_equal_empty_text_plain_message_when_no_and_no_text()
     {
         $factory = (new FormattedMessageFactory());
 
@@ -158,7 +153,7 @@ final class FormattedMessageFactoryTest extends AbstractTestCase
             ->withHeader((new Cc(new AddressList([new Address(new EmailAddress('other@example.com'), 'other')]))));
 
         $this->assertEquals(
-            file_get_contents(__DIR__ . '/../Stub/FormattedMessageFactoryTest/empty-email.eml'),
+            \file_get_contents(__DIR__ . '/../Stub/FormattedMessageFactoryTest/empty-email.eml'),
             (string) $message
         );
     }
@@ -166,7 +161,7 @@ final class FormattedMessageFactoryTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_should_equal_file_expect_boundaries_when_full_formatted_message ()
+    public function it_should_equal_file_expect_boundaries_when_full_formatted_message()
     {
         $message = (new FormattedMessageFactory())
             ->withHtml('<html><body><p>Hello World</p></body></html>')
@@ -180,7 +175,7 @@ final class FormattedMessageFactoryTest extends AbstractTestCase
             ->withEmbeddedImage(
                 new EmbeddedImage(
                     new AsciiEncodedStream(
-                        base64_decode('R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==')
+                        \base64_decode('R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==')
                     ),
                     'pixel.gif',
                     new ContentType('image/gif'),
@@ -194,7 +189,7 @@ final class FormattedMessageFactoryTest extends AbstractTestCase
 
         $this->assertEquals(
             $this->replaceBoundaries(
-                file_get_contents(__DIR__ . '/../Stub/FormattedMessageFactoryTest/full-formatted-message.eml'),
+                \file_get_contents(__DIR__ . '/../Stub/FormattedMessageFactoryTest/full-formatted-message.eml'),
                 'boundary'
             ),
             $this->replaceBoundaries(
@@ -211,6 +206,6 @@ final class FormattedMessageFactoryTest extends AbstractTestCase
      */
     private function replaceBoundaries(string $messageString, string $boundary): string
     {
-        return preg_replace(['/(GenkgoMailV2Part[A-Za-z0-9\-]*)/'], $boundary, $messageString);
+        return \preg_replace(['/(GenkgoMailV2Part[A-Za-z0-9\-]*)/'], $boundary, $messageString);
     }
 }

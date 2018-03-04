@@ -28,5 +28,4 @@ final class QuitCommandTest extends AbstractTestCase
         $command = new QuitCommand();
         $command->execute($connection);
     }
-
 }

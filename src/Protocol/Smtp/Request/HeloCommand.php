@@ -14,7 +14,6 @@ final class HeloCommand implements RequestInterface
     private $hostName;
 
     /**
-     * HeloCommand constructor.
      * @param string $hostName
      */
     public function __construct($hostName)
@@ -28,6 +27,6 @@ final class HeloCommand implements RequestInterface
      */
     public function execute(ConnectionInterface $connection): void
     {
-        $connection->send(sprintf('HELO %s', $this->hostName));
+        $connection->send(\sprintf('HELO %s', $this->hostName));
     }
 }

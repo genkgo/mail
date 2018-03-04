@@ -3,12 +3,11 @@ declare(strict_types=1);
 
 namespace Genkgo\TestMail\Unit\Mime;
 
-use Genkgo\TestMail\AbstractTestCase;;
+use Genkgo\TestMail\AbstractTestCase;
 use Genkgo\Mail\Mime\Boundary;
 
 final class BoundaryTest extends AbstractTestCase
 {
-
     /**
      * @test
      * @dataProvider provideValues
@@ -16,8 +15,8 @@ final class BoundaryTest extends AbstractTestCase
     public function it_validates_correct_boundary_values($boundaryString, $constructed)
     {
         if ($constructed) {
-             $boundary = new Boundary($boundaryString);
-             $this->assertEquals($boundaryString, (string) $boundary);
+            $boundary = new Boundary($boundaryString);
+            $this->assertEquals($boundaryString, (string) $boundary);
         } else {
             $this->expectException(\InvalidArgumentException::class);
 
@@ -39,9 +38,8 @@ final class BoundaryTest extends AbstractTestCase
             ["{}", false],
             ["test test", true],
             ["test ", false],
-            [str_repeat("a", 70), true],
-            [str_repeat("a", 71), false],
+            [\str_repeat("a", 70), true],
+            [\str_repeat("a", 71), false],
         ];
     }
-
 }

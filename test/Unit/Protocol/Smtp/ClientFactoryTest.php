@@ -13,7 +13,6 @@ use Genkgo\TestMail\Stub\FakeSmtpConnection;
 
 final class ClientFactoryTest extends AbstractTestCase
 {
-
     /**
      * @test
      */
@@ -170,5 +169,4 @@ final class ClientFactoryTest extends AbstractTestCase
 
         ClientFactory::fromString('xyz://host');
     }
-
 }

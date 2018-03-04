@@ -24,5 +24,4 @@ final class EhloCommandTest extends AbstractTestCase
         $command = new EhloCommand('host.example.com');
         $command->execute($connection);
     }
-
 }

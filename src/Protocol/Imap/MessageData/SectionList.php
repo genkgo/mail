@@ -3,16 +3,9 @@ declare(strict_types=1);
 
 namespace Genkgo\Mail\Protocol\Imap\MessageData;
 
-/**
- * Class SectionList
- * @package Genkgo\Mail\Protocol\Imap\MessageData
- */
 final class SectionList
 {
-    /**
-     *
-     */
-    private CONST RFC_3501_SECTION_FIXED = [
+    private const RFC_3501_SECTION_FIXED = [
         'HEADER' => true,
         'TEXT' => true,
     ];
@@ -23,7 +16,6 @@ final class SectionList
     private $sections = [];
 
     /**
-     * SectionList constructor.
      * @param array $sections
      */
     public function __construct(array $sections = [])
@@ -40,9 +32,9 @@ final class SectionList
      */
     public function __toString(): string
     {
-        return sprintf(
+        return \sprintf(
             '[%s]',
-            implode(' ', $this->sections)
+            \implode(' ', $this->sections)
         );
     }
 
@@ -52,13 +44,13 @@ final class SectionList
      */
     public static function fromString(string $sections): self
     {
-        $result = preg_match('/^\[(.*?)\]$/', $sections, $matches);
+        $result = \preg_match('/^\[(.*?)\]$/', $sections, $matches);
         if ($result !== 1) {
             throw new \InvalidArgumentException('No section list');
         }
 
-        $sections = array_filter(explode(' ', $matches[1]));
-        for ($i = 0; $i < count($sections); $i++) {
+        $sections = \array_filter(\explode(' ', $matches[1]));
+        for ($i = 0; $i < \count($sections); $i++) {
             if ($sections[$i] === 'HEADER.FIELDS' || $sections[$i] === 'HEADER.FIELDS.NOT') {
                 if (!isset($sections[$i + 1][0]) || $sections[$i + 1][0] !== '(') {
                     throw new \InvalidArgumentException(
@@ -73,7 +65,7 @@ final class SectionList
                     unset($sections[$i]);
                     $i++;
 
-                    if (substr($sections[$appendIndex], -1) === ')') {
+                    if (\substr($sections[$appendIndex], -1) === ')') {
                         break;
                     }
                 } while (isset($sections[$i]));
@@ -96,7 +88,7 @@ final class SectionList
             return;
         }
 
-        if (preg_match('/^HEADER.FIELDS(\.NOT)? \((.*?)\)$/', $section) === 1) {
+        if (\preg_match('/^HEADER.FIELDS(\.NOT)? \((.*?)\)$/', $section) === 1) {
             return;
         }
 

@@ -18,13 +18,13 @@ final class ForceTlsUpgradeNegotiation implements NegotiationInterface
      * @var ConnectionInterface
      */
     private $connection;
+
     /**
      * @var int
      */
     private $crypto;
 
     /**
-     * ConnectionNegotiation constructor.
      * @param ConnectionInterface $connection
      * @param int $crypto
      */
@@ -35,7 +35,6 @@ final class ForceTlsUpgradeNegotiation implements NegotiationInterface
         $this->connection = $connection;
         $this->crypto = $crypto;
     }
-
 
     /**
      * @param Client $client

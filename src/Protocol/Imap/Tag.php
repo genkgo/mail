@@ -5,24 +5,23 @@ namespace Genkgo\Mail\Protocol\Imap;
 
 final class Tag
 {
-
     /**
      * @var string
      */
     private $tag;
+
     /**
      * @var int
      */
     private $tagLength;
 
     /**
-     * Tag constructor.
      * @param string $tag
      */
     public function __construct(string $tag)
     {
         $this->tag = $tag;
-        $this->tagLength = strlen($tag);
+        $this->tagLength = \strlen($tag);
     }
 
     /**
@@ -39,12 +38,12 @@ final class Tag
      */
     public function extractBodyFromLine(string $line): string
     {
-        if (substr($line, 0, $this->tagLength + 1) === $this->tag . ' ') {
-            return substr($line, $this->tagLength + 1);
+        if (\substr($line, 0, $this->tagLength + 1) === $this->tag . ' ') {
+            return \substr($line, $this->tagLength + 1);
         }
 
         throw new \InvalidArgumentException(
-            sprintf(
+            \sprintf(
                 'Line `%s` does not contain the tag %s',
                 $line,
                 $this->tag

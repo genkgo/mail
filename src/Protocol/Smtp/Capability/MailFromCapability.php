@@ -10,7 +10,6 @@ use Genkgo\Mail\Protocol\Smtp\Session;
 
 final class MailFromCapability implements CapabilityInterface
 {
-
     /**
      * @param ConnectionInterface $connection
      * @param Session $session
@@ -19,7 +18,7 @@ final class MailFromCapability implements CapabilityInterface
     public function manifest(ConnectionInterface $connection, Session $session): Session
     {
         try {
-            $address = new EmailAddress(substr($session->getCommand(), 11, -1));
+            $address = new EmailAddress(\substr($session->getCommand(), 11, -1));
             $connection->send('250 OK');
             return $session->withEnvelope($address);
         } catch (\InvalidArgumentException $e) {

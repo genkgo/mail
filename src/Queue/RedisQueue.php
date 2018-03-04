@@ -12,18 +12,17 @@ use Predis\Connection\ConnectionException;
 
 final class RedisQueue implements QueueInterface, \Countable
 {
-
     /**
      * @var ClientInterface
      */
     private $client;
+
     /**
      * @var string
      */
     private $key;
 
     /**
-     * RedisQueue constructor.
      * @param ClientInterface $client
      * @param string $key
      */
@@ -64,7 +63,6 @@ final class RedisQueue implements QueueInterface, \Countable
             throw new QueueStoreException('Cannot add message to redis queue ' . $e->getMessage());
         }
     }
-
 
     /**
      * @return int

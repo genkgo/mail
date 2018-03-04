@@ -16,7 +16,6 @@ final class InjectSenderHeaderTransport implements TransportInterface
     private $decoratedTransport;
 
     /**
-     * InjectDateHeaderTransport constructor.
      * @param TransportInterface $transport
      */
     public function __construct(TransportInterface $transport)

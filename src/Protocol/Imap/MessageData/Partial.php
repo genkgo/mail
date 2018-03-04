@@ -9,6 +9,7 @@ final class Partial
      * @var int
      */
     private $firstByte;
+
     /**
      * @var int
      */
@@ -35,7 +36,7 @@ final class Partial
      */
     public function __toString(): string
     {
-        return sprintf(
+        return \sprintf(
             '<%s>',
             $this->firstByte === $this->lastByte ? $this->firstByte : $this->firstByte . '.' . $this->lastByte
         );
@@ -47,7 +48,7 @@ final class Partial
      */
     public static function fromString(string $partial): self
     {
-        $result = preg_match('/^<([0-9]+)(\.([0-9]+))?>$/', $partial, $matches);
+        $result = \preg_match('/^<([0-9]+)(\.([0-9]+))?>$/', $partial, $matches);
 
         if ($result !== 1) {
             throw new \InvalidArgumentException('String is not a partial');

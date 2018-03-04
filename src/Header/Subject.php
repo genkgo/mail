@@ -13,12 +13,11 @@ final class Subject implements HeaderInterface
     private $subject;
 
     /**
-     * From constructor.
      * @param string $subject
      */
     public function __construct(string $subject)
     {
-        if (preg_match('/\v/', $subject) !== 0) {
+        if (\preg_match('/\v/', $subject) !== 0) {
             throw new \InvalidArgumentException('Cannot use vertical white space within subject');
         }
 

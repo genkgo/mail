@@ -8,23 +8,19 @@ use Genkgo\Mail\Protocol\Imap\Tag;
 use Genkgo\Mail\Stream\StringStream;
 use Genkgo\Mail\StreamInterface;
 
-/**
- * Class SubscribeCommand
- * @package Genkgo\Mail\Protocol\Imap\Request
- */
 final class SubscribeCommand extends AbstractCommand
 {
     /**
      * @var Tag
      */
     private $tag;
+
     /**
      * @var MailboxName
      */
     private $mailbox;
 
     /**
-     * SubscribeCommand constructor.
      * @param Tag $tag
      * @param MailboxName $mailbox
      */
@@ -40,7 +36,7 @@ final class SubscribeCommand extends AbstractCommand
     protected function createStream(): StreamInterface
     {
         return new StringStream(
-            sprintf(
+            \sprintf(
                 'SUBSCRIBE %s',
                 (string)$this->mailbox
             )

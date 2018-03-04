@@ -1,5 +1,4 @@
-<?php
-
+<?php declare(strict_types=1);
 namespace Genkgo\TestMail\Unit\Queue;
 
 use Genkgo\Mail\Exception\EmptyQueueException;

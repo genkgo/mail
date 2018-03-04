@@ -1,5 +1,4 @@
-<?php
-
+<?php declare(strict_types=1);
 namespace Genkgo\Mail\Protocol\Smtp\SpamScore;
 
 use Genkgo\Mail\MessageInterface;
@@ -7,14 +6,12 @@ use Genkgo\Mail\Protocol\Smtp\SpamScoreInterface;
 
 final class AggregateSpamScore implements SpamScoreInterface
 {
-
     /**
      * @var SpamScoreInterface[]
      */
     private $checkers;
 
     /**
-     * AggregateSpamCheck constructor.
      * @param array $checkers
      */
     public function __construct(array $checkers)

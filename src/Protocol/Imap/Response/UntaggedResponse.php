@@ -6,23 +6,19 @@ namespace Genkgo\Mail\Protocol\Imap\Response;
 use Genkgo\Mail\Exception\AssertionFailedException;
 use Genkgo\Mail\Protocol\Imap\ResponseInterface;
 
-/**
- * Class UntaggedStatusResponse
- * @package Genkgo\Mail\Protocol\Imap\Response
- */
 final class UntaggedResponse implements ResponseInterface
 {
     /**
      * @var string
      */
     private $line;
+
     /**
      * @var string
      */
     private $command;
 
     /**
-     * UntaggedResponse constructor.
      * @param string $line
      */
     public function __construct(string $line)
@@ -35,7 +31,7 @@ final class UntaggedResponse implements ResponseInterface
      */
     public function __toString(): string
     {
-        return '* ' . trim(implode(' ', [$this->command, $this->line]));
+        return '* ' . \trim(\implode(' ', [$this->command, $this->line]));
     }
 
     /**
@@ -60,7 +56,7 @@ final class UntaggedResponse implements ResponseInterface
             $completionResult = CompletionResult::fromLine($this->line);
             if (!$completionResult->equals($expectedResult)) {
                 throw new AssertionFailedException(
-                    sprintf(
+                    \sprintf(
                         'Returned completion, but %s is not equals to expected %s',
                         (string)$completionResult,
                         (string)$expectedResult

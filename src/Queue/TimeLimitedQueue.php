@@ -1,20 +1,16 @@
-<?php
-
+<?php declare(strict_types=1);
 namespace Genkgo\Mail\Queue;
 
 use Genkgo\Mail\MessageInterface;
 use Genkgo\Mail\Transport\QueueIfFailedTransport;
 
-/**
- * Class TimeLimitedQueue
- * @package Genkgo\Mail\Queue
- */
 final class TimeLimitedQueue implements QueueInterface
 {
     /**
      * @var QueueInterface
      */
     private $decoratedQueue;
+
     /**
      * @var int
      */
@@ -40,10 +36,10 @@ final class TimeLimitedQueue implements QueueInterface
     public function fetch(): MessageInterface
     {
         while ($message = $this->decoratedQueue->fetch()) {
-           if ($this->hasMessageExpired($message)) {
-               continue;
-           }
-           break;
+            if ($this->hasMessageExpired($message)) {
+                continue;
+            }
+            break;
         }
 
         return $message;
@@ -73,6 +69,6 @@ final class TimeLimitedQueue implements QueueInterface
     {
         $queuedAt = $message->getHeader(QueueIfFailedTransport::QUEUED_HEADER);
 
-        return (int) \strtotime(reset($queuedAt)->getValue()->getRaw());
+        return (int) \strtotime(\reset($queuedAt)->getValue()->getRaw());
     }
 }

@@ -9,7 +9,6 @@ use Genkgo\Mail\StreamInterface;
 
 final class CapabilityCommand extends AbstractCommand
 {
-
     /**
      * @var Tag
      */

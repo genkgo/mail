@@ -13,7 +13,6 @@ final class Date implements HeaderInterface
     private $date;
 
     /**
-     * From constructor.
      * @param \DateTimeImmutable $date
      */
     public function __construct(\DateTimeImmutable $date)

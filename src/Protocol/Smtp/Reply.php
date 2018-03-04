@@ -5,31 +5,29 @@ namespace Genkgo\Mail\Protocol\Smtp;
 
 use Genkgo\Mail\Exception\AssertionFailedException;
 
-/**
- * Class Reply
- * @package Genkgo\Mail\Protocol\Smtp
- */
 final class Reply
 {
     /**
      * @var array
      */
     private $lines = [];
+
     /**
      * @var array
      */
     private $codes = [];
+
     /**
      * @var array
      */
     private $messages = [];
+
     /**
      * @var Client
      */
     private $client;
 
     /**
-     * Reply constructor.
      * @param Client $client
      */
     public function __construct(Client $client)
@@ -89,21 +87,24 @@ final class Reply
      * @param int $code
      * @return Client
      */
-    public function assert(int $code): Client {
+    public function assert(int $code): Client
+    {
         return $this->assertBetween($code, $code);
     }
 
     /**
      * @return Client
      */
-    public function assertCompleted(): Client {
+    public function assertCompleted(): Client
+    {
         return $this->assertBetween(200, 299);
     }
 
     /**
      * @return Client
      */
-    public function assertIntermediate(): Client {
+    public function assertIntermediate(): Client
+    {
         return $this->assertBetween(300, 399);
     }
 
@@ -122,7 +123,7 @@ final class Reply
         }
 
         throw new AssertionFailedException(
-            sprintf(
+            \sprintf(
                 'Cannot assert reply code between %s and %s. Server replied %s.',
                 $min,
                 $max,
@@ -136,11 +137,11 @@ final class Reply
      */
     private function createErrorMessage(): string
     {
-        return implode(
+        return \implode(
             "\r\n",
-            array_map(
+            \array_map(
                 function ($values) {
-                    return implode(' ', $values);
+                    return \implode(' ', $values);
                 },
                 $this->lines
             )

@@ -6,58 +6,42 @@ namespace Genkgo\Mail\Protocol\Smtp;
 use Genkgo\Mail\EmailAddress;
 use Genkgo\Mail\MessageInterface;
 
-/**
- * Class Session
- * @package Genkgo\Mail\Protocol\Smtp
- */
 final class Session
 {
-
-    /**
-     *
-     */
-    public CONST STATE_CONNECTED = 0;
-    /**
-     *
-     */
-    public CONST STATE_EHLO = 1;
-    /**
-     *
-     */
-    public CONST STATE_NEGOTIATION = 2;
-    /**
-     *
-     */
-    public CONST STATE_AUTHENTICATED = 3;
-    /**
-     *
-     */
-    public CONST STATE_MESSAGE = 4;
-    /**
-     *
-     */
-    public CONST STATE_MESSAGE_RECEIVED = 5;
-    /**
-     *
-     */
-    public CONST STATE_DISCONNECT = 6;
+    public const STATE_CONNECTED = 0;
+    
+    public const STATE_EHLO = 1;
+    
+    public const STATE_NEGOTIATION = 2;
+    
+    public const STATE_AUTHENTICATED = 3;
+    
+    public const STATE_MESSAGE = 4;
+    
+    public const STATE_MESSAGE_RECEIVED = 5;
+    
+    public const STATE_DISCONNECT = 6;
 
     /**
      * @var int
      */
     private $state = self::STATE_CONNECTED;
+
     /**
      * @var string
      */
     private $command;
+
     /**
      * @var MessageInterface
      */
     private $message;
+
     /**
      * @var EmailAddress
      */
     private $envelope;
+
     /**
      * @var EmailAddress[]
      */

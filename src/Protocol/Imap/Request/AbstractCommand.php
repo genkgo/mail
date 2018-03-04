@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Genkgo\Mail\Protocol\Imap\Request;
 
@@ -7,10 +8,6 @@ use Genkgo\Mail\Stream\ConcatenatedStream;
 use Genkgo\Mail\Stream\StringStream;
 use Genkgo\Mail\StreamInterface;
 
-/**
- * Class AbstractCommand
- * @package Genkgo\Mail\Protocol\Imap\Request
- */
 abstract class AbstractCommand implements RequestInterface
 {
     /**

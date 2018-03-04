@@ -14,8 +14,8 @@ final class AlternativeTextTest extends AbstractTestCase
      */
     public function it_converts_html_to_plain_text($htmlFile, $txtFile)
     {
-        $html = file_get_contents(__DIR__ . '/../Stub/AlternativeTextTest/' . $htmlFile);
-        $text = file_get_contents(__DIR__ . '/../Stub/AlternativeTextTest/' . $txtFile);
+        $html = \file_get_contents(__DIR__ . '/../Stub/AlternativeTextTest/' . $htmlFile);
+        $text = \file_get_contents(__DIR__ . '/../Stub/AlternativeTextTest/' . $txtFile);
 
         $alternativeText = AlternativeText::fromHtml($html);
         $this->assertEquals($text, (string) $alternativeText);
@@ -43,5 +43,4 @@ final class AlternativeTextTest extends AbstractTestCase
             ['error.html', 'error.txt'],
         ];
     }
-
 }

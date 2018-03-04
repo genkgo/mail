@@ -11,21 +11,23 @@ final class Base64EncodedStream implements StreamInterface
      * @var StreamInterface
      */
     private $decoratedStream;
+
     /**
      * @var int
      */
     private $lineLength;
+
     /**
      * @var resource
      */
     private $filter;
+
     /**
      * @var string
      */
     private $lineBreak;
 
     /**
-     * Base64EncodedStream constructor.
      * @param resource $resource
      * @param int $lineLength
      * @param string $lineBreak
@@ -47,17 +49,14 @@ final class Base64EncodedStream implements StreamInterface
      */
     public static function fromString(string $string, int $lineLength = 76, string $lineBreak = "\r\n"): Base64EncodedStream
     {
-        $resource = fopen('php://memory', 'r+');
-        fwrite($resource, $string);
+        $resource = \fopen('php://memory', 'r+');
+        \fwrite($resource, $string);
         return new self($resource, $lineLength, $lineBreak);
     }
-
-    /**
-     *
-     */
+    
     private function applyFilter(): void
     {
-        $this->filter = stream_filter_prepend(
+        $this->filter = \stream_filter_prepend(
             $this->decoratedStream->detach(),
             'convert.base64-encode',
             STREAM_FILTER_READ,
@@ -71,7 +70,7 @@ final class Base64EncodedStream implements StreamInterface
     private function removeFilter(): void
     {
         if ($this->filter !== null) {
-            stream_filter_remove($this->filter);
+            \stream_filter_remove($this->filter);
         }
     }
 
@@ -83,10 +82,7 @@ final class Base64EncodedStream implements StreamInterface
         $this->rewind();
         return $this->decoratedStream->__toString();
     }
-
-    /**
-     *
-     */
+    
     public function close(): void
     {
         $this->decoratedStream->close();
@@ -105,7 +101,7 @@ final class Base64EncodedStream implements StreamInterface
      */
     public function getSize(): ?int
     {
-        return (int) ceil($this->decoratedStream->getSize() / 3) * 4;
+        return (int) \ceil($this->decoratedStream->getSize() / 3) * 4;
     }
 
     /**

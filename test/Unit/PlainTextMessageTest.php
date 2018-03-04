@@ -1,8 +1,7 @@
-<?php
-
+<?php declare(strict_types=1);
 namespace Genkgo\TestMail\Unit;
 
-use Genkgo\TestMail\AbstractTestCase;;
+use Genkgo\TestMail\AbstractTestCase;
 use Genkgo\Mail\Address;
 use Genkgo\Mail\AddressList;
 use Genkgo\Mail\EmailAddress;
@@ -17,11 +16,11 @@ use Genkgo\Mail\Stream\OptimalTransferEncodedTextStream;
 
 final class PlainTextMessageTest extends AbstractTestCase
 {
-
     /**
      * @test
      */
-    public function it_correctly_produces_message_string() {
+    public function it_correctly_produces_message_string()
+    {
         $message = (new PlainTextMessage('Hello World'))
             ->withHeader(new Date(new \DateTimeImmutable('2017-01-01 18:15:00')))
             ->withHeader(new Subject('Hello World'))
@@ -29,7 +28,7 @@ final class PlainTextMessageTest extends AbstractTestCase
             ->withHeader((new Cc(new AddressList([new Address(new EmailAddress('other@example.com'), 'other')]))));
 
         $this->assertEquals(
-            file_get_contents(__DIR__ . '/../Stub/PlainTextMessageTest/message.eml'),
+            \file_get_contents(__DIR__ . '/../Stub/PlainTextMessageTest/message.eml'),
             (string) $message
         );
     }
@@ -37,7 +36,8 @@ final class PlainTextMessageTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_is_immutable() {
+    public function it_is_immutable()
+    {
         $message = new PlainTextMessage('Hello World');
 
         $this->assertNotSame($message, $message->withBody(new EmptyStream()));
@@ -49,7 +49,8 @@ final class PlainTextMessageTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_has_case_insensitive_headers() {
+    public function it_has_case_insensitive_headers()
+    {
         $message = (new PlainTextMessage('Hello World'))
             ->withHeader(new GenericHeader('X', 'Y'))
             ->withHeader(new GenericHeader('wEiRd-CasEd-HeaDer', 'value'));
@@ -76,5 +77,4 @@ final class PlainTextMessageTest extends AbstractTestCase
 
         $this->assertInstanceOf(OptimalTransferEncodedTextStream::class, $message->getBody());
     }
-
 }

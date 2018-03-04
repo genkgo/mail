@@ -7,7 +7,6 @@ use Genkgo\Mail\HeaderInterface;
 
 interface CanonicalizeHeaderInterface
 {
-
     /**
      * @param HeaderInterface $header
      * @return string

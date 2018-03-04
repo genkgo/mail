@@ -19,13 +19,13 @@ final class SmtpTransport implements TransportInterface
      * @var Client
      */
     private $client;
+
     /**
      * @var EnvelopeFactory
      */
     private $envelopeFactory;
 
     /**
-     * SmtpTransport constructor.
      * @param Client $client
      * @param EnvelopeFactory $envelopeFactory
      */

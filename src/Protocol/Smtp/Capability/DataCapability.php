@@ -18,21 +18,23 @@ final class DataCapability implements CapabilityInterface
      * @var BackendInterface
      */
     private $backend;
+
     /**
      * @var SpamScoreInterface
      */
     private $spamScore;
+
     /**
      * @var SpamDecideScore
      */
     private $spamDecideScore;
+
     /**
      * @var GreyListInterface
      */
     private $greyListing;
 
     /**
-     * DataCapability constructor.
      * @param BackendInterface $backend
      * @param SpamScoreInterface $spamScore
      * @param GreyListInterface $greyListing
@@ -71,7 +73,7 @@ final class DataCapability implements CapabilityInterface
         }
 
         try {
-            $message = GenericMessage::fromString(implode("\r\n", $data));
+            $message = GenericMessage::fromString(\implode("\r\n", $data));
         } catch (\InvalidArgumentException $e) {
             $connection->send('500 Malformed message');
             return $session;

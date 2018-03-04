@@ -8,10 +8,6 @@ use Genkgo\Mail\AddressList;
 use Genkgo\Mail\EmailAddress;
 use Genkgo\Mail\HeaderInterface;
 
-/**
- * Class Recipient
- * @package Genkgo\Mail\Header
- */
 abstract class AbstractRecipient implements HeaderInterface
 {
     /**
@@ -20,7 +16,6 @@ abstract class AbstractRecipient implements HeaderInterface
     private $recipients;
 
     /**
-     * To constructor.
      * @param AddressList $recipients
      */
     final public function __construct(AddressList $recipients)
@@ -66,9 +61,9 @@ abstract class AbstractRecipient implements HeaderInterface
     {
         return new static(
             new AddressList(
-                array_map(
+                \array_map(
                     function (array $pair) {
-                        $count = count($pair);
+                        $count = \count($pair);
                         if ($count !== 1 && $count !== 2) {
                             throw new \InvalidArgumentException('Each recipient should have one or two elements: [<EmailAddress>] or [<EmailAddress>, <Name>]');
                         }

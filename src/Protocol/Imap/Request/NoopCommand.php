@@ -7,10 +7,6 @@ use Genkgo\Mail\Protocol\Imap\Tag;
 use Genkgo\Mail\Stream\StringStream;
 use Genkgo\Mail\StreamInterface;
 
-/**
- * Class NoopCommand
- * @package Genkgo\Mail\Protocol\Imap\Request
- */
 final class NoopCommand extends AbstractCommand
 {
     /**
@@ -19,7 +15,6 @@ final class NoopCommand extends AbstractCommand
     private $tag;
 
     /**
-     * NoopCommand constructor.
      * @param Tag $tag
      */
     public function __construct(Tag $tag)

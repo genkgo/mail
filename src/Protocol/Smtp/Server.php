@@ -21,26 +21,28 @@ final class Server
      * @var ConnectionListenerInterface
      */
     private $listener;
+
     /**
      * @var CapabilityInterface[]
      */
     private $capabilities = [];
+
     /**
      * @var string
      */
     private $serverName;
 
     /**
-     * Client constructor.
      * @param ConnectionListenerInterface $connection
      * @param array $capabilities
      * @param string $serverName
      */
-    public function __construct(ConnectionListenerInterface $connection, array $capabilities, string $serverName) {
+    public function __construct(ConnectionListenerInterface $connection, array $capabilities, string $serverName)
+    {
         $this->listener = $connection;
         $this->serverName = $serverName;
 
-        $this->capabilities = array_merge(
+        $this->capabilities = \array_merge(
             $capabilities,
             [
                 new EhloCapability($this->serverName, $capabilities),
@@ -49,10 +51,7 @@ final class Server
             ]
         );
     }
-
-    /**
-     *
-     */
+    
     public function start(): void
     {
         while ($connection = $this->listener->listen()) {
@@ -84,7 +83,8 @@ final class Server
      * @param ConnectionInterface $connection
      * @param \Closure $callback
      */
-    private function transport(ConnectionInterface $connection, \Closure $callback) {
+    private function transport(ConnectionInterface $connection, \Closure $callback)
+    {
         try {
             $callback($connection);
         } catch (ConnectionTimeoutException $e) {
@@ -114,7 +114,7 @@ final class Server
 
         foreach ($this->capabilities as $capability) {
             $advertised = $capability->advertise();
-            if (substr($command, 0, strlen($advertised)) === $advertised) {
+            if (\substr($command, 0, \strlen($advertised)) === $advertised) {
                 return $capability->manifest($connection, $session);
             }
         }

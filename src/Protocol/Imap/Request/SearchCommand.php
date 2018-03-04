@@ -8,38 +8,33 @@ use Genkgo\Mail\Protocol\Imap\Tag;
 use Genkgo\Mail\Stream\StringStream;
 use Genkgo\Mail\StreamInterface;
 
-/**
- * Class SearchCommand
- * @package Genkgo\Mail\Protocol\Imap\Request
- */
 final class SearchCommand extends AbstractCommand
 {
-    /**
-     *
-     */
-    private CONST CHARSET_VALID = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-+.:_";
+    private const CHARSET_VALID = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-+.:_";
+
     /**
      * @var Tag
      */
     private $tag;
+
     /**
      * @var Query
      */
     private $query;
+
     /**
      * @var string
      */
     private $charset;
 
     /**
-     * LogoutCommand constructor.
      * @param Tag $tag
      * @param Query $query
      * @param string $charset
      */
     public function __construct(Tag $tag, Query $query, string $charset = '')
     {
-        if (strlen($charset) !== strspn($charset, self::CHARSET_VALID)) {
+        if (\strlen($charset) !== \strspn($charset, self::CHARSET_VALID)) {
             throw new \InvalidArgumentException("Invalid charset");
         }
 
@@ -54,7 +49,7 @@ final class SearchCommand extends AbstractCommand
     protected function createStream(): StreamInterface
     {
         return new StringStream(
-            sprintf(
+            \sprintf(
                 'SEARCH %s%s',
                 $this->charset ? 'CHARSET ' . $this->charset . ' ' : '',
                 (string)$this->query

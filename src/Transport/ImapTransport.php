@@ -17,13 +17,13 @@ final class ImapTransport implements TransportInterface
      * @var Client
      */
     private $client;
+
     /**
      * @var MailboxName
      */
     private $mailbox;
 
     /**
-     * SmtpTransport constructor.
      * @param Client $client
      * @param MailboxName $inbox
      */
@@ -44,7 +44,7 @@ final class ImapTransport implements TransportInterface
         $tag = $this->client->newTag();
 
         $this->client
-            ->emit(new AppendCommand($tag, $this->mailbox, strlen((string)$message)))
+            ->emit(new AppendCommand($tag, $this->mailbox, \strlen((string)$message)))
             ->last()
             ->assertContinuation();
 

@@ -13,7 +13,6 @@ use Genkgo\TestMail\AbstractTestCase;
 
 final class ClientFactoryTest extends AbstractTestCase
 {
-
     /**
      * @test
      */
@@ -45,7 +44,8 @@ final class ClientFactoryTest extends AbstractTestCase
      */
     public function it_creates_connection_negotiator()
     {
-        $callback = function () {};
+        $callback = function () {
+        };
         $at = -1;
 
         $connection = $this->createMock(ConnectionInterface::class);
@@ -55,8 +55,7 @@ final class ClientFactoryTest extends AbstractTestCase
             ->with(
                 'connect',
                 $this->callback(
-                    function (\Closure $closure)
-                    use (&$callback) {
+                    function (\Closure $closure) use (&$callback) {
                         $callback = $closure;
                         return true;
                     }
@@ -122,7 +121,8 @@ final class ClientFactoryTest extends AbstractTestCase
      */
     public function it_creates_connection_and_authentication_negotiator()
     {
-        $callback = function () {};
+        $callback = function () {
+        };
         $at = -1;
 
         $connection = $this->createMock(ConnectionInterface::class);
@@ -132,8 +132,7 @@ final class ClientFactoryTest extends AbstractTestCase
             ->with(
                 'connect',
                 $this->callback(
-                    function (\Closure $closure)
-                    use (&$callback) {
+                    function (\Closure $closure) use (&$callback) {
                         $callback = $closure;
                         return true;
                     }
@@ -177,7 +176,7 @@ final class ClientFactoryTest extends AbstractTestCase
         $connection
             ->expects($this->at(++$at))
             ->method('send')
-            ->with(base64_encode("\0username\0password"). "\r\n");
+            ->with(\base64_encode("\0username\0password"). "\r\n");
 
         $connection
             ->expects($this->at(++$at))
@@ -198,7 +197,8 @@ final class ClientFactoryTest extends AbstractTestCase
      */
     public function it_uses_only_welcome()
     {
-        $callback = function () {};
+        $callback = function () {
+        };
         $at = -1;
 
         $connection = $this->createMock(ConnectionInterface::class);
@@ -208,8 +208,7 @@ final class ClientFactoryTest extends AbstractTestCase
             ->with(
                 'connect',
                 $this->callback(
-                    function (\Closure $closure)
-                    use (&$callback) {
+                    function (\Closure $closure) use (&$callback) {
                         $callback = $closure;
                         return true;
                     }
@@ -308,5 +307,4 @@ final class ClientFactoryTest extends AbstractTestCase
 
         ClientFactory::fromString('xyz://host');
     }
-
 }

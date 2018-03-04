@@ -62,7 +62,7 @@ final class HeaderV1FactoryTest extends AbstractTestCase
 
         $this->assertEquals('DKIM-Signature', (string)$header->getName());
         $this->assertEquals(
-            file_get_contents(__DIR__.'/../../Stub/Dkim/dkim_factory_test_header.eml'),
+            \file_get_contents(__DIR__.'/../../Stub/Dkim/dkim_factory_test_header.eml'),
             (string)$header->getValue()
         );
     }
@@ -108,9 +108,8 @@ final class HeaderV1FactoryTest extends AbstractTestCase
         $header = $factory->factory($message, new Parameters('x', 'example.com'));
 
         $this->assertEquals(
-            file_get_contents(__DIR__.'/../../Stub/Dkim/dkim_factory_test_header.eml'),
+            \file_get_contents(__DIR__.'/../../Stub/Dkim/dkim_factory_test_header.eml'),
             (string)$header->getValue()
         );
     }
-
 }

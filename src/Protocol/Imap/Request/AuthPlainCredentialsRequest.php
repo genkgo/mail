@@ -14,22 +14,23 @@ final class AuthPlainCredentialsRequest implements RequestInterface
      * @var string
      */
     private $username;
+
     /**
      * @var string
      */
     private $password;
+
     /**
      * @var Tag
      */
     private $tag;
 
     /**
-     * AuthPlainCredentialsRequest constructor.
      * @param Tag $tag
      * @param string $username
      * @param string $password
      */
-    public function __construct(Tag $tag,string $username, string $password)
+    public function __construct(Tag $tag, string $username, string $password)
     {
         $this->tag = $tag;
         $this->username = $username;
@@ -42,8 +43,8 @@ final class AuthPlainCredentialsRequest implements RequestInterface
     public function toStream(): StreamInterface
     {
         return new StringStream(
-            base64_encode(
-                sprintf("\0%s\0%s", $this->username, $this->password)
+            \base64_encode(
+                \sprintf("\0%s\0%s", $this->username, $this->password)
             )
         );
     }

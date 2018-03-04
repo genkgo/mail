@@ -6,16 +6,13 @@ namespace Genkgo\Mail\Protocol\Imap\MessageData\Item;
 use Genkgo\Mail\Protocol\Imap\MessageData\ItemInterface;
 use Genkgo\Mail\Protocol\Imap\MessageData\SectionList;
 
-/**
- * Class SectionItem
- * @package Genkgo\Mail\Protocol\Imap\MessageData\GenericItem
- */
 final class SectionItem implements ItemInterface
 {
     /**
      * @var ItemInterface
      */
     private $nameItem;
+
     /**
      * @var SectionList
      */
@@ -44,7 +41,7 @@ final class SectionItem implements ItemInterface
      */
     public function __toString(): string
     {
-        return sprintf(
+        return \sprintf(
             '%s%s',
             $this->getName(),
             (string)$this->sectionList

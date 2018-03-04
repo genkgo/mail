@@ -15,7 +15,6 @@ final class RcptToCommand implements RequestInterface
     private $recipient;
 
     /**
-     * RcptToCommand constructor.
      * @param EmailAddress $recipient
      */
     public function __construct(EmailAddress $recipient)
@@ -29,6 +28,6 @@ final class RcptToCommand implements RequestInterface
      */
     public function execute(ConnectionInterface $connection): void
     {
-        $connection->send(sprintf("RCPT TO:<%s>", (string)$this->recipient));
+        $connection->send(\sprintf("RCPT TO:<%s>", (string)$this->recipient));
     }
 }

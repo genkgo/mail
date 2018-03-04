@@ -141,5 +141,4 @@ final class ForceTlsUpgradeNegotiationTest extends AbstractTestCase
 
         $negotiation->negotiate($client);
     }
-
 }

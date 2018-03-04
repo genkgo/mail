@@ -1,8 +1,7 @@
-<?php
-
+<?php declare(strict_types=1);
 namespace Genkgo\TestMail\Unit\Header;
 
-use Genkgo\TestMail\AbstractTestCase;;
+use Genkgo\TestMail\AbstractTestCase;
 use Genkgo\Mail\Address;
 use Genkgo\Mail\AddressList;
 use Genkgo\Mail\EmailAddress;
@@ -10,7 +9,6 @@ use Genkgo\Mail\Header\To;
 
 final class ToTest extends AbstractTestCase
 {
-
     /**
      * @test
      */

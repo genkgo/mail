@@ -3,10 +3,6 @@ declare(strict_types=1);
 
 namespace Genkgo\Mail\Protocol;
 
-/**
- * Class AppendCrlfConnection
- * @package Genkgo\Mail\Protocol
- */
 final class AppendCrlfConnection implements ConnectionInterface
 {
     /**
@@ -15,7 +11,6 @@ final class AppendCrlfConnection implements ConnectionInterface
     private $decoratedConnection;
 
     /**
-     * AppendCrlfConnection constructor.
      * @param ConnectionInterface $decoratedConnection
      */
     public function __construct(ConnectionInterface $decoratedConnection)

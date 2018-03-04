@@ -5,23 +5,19 @@ namespace Genkgo\Mail\Protocol\Imap\Response\Command;
 
 use Genkgo\Mail\Protocol\Imap\MessageData\ItemList;
 
-/**
- * Class FetchCommandResponse
- * @package Genkgo\Mail\Protocol\Imap\Response\Command
- */
 final class FetchCommandResponse
 {
     /**
      * @var int
      */
     private $number;
+
     /**
      * @var ItemList
      */
     private $dataItemList;
 
     /**
-     * FetchCommandResponse constructor.
      * @param int $number
      * @param ItemList $dataItemList
      */
@@ -52,7 +48,7 @@ final class FetchCommandResponse
      */
     public function __toString(): string
     {
-        return sprintf(
+        return \sprintf(
             "%s FETCH %s",
             $this->number,
             (string)$this->dataItemList
@@ -66,12 +62,11 @@ final class FetchCommandResponse
     public static function fromString(string $response): self
     {
         $matches = [];
-        $result = preg_match('/^([0-9]+) FETCH ((\()?.*?(\))?)\s*$/s', $response, $matches);
+        $result = \preg_match('/^([0-9]+) FETCH ((\()?.*?(\))?)\s*$/s', $response, $matches);
         if ($result !== 1) {
             throw new \InvalidArgumentException('Not a fetch command');
         }
 
         return new self((int)$matches[1], ItemList::fromString($matches[2]));
     }
-
 }

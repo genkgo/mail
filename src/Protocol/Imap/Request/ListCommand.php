@@ -8,32 +8,29 @@ use Genkgo\Mail\Protocol\Imap\Tag;
 use Genkgo\Mail\Stream\StringStream;
 use Genkgo\Mail\StreamInterface;
 
-/**
- * Class ListCommand
- * @package Genkgo\Mail\Protocol\Imap\Request
- */
 final class ListCommand extends AbstractCommand
 {
     /**
      * @var Tag
      */
     private $tag;
+
     /**
      * @var MailboxWildcard
      */
     private $mailbox;
+
     /**
      * @var MailboxWildcard
      */
     private $referenceName;
 
     /**
-     * ListCommand constructor.
      * @param Tag $tag
      * @param MailboxWildcard $referenceName
      * @param MailboxWildcard $mailbox
      */
-    public function __construct(Tag $tag, MailboxWildcard $referenceName , MailboxWildcard $mailbox)
+    public function __construct(Tag $tag, MailboxWildcard $referenceName, MailboxWildcard $mailbox)
     {
         $this->tag = $tag;
         $this->mailbox = $mailbox;
@@ -46,7 +43,7 @@ final class ListCommand extends AbstractCommand
     protected function createStream(): StreamInterface
     {
         return new StringStream(
-            sprintf(
+            \sprintf(
                 'LIST %s %s',
                 (string)$this->referenceName,
                 (string)$this->mailbox

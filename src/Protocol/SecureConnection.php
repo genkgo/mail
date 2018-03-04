@@ -6,8 +6,6 @@ namespace Genkgo\Mail\Protocol;
 use Genkgo\Mail\Exception\ConnectionRefusedException;
 
 /**
- * Class SecureConnection
- * @package Genkgo\Mail\Protocol
  * @codeCoverageIgnore
  */
 final class SecureConnection extends AbstractConnection
@@ -16,17 +14,18 @@ final class SecureConnection extends AbstractConnection
      * @var string
      */
     private $host;
+
     /**
      * @var int
      */
     private $port;
+
     /**
      * @var SecureConnectionOptions
      */
     private $options;
 
     /**
-     * PlainTcpConnection constructor.
      * @param string $host
      * @param int $port
      * @param SecureConnectionOptions $options
@@ -45,19 +44,16 @@ final class SecureConnection extends AbstractConnection
     {
         throw new \InvalidArgumentException('Cannot connection, already secure');
     }
-
-    /**
-     *
-     */
+    
     public function connect(): void
     {
-        $context = stream_context_create([
+        $context = \stream_context_create([
             'ssl' => [
                 'crypto_method' => $this->options->getMethod(),
             ]
         ]);
 
-        $resource = @stream_socket_client(
+        $resource = @\stream_socket_client(
             'tls://' . $this->host . ':' . $this->port,
             $errorCode,
             $errorMessage,
@@ -68,7 +64,7 @@ final class SecureConnection extends AbstractConnection
 
         if ($resource === false) {
             throw new ConnectionRefusedException(
-                sprintf('Could not create secure connection. %s.', $errorMessage),
+                \sprintf('Could not create secure connection. %s.', $errorMessage),
                 $errorCode
             );
         }

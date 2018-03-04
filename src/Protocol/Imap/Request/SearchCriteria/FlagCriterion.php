@@ -5,23 +5,19 @@ namespace Genkgo\Mail\Protocol\Imap\Request\SearchCriteria;
 
 use Genkgo\Mail\Protocol\Imap\Flag;
 
-/**
- * Class FlagCriterion
- * @package Genkgo\Mail\Protocol\Imap\Request\SearchCriteria
- */
 final class FlagCriterion implements CriterionInterface
 {
     /**
      * @var Flag
      */
     private $flag;
+
     /**
      * @var bool
      */
     private $negate = false;
 
     /**
-     * FlagCriterion constructor.
      * @param Flag $flag
      */
     public function __construct(Flag $flag)
@@ -44,7 +40,7 @@ final class FlagCriterion implements CriterionInterface
             );
         }
 
-        return $prefix . \strtoupper(substr((string)$this->flag, 1));
+        return $prefix . \strtoupper(\substr((string)$this->flag, 1));
     }
 
     /**

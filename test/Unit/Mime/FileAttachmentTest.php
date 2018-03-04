@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Genkgo\TestMail\Unit\Mime;
 
-use Genkgo\TestMail\AbstractTestCase;;
+use Genkgo\TestMail\AbstractTestCase;
 use Genkgo\Mail\Header\ContentDisposition;
 use Genkgo\Mail\Header\ContentType;
 use Genkgo\Mail\Mime\FileAttachment;
@@ -17,8 +17,8 @@ final class FileAttachmentTest extends AbstractTestCase
      */
     public function it_is_immutable()
     {
-        $file = sys_get_temp_dir() . '/attachment.txt';
-        file_put_contents($file, 'content');
+        $file = \sys_get_temp_dir() . '/attachment.txt';
+        \file_put_contents($file, 'content');
 
         $part = new FileAttachment($file, new ContentType('text/plain'));
 
@@ -33,8 +33,8 @@ final class FileAttachmentTest extends AbstractTestCase
     {
         $this->expectException(\RuntimeException::class);
 
-        $file = sys_get_temp_dir() . '/attachment.txt';
-        file_put_contents($file, 'content');
+        $file = \sys_get_temp_dir() . '/attachment.txt';
+        \file_put_contents($file, 'content');
 
         $part = new FileAttachment($file, new ContentType('text/plain'));
         $part->withBody(new AsciiEncodedStream('body'));
@@ -45,8 +45,8 @@ final class FileAttachmentTest extends AbstractTestCase
      */
     public function it_has_header_content_type()
     {
-        $file = sys_get_temp_dir() . '/attachment.txt';
-        file_put_contents($file, 'content');
+        $file = \sys_get_temp_dir() . '/attachment.txt';
+        \file_put_contents($file, 'content');
 
         $part = new FileAttachment($file, new ContentType('image/png'));
 
@@ -76,8 +76,8 @@ final class FileAttachmentTest extends AbstractTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
 
-        $file = sys_get_temp_dir() . '/attachment.txt';
-        file_put_contents($file, 'content');
+        $file = \sys_get_temp_dir() . '/attachment.txt';
+        \file_put_contents($file, 'content');
 
         $attachment = new FileAttachment($file, new ContentType('image/png'));
 
@@ -91,8 +91,8 @@ final class FileAttachmentTest extends AbstractTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
 
-        $file = sys_get_temp_dir() . '/attachment.txt';
-        file_put_contents($file, 'content');
+        $file = \sys_get_temp_dir() . '/attachment.txt';
+        \file_put_contents($file, 'content');
 
         $attachment = new FileAttachment($file, new ContentType('image/png'));
 
@@ -104,8 +104,8 @@ final class FileAttachmentTest extends AbstractTestCase
      */
     public function it_encodes_body_with_base64()
     {
-        $file = sys_get_temp_dir() . '/attachment.txt';
-        file_put_contents($file, 'content');
+        $file = \sys_get_temp_dir() . '/attachment.txt';
+        \file_put_contents($file, 'content');
 
         $attachment = new FileAttachment($file, new ContentType('image/png'));
 

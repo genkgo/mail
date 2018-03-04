@@ -16,50 +16,54 @@ use Genkgo\Mail\Protocol\SecureConnectionOptions;
 
 final class ClientFactory
 {
-    /**
-     *
-     */
-    private CONST AUTH_ENUM = [
+    private const AUTH_ENUM = [
         Client::AUTH_NONE => true,
         Client::AUTH_PLAIN => true,
         Client::AUTH_LOGIN => true,
         Client::AUTH_AUTO => true
     ];
+
     /**
      * @var ConnectionInterface
      */
     private $connection;
+
     /**
      * @var string
      */
     private $password = '';
+
     /**
      * @var float
      */
     private $timeout = 1;
+
     /**
      * @var string
      */
     private $username = '';
+
     /**
      * @var int
      */
     private $authMethod = Client::AUTH_NONE;
+
     /**
      * @var bool
      */
     private $insecureConnectionAllowed = false;
+
     /**
      * @var string
      */
     private $reconnectAfter = 'PT300S';
+
     /**
      * @var int
      */
     private $startTls;
 
     /**
-     * ClientFactory constructor.
      * @param ConnectionInterface $connection
      */
     public function __construct(ConnectionInterface $connection)
@@ -174,13 +178,13 @@ final class ClientFactory
      */
     public static function fromString(string $dataSourceName):ClientFactory
     {
-        $components = parse_url($dataSourceName);
+        $components = \parse_url($dataSourceName);
         if (!isset($components['scheme']) || !isset($components['host'])) {
             throw new \InvalidArgumentException('Scheme and host are required');
         }
 
         if (isset($components['query'])) {
-            parse_str($components['query'], $query);
+            \parse_str($components['query'], $query);
         } else {
             $query = [];
         }
@@ -210,7 +214,7 @@ final class ClientFactory
                 );
                 break;
             default:
-                throw new \InvalidArgumentException(sprintf(
+                throw new \InvalidArgumentException(\sprintf(
                     'Provided scheme "%s://" is invalid. Only imap:// imaps:// and imap-starttls:// are supported',
                     $components['scheme']
                 ));
@@ -221,8 +225,8 @@ final class ClientFactory
 
         if (isset($components['user']) && isset($components['pass'])) {
             $factory->authMethod = Client::AUTH_AUTO;
-            $factory->username = urldecode($components['user']);
-            $factory->password = urldecode($components['pass']);
+            $factory->username = \urldecode($components['user']);
+            $factory->password = \urldecode($components['pass']);
         }
 
         if (isset($query['timeout'])) {

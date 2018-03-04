@@ -23,7 +23,6 @@ use Genkgo\TestMail\AbstractTestCase;
 
 final class DkimV1SignedTransportTest extends AbstractTestCase
 {
-
     /**
      * @test
      */
@@ -72,7 +71,7 @@ final class DkimV1SignedTransportTest extends AbstractTestCase
                         $headers = $message->getHeader('dkim-signature');
                         $this->assertCount(1, $headers);
 
-                        $header = reset($headers);
+                        $header = \reset($headers);
                         $this->assertGreaterThan(0, $header->getValue()->getParameter('t')->getValue());
                         return true;
                     }
@@ -87,5 +86,4 @@ final class DkimV1SignedTransportTest extends AbstractTestCase
 
         $transport->send($message);
     }
-
 }

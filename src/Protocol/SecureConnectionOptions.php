@@ -4,8 +4,6 @@ declare(strict_types=1);
 namespace Genkgo\Mail\Protocol;
 
 /**
- * Class SecureConnectionOptions
- * @package Genkgo\Mail\Protocol
  * @codeCoverageIgnore
  */
 final class SecureConnectionOptions
@@ -21,7 +19,6 @@ final class SecureConnectionOptions
     private $method;
 
     /**
-     * SecureConnectionOptions constructor.
      * @param int $method
      */
     public function __construct(int $method)

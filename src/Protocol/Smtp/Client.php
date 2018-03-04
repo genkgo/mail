@@ -9,33 +9,25 @@ use Genkgo\Mail\Protocol\Smtp\Negotiation\ReceiveWelcomeNegotiation;
 
 final class Client
 {
-    /**
-     *
-     */
-    public CONST AUTH_NONE = 0;
-    /**
-     *
-     */
-    public CONST AUTH_PLAIN = 1;
-    /**
-     *
-     */
-    public CONST AUTH_LOGIN = 2;
-    /**
-     *
-     */
-    public CONST AUTH_AUTO = 3;
+    public const AUTH_NONE = 0;
+    
+    public const AUTH_PLAIN = 1;
+    
+    public const AUTH_LOGIN = 2;
+    
+    public const AUTH_AUTO = 3;
+
     /**
      * @var ConnectionInterface
      */
     private $connection;
+
     /**
      * @var NegotiationInterface[]
      */
     private $negotiators = [];
 
     /**
-     * Client constructor.
      * @param ConnectionInterface $connection
      * @param iterable $negotiators
      */
@@ -75,9 +67,9 @@ final class Client
         $reply = new Reply($this);
         do {
             $line = $this->connection->receive();
-            list($code, $more, $message) = preg_split('/([\s-]+)/', $line,2,PREG_SPLIT_DELIM_CAPTURE);
-            $reply = $reply->withLine((int)$code, trim($message));
-        } while (strpos($more, '-') === 0);
+            list($code, $more, $message) = \preg_split('/([\s-]+)/', $line, 2, PREG_SPLIT_DELIM_CAPTURE);
+            $reply = $reply->withLine((int)$code, \trim($message));
+        } while (\strpos($more, '-') === 0);
 
         return $reply;
     }

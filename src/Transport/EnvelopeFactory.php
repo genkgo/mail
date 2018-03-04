@@ -8,24 +8,18 @@ use Genkgo\Mail\EmailAddress;
 use Genkgo\Mail\Exception\EnvelopeException;
 use Genkgo\Mail\MessageInterface;
 
-/**
- * Class EnvelopOptions
- * @package Genkgo\Mail\Transport
- */
 final class EnvelopeFactory
 {
     /**
      * @var \Closure
      */
     private $callback;
+
     /**
      * @var EmailAddress
      */
     private $fallback;
-
-    /**
-     * EnvelopOptions constructor.
-     */
+    
     private function __construct()
     {
     }
@@ -83,7 +77,7 @@ final class EnvelopeFactory
      * @param string $headerName
      * @return EmailAddress
      */
-    private function extractFromAddressListHeader (MessageInterface $message, string $headerName): EmailAddress
+    private function extractFromAddressListHeader(MessageInterface $message, string $headerName): EmailAddress
     {
         return AddressList::fromString(
             (string)$message->getHeader($headerName)[0]->getValue()->getRaw()
@@ -123,5 +117,4 @@ final class EnvelopeFactory
         $options->callback = $callback;
         return $options;
     }
-
 }

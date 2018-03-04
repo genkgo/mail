@@ -1,15 +1,13 @@
-<?php
-
+<?php declare(strict_types=1);
 namespace Genkgo\TestMail\Unit\Header;
 
-use Genkgo\TestMail\AbstractTestCase;;
+use Genkgo\TestMail\AbstractTestCase;
 use Genkgo\Mail\Address;
 use Genkgo\Mail\EmailAddress;
 use Genkgo\Mail\Header\From;
 
 final class FromTest extends AbstractTestCase
 {
-
     /**
      * @test
      * @dataProvider provideValues
@@ -50,5 +48,4 @@ final class FromTest extends AbstractTestCase
         $header = From::fromEmailAddress('me@example.com');
         $this->assertEquals('me@example.com', (string)$header->getValue());
     }
-
 }

@@ -9,10 +9,6 @@ use Genkgo\Mail\Stream\EmptyStream;
 use Genkgo\Mail\Stream\MessageStream;
 use Genkgo\Mail\Stream\StringStream;
 
-/**
- * Class ImmutableMessage
- * @package Genkgo\Mail
- */
 final class GenericMessage implements MessageInterface
 {
     /**
@@ -36,14 +32,12 @@ final class GenericMessage implements MessageInterface
         'content-type' => [],
         'content-transfer-encoding' => [],
     ];
+
     /**
      * @var StreamInterface
      */
     private $body;
-
-    /**
-     * ImmutableMessage constructor.
-     */
+    
     public function __construct()
     {
         $this->body = new EmptyStream();
@@ -64,7 +58,7 @@ final class GenericMessage implements MessageInterface
      */
     public function hasHeader(string $name): bool
     {
-        $name = strtolower($name);
+        $name = \strtolower($name);
         return isset($this->headers[$name]) && $this->headers[$name];
     }
 
@@ -74,7 +68,7 @@ final class GenericMessage implements MessageInterface
      */
     public function getHeader(string $name): iterable
     {
-        $name = strtolower($name);
+        $name = \strtolower($name);
 
         if (!isset($this->headers[$name])) {
             return [];
@@ -90,7 +84,7 @@ final class GenericMessage implements MessageInterface
     public function withHeader(HeaderInterface $header): MessageInterface
     {
         $clone = clone $this;
-        $clone->headers[strtolower((string)$header->getName())] = [$header];
+        $clone->headers[\strtolower((string)$header->getName())] = [$header];
         return $clone;
     }
 
@@ -101,7 +95,7 @@ final class GenericMessage implements MessageInterface
     public function withAddedHeader(HeaderInterface $header): MessageInterface
     {
         $clone = clone $this;
-        $clone->headers[strtolower((string)$header->getName())][] = $header;
+        $clone->headers[\strtolower((string)$header->getName())][] = $header;
         return $clone;
     }
 
@@ -112,7 +106,7 @@ final class GenericMessage implements MessageInterface
     public function withoutHeader(string $name): MessageInterface
     {
         $clone = clone $this;
-        unset($clone->headers[(string)strtolower($name)]);
+        unset($clone->headers[(string)\strtolower($name)]);
         return $clone;
     }
 
@@ -151,24 +145,24 @@ final class GenericMessage implements MessageInterface
     {
         $message = new self();
 
-        $lines = preg_split('/\r\n/', $messageString);
-        for ($n = 0, $length = count($lines); $n < $length; $n++) {
+        $lines = \preg_split('/\r\n/', $messageString);
+        for ($n = 0, $length = \count($lines); $n < $length; $n++) {
             $line = $lines[$n];
 
             if ($line === '') {
                 $message = $message->withBody(
                     new StringStream(
-                        implode(
+                        \implode(
                             "\r\n",
-                            array_slice($lines, $n + 1)
+                            \array_slice($lines, $n + 1)
                         )
                     )
                 );
                 break;
             }
 
-            while (isset($lines[$n + 1]) && $lines[$n + 1] !== '' && trim($lines[$n + 1][0]) === '') {
-                $line .= ' ' . ltrim($lines[$n + 1]);
+            while (isset($lines[$n + 1]) && $lines[$n + 1] !== '' && \trim($lines[$n + 1][0]) === '') {
+                $line .= ' ' . \ltrim($lines[$n + 1]);
                 $n++;
             }
 

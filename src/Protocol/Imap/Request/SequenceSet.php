@@ -3,21 +3,13 @@ declare(strict_types=1);
 
 namespace Genkgo\Mail\Protocol\Imap\Request;
 
-/**
- * Class SequenceSet
- * @package Genkgo\Mail\Protocol\Imap\Request
- */
 final class SequenceSet
 {
-
     /**
      * @var array
      */
     private $set = [];
-
-    /**
-     * SequenceSet constructor.
-     */
+    
     private function __construct()
     {
         // this constructor is protected in order to force
@@ -63,7 +55,7 @@ final class SequenceSet
      */
     public function __toString(): string
     {
-        return implode(',', $this->set);
+        return \implode(',', $this->set);
     }
 
     /**

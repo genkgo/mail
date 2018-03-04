@@ -5,21 +5,11 @@ namespace Genkgo\Mail\Dkim;
 
 use Genkgo\Mail\Exception\FailedToSignHeadersException;
 
-/**
- * Class Sha256Signer
- * @package Genkgo\Mail\Dkim
- */
 final class Sha256Signer implements SignInterface
 {
-    /**
-     *
-     */
-    private CONST SIGN_ALGORITHM = OPENSSL_ALGO_SHA256;
-
-    /**
-     *
-     */
-    private CONST HASH_ALGORITHM = 'sha256';
+    private const SIGN_ALGORITHM = OPENSSL_ALGO_SHA256;
+    
+    private const HASH_ALGORITHM = 'sha256';
 
     /**
      * @var resource
@@ -27,12 +17,11 @@ final class Sha256Signer implements SignInterface
     private $privateKey;
 
     /**
-     * Sha256Signer constructor.
      * @param resource $key
      */
     public function __construct($key)
     {
-        if (!is_resource($key) || get_resource_type($key) !== 'OpenSSL key') {
+        if (!\is_resource($key) || \get_resource_type($key) !== 'OpenSSL key') {
             throw new \InvalidArgumentException('Expected a private key resource');
         }
 
@@ -45,7 +34,7 @@ final class Sha256Signer implements SignInterface
      */
     public function hashBody(string $canonicalizedBody): string
     {
-        return hash(self::HASH_ALGORITHM, $canonicalizedBody, true);
+        return \hash(self::HASH_ALGORITHM, $canonicalizedBody, true);
     }
 
     /**
@@ -55,13 +44,13 @@ final class Sha256Signer implements SignInterface
      */
     public function signHeaders(string $canonicalizedHeaders): string
     {
-        if (openssl_sign($canonicalizedHeaders, $signature, $this->privateKey, self::SIGN_ALGORITHM)) {
+        if (\openssl_sign($canonicalizedHeaders, $signature, $this->privateKey, self::SIGN_ALGORITHM)) {
             return $signature;
         }
 
         // @codeCoverageIgnoreStart
         throw new FailedToSignHeadersException(
-            sprintf('Unable to sign DKIM Hash, openssl error: %s', openssl_error_string())
+            \sprintf('Unable to sign DKIM Hash, openssl error: %s', \openssl_error_string())
         );
         // @codeCoverageIgnoreEnd
     }
@@ -82,11 +71,11 @@ final class Sha256Signer implements SignInterface
      */
     public static function fromFile(string $file, string $passphrase = ''): self
     {
-        if (!file_exists($file)) {
+        if (!\file_exists($file)) {
             throw new \InvalidArgumentException('File does not exist');
         }
 
-        return self::fromString(file_get_contents($file), $passphrase);
+        return self::fromString(\file_get_contents($file), $passphrase);
     }
 
     /**
@@ -97,7 +86,7 @@ final class Sha256Signer implements SignInterface
      */
     public static function fromString(string $privateKeyString, string $passphrase = ''): self
     {
-        $key = openssl_pkey_get_private($privateKeyString, $passphrase);
+        $key = \openssl_pkey_get_private($privateKeyString, $passphrase);
 
         if ($key === false) {
             throw new \InvalidArgumentException('Cannot create resource from private key string');

@@ -11,13 +11,13 @@ final class MessageId implements HeaderInterface
      * @var string
      */
     private $localPart;
+
     /**
      * @var string
      */
     private $domain;
 
     /**
-     * MessageId constructor.
      * @param string $localPart
      * @param string $domain
      */
@@ -41,7 +41,7 @@ final class MessageId implements HeaderInterface
     public function getValue(): HeaderValue
     {
         return new HeaderValue(
-            sprintf(
+            \sprintf(
                 '<%s@%s>',
                 $this->localPart,
                 \idn_to_ascii($this->domain, 0, INTL_IDNA_VARIANT_UTS46) ?: $this->domain
@@ -55,6 +55,6 @@ final class MessageId implements HeaderInterface
      */
     public static function newRandom(string $rightHand): MessageId
     {
-        return new self(bin2hex(random_bytes(8)), $rightHand);
+        return new self(\bin2hex(\random_bytes(8)), $rightHand);
     }
 }

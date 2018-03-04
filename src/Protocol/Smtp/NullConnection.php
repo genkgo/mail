@@ -5,10 +5,6 @@ namespace Genkgo\Mail\Protocol\Smtp;
 
 use Genkgo\Mail\Protocol\ConnectionInterface;
 
-/**
- * Class NullConnection
- * @package Genkgo\Mail\Protocol
- */
 final class NullConnection implements ConnectionInterface
 {
     private $receive;
@@ -52,7 +48,7 @@ final class NullConnection implements ConnectionInterface
 
     private function pushResponseToBuffer(string $request): void
     {
-        $command = explode(' ', strtoupper(trim($request)));
+        $command = \explode(' ', \strtoupper(\trim($request)));
         switch ($command[0]) {
             case 'AUTH':
             case 'HELO':

@@ -3,20 +3,13 @@ declare(strict_types=1);
 
 namespace Genkgo\Mail;
 
-/**
- * Interface StreamInterface
- * @package Genkgo\Mail
- */
 interface StreamInterface
 {
     /**
      * @return string
      */
     public function __toString(): string;
-
-    /**
-     *
-     */
+    
     public function close(): void;
 
     /**

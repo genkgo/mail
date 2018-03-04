@@ -1,13 +1,11 @@
-<?php
-
+<?php declare(strict_types=1);
 namespace Genkgo\TestMail\Unit\Stream;
 
-use Genkgo\TestMail\AbstractTestCase;;
+use Genkgo\TestMail\AbstractTestCase;
 use Genkgo\Mail\Stream\AsciiEncodedStream;
 
 final class AsciiEncodedStreamTest extends AbstractTestCase
 {
-
     /**
      * @test
      */
@@ -28,11 +26,11 @@ final class AsciiEncodedStreamTest extends AbstractTestCase
      */
     public function it_folds_lines()
     {
-        $value = str_repeat('test1', 50);
+        $value = \str_repeat('test1', 50);
 
         $stream = new AsciiEncodedStream($value);
 
-        $this->assertEquals(wordwrap($value, 78), (string)$stream);
+        $this->assertEquals(\wordwrap($value, 78), (string)$stream);
     }
 
     /**
@@ -106,5 +104,4 @@ final class AsciiEncodedStreamTest extends AbstractTestCase
 
         $this->assertEquals("Hello World\r\nHello World", $stream->getContents());
     }
-
 }

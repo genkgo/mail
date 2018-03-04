@@ -91,5 +91,4 @@ final class MailboxWildcardTest extends AbstractTestCase
         $this->expectException(\InvalidArgumentException::class);
         new MailboxWildcard('Archive."' . "\u{1000}" . '"');
     }
-
 }

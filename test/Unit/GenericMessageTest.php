@@ -1,8 +1,7 @@
-<?php
-
+<?php declare(strict_types=1);
 namespace Genkgo\TestMail\Unit;
 
-use Genkgo\TestMail\AbstractTestCase;;
+use Genkgo\TestMail\AbstractTestCase;
 use Genkgo\Mail\GenericMessage;
 use Genkgo\Mail\Header\GenericHeader;
 use Genkgo\Mail\Header\MimeVersion;
@@ -11,11 +10,11 @@ use Genkgo\Mail\Stream\AsciiEncodedStream;
 
 final class GenericMessageTest extends AbstractTestCase
 {
-
     /**
      * @test
      */
-    public function it_is_immutable() {
+    public function it_is_immutable()
+    {
         $message = new GenericMessage();
 
         $this->assertNotSame($message, $message->withBody(new EmptyStream()));
@@ -27,7 +26,8 @@ final class GenericMessageTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_has_case_insensitive_headers() {
+    public function it_has_case_insensitive_headers()
+    {
         $message = (new GenericMessage())
             ->withHeader(new GenericHeader('X', 'Y'))
             ->withHeader(new GenericHeader('wEiRd-CasEd-HeaDer', 'value'));
@@ -48,7 +48,8 @@ final class GenericMessageTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_return_an_empty_array_when_there_are_no_headers() {
+    public function it_return_an_empty_array_when_there_are_no_headers()
+    {
         $message = (new GenericMessage());
 
         $this->assertEquals([], $message->getHeader('to'));
@@ -58,7 +59,8 @@ final class GenericMessageTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_orders_headers() {
+    public function it_orders_headers()
+    {
         $message1 = (new GenericMessage())
             ->withHeader(new MimeVersion())
             ->withHeader(new GenericHeader('Subject', 'Value'));
@@ -97,7 +99,7 @@ final class GenericMessageTest extends AbstractTestCase
             ->withHeader(new GenericHeader('Subject', 'Hello World'))
             ->withHeader(new GenericHeader('To', 'me@example.com'))
             ->withHeader(new GenericHeader('From', 'other@example.com'))
-            ->withHeader(new GenericHeader('X-Custom', str_repeat('tëst', 50)))
+            ->withHeader(new GenericHeader('X-Custom', \str_repeat('tëst', 50)))
             ->withBody(new AsciiEncodedStream('Hello World'))
         ;
 
@@ -119,12 +121,11 @@ final class GenericMessageTest extends AbstractTestCase
             "Hello World"
         ];
 
-        $message = GenericMessage::fromString(implode("\r\n", $lines));
+        $message = GenericMessage::fromString(\implode("\r\n", $lines));
 
         $this->assertEquals(
             "from example.com ([0.0.0.0 helo=localhost) by smtp.server.com with\r\n esmtps",
             (string)$message->getHeader('received')[0]->getValue()
         );
     }
-
 }

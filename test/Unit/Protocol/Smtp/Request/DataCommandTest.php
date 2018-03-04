@@ -23,5 +23,4 @@ final class DataCommandTest extends AbstractTestCase
         $command = new DataCommand();
         $command->execute($connection);
     }
-
 }

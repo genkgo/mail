@@ -5,13 +5,8 @@ namespace Genkgo\Mail\Protocol\Imap;
 
 use Genkgo\Mail\StreamInterface;
 
-/**
- * Interface RequestInterface
- * @package Genkgo\Mail\Protocol\Imap
- */
 interface RequestInterface
 {
-
     /**
      * @return StreamInterface
      */

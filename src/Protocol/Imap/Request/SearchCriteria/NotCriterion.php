@@ -3,13 +3,8 @@ declare(strict_types=1);
 
 namespace Genkgo\Mail\Protocol\Imap\Request\SearchCriteria;
 
-/**
- * Class NotCriterion
- * @package Genkgo\Mail\Protocol\Imap\Request\SearchCriteria
- */
 final class NotCriterion implements CriterionInterface
 {
-
     /**
      * @var Query
      */
@@ -33,7 +28,7 @@ final class NotCriterion implements CriterionInterface
      */
     public function __toString(): string
     {
-        return sprintf(
+        return \sprintf(
             '(NOT %s)',
             (string)$this->query
         );

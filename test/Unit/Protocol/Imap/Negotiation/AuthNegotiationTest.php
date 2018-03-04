@@ -173,5 +173,4 @@ final class AuthNegotiationTest extends AbstractTestCase
         $negotiation = new AuthNegotiation(Client::AUTH_AUTO, 'username', 'password');
         $negotiation->negotiate($client);
     }
-
 }

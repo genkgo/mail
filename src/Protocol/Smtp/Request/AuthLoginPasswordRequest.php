@@ -8,14 +8,12 @@ use Genkgo\Mail\Protocol\Smtp\RequestInterface;
 
 final class AuthLoginPasswordRequest implements RequestInterface
 {
-
     /**
      * @var string
      */
     private $password;
 
     /**
-     * AuthPlainUsernameRequest constructor.
      * @param string $password
      */
     public function __construct(string $password)
@@ -29,6 +27,6 @@ final class AuthLoginPasswordRequest implements RequestInterface
      */
     public function execute(ConnectionInterface $connection): void
     {
-        $connection->send(base64_encode($this->password));
+        $connection->send(\base64_encode($this->password));
     }
 }

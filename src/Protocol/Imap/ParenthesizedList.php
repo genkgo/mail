@@ -3,13 +3,8 @@ declare(strict_types=1);
 
 namespace Genkgo\Mail\Protocol\Imap;
 
-/**
- * Class ParenthesizedList
- * @package Genkgo\Mail\Protocol\Imap
- */
 final class ParenthesizedList
 {
-
     /**
      * @var array
      */
@@ -55,10 +50,9 @@ final class ParenthesizedList
             return '';
         }
 
-        return sprintf(
+        return \sprintf(
             '(%s)',
-            implode(' ', $this->list)
+            \implode(' ', $this->list)
         );
     }
-
 }

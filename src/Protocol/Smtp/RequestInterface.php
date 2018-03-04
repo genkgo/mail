@@ -12,5 +12,4 @@ interface RequestInterface
      * @return void
      */
     public function execute(ConnectionInterface $connection): void;
-
 }

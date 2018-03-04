@@ -8,43 +8,32 @@ use Genkgo\Mail\Protocol\ConnectionInterface;
 use Genkgo\Mail\Protocol\Imap\Negotiation\ReceiveWelcomeNegotiation;
 use Genkgo\Mail\Protocol\Imap\Response\AggregateResponse;
 
-/**
- * Class Client
- * @package Genkgo\Mail\Protocol\Imap
- */
 final class Client
 {
-    /**
-     *
-     */
-    public CONST AUTH_NONE = 0;
-    /**
-     *
-     */
-    public CONST AUTH_PLAIN = 1;
-    /**
-     *
-     */
-    public CONST AUTH_LOGIN = 2;
-    /**
-     *
-     */
-    public CONST AUTH_AUTO = 3;
+    public const AUTH_NONE = 0;
+    
+    public const AUTH_PLAIN = 1;
+    
+    public const AUTH_LOGIN = 2;
+    
+    public const AUTH_AUTO = 3;
+
     /**
      * @var ConnectionInterface
      */
     private $connection;
+
     /**
      * @var NegotiationInterface[]
      */
     private $negotiators = [];
+
     /**
      * @var TagFactoryInterface
      */
     private $tagFactory;
 
     /**
-     * Client constructor.
      * @param ConnectionInterface $connection
      * @param TagFactoryInterface $tagFactory
      * @param iterable $negotiators
@@ -95,8 +84,8 @@ final class Client
             $index = 0;
             while (isset($bytes[$index])) {
                 if ($bytes[$index] === "\r" && isset($bytes[$index + 1]) && $bytes[$index + 1] === "\n") {
-                    $line = substr($bytes, 0, $index);
-                    $bytes = substr($bytes, $index + 2);
+                    $line = \substr($bytes, 0, $index);
+                    $bytes = \substr($bytes, $index + 2);
                     $index = -1;
 
                     $this->connection->send($line);
@@ -124,6 +113,4 @@ final class Client
     {
         return $this->tagFactory->newTag();
     }
-
-
 }

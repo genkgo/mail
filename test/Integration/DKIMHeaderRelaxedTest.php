@@ -41,9 +41,8 @@ final class DKIMHeaderRelaxedTest extends AbstractTestCase
         $message = $message->withHeader($dkimHeader);
 
         $this->assertEquals(
-            file_get_contents(__DIR__ . '/../Stub/Dkim/dkim_relaxed_relaxed.eml'),
+            \file_get_contents(__DIR__ . '/../Stub/Dkim/dkim_relaxed_relaxed.eml'),
             (string)$message
         );
     }
-
 }

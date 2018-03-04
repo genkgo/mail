@@ -14,7 +14,6 @@ class FileTransport implements TransportInterface
     private $fileTransportOptions;
 
     /**
-     * FileTransport constructor.
      * @param FileTransportOptions $fileTransportOptions
      */
     public function __construct(FileTransportOptions $fileTransportOptions)
@@ -27,12 +26,12 @@ class FileTransport implements TransportInterface
      */
     public function send(MessageInterface $message): void
     {
-        $fileName = sprintf(
+        $fileName = \sprintf(
             '%s/%s',
             $this->fileTransportOptions->getDirectory(),
             $this->fileTransportOptions->getFileNameGenerator()->call($this, $message)
         );
 
-        file_put_contents($fileName, (string)$message);
+        \file_put_contents($fileName, (string)$message);
     }
 }

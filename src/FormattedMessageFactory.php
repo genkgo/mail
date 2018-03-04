@@ -11,24 +11,23 @@ use Genkgo\Mail\Mime\HtmlPart;
 use Genkgo\Mail\Mime\PartInterface;
 use Genkgo\Mail\Mime\PlainTextPart;
 
-/**
- * Class FormattedMessageFactory
- * @package Genkgo\Mail
- */
 final class FormattedMessageFactory
 {
     /**
      * @var array
      */
     private $attachments = [];
+
     /**
      * @var array
      */
     private $embedImages = [];
+
     /**
      * @var string
      */
     private $html;
+
     /**
      * @var AlternativeText
      */
@@ -76,7 +75,7 @@ final class FormattedMessageFactory
     {
         try {
             $disposition = (string) $part->getHeader('Content-Disposition')->getValue();
-            if (substr($disposition, 0, strpos($disposition, ';')) !== 'attachment') {
+            if (\substr($disposition, 0, \strpos($disposition, ';')) !== 'attachment') {
                 throw new \InvalidArgumentException(
                     'An attachment must have Content-Disposition header with value `attachment`'
                 );

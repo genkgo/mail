@@ -12,7 +12,6 @@ use Genkgo\TestMail\Stub\FakeSmtpConnection;
 
 final class TryTlsUpgradeNegotiationTest extends AbstractTestCase
 {
-
     /**
      * @test
      */

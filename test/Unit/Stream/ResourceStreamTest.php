@@ -1,20 +1,18 @@
-<?php
-
+<?php declare(strict_types=1);
 namespace Genkgo\TestMail\Unit\Stream;
 
-use Genkgo\TestMail\AbstractTestCase;;
+use Genkgo\TestMail\AbstractTestCase;
 use Genkgo\Mail\Stream\ResourceStream;
 
 final class ResourceStreamTest extends AbstractTestCase
 {
-
     /**
      * @test
      */
     public function it_produces_equally_result_with_to_string_and_read()
     {
-        $resource = fopen('php://memory', 'r+');
-        fwrite($resource, 'test1test2');
+        $resource = \fopen('php://memory', 'r+');
+        \fwrite($resource, 'test1test2');
 
         $stream = new ResourceStream($resource);
 
@@ -31,8 +29,8 @@ final class ResourceStreamTest extends AbstractTestCase
      */
     public function it_has_a_correct_size()
     {
-        $resource = fopen('php://memory', 'r+');
-        fwrite($resource, 'test1test2');
+        $resource = \fopen('php://memory', 'r+');
+        \fwrite($resource, 'test1test2');
 
         $stream = new ResourceStream($resource);
 
@@ -44,8 +42,8 @@ final class ResourceStreamTest extends AbstractTestCase
      */
     public function it_reads_remaining_contents()
     {
-        $resource = fopen('php://memory', 'r+');
-        fwrite($resource, 'test1test2');
+        $resource = \fopen('php://memory', 'r+');
+        \fwrite($resource, 'test1test2');
 
         $stream = new ResourceStream($resource);
 
@@ -59,8 +57,8 @@ final class ResourceStreamTest extends AbstractTestCase
      */
     public function it_is_rewindable()
     {
-        $resource = fopen('php://memory', 'r+');
-        fwrite($resource, 'test1test2');
+        $resource = \fopen('php://memory', 'r+');
+        \fwrite($resource, 'test1test2');
 
         $stream = new ResourceStream($resource);
 
@@ -75,8 +73,8 @@ final class ResourceStreamTest extends AbstractTestCase
      */
     public function it_can_seek()
     {
-        $resource = fopen('php://memory', 'r+');
-        fwrite($resource, 'test1test2');
+        $resource = \fopen('php://memory', 'r+');
+        \fwrite($resource, 'test1test2');
 
         $stream = new ResourceStream($resource);
 
@@ -91,8 +89,8 @@ final class ResourceStreamTest extends AbstractTestCase
      */
     public function it_can_be_written_to()
     {
-        $resource = fopen('php://memory', 'r+');
-        fwrite($resource, 'test1test2');
+        $resource = \fopen('php://memory', 'r+');
+        \fwrite($resource, 'test1test2');
 
         $stream = new ResourceStream($resource);
 
@@ -103,5 +101,4 @@ final class ResourceStreamTest extends AbstractTestCase
         $this->assertEquals('est1test2', $stream->getContents());
         $this->assertEquals('xest1test2', (string) $stream);
     }
-
 }

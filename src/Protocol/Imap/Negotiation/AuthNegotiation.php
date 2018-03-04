@@ -19,17 +19,18 @@ final class AuthNegotiation implements NegotiationInterface
      * @var int
      */
     private $method;
+
     /**
      * @var string
      */
     private $username;
+
     /**
      * @var string
      */
     private $password;
 
     /**
-     * AuthNegotiation constructor.
      * @param int $method
      * @param string $username
      * @param string $password

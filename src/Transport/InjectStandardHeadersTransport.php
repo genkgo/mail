@@ -15,7 +15,6 @@ final class InjectStandardHeadersTransport implements TransportInterface
     private $decoratedTransport;
 
     /**
-     * InjectDateHeaderTransport constructor.
      * @param TransportInterface $transport
      * @param string $domainName
      */

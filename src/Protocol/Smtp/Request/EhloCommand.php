@@ -14,7 +14,6 @@ final class EhloCommand implements RequestInterface
     private $hostName;
 
     /**
-     * EhloCommand constructor.
      * @param string $hostName
      */
     public function __construct($hostName)
@@ -28,6 +27,6 @@ final class EhloCommand implements RequestInterface
      */
     public function execute(ConnectionInterface $connection): void
     {
-        $connection->send(sprintf('EHLO %s', $this->hostName));
+        $connection->send(\sprintf('EHLO %s', $this->hostName));
     }
 }

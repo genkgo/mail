@@ -10,14 +10,12 @@ use Genkgo\Mail\StreamInterface;
 
 final class UidCommand implements RequestInterface
 {
-
     /**
      * @var RequestInterface
      */
     private $request;
 
     /**
-     * UidCommand constructor.
      * @param RequestInterface $request
      */
     public function __construct(RequestInterface $request)
@@ -31,7 +29,7 @@ final class UidCommand implements RequestInterface
     public function toStream(): StreamInterface
     {
         return new StringStream(
-            sprintf(
+            \sprintf(
                 '%s UID %s',
                 (string)$this->getTag(),
                 $this->getTag()->extractBodyFromLine((string) $this->request->toStream())

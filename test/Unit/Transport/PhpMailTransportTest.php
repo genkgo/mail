@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Genkgo\TestMail\Unit\Transport;
 
 use Genkgo\Mail\Exception\EnvelopeException;
-use Genkgo\TestMail\AbstractTestCase;;
+use Genkgo\TestMail\AbstractTestCase;
 use Genkgo\Mail\Address;
 use Genkgo\Mail\AddressList;
 use Genkgo\Mail\EmailAddress;
@@ -118,7 +118,7 @@ final class PhpMailTransportTest extends AbstractTestCase
     /**
      * @param array ...$arguments
      */
-    private function callbackTestMailParameters (...$arguments)
+    private function callbackTestMailParameters(...$arguments)
     {
         $this->assertEquals($this->expects, $arguments);
     }

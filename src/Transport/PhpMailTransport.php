@@ -11,22 +11,22 @@ use Genkgo\Mail\TransportInterface;
 
 final class PhpMailTransport implements TransportInterface
 {
-
     /**
      * @var EnvelopeFactory
      */
     private $envelopeFactory;
+
     /**
      * @var array
      */
     private $parameters;
+
     /**
      * @var \Closure
      */
     private $replacedMailMethod;
 
     /**
-     * PhpMailTransport constructor.
      * @param EnvelopeFactory $envelopeFactory
      * @param array $parameters
      */
@@ -49,14 +49,14 @@ final class PhpMailTransport implements TransportInterface
 
         if ($this->replacedMailMethod === null) {
             // @codeCoverageIgnoreStart
-            mail(
+            \mail(
                 $to,
                 $subject,
                 (string)$message->getBody(),
                 $headers,
                 $parameters
             );
-            // @codeCoverageIgnoreEnd
+        // @codeCoverageIgnoreEnd
         } else {
             $callback = $this->replacedMailMethod;
             $callback(
@@ -91,14 +91,15 @@ final class PhpMailTransport implements TransportInterface
      */
     private function extractHeaders(MessageInterface $message): string
     {
-        return implode("\r\n",
-            array_values(
-                array_filter(
-                    array_map(
+        return \implode(
+            "\r\n",
+            \array_values(
+                \array_filter(
+                    \array_map(
                         function (array $headers) {
-                            return implode(
+                            return \implode(
                                 "\r\n",
-                                array_map(
+                                \array_map(
                                     function (HeaderInterface $header) {
                                         return (string)(new HeaderLine($header));
                                     },
@@ -124,13 +125,13 @@ final class PhpMailTransport implements TransportInterface
     private function constructParameters(MessageInterface $message): string
     {
         $envelop = $this->envelopeFactory->make($message);
-        if (preg_match('/\"/', $envelop->getAddress())) {
+        if (\preg_match('/\"/', $envelop->getAddress())) {
             throw new EnvelopeException(
                 'Unable to guarantee injection-free envelop'
             );
         }
 
-        return implode(' ', array_merge($this->parameters, ['-f' . (string)$envelop]));
+        return \implode(' ', \array_merge($this->parameters, ['-f' . (string)$envelop]));
     }
 
     /**
@@ -143,8 +144,7 @@ final class PhpMailTransport implements TransportInterface
         \Closure $callback,
         EnvelopeFactory $envelopeFactory,
         array $parameters = []
-    ): PhpMailTransport
-    {
+    ): PhpMailTransport {
         $transport = new self($envelopeFactory, $parameters);
         $transport->replacedMailMethod = $callback;
         return $transport;

@@ -1,13 +1,11 @@
-<?php
-
+<?php declare(strict_types=1);
 namespace Genkgo\TestMail\Unit\Stream;
 
-use Genkgo\TestMail\AbstractTestCase;;
+use Genkgo\TestMail\AbstractTestCase;
 use Genkgo\Mail\Stream\EmptyStream;
 
 final class EmptyStreamTest extends AbstractTestCase
 {
-
     /**
      * @test
      */
@@ -93,5 +91,4 @@ final class EmptyStreamTest extends AbstractTestCase
 
         $stream->write('x');
     }
-
 }

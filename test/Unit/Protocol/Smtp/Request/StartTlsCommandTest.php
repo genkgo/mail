@@ -24,5 +24,4 @@ final class StartTlsCommandTest extends AbstractTestCase
         $command = new StartTlsCommand();
         $command->execute($connection);
     }
-
 }

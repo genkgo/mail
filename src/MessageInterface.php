@@ -5,7 +5,6 @@ namespace Genkgo\Mail;
 
 interface MessageInterface
 {
-
     /**
      * @return iterable
      */
@@ -56,5 +55,4 @@ interface MessageInterface
      * @return string
      */
     public function __toString(): string;
-
 }

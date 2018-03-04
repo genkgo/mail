@@ -1,13 +1,11 @@
-<?php
-
+<?php declare(strict_types=1);
 namespace Genkgo\TestMail\Unit\Stream;
 
 use Genkgo\Mail\Stream\StringStream;
-use Genkgo\TestMail\AbstractTestCase;;
+use Genkgo\TestMail\AbstractTestCase;
 
 final class StringStreamTest extends AbstractTestCase
 {
-
     /**
      * @test
      */
@@ -28,11 +26,11 @@ final class StringStreamTest extends AbstractTestCase
      */
     public function it_folds_lines()
     {
-        $value = str_repeat('test1', 50);
+        $value = \str_repeat('test1', 50);
 
         $stream = new StringStream($value);
 
-        $this->assertEquals(wordwrap($value, 78), (string)$stream);
+        $this->assertEquals(\wordwrap($value, 78), (string)$stream);
     }
 
     /**
@@ -96,5 +94,4 @@ final class StringStreamTest extends AbstractTestCase
         $this->assertEquals('est1', $stream->getContents());
         $this->assertEquals('xest1', (string) $stream);
     }
-
 }

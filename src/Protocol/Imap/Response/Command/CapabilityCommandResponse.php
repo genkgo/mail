@@ -11,7 +11,6 @@ final class CapabilityCommandResponse
     private $advertisements = [];
 
     /**
-     * CapabilityList constructor.
      * @param array $list
      */
     public function __construct(array $list)
@@ -37,9 +36,9 @@ final class CapabilityCommandResponse
      */
     public function __toString(): string
     {
-        return sprintf(
+        return \sprintf(
             'CAPABILITY %s',
-            implode(' ', array_keys($this->advertisements))
+            \implode(' ', \array_keys($this->advertisements))
         );
     }
 
@@ -50,22 +49,21 @@ final class CapabilityCommandResponse
     public static function fromString(string $response): self
     {
         $command = 'CAPABILITY ';
-        $commandLength = strlen($command);
+        $commandLength = \strlen($command);
 
-        if (substr($response,0, $commandLength) !== $command) {
+        if (\substr($response, 0, $commandLength) !== $command) {
             throw new \InvalidArgumentException(
-                sprintf('Expected CAPABILITY command, got %s', $response)
+                \sprintf('Expected CAPABILITY command, got %s', $response)
             );
         }
 
-        $advertisements = preg_split('/[\s]+/', substr($response, $commandLength));
+        $advertisements = \preg_split('/[\s]+/', \substr($response, $commandLength));
 
         return new self(
-            array_combine(
+            \array_combine(
                 $advertisements,
-                array_fill(0, count($advertisements), true)
+                \array_fill(0, \count($advertisements), true)
             )
         );
     }
-
 }

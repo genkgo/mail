@@ -71,5 +71,4 @@ final class SequenceSetTest extends AbstractTestCase
     {
         $this->assertSame('1,3:*', (string)SequenceSet::single(1)->withInfiniteRange(3));
     }
-
 }

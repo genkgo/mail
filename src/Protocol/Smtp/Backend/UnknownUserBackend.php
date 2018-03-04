@@ -9,7 +9,6 @@ use Genkgo\Mail\Protocol\Smtp\BackendInterface;
 
 final class UnknownUserBackend implements BackendInterface
 {
-
     /**
      * @param EmailAddress $mailbox
      * @return bool

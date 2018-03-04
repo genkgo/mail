@@ -1,12 +1,11 @@
-<?php
-
+<?php declare(strict_types=1);
 namespace Genkgo\TestMail\Unit;
 
-use Genkgo\TestMail\AbstractTestCase;;
+use Genkgo\TestMail\AbstractTestCase;
 use Genkgo\Mail\EmailAddress;
 
-final class EmailAddressTest extends AbstractTestCase {
-
+final class EmailAddressTest extends AbstractTestCase
+{
     /**
      * @test
      * @dataProvider provideAddresses

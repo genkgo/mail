@@ -8,27 +8,24 @@ use Genkgo\Mail\Protocol\Imap\Tag;
 use Genkgo\Mail\Stream\StringStream;
 use Genkgo\Mail\StreamInterface;
 
-/**
- * Class AppendCommand
- * @package Genkgo\Mail\Protocol\Imap\Request
- */
 final class StoreCommand extends AbstractCommand
 {
     /**
      * @var Tag
      */
     private $tag;
+
     /**
      * @var SequenceSet
      */
     private $sequenceSet;
+
     /**
      * @var FlagsItem
      */
     private $flagsItem;
 
     /**
-     * AppendCommand constructor.
      * @param Tag $tag
      * @param SequenceSet $sequenceSet
      * @param FlagsItem $flagsItem
@@ -37,8 +34,7 @@ final class StoreCommand extends AbstractCommand
         Tag $tag,
         SequenceSet $sequenceSet,
         FlagsItem $flagsItem
-    )
-    {
+    ) {
         $this->tag = $tag;
         $this->flagsItem = $flagsItem;
         $this->sequenceSet = $sequenceSet;
@@ -50,7 +46,7 @@ final class StoreCommand extends AbstractCommand
     protected function createStream(): StreamInterface
     {
         return new StringStream(
-            sprintf(
+            \sprintf(
                 'STORE %s %s',
                 (string)$this->sequenceSet,
                 (string)$this->flagsItem

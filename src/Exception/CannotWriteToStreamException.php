@@ -5,5 +5,4 @@ namespace Genkgo\Mail\Exception;
 
 final class CannotWriteToStreamException extends AbstractProtocolException
 {
-
 }

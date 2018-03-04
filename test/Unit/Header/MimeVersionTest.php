@@ -1,13 +1,11 @@
-<?php
-
+<?php declare(strict_types=1);
 namespace Genkgo\TestMail\Unit\Header;
 
-use Genkgo\TestMail\AbstractTestCase;;
+use Genkgo\TestMail\AbstractTestCase;
 use Genkgo\Mail\Header\MimeVersion;
 
 final class MimeVersionTest extends AbstractTestCase
 {
-
     /**
      * @test
      * @dataProvider provideValues

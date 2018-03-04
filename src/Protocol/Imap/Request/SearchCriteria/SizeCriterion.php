@@ -3,23 +3,19 @@ declare(strict_types=1);
 
 namespace Genkgo\Mail\Protocol\Imap\Request\SearchCriteria;
 
-/**
- * Class SizeCriterium
- * @package Genkgo\Mail\Protocol\Imap\Request\SearchCriteria
- */
 final class SizeCriterion implements CriterionInterface
 {
     /**
      * @var string
      */
     private $name;
+
     /**
      * @var int
      */
     private $size;
 
     /**
-     * SizeCriterium constructor.
      * @param string $name
      * @param int $size
      */
@@ -34,7 +30,7 @@ final class SizeCriterion implements CriterionInterface
      */
     public function __toString(): string
     {
-        return sprintf('%s %s', $this->name, $this->size);
+        return \sprintf('%s %s', $this->name, $this->size);
     }
 
     /**

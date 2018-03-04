@@ -3,23 +3,19 @@ declare(strict_types=1);
 
 namespace Genkgo\Mail\Protocol\Imap\Request\SearchCriteria;
 
-/**
- * Class FlagCriterium
- * @package Genkgo\Mail\Protocol\Imap\Request\SearchCriteria
- */
 final class DateCriterion implements CriterionInterface
 {
     /**
      * @var string
      */
     private $name;
+
     /**
      * @var \DateTimeImmutable
      */
     private $moment;
 
     /**
-     * FlagCriterium constructor.
      * @param string $name
      * @param \DateTimeImmutable $moment
      */
@@ -34,7 +30,7 @@ final class DateCriterion implements CriterionInterface
      */
     public function __toString(): string
     {
-        return sprintf(
+        return \sprintf(
             '%s %s',
             $this->name,
             $this->moment->format('j-D-Y')

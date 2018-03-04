@@ -5,29 +5,21 @@ namespace Genkgo\Mail\Protocol\Imap\MessageData\Item;
 
 use Genkgo\Mail\Protocol\Imap\MessageData\ItemInterface;
 
-/**
- * Class NameItem
- * @package Genkgo\Mail\Protocol\Imap\MessageData\GenericItem
- */
 final class NameItem implements ItemInterface
 {
     /**
      * @var string
      */
     private $name;
+    
+    private const VALID_CHAR = "ABCDEFGHIJKLMNOPQRSTUVWXYZ.+-";
 
     /**
-     *
-     */
-    private CONST VALID_CHAR = "ABCDEFGHIJKLMNOPQRSTUVWXYZ.+-";
-
-    /**
-     * NameItem constructor.
      * @param string $name
      */
     public function __construct(string $name)
     {
-        if (strlen($name) !== strspn($name, self::VALID_CHAR)) {
+        if (\strlen($name) !== \strspn($name, self::VALID_CHAR)) {
             throw new \InvalidArgumentException('name can only contain uppercase A-Z chars');
         }
 

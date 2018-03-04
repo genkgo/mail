@@ -1,5 +1,4 @@
-<?php
-
+<?php declare(strict_types=1);
 namespace Genkgo\TestMail\Unit\Transport;
 
 use Genkgo\Mail\Address;
@@ -9,7 +8,7 @@ use Genkgo\Mail\Header\From;
 use Genkgo\Mail\Header\GenericHeader;
 use Genkgo\Mail\Header\Sender;
 use Genkgo\Mail\Transport\InjectSenderHeaderTransport;
-use Genkgo\TestMail\AbstractTestCase;;
+use Genkgo\TestMail\AbstractTestCase;
 use Genkgo\Mail\GenericMessage;
 use Genkgo\Mail\Transport\ArrayObjectTransport;
 
@@ -84,5 +83,4 @@ final class InjectSenderHeaderTransportTest extends AbstractTestCase
         $this->assertFalse($storage[0]->hasHeader('sender'));
         $this->assertSame($storage[0], $message);
     }
-
 }

@@ -13,7 +13,6 @@ final class ArrayAuthentication implements AuthenticationInterface
     private $users;
 
     /**
-     * ArrayAuthentication constructor.
      * @param array $users
      */
     public function __construct(array $users)

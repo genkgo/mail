@@ -11,13 +11,13 @@ final class LazyStream implements StreamInterface
      * @var \Closure
      */
     private $callback;
+
     /**
      * @var StreamInterface
      */
     private $decoratedStream;
 
     /**
-     * LazyStream constructor.
      * @param \Closure $callback
      */
     public function __construct(\Closure $callback)
@@ -32,10 +32,7 @@ final class LazyStream implements StreamInterface
     {
         return $this->getStream()->__toString();
     }
-
-    /**
-     *
-     */
+    
     public function close(): void
     {
         $this->getStream()->close();

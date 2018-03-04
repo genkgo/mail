@@ -11,21 +11,23 @@ final class QuotedPrintableStream implements StreamInterface
      * @var StreamInterface
      */
     private $decoratedStream;
+
     /**
      * @var int
      */
     private $lineLength;
+
     /**
      * @var resource
      */
     private $filter;
+
     /**
      * @var string
      */
     private $lineBreak;
 
     /**
-     * QuotedPrintableStream constructor.
      * @param resource $resource
      * @param int $lineLength
      * @param string $lineBreak
@@ -47,23 +49,20 @@ final class QuotedPrintableStream implements StreamInterface
      */
     public static function fromString(string $string, int $lineLength = 75, string $lineBreak = "\r\n"): QuotedPrintableStream
     {
-        $string = str_replace(
+        $string = \str_replace(
             ["\r\n", "\r", "\n", "\t\r\n", " \r\n"],
             ["\n", "\n", "\r\n", "\r\n", "\r\n"],
             $string
         );
 
-        $resource = fopen('php://memory', 'r+');
-        fwrite($resource, $string);
+        $resource = \fopen('php://memory', 'r+');
+        \fwrite($resource, $string);
         return new self($resource, $lineLength, $lineBreak);
     }
-
-    /**
-     *
-     */
+    
     private function applyFilter(): void
     {
-        $this->filter = stream_filter_prepend(
+        $this->filter = \stream_filter_prepend(
             $this->decoratedStream->detach(),
             'convert.quoted-printable-encode',
             STREAM_FILTER_READ,
@@ -73,14 +72,11 @@ final class QuotedPrintableStream implements StreamInterface
             ]
         );
     }
-
-    /**
-     *
-     */
+    
     private function removeFilter(): void
     {
         if ($this->filter !== null) {
-            stream_filter_remove($this->filter);
+            \stream_filter_remove($this->filter);
         }
     }
 
@@ -92,10 +88,7 @@ final class QuotedPrintableStream implements StreamInterface
         $this->rewind();
         return $this->decoratedStream->__toString();
     }
-
-    /**
-     *
-     */
+    
     public function close(): void
     {
         $this->decoratedStream->close();

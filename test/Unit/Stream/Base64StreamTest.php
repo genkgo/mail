@@ -1,19 +1,17 @@
-<?php
-
+<?php declare(strict_types=1);
 namespace Genkgo\TestMail\Unit\Stream;
 
-use Genkgo\TestMail\AbstractTestCase;;
+use Genkgo\TestMail\AbstractTestCase;
 use Genkgo\Mail\Stream\Base64EncodedStream;
 
 final class Base64StreamTest extends AbstractTestCase
 {
-
     /**
      * @test
      */
     public function it_produces_equally_result_with_to_string_and_read()
     {
-        $decoded = str_repeat('test1 test2', 50);
+        $decoded = \str_repeat('test1 test2', 50);
 
         $stream = Base64EncodedStream::fromString($decoded);
 
@@ -22,8 +20,8 @@ final class Base64StreamTest extends AbstractTestCase
             $streamRead .= $stream->read(4);
         }
 
-        $this->assertEquals($decoded, base64_decode((string)$stream));
-        $this->assertEquals($decoded, base64_decode($streamRead));
+        $this->assertEquals($decoded, \base64_decode((string)$stream));
+        $this->assertEquals($decoded, \base64_decode($streamRead));
     }
 
     /**
@@ -36,7 +34,7 @@ final class Base64StreamTest extends AbstractTestCase
         $stream = Base64EncodedStream::fromString($decoded);
 
         $this->assertEquals(16, $stream->getSize());
-        $this->assertEquals($stream->getSize(), strlen((string)$stream));
+        $this->assertEquals($stream->getSize(), \strlen((string)$stream));
     }
 
     /**
@@ -49,7 +47,7 @@ final class Base64StreamTest extends AbstractTestCase
         $stream = Base64EncodedStream::fromString($decoded);
         $stream->read(2);
 
-        $this->assertEquals(substr(base64_encode($decoded), 2), $stream->getContents());
+        $this->assertEquals(\substr(\base64_encode($decoded), 2), $stream->getContents());
     }
 
     /**
@@ -63,7 +61,7 @@ final class Base64StreamTest extends AbstractTestCase
 
         $stream->rewind();
 
-        $this->assertEquals(base64_encode($decoded), $stream->getContents());
+        $this->assertEquals(\base64_encode($decoded), $stream->getContents());
     }
 
     /**
@@ -86,7 +84,7 @@ final class Base64StreamTest extends AbstractTestCase
     {
         $this->expectException(\RuntimeException::class);
 
-        $stream = new Base64EncodedStream(fopen('php://memory', 'r+'));
+        $stream = new Base64EncodedStream(\fopen('php://memory', 'r+'));
         $this->assertFalse($stream->isWritable());
 
         $stream->write('x');
@@ -97,20 +95,20 @@ final class Base64StreamTest extends AbstractTestCase
      */
     public function it_uses_correct_line_endings()
     {
-        $decoded = str_repeat('test1 test2', 50);
+        $decoded = \str_repeat('test1 test2', 50);
 
         $stream = Base64EncodedStream::fromString($decoded);
 
-        $lines = preg_split('/\r\n/', (string)$stream);
+        $lines = \preg_split('/\r\n/', (string)$stream);
 
-        $lines = array_map(
+        $lines = \array_map(
             function ($line) {
-                return strlen($line);
+                return \strlen($line);
             },
             $lines
         );
 
-        $this->assertLessThanOrEqual(76, max($lines));
+        $this->assertLessThanOrEqual(76, \max($lines));
     }
 
     /**
@@ -119,7 +117,7 @@ final class Base64StreamTest extends AbstractTestCase
     public function it_produces_equally_result_with_to_string_twice()
     {
         $stream = Base64EncodedStream::fromString(
-            file_get_contents(__DIR__.'/../../Stub/BugReport/issue-30.txt')
+            \file_get_contents(__DIR__.'/../../Stub/BugReport/issue-30.txt')
         );
 
         $this->assertEquals((string)$stream, (string)$stream);

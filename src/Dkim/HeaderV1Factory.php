@@ -11,14 +11,12 @@ use Genkgo\Mail\MessageInterface;
 
 final class HeaderV1Factory
 {
-    /**
-     *
-     */
-    public CONST HEADER_NAME = 'DKIM-Signature';
+    public const HEADER_NAME = 'DKIM-Signature';
+
     /**
      * @var array
      */
-    private CONST HEADERS_IGNORED = [
+    private const HEADERS_IGNORED = [
         'return-path' => true,
         'received' => true,
         'comments' => true,
@@ -26,21 +24,23 @@ final class HeaderV1Factory
         'bcc' => true,
         'resent-bcc' => true,
     ];
+
     /**
      * @var SignInterface
      */
     private $sign;
+
     /**
      * @var CanonicalizeHeaderInterface
      */
     private $canonicalizeHeader;
+
     /**
      * @var CanonicalizeBodyInterface
      */
     private $canonicalizeBody;
 
     /**
-     * SignedTransport constructor.
      * @param SignInterface $sign
      * @param CanonicalizeHeaderInterface $canonicalizeHeader
      * @param CanonicalizeBodyInterface $canonicalizeBody
@@ -63,14 +63,13 @@ final class HeaderV1Factory
     public function factory(
         MessageInterface $message,
         Parameters $parameters
-    ): HeaderInterface
-    {
+    ): HeaderInterface {
         $headerCanonicalized = [];
         $headerNames = [];
         foreach ($message->getHeaders() as $headers) {
             /** @var HeaderInterface $header */
             foreach ($headers as $header) {
-                $headerName = strtolower((string)$header->getName());
+                $headerName = \strtolower((string)$header->getName());
                 if (isset(self::HEADERS_IGNORED[$headerName])) {
                     break;
                 }
@@ -89,17 +88,17 @@ final class HeaderV1Factory
 
         $headerValue = $parameters->newHeaderValue()
             ->withParameter($this->newUnquotedParameter('a', $this->sign->name()))
-            ->withParameter($this->newUnquotedParameter('c', implode('/', $canonicalization)))
-            ->withParameter($this->newUnquotedParameter('h', implode(':', $headerNames)), true)
-            ->withParameter($this->newUnquotedParameter('bh', base64_encode($bodyHash)), true)
+            ->withParameter($this->newUnquotedParameter('c', \implode('/', $canonicalization)))
+            ->withParameter($this->newUnquotedParameter('h', \implode(':', $headerNames)), true)
+            ->withParameter($this->newUnquotedParameter('bh', \base64_encode($bodyHash)), true)
             ->withParameter($this->newUnquotedParameter('b', ''), true);
 
-        $headerCanonicalized[strtolower(self::HEADER_NAME)] = $this->canonicalizeHeader->canonicalize(
+        $headerCanonicalized[\strtolower(self::HEADER_NAME)] = $this->canonicalizeHeader->canonicalize(
             $this->newHeader($headerValue)
         );
 
-        $headers = implode("\r\n", $headerCanonicalized);
-        $signature = base64_encode($this->sign->signHeaders($headers));
+        $headers = \implode("\r\n", $headerCanonicalized);
+        $signature = \base64_encode($this->sign->signHeaders($headers));
         $headerValue = $headerValue->withParameter(new HeaderValueParameter('b', $signature), true);
 
         return $this->newHeader($headerValue);
@@ -121,15 +120,13 @@ final class HeaderV1Factory
      */
     private function newHeader(HeaderValue $headerValue): HeaderInterface
     {
-        return new class ($headerValue) implements HeaderInterface
-        {
+        return new class($headerValue) implements HeaderInterface {
             /**
              * @var HeaderValue
              */
             private $headerValue;
 
             /**
-             * DkimSignature constructor.
              * @param HeaderValue $headerValue
              */
             public function __construct(HeaderValue $headerValue)
@@ -154,5 +151,4 @@ final class HeaderV1Factory
             }
         };
     }
-
 }

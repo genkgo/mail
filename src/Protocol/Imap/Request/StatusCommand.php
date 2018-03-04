@@ -9,27 +9,24 @@ use Genkgo\Mail\Protocol\Imap\Tag;
 use Genkgo\Mail\Stream\StringStream;
 use Genkgo\Mail\StreamInterface;
 
-/**
- * Class StatusCommand
- * @package Genkgo\Mail\Protocol\Imap\Request
- */
 final class StatusCommand extends AbstractCommand
 {
     /**
      * @var ItemList
      */
     private $list;
+
     /**
      * @var Tag
      */
     private $tag;
+
     /**
      * @var MailboxName
      */
     private $mailbox;
 
     /**
-     * FetchCommand constructor.
      * @param Tag $tag
      * @param MailboxName $mailbox
      * @param ItemList $list
@@ -47,7 +44,7 @@ final class StatusCommand extends AbstractCommand
     protected function createStream(): StreamInterface
     {
         return new StringStream(
-            sprintf(
+            \sprintf(
                 'STATUS %s %s',
                 (string)$this->mailbox,
                 (string)$this->list

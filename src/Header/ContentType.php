@@ -7,21 +7,19 @@ use Genkgo\Mail\HeaderInterface;
 
 final class ContentType implements HeaderInterface
 {
-    /**
-     *
-     */
-    private CONST RFC_1341_ADDITIONAL_SPECIALS = "\x2F\x3F\x3D";
+    private const RFC_1341_ADDITIONAL_SPECIALS = "\x2F\x3F\x3D";
+
     /**
      * @var string
      */
     private $contentType;
+
     /**
      * @var string
      */
     private $charset;
 
     /**
-     * From constructor.
      * @param string $contentType
      * @param string $charset
      */
@@ -29,7 +27,7 @@ final class ContentType implements HeaderInterface
     {
         $this->contentType = $contentType;
 
-        if ($charset === '' && substr($contentType, 0, 5) === 'text/') {
+        if ($charset === '' && \substr($contentType, 0, 5) === 'text/') {
             $charset = 'UTF-8';
         }
 

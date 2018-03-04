@@ -7,7 +7,6 @@ use Genkgo\Mail\HeaderInterface;
 
 final class MimeVersion implements HeaderInterface
 {
-
     /**
      * @return HeaderName
      */

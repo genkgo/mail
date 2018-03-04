@@ -6,27 +6,21 @@ namespace Genkgo\Mail\Header;
 use Genkgo\Mail\Stream\OptimalTransferEncodedPhraseStream;
 use Genkgo\Mail\Stream\OptimalTransferEncodedTextStream;
 
-/**
- * Class OptimalEncodedHeaderValue
- * @package Genkgo\Mail\Header
- */
 final class OptimalEncodedHeaderValue
 {
-    /**
-     *
-     */
     private const FOLDING = "\r\n ";
+
     /**
      * @var string
      */
     private $value;
+
     /**
      * @var bool
      */
     private $phrase = false;
 
     /**
-     * OptimalEncodedHeaderValue constructor.
      * @param string $value
      */
     public function __construct(string $value)
@@ -54,10 +48,10 @@ final class OptimalEncodedHeaderValue
         }
 
         if ($encoding === 'base64') {
-            return sprintf('=?%s?B?%s?=', 'UTF-8', (string) $encoded);
+            return \sprintf('=?%s?B?%s?=', 'UTF-8', (string) $encoded);
         }
 
-        return sprintf('=?%s?Q?%s?=', 'UTF-8', (string) $encoded);
+        return \sprintf('=?%s?Q?%s?=', 'UTF-8', (string) $encoded);
     }
 
     /**

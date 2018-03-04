@@ -3,10 +3,6 @@ declare(strict_types=1);
 
 namespace Genkgo\Mail\Header;
 
-/**
- * Class HeaderName
- * @package Genkgo\Mail\Header
- */
 final class HeaderName
 {
     /**
@@ -15,7 +11,6 @@ final class HeaderName
     private $name;
 
     /**
-     * HeaderName constructor.
      * @param string $name
      */
     public function __construct(string $name)
@@ -41,15 +36,16 @@ final class HeaderName
      * @param string $name
      * @return bool
      */
-    private function validate(string $name): bool {
-        $tot = strlen($name);
+    private function validate(string $name): bool
+    {
+        $tot = \strlen($name);
 
         if ($tot > 74) {
             return false;
         }
 
         for ($i = 0; $i < $tot; $i += 1) {
-            $ord = ord($name[$i]);
+            $ord = \ord($name[$i]);
             if ($ord < 33 || $ord > 126 || $ord === 58) {
                 return false;
             }
@@ -64,5 +60,4 @@ final class HeaderName
     {
         return $this->name;
     }
-
 }

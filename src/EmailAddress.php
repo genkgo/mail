@@ -3,39 +3,35 @@ declare(strict_types=1);
 
 namespace Genkgo\Mail;
 
-/**
- * Class EmailAddress
- * @package Genkgo\Mail
- */
 final class EmailAddress
 {
-
     /**
      * @var string
      */
     private $address;
+
     /**
      * @var string
      */
     private $localPart;
+
     /**
      * @var string
      */
     private $domain;
 
     /**
-     * EmailAddress constructor.
      * @param string $address
      */
     public function __construct(string $address)
     {
-        if (preg_match('/\v/', $address, $matches) !== 0) {
+        if (\preg_match('/\v/', $address, $matches) !== 0) {
             throw new \InvalidArgumentException('Cannot use vertical white space within email address');
         }
 
-        $address = trim($address);
+        $address = \trim($address);
 
-        $hits = preg_match('/^([^@]+)@([^@]+)$/', $address, $matches);
+        $hits = \preg_match('/^([^@]+)@([^@]+)$/', $address, $matches);
         if ($hits === 0) {
             throw new \InvalidArgumentException('Invalid e-mail address: ' . $address);
         }

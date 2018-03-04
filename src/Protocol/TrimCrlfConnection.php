@@ -5,14 +5,12 @@ namespace Genkgo\Mail\Protocol;
 
 final class TrimCrlfConnection implements ConnectionInterface
 {
-
     /**
      * @var ConnectionInterface
      */
     private $decoratedConnection;
 
     /**
-     * AppendCrlfConnection constructor.
      * @param ConnectionInterface $decoratedConnection
      */
     public function __construct(ConnectionInterface $decoratedConnection)
@@ -59,7 +57,7 @@ final class TrimCrlfConnection implements ConnectionInterface
      */
     public function receive(): string
     {
-        return rtrim($this->decoratedConnection->receive(), "\r\n");
+        return \rtrim($this->decoratedConnection->receive(), "\r\n");
     }
 
     /**

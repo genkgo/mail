@@ -15,7 +15,6 @@ final class MailFromCommand implements RequestInterface
     private $envelope;
 
     /**
-     * MailFromCommand constructor.
      * @param EmailAddress $envelope
      */
     public function __construct(EmailAddress $envelope)
@@ -29,6 +28,6 @@ final class MailFromCommand implements RequestInterface
      */
     public function execute(ConnectionInterface $connection): void
     {
-        $connection->send(sprintf("MAIL FROM:<%s>", (string)$this->envelope));
+        $connection->send(\sprintf("MAIL FROM:<%s>", (string)$this->envelope));
     }
 }

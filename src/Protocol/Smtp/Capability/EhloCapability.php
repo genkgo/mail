@@ -9,19 +9,17 @@ use Genkgo\Mail\Protocol\Smtp\Session;
 
 final class EhloCapability implements CapabilityInterface
 {
-
     /**
      * @var array
      */
     private $capabilities;
+
     /**
      * @var string
      */
     private $serverName;
-    /**
-     *
-     */
-    private CONST PROTOCOL_COMMANDS = [
+    
+    private const PROTOCOL_COMMANDS = [
         'MAIL FROM' => true,
         'EHLO' => true,
         'RCPT TO' => true,
@@ -32,7 +30,6 @@ final class EhloCapability implements CapabilityInterface
     ];
 
     /**
-     * EhloCapability constructor.
      * @param string $serverName
      * @param array $capabilities
      */
@@ -51,8 +48,8 @@ final class EhloCapability implements CapabilityInterface
     {
         $command = $session->getCommand();
 
-        $advertisements = array_filter(
-            array_map(
+        $advertisements = \array_filter(
+            \array_map(
                 function (CapabilityInterface $capability) {
                     return $capability->advertise();
                 },
@@ -63,13 +60,13 @@ final class EhloCapability implements CapabilityInterface
             }
         );
 
-        $messages = array_merge(
-            [$this->serverName . ' Hello ' . substr($command, 5)],
+        $messages = \array_merge(
+            [$this->serverName . ' Hello ' . \substr($command, 5)],
             $advertisements
         );
 
         foreach ($messages as $message) {
-            if (next($messages) === false) {
+            if (\next($messages) === false) {
                 $connection->send('250 ' . $message);
             } else {
                 $connection->send('250-' . $message);
