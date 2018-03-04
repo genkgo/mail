@@ -60,7 +60,7 @@ $ composer require genkgo/mail
 - Discourages SSL
 - DKIM signed message
 - Security is highly prioritized
-- Use IMAPv4 to read messages from your mailbox 
+- Use IMAPv4 to read messages from your mailbox (no unmaintained extension required) 
 - SMTP server for testing purposes
 - Great RFC compliance
 - Cast messages to valid string source
