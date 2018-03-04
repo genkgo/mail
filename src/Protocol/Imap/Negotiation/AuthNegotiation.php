@@ -9,6 +9,7 @@ use Genkgo\Mail\Protocol\Imap\NegotiationInterface;
 use Genkgo\Mail\Protocol\Imap\Request\AuthPlainCommand;
 use Genkgo\Mail\Protocol\Imap\Request\AuthPlainCredentialsRequest;
 use Genkgo\Mail\Protocol\Imap\Request\CapabilityCommand;
+use Genkgo\Mail\Protocol\Imap\Request\LoginCommand;
 use Genkgo\Mail\Protocol\Imap\Response\Command\CapabilityCommandResponse;
 use Genkgo\Mail\Protocol\Imap\Response\CompletionResult;
 
@@ -67,6 +68,10 @@ final class AuthNegotiation implements NegotiationInterface
                 }
             }
 
+            if ($method === Client::AUTH_AUTO && !$capabilities->isAdvertising('LOGINDISABLED')) {
+                $method = Client::AUTH_LOGIN;
+            }
+
             if ($method === Client::AUTH_AUTO) {
                 throw new ImapAuthenticationException(
                     'IMAP server does not advertise one the supported AUTH methods (AUTH PLAIN)'
@@ -93,6 +98,14 @@ final class AuthNegotiation implements NegotiationInterface
                     ->last()
                     ->assertCompletion(CompletionResult::ok())
                     ->assertTagged();
+                break;
+            case Client::AUTH_LOGIN:
+                $tag = $client->newTag();
+                $client
+                    ->emit(new LoginCommand($tag, $this->username, $this->password))
+                    ->last()
+                    ->assertTagged()
+                    ->assertCompletion(CompletionResult::ok());
                 break;
         }
     }

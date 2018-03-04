@@ -12,7 +12,7 @@ use Genkgo\Mail\Protocol\Imap\Flag;
 final class FlagCriterion implements CriterionInterface
 {
     /**
-     * @var
+     * @var Flag
      */
     private $flag;
     /**

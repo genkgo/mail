@@ -5,7 +5,6 @@ namespace Genkgo\Mail\Protocol\Imap\Request;
 
 use Genkgo\Mail\Protocol\Imap\FlagParenthesizedList;
 use Genkgo\Mail\Protocol\Imap\MailboxName;
-use Genkgo\Mail\Protocol\Imap\ParenthesizedList;
 use Genkgo\Mail\Protocol\Imap\Tag;
 use Genkgo\Mail\Stream\StringStream;
 use Genkgo\Mail\StreamInterface;
@@ -25,7 +24,7 @@ final class AppendCommand extends AbstractCommand
      */
     private $mailbox;
     /**
-     * @var ParenthesizedList
+     * @var FlagParenthesizedList|null
      */
     private $flags;
     /**
@@ -42,7 +41,7 @@ final class AppendCommand extends AbstractCommand
      * @param Tag $tag
      * @param MailboxName $mailbox
      * @param int $size
-     * @param FlagParenthesizedList $flags
+     * @param FlagParenthesizedList|null $flags
      * @param \DateTimeImmutable|null $internalDate
      */
     public function __construct(

@@ -25,6 +25,10 @@ final class Client
     /**
      *
      */
+    public CONST AUTH_LOGIN = 2;
+    /**
+     *
+     */
     public CONST AUTH_AUTO = 3;
     /**
      * @var ConnectionInterface

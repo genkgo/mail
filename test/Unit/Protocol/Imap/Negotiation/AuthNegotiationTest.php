@@ -102,7 +102,49 @@ final class AuthNegotiationTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_uses_capability_when_method_is_auto_and_not_advertised()
+    public function it_requests_capabilities_when_method_is_auto_and_uses_login_when_not_otherwise_advertised()
+    {
+        $connection = $this->createMock(ConnectionInterface::class);
+        $connection
+            ->expects($this->at(0))
+            ->method('addListener');
+
+        $connection
+            ->expects($this->at(1))
+            ->method('send')
+            ->with("TAG1 CAPABILITY\r\n");
+
+        $connection
+            ->expects($this->at(2))
+            ->method('receive')
+            ->willReturn('* CAPABILITY IMAP4rev1 STARTTLS');
+
+        $connection
+            ->expects($this->at(3))
+            ->method('receive')
+            ->willReturn('TAG1 OK');
+
+        $connection
+            ->expects($this->at(4))
+            ->method('send')
+            ->with("TAG2 LOGIN username password\r\n");
+
+        $connection
+            ->expects($this->at(5))
+            ->method('receive')
+            ->willReturn('TAG2 OK');
+
+
+        $client = new Client($connection, new GeneratorTagFactory(), []);
+
+        $negotiation = new AuthNegotiation(Client::AUTH_AUTO, 'username', 'password');
+        $negotiation->negotiate($client);
+    }
+
+    /**
+     * @test
+     */
+    public function it_uses_capability_when_method_is_auto_and_not_advertised_and_login_disabled()
     {
         $this->expectException(ImapAuthenticationException::class);
 
@@ -119,7 +161,7 @@ final class AuthNegotiationTest extends AbstractTestCase
         $connection
             ->expects($this->at(2))
             ->method('receive')
-            ->willReturn('* CAPABILITY IMAP4rev1 STARTTLS');
+            ->willReturn('* CAPABILITY IMAP4rev1 STARTTLS LOGINDISABLED');
 
         $connection
             ->expects($this->at(3))
