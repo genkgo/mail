@@ -19,7 +19,7 @@ Use this if you want to send e-mails over different transports and protocols usi
 .. toctree::
 :hidden:
 
-       Genkgo/Mail <self>
+       Home <self>
        getting-started
 
 .. toctree::
