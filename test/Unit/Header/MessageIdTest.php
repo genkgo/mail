@@ -26,6 +26,7 @@ final class MessageIdTest extends AbstractTestCase
     {
         return [
             ['left', 'right', 'Message-ID', '<left@right>'],
+            ['left', 'münchen.com', 'Message-ID', '<left@xn--mnchen-3ya.com>'],
         ];
     }
 
