@@ -147,11 +147,10 @@ final class RedisQueueTest extends AbstractTestCase
         $this->expectException(QueueStoreException::class);
         $this->expectExceptionMessageRegExp('/Cannot add message to redis queue/');
 
-        $message = $this->createMock(MessageInterface::class);
         $client = $this->newConnectionExceptionClient('lpop', ['queue']);
         $queue = new RedisQueue($client, 'queue');
 
-        $queue->fetch($message);
+        $queue->fetch();
     }
 
     /**
@@ -162,11 +161,10 @@ final class RedisQueueTest extends AbstractTestCase
         $this->expectException(QueueStoreException::class);
         $this->expectExceptionMessageRegExp('/Cannot get messages from redis queue/');
 
-        $message = $this->createMock(MessageInterface::class);
         $client = $this->newConnectionExceptionClient('llen', ['queue']);
         $queue = new RedisQueue($client, 'queue');
 
-        $queue->count($message);
+        $queue->count();
     }
 
     private function newConnectionExceptionClient(string $method, array $args): ClientInterface

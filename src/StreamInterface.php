@@ -63,7 +63,7 @@ interface StreamInterface
     public function isWritable(): bool;
 
     /**
-     * @param $string
+     * @param string $string
      * @return int
      */
     public function write($string): int;

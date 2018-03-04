@@ -101,7 +101,7 @@ final class HeaderValue
     }
 
     /**
-     * @param $value
+     * @param string $value
      * @return bool
      */
     private function validate(string $value): bool

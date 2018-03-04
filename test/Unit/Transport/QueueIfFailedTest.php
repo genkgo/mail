@@ -148,16 +148,20 @@ final class QueueIfFailedTest extends AbstractTestCase
             ->method('send')
             ->willThrowException(new ConnectionRefusedException());
 
-        $queuedMessage = null;
+        $queuedMessage = new GenericMessage();
 
         $queue
             ->expects($this->exactly(2))
             ->method('store')
-            ->with($this->callback(function (MessageInterface $message) use (&$queuedMessage) {
-                $this->assertCount(1, $message->getHeader(QueueIfFailedTransport::QUEUED_HEADER));
-                $queuedMessage = $message;
-                return true;
-            }));
+            ->with(
+                $this->callback(
+                    function (MessageInterface $message) use (&$queuedMessage) {
+                        $this->assertCount(1, $message->getHeader(QueueIfFailedTransport::QUEUED_HEADER));
+                        $queuedMessage = $message;
+                        return true;
+                    }
+                )
+            );
 
         $message = new GenericMessage();
         $wrapper = new QueueIfFailedTransport([$transport], [$queue]);

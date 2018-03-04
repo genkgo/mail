@@ -28,7 +28,7 @@ final class Sha256Signer implements SignInterface
 
     /**
      * Sha256Signer constructor.
-     * @param $key
+     * @param resource $key
      */
     public function __construct($key)
     {
@@ -76,7 +76,7 @@ final class Sha256Signer implements SignInterface
 
     /**
      * @param string $file
-     * @param string|null $passphrase
+     * @param string $passphrase
      * @return Sha256Signer
      * @throws \Exception
      */

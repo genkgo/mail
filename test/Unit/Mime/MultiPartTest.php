@@ -80,6 +80,6 @@ final class MultiPartTest extends AbstractTestCase
             'multipart/mixed; boundary=test',
             (string)$part->getHeader('content-type')->getValue()
         );
-        $this->assertArrayHasKey('content-type', $part->getHeaders());
+        $this->assertCount(1, $part->getHeaders());
     }
 }

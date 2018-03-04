@@ -96,7 +96,7 @@ final class TimeLimitedQueueTest extends AbstractQueueDecoratorTestCase
 
     /**
      * @param string $subject
-     * @param int|null $age
+     * @param int $age
      * @return MessageInterface
      */
     private function newMessage(string $subject, int $age = 0): MessageInterface

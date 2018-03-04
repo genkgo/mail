@@ -55,7 +55,7 @@ final class StringAttachmentTest extends AbstractTestCase
             'image/png',
             (string)$part->getHeader('content-type')->getValue()
         );
-        $this->assertArrayHasKey('content-type', $part->getHeaders());
+        $this->assertCount(3, $part->getHeaders());
     }
 
     /**

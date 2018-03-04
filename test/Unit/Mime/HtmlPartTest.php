@@ -45,7 +45,7 @@ final class HtmlPartTest extends AbstractTestCase
             'text/html; charset=UTF-8',
             (string)$part->getHeader('content-type')->getValue()
         );
-        $this->assertArrayHasKey('content-type', $part->getHeaders());
+        $this->assertCount(2, $part->getHeaders());
     }
 
     /**

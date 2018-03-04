@@ -20,7 +20,7 @@ final class AggregateTransport implements TransportInterface
 
     /**
      * AggregateTransport constructor.
-     * @param iterable $transports
+     * @param iterable|TransportInterface[] $transports
      */
     public function __construct(iterable $transports)
     {

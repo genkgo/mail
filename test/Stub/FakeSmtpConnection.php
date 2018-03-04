@@ -139,7 +139,7 @@ final class FakeSmtpConnection implements ConnectionInterface
         switch ($command) {
             case 'HELO':
                 $this->state = self::STATE_EHLO;
-                $this->buffer = array_merge([$this->greeting]);
+                $this->buffer = [$this->greeting];
                 break;
             case 'EHLO':
                 $this->state = self::STATE_EHLO;
@@ -276,9 +276,9 @@ final class FakeSmtpConnection implements ConnectionInterface
     }
 
     /**
-     * @param $request
+     * @param string $request
      */
-    private function authenticate($request): void
+    private function authenticate(string $request): void
     {
         if ($this->metaData['auth']['method'] === 'PLAIN') {
             $this->buffer = ['220 OK'];

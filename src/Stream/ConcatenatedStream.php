@@ -182,7 +182,7 @@ final class ConcatenatedStream implements StreamInterface
     }
 
     /**
-     * @param $string
+     * @param string $string
      * @return int
      */
     public function write($string): int

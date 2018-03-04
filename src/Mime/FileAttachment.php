@@ -21,7 +21,7 @@ final class FileAttachment implements PartInterface
     /**
      * @param string $filename
      * @param ContentType $contentType
-     * @param string|null $attachmentName
+     * @param string $attachmentName
      */
     public function __construct(string $filename, ContentType $contentType, string $attachmentName = '')
     {

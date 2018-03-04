@@ -48,9 +48,9 @@ abstract class AbstractConnection implements ConnectionInterface
     }
 
     /**
-     * @param $name
+     * @param string $name
      */
-    final protected function fireEvent($name): void
+    final protected function fireEvent(string $name): void
     {
         if (!isset($this->listeners[$name])) {
             return;

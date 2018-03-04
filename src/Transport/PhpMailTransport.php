@@ -77,13 +77,12 @@ final class PhpMailTransport implements TransportInterface
     private function extractSingleHeader(MessageInterface $message, string $name): string
     {
         $headers = $message->getHeader($name);
-        if (count($headers) === 0) {
-            throw new \InvalidArgumentException(
-                'Cannot transport message without header ' . $name
-            );
+
+        foreach ($headers as $header) {
+            return (string)$header->getValue();
         }
 
-        return (string)reset($headers)->getValue();
+        throw new \InvalidArgumentException('Cannot transport message without header ' . $name);
     }
 
     /**

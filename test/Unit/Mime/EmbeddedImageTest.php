@@ -68,7 +68,7 @@ final class EmbeddedImageTest extends AbstractTestCase
             'image/png',
             (string)$part->getHeader('content-type')->getValue()
         );
-        $this->assertArrayHasKey('content-type', $part->getHeaders());
+        $this->assertCount(4, $part->getHeaders());
     }
 
     /**
