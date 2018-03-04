@@ -285,7 +285,7 @@ final class FakeSmtpConnection implements ConnectionInterface
             $this->metaData['auth']['state'] = true;
             $this->state = self::STATE_AUTHORIZED;
 
-            list ($null, $username, $password) = explode("\0", base64_decode($request));
+            [$null, $username, $password] = explode("\0", base64_decode($request));
             $this->metaData['auth']['username'] = $username;
             $this->metaData['auth']['password'] = $password;
         } else {
