@@ -10,21 +10,21 @@ final class MessageId implements HeaderInterface
     /**
      * @var string
      */
-    private $leftHand;
+    private $localPart;
     /**
      * @var string
      */
-    private $rightHand;
+    private $domain;
 
     /**
      * MessageId constructor.
-     * @param string $leftHand
-     * @param string $rightHand
+     * @param string $localPart
+     * @param string $domain
      */
-    public function __construct(string $leftHand, string $rightHand)
+    public function __construct(string $localPart, string $domain)
     {
-        $this->leftHand = $leftHand;
-        $this->rightHand = $rightHand;
+        $this->localPart = $localPart;
+        $this->domain = $domain;
     }
 
     /**
@@ -40,7 +40,13 @@ final class MessageId implements HeaderInterface
      */
     public function getValue(): HeaderValue
     {
-        return new HeaderValue(sprintf('<%s@%s>', $this->leftHand, $this->rightHand));
+        return new HeaderValue(
+            sprintf(
+                '<%s@%s>',
+                $this->localPart,
+                \idn_to_ascii($this->domain, 0, INTL_IDNA_VARIANT_UTS46) ?: $this->domain
+            )
+        );
     }
 
     /**
