@@ -56,7 +56,7 @@ final class PhpMailTransport implements TransportInterface
                 $headers,
                 $parameters
             );
-            // @codeCoverageIgnoreEnd
+        // @codeCoverageIgnoreEnd
         } else {
             $callback = $this->replacedMailMethod;
             $callback(
@@ -91,7 +91,8 @@ final class PhpMailTransport implements TransportInterface
      */
     private function extractHeaders(MessageInterface $message): string
     {
-        return implode("\r\n",
+        return implode(
+            "\r\n",
             array_values(
                 array_filter(
                     array_map(
@@ -143,8 +144,7 @@ final class PhpMailTransport implements TransportInterface
         \Closure $callback,
         EnvelopeFactory $envelopeFactory,
         array $parameters = []
-    ): PhpMailTransport
-    {
+    ): PhpMailTransport {
         $transport = new self($envelopeFactory, $parameters);
         $transport->replacedMailMethod = $callback;
         return $transport;

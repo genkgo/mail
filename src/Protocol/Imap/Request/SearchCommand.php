@@ -17,7 +17,7 @@ final class SearchCommand extends AbstractCommand
     /**
      *
      */
-    private CONST CHARSET_VALID = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-+.:_";
+    private const CHARSET_VALID = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-+.:_";
     /**
      * @var Tag
      */

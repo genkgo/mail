@@ -1,5 +1,4 @@
-<?php
-
+<?php declare(strict_types=1);
 namespace Genkgo\Mail\Protocol\Imap;
 
 use Genkgo\Mail\Exception\AssertionFailedException;
@@ -45,5 +44,4 @@ interface ResponseInterface
      * @return string
      */
     public function __toString(): string;
-
 }

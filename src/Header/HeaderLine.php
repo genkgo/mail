@@ -69,5 +69,4 @@ final class HeaderLine
 
         return new self(new GenericHeader($name, $value));
     }
-
 }

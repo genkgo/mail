@@ -22,7 +22,7 @@ final class ClientFactory
     /**
      *
      */
-    private CONST AUTH_ENUM = [Client::AUTH_NONE, Client::AUTH_PLAIN, Client::AUTH_LOGIN, Client::AUTH_AUTO];
+    private const AUTH_ENUM = [Client::AUTH_NONE, Client::AUTH_PLAIN, Client::AUTH_LOGIN, Client::AUTH_AUTO];
     /**
      * @var ConnectionInterface
      */

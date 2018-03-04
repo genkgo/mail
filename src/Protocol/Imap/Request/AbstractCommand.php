@@ -1,5 +1,4 @@
-<?php
-
+<?php declare(strict_types=1);
 namespace Genkgo\Mail\Protocol\Imap\Request;
 
 use Genkgo\Mail\Protocol\Imap\RequestInterface;

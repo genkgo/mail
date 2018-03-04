@@ -21,7 +21,7 @@ final class EhloCapability implements CapabilityInterface
     /**
      *
      */
-    private CONST PROTOCOL_COMMANDS = [
+    private const PROTOCOL_COMMANDS = [
         'MAIL FROM' => true,
         'EHLO' => true,
         'RCPT TO' => true,

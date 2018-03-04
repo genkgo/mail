@@ -12,11 +12,11 @@ final class AddressList implements \Countable, \IteratorAggregate
     /**
      *
      */
-    private CONST PARSE_START = 1;
+    private const PARSE_START = 1;
     /**
      *
      */
-    private CONST PARSE_QUOTE = 2;
+    private const PARSE_QUOTE = 2;
 
     /**
      * @var array|Address[]

@@ -41,7 +41,8 @@ final class HeaderName
      * @param string $name
      * @return bool
      */
-    private function validate(string $name): bool {
+    private function validate(string $name): bool
+    {
         $tot = strlen($name);
 
         if ($tot > 74) {
@@ -64,5 +65,4 @@ final class HeaderName
     {
         return $this->name;
     }
-
 }

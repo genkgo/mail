@@ -1,5 +1,4 @@
-<?php
-
+<?php declare(strict_types=1);
 namespace Genkgo\Mail\Protocol\Smtp\GreyList;
 
 use Genkgo\Mail\MessageInterface;

@@ -17,19 +17,19 @@ final class Client
     /**
      *
      */
-    public CONST AUTH_NONE = 0;
+    public const AUTH_NONE = 0;
     /**
      *
      */
-    public CONST AUTH_PLAIN = 1;
+    public const AUTH_PLAIN = 1;
     /**
      *
      */
-    public CONST AUTH_LOGIN = 2;
+    public const AUTH_LOGIN = 2;
     /**
      *
      */
-    public CONST AUTH_AUTO = 3;
+    public const AUTH_AUTO = 3;
     /**
      * @var ConnectionInterface
      */
@@ -124,6 +124,4 @@ final class Client
     {
         return $this->tagFactory->newTag();
     }
-
-
 }

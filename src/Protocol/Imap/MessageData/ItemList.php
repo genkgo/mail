@@ -12,23 +12,23 @@ final class ItemList
     /**
      *
      */
-    private CONST STATE_NONE = 0;
+    private const STATE_NONE = 0;
     /**
      *
      */
-    private CONST STATE_NAME = 1;
+    private const STATE_NAME = 1;
     /**
      *
      */
-    private CONST STATE_SECTION = 2;
+    private const STATE_SECTION = 2;
     /**
      *
      */
-    private CONST STATE_PARTIAL = 3;
+    private const STATE_PARTIAL = 3;
     /**
      *
      */
-    private CONST STATE_OCTET = 4;
+    private const STATE_OCTET = 4;
     /**
      * @var array
      */

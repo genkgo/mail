@@ -14,19 +14,19 @@ final class Address
     /**
      *
      */
-    private CONST PARSE_POSITION_START = 1;
+    private const PARSE_POSITION_START = 1;
     /**
      *
      */
-    private CONST PARSE_POSITION_QUOTE = 2;
+    private const PARSE_POSITION_QUOTE = 2;
     /**
      *
      */
-    private CONST PARSE_STATE_EMAIL = 1;
+    private const PARSE_STATE_EMAIL = 1;
     /**
      *
      */
-    private CONST PARSE_STATE_TAGGED_EMAIL = 2;
+    private const PARSE_STATE_TAGGED_EMAIL = 2;
 
     /**
      * @var EmailAddress

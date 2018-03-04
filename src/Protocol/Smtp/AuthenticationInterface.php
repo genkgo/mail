@@ -16,5 +16,4 @@ interface AuthenticationInterface
      * @return bool
      */
     public function authenticate(string $username, string $password): bool;
-
 }

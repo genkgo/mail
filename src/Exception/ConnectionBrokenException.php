@@ -9,5 +9,4 @@ namespace Genkgo\Mail\Exception;
  */
 final class ConnectionBrokenException extends AbstractProtocolException
 {
-
 }

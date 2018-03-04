@@ -50,8 +50,7 @@ final class AppendCommand extends AbstractCommand
         int $size,
         FlagParenthesizedList $flags = null,
         \DateTimeImmutable $internalDate = null
-    )
-    {
+    ) {
         $this->tag = $tag;
         $this->mailbox = $mailbox;
         $this->flags = $flags;

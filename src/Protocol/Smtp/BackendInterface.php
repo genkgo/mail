@@ -21,5 +21,4 @@ interface BackendInterface
      * @param string $folder
      */
     public function store(EmailAddress $mailbox, MessageInterface $message, string $folder): void;
-
 }

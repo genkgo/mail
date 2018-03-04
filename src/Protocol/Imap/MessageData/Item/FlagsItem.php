@@ -15,19 +15,19 @@ final class FlagsItem implements ItemInterface
     /**
      *
      */
-    public CONST OPERATOR_REPLACE = '';
+    public const OPERATOR_REPLACE = '';
     /**
      *
      */
-    public CONST OPERATOR_ADD = '+';
+    public const OPERATOR_ADD = '+';
     /**
      *
      */
-    public CONST OPERATOR_REMOVE = '-';
+    public const OPERATOR_REMOVE = '-';
     /**
      *
      */
-    private CONST OPERATORS = [
+    private const OPERATORS = [
         self::OPERATOR_REPLACE => true,
         self::OPERATOR_ADD => true,
         self::OPERATOR_REMOVE => true,

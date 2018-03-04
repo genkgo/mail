@@ -60,5 +60,4 @@ final class FlagParenthesizedList
             implode(' ', $this->flags)
         );
     }
-
 }

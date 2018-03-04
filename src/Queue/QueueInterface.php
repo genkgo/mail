@@ -26,5 +26,4 @@ interface QueueInterface
      * @throws EmptyQueueException
      */
     public function fetch(): MessageInterface;
-
 }

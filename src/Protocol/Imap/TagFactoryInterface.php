@@ -14,5 +14,4 @@ interface TagFactoryInterface
      * @return Tag
      */
     public function newTag(): Tag;
-
 }

@@ -33,7 +33,7 @@ final class LsubCommand extends AbstractCommand
      * @param MailboxWildcard $referenceName
      * @param MailboxWildcard $mailbox
      */
-    public function __construct(Tag $tag, MailboxWildcard $referenceName , MailboxWildcard $mailbox)
+    public function __construct(Tag $tag, MailboxWildcard $referenceName, MailboxWildcard $mailbox)
     {
         $this->tag = $tag;
         $this->mailbox = $mailbox;

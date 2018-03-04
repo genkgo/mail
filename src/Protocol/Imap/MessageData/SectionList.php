@@ -12,7 +12,7 @@ final class SectionList
     /**
      *
      */
-    private CONST RFC_3501_SECTION_FIXED = [
+    private const RFC_3501_SECTION_FIXED = [
         'HEADER' => true,
         'TEXT' => true,
     ];

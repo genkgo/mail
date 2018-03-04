@@ -14,12 +14,12 @@ final class Sha256Signer implements SignInterface
     /**
      *
      */
-    private CONST SIGN_ALGORITHM = OPENSSL_ALGO_SHA256;
+    private const SIGN_ALGORITHM = OPENSSL_ALGO_SHA256;
 
     /**
      *
      */
-    private CONST HASH_ALGORITHM = 'sha256';
+    private const HASH_ALGORITHM = 'sha256';
 
     /**
      * @var resource

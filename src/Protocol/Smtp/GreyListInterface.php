@@ -1,5 +1,4 @@
-<?php
-
+<?php declare(strict_types=1);
 namespace Genkgo\Mail\Protocol\Smtp;
 
 use Genkgo\Mail\MessageInterface;
@@ -21,5 +20,4 @@ interface GreyListInterface
      * @param MessageInterface $message
      */
     public function detach(MessageInterface $message): void;
-
 }

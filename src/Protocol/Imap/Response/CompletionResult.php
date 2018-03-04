@@ -12,19 +12,19 @@ final class CompletionResult
     /**
      *
      */
-    private CONST BAD = 'BAD';
+    private const BAD = 'BAD';
     /**
      *
      */
-    private CONST NO = 'NO';
+    private const NO = 'NO';
     /**
      *
      */
-    private CONST OK = 'OK';
+    private const OK = 'OK';
     /**
      *
      */
-    private CONST ENUM = [
+    private const ENUM = [
         self::BAD => true,
         self::NO => true,
         self::OK => true,

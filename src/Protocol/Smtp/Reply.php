@@ -89,21 +89,24 @@ final class Reply
      * @param int $code
      * @return Client
      */
-    public function assert(int $code): Client {
+    public function assert(int $code): Client
+    {
         return $this->assertBetween($code, $code);
     }
 
     /**
      * @return Client
      */
-    public function assertCompleted(): Client {
+    public function assertCompleted(): Client
+    {
         return $this->assertBetween(200, 299);
     }
 
     /**
      * @return Client
      */
-    public function assertIntermediate(): Client {
+    public function assertIntermediate(): Client
+    {
         return $this->assertBetween(300, 399);
     }
 

@@ -14,5 +14,4 @@ interface CriterionInterface
      * @return string
      */
     public function __toString(): string;
-
 }

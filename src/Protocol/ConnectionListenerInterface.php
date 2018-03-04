@@ -13,5 +13,4 @@ interface ConnectionListenerInterface
      * @return ConnectionInterface
      */
     public function listen(): ConnectionInterface;
-
 }

@@ -29,7 +29,7 @@ final class AuthPlainCredentialsRequest implements RequestInterface
      * @param string $username
      * @param string $password
      */
-    public function __construct(Tag $tag,string $username, string $password)
+    public function __construct(Tag $tag, string $username, string $password)
     {
         $this->tag = $tag;
         $this->username = $username;

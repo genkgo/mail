@@ -47,5 +47,4 @@ interface ConnectionInterface
      * @return array
      */
     public function getMetaData(array $keys = []): array;
-
 }

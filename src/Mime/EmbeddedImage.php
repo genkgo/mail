@@ -24,7 +24,8 @@ final class EmbeddedImage implements PartInterface
      * @param ContentType $contentType
      * @param ContentID $contentID
      */
-    public function __construct(StreamInterface $image, string $filename, ContentType $contentType, ContentID $contentID) {
+    public function __construct(StreamInterface $image, string $filename, ContentType $contentType, ContentID $contentID)
+    {
         $this->decoratedPart = (new GenericPart())
             ->withBody(new Base64EncodedStream($image->detach()))
             ->withHeader(new ContentTransferEncoding('base64'))

@@ -14,11 +14,11 @@ final class HeaderV1Factory
     /**
      *
      */
-    public CONST HEADER_NAME = 'DKIM-Signature';
+    public const HEADER_NAME = 'DKIM-Signature';
     /**
      * @var array
      */
-    private CONST HEADERS_IGNORED = [
+    private const HEADERS_IGNORED = [
         'return-path' => true,
         'received' => true,
         'comments' => true,
@@ -63,8 +63,7 @@ final class HeaderV1Factory
     public function factory(
         MessageInterface $message,
         Parameters $parameters
-    ): HeaderInterface
-    {
+    ): HeaderInterface {
         $headerCanonicalized = [];
         $headerNames = [];
         foreach ($message->getHeaders() as $headers) {
@@ -121,8 +120,7 @@ final class HeaderV1Factory
      */
     private function newHeader(HeaderValue $headerValue): HeaderInterface
     {
-        return new class ($headerValue) implements HeaderInterface
-        {
+        return new class($headerValue) implements HeaderInterface {
             /**
              * @var HeaderValue
              */
@@ -154,5 +152,4 @@ final class HeaderV1Factory
             }
         };
     }
-
 }

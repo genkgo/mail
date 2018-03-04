@@ -36,7 +36,8 @@ final class Server
      * @param array $capabilities
      * @param string $serverName
      */
-    public function __construct(ConnectionListenerInterface $connection, array $capabilities, string $serverName) {
+    public function __construct(ConnectionListenerInterface $connection, array $capabilities, string $serverName)
+    {
         $this->listener = $connection;
         $this->serverName = $serverName;
 
@@ -84,7 +85,8 @@ final class Server
      * @param ConnectionInterface $connection
      * @param \Closure $callback
      */
-    private function transport(ConnectionInterface $connection, \Closure $callback) {
+    private function transport(ConnectionInterface $connection, \Closure $callback)
+    {
         try {
             $callback($connection);
         } catch (ConnectionTimeoutException $e) {

@@ -22,5 +22,4 @@ interface CapabilityInterface
      * @return string
      */
     public function advertise(): string;
-
 }

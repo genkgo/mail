@@ -19,7 +19,7 @@ final class ClientFactory
     /**
      *
      */
-    private CONST AUTH_ENUM = [
+    private const AUTH_ENUM = [
         Client::AUTH_NONE => true,
         Client::AUTH_PLAIN => true,
         Client::AUTH_LOGIN => true,

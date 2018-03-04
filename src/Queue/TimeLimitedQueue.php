@@ -1,5 +1,4 @@
-<?php
-
+<?php declare(strict_types=1);
 namespace Genkgo\Mail\Queue;
 
 use Genkgo\Mail\MessageInterface;
@@ -40,10 +39,10 @@ final class TimeLimitedQueue implements QueueInterface
     public function fetch(): MessageInterface
     {
         while ($message = $this->decoratedQueue->fetch()) {
-           if ($this->hasMessageExpired($message)) {
-               continue;
-           }
-           break;
+            if ($this->hasMessageExpired($message)) {
+                continue;
+            }
+            break;
         }
 
         return $message;

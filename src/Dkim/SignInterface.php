@@ -25,5 +25,4 @@ interface SignInterface
      * @return string
      */
     public function name(): string;
-
 }

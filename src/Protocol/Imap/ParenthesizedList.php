@@ -60,5 +60,4 @@ final class ParenthesizedList
             implode(' ', $this->list)
         );
     }
-
 }

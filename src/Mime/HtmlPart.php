@@ -20,7 +20,8 @@ final class HtmlPart implements PartInterface
      * @param string $html
      * @param string $charset
      */
-    public function __construct(string $html, string $charset = 'UTF-8') {
+    public function __construct(string $html, string $charset = 'UTF-8')
+    {
         if ($html === '') {
             throw new \InvalidArgumentException('Received empty string instead of HTML');
         }

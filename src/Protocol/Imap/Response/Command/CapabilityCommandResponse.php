@@ -52,7 +52,7 @@ final class CapabilityCommandResponse
         $command = 'CAPABILITY ';
         $commandLength = strlen($command);
 
-        if (substr($response,0, $commandLength) !== $command) {
+        if (substr($response, 0, $commandLength) !== $command) {
             throw new \InvalidArgumentException(
                 sprintf('Expected CAPABILITY command, got %s', $response)
             );
@@ -67,5 +67,4 @@ final class CapabilityCommandResponse
             )
         );
     }
-
 }

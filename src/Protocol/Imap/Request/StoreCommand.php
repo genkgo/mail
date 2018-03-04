@@ -37,8 +37,7 @@ final class StoreCommand extends AbstractCommand
         Tag $tag,
         SequenceSet $sequenceSet,
         FlagsItem $flagsItem
-    )
-    {
+    ) {
         $this->tag = $tag;
         $this->flagsItem = $flagsItem;
         $this->sequenceSet = $sequenceSet;

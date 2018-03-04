@@ -10,7 +10,7 @@ final class ContentType implements HeaderInterface
     /**
      *
      */
-    private CONST RFC_1341_ADDITIONAL_SPECIALS = "\x2F\x3F\x3D";
+    private const RFC_1341_ADDITIONAL_SPECIALS = "\x2F\x3F\x3D";
     /**
      * @var string
      */

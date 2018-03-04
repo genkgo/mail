@@ -18,5 +18,4 @@ interface CanonicalizeBodyInterface
      * @return string
      */
     public function name(): string;
-
 }

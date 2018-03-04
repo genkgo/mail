@@ -19,7 +19,7 @@ final class NameItem implements ItemInterface
     /**
      *
      */
-    private CONST VALID_CHAR = "ABCDEFGHIJKLMNOPQRSTUVWXYZ.+-";
+    private const VALID_CHAR = "ABCDEFGHIJKLMNOPQRSTUVWXYZ.+-";
 
     /**
      * NameItem constructor.

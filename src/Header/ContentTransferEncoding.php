@@ -7,7 +7,6 @@ use Genkgo\Mail\HeaderInterface;
 
 final class ContentTransferEncoding implements HeaderInterface
 {
-
     private const VALID_ENCODINGS = [
         '7bit' => true,
         '8bit' => true,

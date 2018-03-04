@@ -73,5 +73,4 @@ final class FetchCommandResponse
 
         return new self((int)$matches[1], ItemList::fromString($matches[2]));
     }
-
 }

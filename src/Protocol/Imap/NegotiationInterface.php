@@ -9,5 +9,4 @@ interface NegotiationInterface
      * @param Client $client
      */
     public function negotiate(Client $client): void;
-
 }

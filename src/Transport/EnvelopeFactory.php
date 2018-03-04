@@ -83,7 +83,7 @@ final class EnvelopeFactory
      * @param string $headerName
      * @return EmailAddress
      */
-    private function extractFromAddressListHeader (MessageInterface $message, string $headerName): EmailAddress
+    private function extractFromAddressListHeader(MessageInterface $message, string $headerName): EmailAddress
     {
         return AddressList::fromString(
             (string)$message->getHeader($headerName)[0]->getValue()->getRaw()
@@ -123,5 +123,4 @@ final class EnvelopeFactory
         $options->callback = $callback;
         return $options;
     }
-
 }

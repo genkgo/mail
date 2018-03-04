@@ -58,7 +58,8 @@ final class DataRequest implements RequestInterface
      * @param ConnectionInterface $connection
      * @param string $line
      */
-    private function sendLine(ConnectionInterface $connection, string $line): void {
+    private function sendLine(ConnectionInterface $connection, string $line): void
+    {
         $line = rtrim($line, "\r");
 
         if (isset($line[0]) && $line[0] === '.') {
@@ -67,5 +68,4 @@ final class DataRequest implements RequestInterface
 
         $connection->send($line);
     }
-
 }

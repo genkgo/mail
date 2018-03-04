@@ -9,5 +9,4 @@ namespace Genkgo\Mail\Exception;
  */
 class QueueIfFailedException extends AbstractException
 {
-
 }

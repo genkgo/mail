@@ -19,7 +19,8 @@ final class PlainTextPart implements PartInterface
     /**
      * @param string $text
      */
-    public function __construct(string $text) {
+    public function __construct(string $text)
+    {
         $stream = new OptimalTransferEncodedTextStream($text);
         $encoding = $stream->getMetadata(['transfer-encoding'])['transfer-encoding'];
 
