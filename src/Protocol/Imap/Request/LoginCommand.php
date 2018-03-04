@@ -13,17 +13,18 @@ final class LoginCommand extends AbstractCommand
      * @var string
      */
     private $username;
+
     /**
      * @var string
      */
     private $password;
+
     /**
      * @var Tag
      */
     private $tag;
 
     /**
-     * LoginCommand constructor.
      * @param Tag $tag
      * @param string $username
      * @param string $password

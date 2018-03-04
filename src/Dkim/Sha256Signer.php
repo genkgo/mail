@@ -5,20 +5,10 @@ namespace Genkgo\Mail\Dkim;
 
 use Genkgo\Mail\Exception\FailedToSignHeadersException;
 
-/**
- * Class Sha256Signer
- * @package Genkgo\Mail\Dkim
- */
 final class Sha256Signer implements SignInterface
 {
-    /**
-     *
-     */
     private const SIGN_ALGORITHM = OPENSSL_ALGO_SHA256;
-
-    /**
-     *
-     */
+    
     private const HASH_ALGORITHM = 'sha256';
 
     /**
@@ -27,7 +17,6 @@ final class Sha256Signer implements SignInterface
     private $privateKey;
 
     /**
-     * Sha256Signer constructor.
      * @param resource $key
      */
     public function __construct($key)

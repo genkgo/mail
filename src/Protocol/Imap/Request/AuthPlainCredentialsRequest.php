@@ -14,17 +14,18 @@ final class AuthPlainCredentialsRequest implements RequestInterface
      * @var string
      */
     private $username;
+
     /**
      * @var string
      */
     private $password;
+
     /**
      * @var Tag
      */
     private $tag;
 
     /**
-     * AuthPlainCredentialsRequest constructor.
      * @param Tag $tag
      * @param string $username
      * @param string $password

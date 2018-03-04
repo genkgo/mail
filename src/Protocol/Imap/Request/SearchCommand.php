@@ -8,31 +8,26 @@ use Genkgo\Mail\Protocol\Imap\Tag;
 use Genkgo\Mail\Stream\StringStream;
 use Genkgo\Mail\StreamInterface;
 
-/**
- * Class SearchCommand
- * @package Genkgo\Mail\Protocol\Imap\Request
- */
 final class SearchCommand extends AbstractCommand
 {
-    /**
-     *
-     */
     private const CHARSET_VALID = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-+.:_";
+
     /**
      * @var Tag
      */
     private $tag;
+
     /**
      * @var Query
      */
     private $query;
+
     /**
      * @var string
      */
     private $charset;
 
     /**
-     * LogoutCommand constructor.
      * @param Tag $tag
      * @param Query $query
      * @param string $charset

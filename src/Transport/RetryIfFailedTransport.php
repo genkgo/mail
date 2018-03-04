@@ -9,11 +9,11 @@ use Genkgo\Mail\TransportInterface;
 
 final class RetryIfFailedTransport implements TransportInterface
 {
-
     /**
      * @var TransportInterface
      */
     private $decoratedTransport;
+
     /**
      * @var int
      */

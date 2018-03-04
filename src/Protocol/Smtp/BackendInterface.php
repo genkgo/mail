@@ -8,7 +8,6 @@ use Genkgo\Mail\MessageInterface;
 
 interface BackendInterface
 {
-
     /**
      * @param EmailAddress $mailbox
      * @return bool

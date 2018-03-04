@@ -5,11 +5,11 @@ namespace Genkgo\Mail\Protocol\Imap\Request\SearchCriteria;
 
 final class MatchContentCriterion implements CriterionInterface
 {
-
     /**
      * @var string
      */
     private $query;
+
     /**
      * @var string
      */

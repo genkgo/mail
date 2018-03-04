@@ -15,7 +15,6 @@ final class From implements HeaderInterface
     private $from;
 
     /**
-     * From constructor.
      * @param Address $from
      */
     public function __construct(Address $from)

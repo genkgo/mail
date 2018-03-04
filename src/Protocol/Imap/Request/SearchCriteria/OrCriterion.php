@@ -3,13 +3,8 @@ declare(strict_types=1);
 
 namespace Genkgo\Mail\Protocol\Imap\Request\SearchCriteria;
 
-/**
- * Class OrCriterium
- * @package Genkgo\Mail\Protocol\Imap\Request\SearchCriteria
- */
 final class OrCriterion implements CriterionInterface
 {
-
     /**
      * @var Query
      */

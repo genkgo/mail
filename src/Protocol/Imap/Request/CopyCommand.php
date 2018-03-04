@@ -8,27 +8,24 @@ use Genkgo\Mail\Protocol\Imap\Tag;
 use Genkgo\Mail\Stream\StringStream;
 use Genkgo\Mail\StreamInterface;
 
-/**
- * Class CopyCommand
- * @package Genkgo\Mail\Protocol\Imap\Request
- */
 final class CopyCommand extends AbstractCommand
 {
     /**
      * @var SequenceSet
      */
     private $set;
+
     /**
      * @var Tag
      */
     private $tag;
+
     /**
      * @var MailboxName
      */
     private $mailbox;
 
     /**
-     * CopyCommand constructor.
      * @param Tag $tag
      * @param SequenceSet $set
      * @param MailboxName $mailbox

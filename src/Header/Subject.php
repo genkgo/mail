@@ -13,7 +13,6 @@ final class Subject implements HeaderInterface
     private $subject;
 
     /**
-     * From constructor.
      * @param string $subject
      */
     public function __construct(string $subject)

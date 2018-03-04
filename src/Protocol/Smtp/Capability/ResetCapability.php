@@ -9,7 +9,6 @@ use Genkgo\Mail\Protocol\Smtp\Session;
 
 final class ResetCapability implements CapabilityInterface
 {
-
     /**
      * @param ConnectionInterface $connection
      * @param Session $session

@@ -16,17 +16,18 @@ final class MultiPart implements MultiPartInterface
      * @var PartInterface
      */
     private $decoratedPart;
+
     /**
      * @var Boundary
      */
     private $boundary;
+
     /**
      * @var iterable|PartInterface[]
      */
     private $parts = [];
 
     /**
-     * MultiPart constructor.
      * @param Boundary $boundary
      * @param ContentType $contentType
      */

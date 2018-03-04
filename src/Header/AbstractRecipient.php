@@ -8,10 +8,6 @@ use Genkgo\Mail\AddressList;
 use Genkgo\Mail\EmailAddress;
 use Genkgo\Mail\HeaderInterface;
 
-/**
- * Class Recipient
- * @package Genkgo\Mail\Header
- */
 abstract class AbstractRecipient implements HeaderInterface
 {
     /**
@@ -20,7 +16,6 @@ abstract class AbstractRecipient implements HeaderInterface
     private $recipients;
 
     /**
-     * To constructor.
      * @param AddressList $recipients
      */
     final public function __construct(AddressList $recipients)

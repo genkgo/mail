@@ -5,24 +5,16 @@ namespace Genkgo\Mail\Protocol\Imap\MessageData\Item;
 
 use Genkgo\Mail\Protocol\Imap\MessageData\ItemInterface;
 
-/**
- * Class NameItem
- * @package Genkgo\Mail\Protocol\Imap\MessageData\GenericItem
- */
 final class NameItem implements ItemInterface
 {
     /**
      * @var string
      */
     private $name;
-
-    /**
-     *
-     */
+    
     private const VALID_CHAR = "ABCDEFGHIJKLMNOPQRSTUVWXYZ.+-";
 
     /**
-     * NameItem constructor.
      * @param string $name
      */
     public function __construct(string $name)

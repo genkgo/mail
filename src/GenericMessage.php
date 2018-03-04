@@ -9,10 +9,6 @@ use Genkgo\Mail\Stream\EmptyStream;
 use Genkgo\Mail\Stream\MessageStream;
 use Genkgo\Mail\Stream\StringStream;
 
-/**
- * Class ImmutableMessage
- * @package Genkgo\Mail
- */
 final class GenericMessage implements MessageInterface
 {
     /**
@@ -36,14 +32,12 @@ final class GenericMessage implements MessageInterface
         'content-type' => [],
         'content-transfer-encoding' => [],
     ];
+
     /**
      * @var StreamInterface
      */
     private $body;
-
-    /**
-     * ImmutableMessage constructor.
-     */
+    
     public function __construct()
     {
         $this->body = new EmptyStream();

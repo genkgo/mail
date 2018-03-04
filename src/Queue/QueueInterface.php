@@ -7,13 +7,8 @@ use Genkgo\Mail\Exception\EmptyQueueException;
 use Genkgo\Mail\Exception\QueueStoreException;
 use Genkgo\Mail\MessageInterface;
 
-/**
- * Interface QueueInterface
- * @package Genkgo\Mail\Queue
- */
 interface QueueInterface
 {
-
     /**
      * @param MessageInterface $message
      * @return void

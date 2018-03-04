@@ -4,13 +4,8 @@ namespace Genkgo\Mail\Protocol\Imap;
 use Genkgo\Mail\Exception\AssertionFailedException;
 use Genkgo\Mail\Protocol\Imap\Response\CompletionResult;
 
-/**
- * Interface ResponseInterface
- * @package Genkgo\Mail\Protocol\Imap
- */
 interface ResponseInterface
 {
-
     /**
      * @param CompletionResult $expectedResult
      * @return ResponseInterface

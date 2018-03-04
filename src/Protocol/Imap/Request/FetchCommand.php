@@ -8,27 +8,24 @@ use Genkgo\Mail\Protocol\Imap\Tag;
 use Genkgo\Mail\Stream\StringStream;
 use Genkgo\Mail\StreamInterface;
 
-/**
- * Class FetchCommand
- * @package Genkgo\Mail\Protocol\Imap\Request
- */
 final class FetchCommand extends AbstractCommand
 {
     /**
      * @var SequenceSet
      */
     private $set;
+
     /**
      * @var ItemList
      */
     private $list;
+
     /**
      * @var Tag
      */
     private $tag;
 
     /**
-     * FetchCommand constructor.
      * @param Tag $tag
      * @param SequenceSet $set
      * @param ItemList $list

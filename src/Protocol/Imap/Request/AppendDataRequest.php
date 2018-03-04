@@ -15,13 +15,13 @@ final class AppendDataRequest implements RequestInterface
      * @var Tag
      */
     private $tag;
+
     /**
      * @var MessageInterface
      */
     private $message;
 
     /**
-     * AuthPlainCredentialsRequest constructor.
      * @param Tag $tag
      * @param MessageInterface $message
      */

@@ -20,21 +20,23 @@ final class AuthNegotiation implements NegotiationInterface
      * @var string
      */
     private $ehlo;
+
     /**
      * @var int
      */
     private $method;
+
     /**
      * @var string
      */
     private $username;
+
     /**
      * @var string
      */
     private $password;
 
     /**
-     * AuthNegotiation constructor.
      * @param int $method
      * @param string $username
      * @param string $password

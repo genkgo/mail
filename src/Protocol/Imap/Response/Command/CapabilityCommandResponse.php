@@ -11,7 +11,6 @@ final class CapabilityCommandResponse
     private $advertisements = [];
 
     /**
-     * CapabilityList constructor.
      * @param array $list
      */
     public function __construct(array $list)

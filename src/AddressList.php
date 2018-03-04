@@ -3,19 +3,10 @@ declare(strict_types=1);
 
 namespace Genkgo\Mail;
 
-/**
- * Class AddressList
- * @package Genkgo\Mail
- */
 final class AddressList implements \Countable, \IteratorAggregate
 {
-    /**
-     *
-     */
     private const PARSE_START = 1;
-    /**
-     *
-     */
+    
     private const PARSE_QUOTE = 2;
 
     /**
@@ -24,7 +15,6 @@ final class AddressList implements \Countable, \IteratorAggregate
     private $addresses = [];
 
     /**
-     * To constructor.
      * @param array|Address[] $recipients
      */
     public function __construct(array $recipients = [])

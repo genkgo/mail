@@ -15,7 +15,6 @@ final class MailFromCommand implements RequestInterface
     private $envelope;
 
     /**
-     * MailFromCommand constructor.
      * @param EmailAddress $envelope
      */
     public function __construct(EmailAddress $envelope)

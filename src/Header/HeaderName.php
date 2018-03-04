@@ -3,10 +3,6 @@ declare(strict_types=1);
 
 namespace Genkgo\Mail\Header;
 
-/**
- * Class HeaderName
- * @package Genkgo\Mail\Header
- */
 final class HeaderName
 {
     /**
@@ -15,7 +11,6 @@ final class HeaderName
     private $name;
 
     /**
-     * HeaderName constructor.
      * @param string $name
      */
     public function __construct(string $name)

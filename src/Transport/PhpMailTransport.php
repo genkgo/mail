@@ -11,22 +11,22 @@ use Genkgo\Mail\TransportInterface;
 
 final class PhpMailTransport implements TransportInterface
 {
-
     /**
      * @var EnvelopeFactory
      */
     private $envelopeFactory;
+
     /**
      * @var array
      */
     private $parameters;
+
     /**
      * @var \Closure
      */
     private $replacedMailMethod;
 
     /**
-     * PhpMailTransport constructor.
      * @param EnvelopeFactory $envelopeFactory
      * @param array $parameters
      */

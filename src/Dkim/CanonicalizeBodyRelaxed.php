@@ -7,7 +7,6 @@ use Genkgo\Mail\StreamInterface;
 
 final class CanonicalizeBodyRelaxed implements CanonicalizeBodyInterface
 {
-
     /**
      * @param StreamInterface $body
      * @return string

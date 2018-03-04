@@ -7,10 +7,6 @@ use Genkgo\Mail\Exception\EmptyQueueException;
 use Genkgo\Mail\GenericMessage;
 use Genkgo\Mail\MessageInterface;
 
-/**
- * Class ArrayObjectQueue
- * @package Genkgo\Mail\Queue
- */
 final class ArrayObjectQueue implements QueueInterface, \Countable
 {
     /**
@@ -19,7 +15,6 @@ final class ArrayObjectQueue implements QueueInterface, \Countable
     private $storage;
 
     /**
-     * ArrayObjectQueue constructor.
      * @param \ArrayObject $storage
      */
     public function __construct(\ArrayObject $storage)

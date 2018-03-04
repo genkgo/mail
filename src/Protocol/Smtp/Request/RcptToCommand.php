@@ -15,7 +15,6 @@ final class RcptToCommand implements RequestInterface
     private $recipient;
 
     /**
-     * RcptToCommand constructor.
      * @param EmailAddress $recipient
      */
     public function __construct(EmailAddress $recipient)

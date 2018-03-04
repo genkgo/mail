@@ -9,30 +9,24 @@ use Genkgo\Mail\Exception\ConnectionTimeoutException;
 use Genkgo\Mail\Exception\ConnectionClosedException;
 
 /**
- * Class AbstractConnection
- * @package Genkgo\Mail\Protocol
  * @codeCoverageIgnore
  */
 abstract class AbstractConnection implements ConnectionInterface
 {
-    /**
-     *
-     */
     private const RECEIVE_BYTES = 1024;
+
     /**
      * @var resource|null
      */
     protected $resource;
+
     /**
      * @var array
      */
     private $listeners = [
         'connect' => []
     ];
-
-    /**
-     *
-     */
+    
     final public function __destruct()
     {
         $this->disconnect();
@@ -60,15 +54,9 @@ abstract class AbstractConnection implements ConnectionInterface
             $listener();
         }
     }
-
-    /**
-     *
-     */
+    
     abstract public function connect(): void;
-
-    /**
-     *
-     */
+    
     final public function disconnect(): void
     {
         if ($this->resource !== null) {
@@ -145,20 +133,14 @@ abstract class AbstractConnection implements ConnectionInterface
             ARRAY_FILTER_USE_KEY
         );
     }
-
-    /**
-     *
-     */
+    
     private function verifyConnection()
     {
         if ($this->resource === null) {
             throw new \UnexpectedValueException('Cannot communicate when there is no connection');
         }
     }
-
-    /**
-     *
-     */
+    
     private function verifyAlive()
     {
         $info = \stream_get_meta_data($this->resource);

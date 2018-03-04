@@ -7,10 +7,6 @@ use Genkgo\Mail\Exception\AssertionFailedException;
 use Genkgo\Mail\Protocol\Imap\ResponseInterface;
 use Genkgo\Mail\Protocol\Imap\Tag;
 
-/**
- * Class Response
- * @package Genkgo\Mail\Protocol\Smtp
- */
 final class AggregateResponse implements \IteratorAggregate
 {
     /**
@@ -24,7 +20,6 @@ final class AggregateResponse implements \IteratorAggregate
     private $tag;
 
     /**
-     * Reply constructor.
      * @param Tag $tag
      */
     public function __construct(Tag $tag)

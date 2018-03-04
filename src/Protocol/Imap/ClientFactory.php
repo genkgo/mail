@@ -16,50 +16,54 @@ use Genkgo\Mail\Protocol\SecureConnectionOptions;
 
 final class ClientFactory
 {
-    /**
-     *
-     */
     private const AUTH_ENUM = [
         Client::AUTH_NONE => true,
         Client::AUTH_PLAIN => true,
         Client::AUTH_LOGIN => true,
         Client::AUTH_AUTO => true
     ];
+
     /**
      * @var ConnectionInterface
      */
     private $connection;
+
     /**
      * @var string
      */
     private $password = '';
+
     /**
      * @var float
      */
     private $timeout = 1;
+
     /**
      * @var string
      */
     private $username = '';
+
     /**
      * @var int
      */
     private $authMethod = Client::AUTH_NONE;
+
     /**
      * @var bool
      */
     private $insecureConnectionAllowed = false;
+
     /**
      * @var string
      */
     private $reconnectAfter = 'PT300S';
+
     /**
      * @var int
      */
     private $startTls;
 
     /**
-     * ClientFactory constructor.
      * @param ConnectionInterface $connection
      */
     public function __construct(ConnectionInterface $connection)

@@ -1,24 +1,19 @@
 <?php declare(strict_types=1);
 namespace Genkgo\Mail\Protocol\Smtp;
 
-/**
- * Class SpamDecideScore
- * @package Genkgo\Mail\Protocol\Smtp
- */
 final class SpamDecideScore
 {
-
     /**
      * @var int
      */
     private $ham;
+
     /**
      * @var int
      */
     private $spam;
 
     /**
-     * SpamDecideScore constructor.
      * @param int $ham
      * @param int $spam
      */

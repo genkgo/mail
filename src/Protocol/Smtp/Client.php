@@ -9,33 +9,25 @@ use Genkgo\Mail\Protocol\Smtp\Negotiation\ReceiveWelcomeNegotiation;
 
 final class Client
 {
-    /**
-     *
-     */
     public const AUTH_NONE = 0;
-    /**
-     *
-     */
+    
     public const AUTH_PLAIN = 1;
-    /**
-     *
-     */
+    
     public const AUTH_LOGIN = 2;
-    /**
-     *
-     */
+    
     public const AUTH_AUTO = 3;
+
     /**
      * @var ConnectionInterface
      */
     private $connection;
+
     /**
      * @var NegotiationInterface[]
      */
     private $negotiators = [];
 
     /**
-     * Client constructor.
      * @param ConnectionInterface $connection
      * @param iterable $negotiators
      */

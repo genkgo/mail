@@ -8,27 +8,24 @@ use Genkgo\Mail\Protocol\Imap\Tag;
 use Genkgo\Mail\Stream\StringStream;
 use Genkgo\Mail\StreamInterface;
 
-/**
- * Class AppendCommand
- * @package Genkgo\Mail\Protocol\Imap\Request
- */
 final class StoreCommand extends AbstractCommand
 {
     /**
      * @var Tag
      */
     private $tag;
+
     /**
      * @var SequenceSet
      */
     private $sequenceSet;
+
     /**
      * @var FlagsItem
      */
     private $flagsItem;
 
     /**
-     * AppendCommand constructor.
      * @param Tag $tag
      * @param SequenceSet $sequenceSet
      * @param FlagsItem $flagsItem

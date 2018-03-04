@@ -10,14 +10,12 @@ use Genkgo\Mail\StreamInterface;
 
 final class UidCommand implements RequestInterface
 {
-
     /**
      * @var RequestInterface
      */
     private $request;
 
     /**
-     * UidCommand constructor.
      * @param RequestInterface $request
      */
     public function __construct(RequestInterface $request)

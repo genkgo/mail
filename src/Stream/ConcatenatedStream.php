@@ -11,17 +11,18 @@ final class ConcatenatedStream implements StreamInterface
      * @var array|StreamInterface[]
      */
     private $streams = [];
+
     /**
      * @var int
      */
     private $position = 0;
+
     /**
      * @var int
      */
     private $index = 0;
 
     /**
-     * ConcatenatedStream constructor.
      * @param iterable $streams
      */
     public function __construct(iterable $streams)
@@ -52,10 +53,7 @@ final class ConcatenatedStream implements StreamInterface
 
         return \implode('', $result);
     }
-
-    /**
-     *
-     */
+    
     public function close(): void
     {
         foreach ($this->streams as $stream) {

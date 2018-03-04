@@ -11,13 +11,13 @@ final class EhloResponse
      * @var string
      */
     private $greeting = '';
+
     /**
      * @var array
      */
     private $advertisements = [];
 
     /**
-     * EhloResponse constructor.
      * @param Reply $reply
      */
     public function __construct(Reply $reply)

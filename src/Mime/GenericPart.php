@@ -9,9 +9,6 @@ use Genkgo\Mail\StreamInterface;
 
 final class GenericPart implements PartInterface
 {
-    /**
-     *
-     */
     private const ALLOWED_HEADERS = [
         'content-type' => true,
         'content-transfer-encoding' => true,
@@ -21,18 +18,17 @@ final class GenericPart implements PartInterface
         'content-location' => true,
         'content-language' => true,
     ];
+
     /**
      * @var array|HeaderInterface[]
      */
     private $headers = [];
+
     /**
      * @var StreamInterface
      */
     private $body;
-
-    /**
-     * Part constructor.
-     */
+    
     public function __construct()
     {
         $this->body = new EmptyStream();

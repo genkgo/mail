@@ -3,27 +3,14 @@ declare(strict_types=1);
 
 namespace Genkgo\Mail\Protocol\Imap\Response;
 
-/**
- * Class CompletionResult
- * @package Genkgo\Mail\Protocol\Imap\Response
- */
 final class CompletionResult
 {
-    /**
-     *
-     */
     private const BAD = 'BAD';
-    /**
-     *
-     */
+    
     private const NO = 'NO';
-    /**
-     *
-     */
+    
     private const OK = 'OK';
-    /**
-     *
-     */
+    
     private const ENUM = [
         self::BAD => true,
         self::NO => true,
@@ -36,7 +23,6 @@ final class CompletionResult
     private $result;
 
     /**
-     * CompletionResult constructor.
      * @param string $value
      */
     private function __construct(string $value)

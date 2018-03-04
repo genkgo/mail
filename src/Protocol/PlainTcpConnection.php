@@ -6,8 +6,6 @@ namespace Genkgo\Mail\Protocol;
 use Genkgo\Mail\Exception\ConnectionRefusedException;
 
 /**
- * Class PlainTcpConnection
- * @package Genkgo\Mail\Protocol
  * @codeCoverageIgnore
  */
 final class PlainTcpConnection extends AbstractConnection
@@ -16,17 +14,18 @@ final class PlainTcpConnection extends AbstractConnection
      * @var string
      */
     private $host;
+
     /**
      * @var int
      */
     private $port;
+
     /**
      * @var float
      */
     private $connectionTimeout;
 
     /**
-     * PlainTcpConnection constructor.
      * @param string $host
      * @param int $port
      * @param float $connectionTimeout
@@ -47,10 +46,7 @@ final class PlainTcpConnection extends AbstractConnection
             throw new \InvalidArgumentException('Cannot upgrade connection to requested encryption type');
         }
     }
-
-    /**
-     *
-     */
+    
     public function connect(): void
     {
         $resource = @\stream_socket_client(

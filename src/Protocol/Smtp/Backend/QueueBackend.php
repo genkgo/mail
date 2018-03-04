@@ -10,14 +10,12 @@ use Genkgo\Mail\Queue\QueueInterface;
 
 final class QueueBackend implements BackendInterface
 {
-
     /**
      * @var QueueInterface
      */
     private $queue;
 
     /**
-     * QueueBackend constructor.
      * @param QueueInterface $backend
      */
     public function __construct(QueueInterface $backend)

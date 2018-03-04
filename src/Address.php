@@ -5,27 +5,14 @@ namespace Genkgo\Mail;
 
 use Genkgo\Mail\Header\OptimalEncodedHeaderValue;
 
-/**
- * Class Address
- * @package Genkgo\Mail
- */
 final class Address
 {
-    /**
-     *
-     */
     private const PARSE_POSITION_START = 1;
-    /**
-     *
-     */
+    
     private const PARSE_POSITION_QUOTE = 2;
-    /**
-     *
-     */
+    
     private const PARSE_STATE_EMAIL = 1;
-    /**
-     *
-     */
+    
     private const PARSE_STATE_TAGGED_EMAIL = 2;
 
     /**
@@ -39,7 +26,6 @@ final class Address
     private $name;
 
     /**
-     * To constructor.
      * @param EmailAddress $address
      * @param string $name
      */

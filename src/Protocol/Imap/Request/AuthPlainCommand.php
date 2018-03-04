@@ -7,13 +7,8 @@ use Genkgo\Mail\Protocol\Imap\Tag;
 use Genkgo\Mail\Stream\StringStream;
 use Genkgo\Mail\StreamInterface;
 
-/**
- * Class AuthPlainCommand
- * @package Genkgo\Mail\Protocol\Imap\Request
- */
 final class AuthPlainCommand extends AbstractCommand
 {
-
     /**
      * @var Tag
      */

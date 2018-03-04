@@ -5,13 +5,8 @@ namespace Genkgo\Mail\Stream;
 
 use Genkgo\Mail\StreamInterface;
 
-/**
- * Class StringStream
- * @package Genkgo\Mail\Stream
- */
 final class StringStream implements StreamInterface
 {
-
     /**
      * @var string
      */
@@ -23,7 +18,6 @@ final class StringStream implements StreamInterface
     private $position = 0;
 
     /**
-     * StringStream constructor.
      * @param string $text
      */
     public function __construct(string $text)
@@ -38,10 +32,7 @@ final class StringStream implements StreamInterface
     {
         return $this->text;
     }
-
-    /**
-     *
-     */
+    
     public function close(): void
     {
         return;

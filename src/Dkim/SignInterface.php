@@ -3,10 +3,6 @@ declare(strict_types=1);
 
 namespace Genkgo\Mail\Dkim;
 
-/**
- * Interface SignInterface
- * @package Genkgo\Mail\Header\Dkim
- */
 interface SignInterface
 {
     /**

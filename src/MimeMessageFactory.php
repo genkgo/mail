@@ -11,10 +11,6 @@ use Genkgo\Mail\Mime\PartInterface;
 use Genkgo\Mail\Stream\ConcatenatedStream;
 use Genkgo\Mail\Stream\StringStream;
 
-/**
- * Class MimeMessageFactory
- * @package Genkgo\Mail
- */
 final class MimeMessageFactory
 {
     /**

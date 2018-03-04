@@ -11,21 +11,23 @@ final class QuotedPrintableStream implements StreamInterface
      * @var StreamInterface
      */
     private $decoratedStream;
+
     /**
      * @var int
      */
     private $lineLength;
+
     /**
      * @var resource
      */
     private $filter;
+
     /**
      * @var string
      */
     private $lineBreak;
 
     /**
-     * QuotedPrintableStream constructor.
      * @param resource $resource
      * @param int $lineLength
      * @param string $lineBreak
@@ -57,10 +59,7 @@ final class QuotedPrintableStream implements StreamInterface
         \fwrite($resource, $string);
         return new self($resource, $lineLength, $lineBreak);
     }
-
-    /**
-     *
-     */
+    
     private function applyFilter(): void
     {
         $this->filter = \stream_filter_prepend(
@@ -73,10 +72,7 @@ final class QuotedPrintableStream implements StreamInterface
             ]
         );
     }
-
-    /**
-     *
-     */
+    
     private function removeFilter(): void
     {
         if ($this->filter !== null) {
@@ -92,10 +88,7 @@ final class QuotedPrintableStream implements StreamInterface
         $this->rewind();
         return $this->decoratedStream->__toString();
     }
-
-    /**
-     *
-     */
+    
     public function close(): void
     {
         $this->decoratedStream->close();

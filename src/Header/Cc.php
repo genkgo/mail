@@ -3,13 +3,8 @@ declare(strict_types=1);
 
 namespace Genkgo\Mail\Header;
 
-/**
- * Class Cc
- * @package Genkgo\Mail\Header
- */
 final class Cc extends AbstractRecipient
 {
-
     /**
      * @return HeaderName
      */

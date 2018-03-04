@@ -15,7 +15,6 @@ final class PlainTextMessage implements MessageInterface
     private $decoratedMessage;
 
     /**
-     * PlainTextMessage constructor.
      * @param string $text
      * @param string $charset
      */

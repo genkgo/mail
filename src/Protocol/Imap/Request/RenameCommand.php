@@ -8,27 +8,24 @@ use Genkgo\Mail\Protocol\Imap\Tag;
 use Genkgo\Mail\Stream\StringStream;
 use Genkgo\Mail\StreamInterface;
 
-/**
- * Class RenameCommand
- * @package Genkgo\Mail\Protocol\Imap\Request
- */
 final class RenameCommand extends AbstractCommand
 {
     /**
      * @var Tag
      */
     private $tag;
+
     /**
      * @var MailboxName
      */
     private $mailbox;
+
     /**
      * @var MailboxName
      */
     private $newName;
 
     /**
-     * FetchCommand constructor.
      * @param Tag $tag
      * @param MailboxName $mailbox
      * @param MailboxName $newName

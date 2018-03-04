@@ -4,16 +4,13 @@ namespace Genkgo\Mail\Queue;
 use Genkgo\Mail\MessageInterface;
 use Genkgo\Mail\Transport\QueueIfFailedTransport;
 
-/**
- * Class TimeLimitedQueue
- * @package Genkgo\Mail\Queue
- */
 final class TimeLimitedQueue implements QueueInterface
 {
     /**
      * @var QueueInterface
      */
     private $decoratedQueue;
+
     /**
      * @var int
      */

@@ -11,10 +11,8 @@ use Genkgo\Mail\MessageInterface;
 
 final class HeaderV1Factory
 {
-    /**
-     *
-     */
     public const HEADER_NAME = 'DKIM-Signature';
+
     /**
      * @var array
      */
@@ -26,21 +24,23 @@ final class HeaderV1Factory
         'bcc' => true,
         'resent-bcc' => true,
     ];
+
     /**
      * @var SignInterface
      */
     private $sign;
+
     /**
      * @var CanonicalizeHeaderInterface
      */
     private $canonicalizeHeader;
+
     /**
      * @var CanonicalizeBodyInterface
      */
     private $canonicalizeBody;
 
     /**
-     * SignedTransport constructor.
      * @param SignInterface $sign
      * @param CanonicalizeHeaderInterface $canonicalizeHeader
      * @param CanonicalizeBodyInterface $canonicalizeBody
@@ -127,7 +127,6 @@ final class HeaderV1Factory
             private $headerValue;
 
             /**
-             * DkimSignature constructor.
              * @param HeaderValue $headerValue
              */
             public function __construct(HeaderValue $headerValue)

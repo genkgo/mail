@@ -5,18 +5,17 @@ namespace Genkgo\Mail\Protocol\Imap;
 
 final class Tag
 {
-
     /**
      * @var string
      */
     private $tag;
+
     /**
      * @var int
      */
     private $tagLength;
 
     /**
-     * Tag constructor.
      * @param string $tag
      */
     public function __construct(string $tag)

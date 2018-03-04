@@ -8,43 +8,32 @@ use Genkgo\Mail\Protocol\ConnectionInterface;
 use Genkgo\Mail\Protocol\Imap\Negotiation\ReceiveWelcomeNegotiation;
 use Genkgo\Mail\Protocol\Imap\Response\AggregateResponse;
 
-/**
- * Class Client
- * @package Genkgo\Mail\Protocol\Imap
- */
 final class Client
 {
-    /**
-     *
-     */
     public const AUTH_NONE = 0;
-    /**
-     *
-     */
+    
     public const AUTH_PLAIN = 1;
-    /**
-     *
-     */
+    
     public const AUTH_LOGIN = 2;
-    /**
-     *
-     */
+    
     public const AUTH_AUTO = 3;
+
     /**
      * @var ConnectionInterface
      */
     private $connection;
+
     /**
      * @var NegotiationInterface[]
      */
     private $negotiators = [];
+
     /**
      * @var TagFactoryInterface
      */
     private $tagFactory;
 
     /**
-     * Client constructor.
      * @param ConnectionInterface $connection
      * @param TagFactoryInterface $tagFactory
      * @param iterable $negotiators

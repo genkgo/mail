@@ -4,13 +4,8 @@ namespace Genkgo\Mail\Protocol\Smtp\GreyList;
 use Genkgo\Mail\MessageInterface;
 use Genkgo\Mail\Protocol\Smtp\GreyListInterface;
 
-/**
- * Class ArrayGreyList
- * @package Genkgo\Mail\Protocol\Smtp\GreyList
- */
 final class ArrayGreyList implements GreyListInterface
 {
-
     /**
      * @var array
      */

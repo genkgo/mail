@@ -7,18 +7,17 @@ use Psr\Log\LoggerInterface;
 
 final class DataLogConnection implements ConnectionInterface
 {
-
     /**
      * @var ConnectionInterface
      */
     private $decoratedConnection;
+
     /**
      * @var LoggerInterface
      */
     private $logger;
 
     /**
-     * LogConnection constructor.
      * @param ConnectionInterface $decoratedConnection
      * @param LoggerInterface $logger
      */

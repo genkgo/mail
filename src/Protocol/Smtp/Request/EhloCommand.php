@@ -14,7 +14,6 @@ final class EhloCommand implements RequestInterface
     private $hostName;
 
     /**
-     * EhloCommand constructor.
      * @param string $hostName
      */
     public function __construct($hostName)

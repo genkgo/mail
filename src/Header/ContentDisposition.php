@@ -5,23 +5,19 @@ namespace Genkgo\Mail\Header;
 
 use Genkgo\Mail\HeaderInterface;
 
-/**
- * Class ContentDisposition
- * @package Genkgo\Mail\Header
- */
 final class ContentDisposition implements HeaderInterface
 {
     /**
      * @var string
      */
     private $value;
+
     /**
      * @var string
      */
     private $filename;
 
     /**
-     * ContentDisposition constructor.
      * @param string $value
      * @param string $filename
      */

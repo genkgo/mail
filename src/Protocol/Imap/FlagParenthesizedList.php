@@ -3,20 +3,14 @@ declare(strict_types=1);
 
 namespace Genkgo\Mail\Protocol\Imap;
 
-/**
- * Class FlagParenthesizedList
- * @package Genkgo\Mail\Protocol\Imap
- */
 final class FlagParenthesizedList
 {
-
     /**
      * @var array
      */
     private $flags = [];
 
     /**
-     * ParenthesizedList constructor.
      * @param array $list
      */
     public function __construct(array $list = [])

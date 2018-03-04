@@ -7,11 +7,11 @@ use Genkgo\Mail\Header\HeaderName;
 
 final class HeaderCriterion implements CriterionInterface
 {
-
     /**
      * @var HeaderName
      */
     private $headerName;
+
     /**
      * @var string
      */

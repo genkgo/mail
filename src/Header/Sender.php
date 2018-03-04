@@ -14,7 +14,6 @@ final class Sender implements HeaderInterface
     private $sender;
 
     /**
-     * From constructor.
      * @param Address $sender
      */
     public function __construct(Address $sender)

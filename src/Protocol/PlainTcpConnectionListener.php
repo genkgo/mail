@@ -14,21 +14,23 @@ final class PlainTcpConnectionListener implements ConnectionListenerInterface
      * @var string
      */
     private $host;
+
     /**
      * @var int
      */
     private $port;
+
     /**
      * @var resource
      */
     private $resource;
+
     /**
      * @var float
      */
     private $timeout;
 
     /**
-     * PlainTcpConnection constructor.
      * @param string $host
      * @param int $port
      * @param float $timeout
@@ -51,26 +53,22 @@ final class PlainTcpConnectionListener implements ConnectionListenerInterface
         $resource = @\stream_socket_accept($this->resource, $this->timeout);
         if (\is_resource($resource)) {
             return new class($resource) extends AbstractConnection {
-
                 /**
-                 * @param resource $resource
-                 */
+             * @param resource $resource
+             */
                 public function __construct($resource)
                 {
                     $this->resource = $resource;
                 }
-
-                /**
-                 *
-                 */
+                
                 public function connect(): void
                 {
                     $this->fireEvent('connect');
                 }
 
                 /**
-                 * @param int $type
-                 */
+             * @param int $type
+             */
                 public function upgrade(int $type): void
                 {
                     if (\stream_socket_enable_crypto($this->resource, true, $type) === false) {
@@ -82,10 +80,7 @@ final class PlainTcpConnectionListener implements ConnectionListenerInterface
 
         throw new ConnectionListenerException('Could not accept connection');
     }
-
-    /**
-     *
-     */
+    
     private function validateResource(): void
     {
         if ($this->resource === null) {

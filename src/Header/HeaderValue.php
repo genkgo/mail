@@ -3,39 +3,33 @@ declare(strict_types=1);
 
 namespace Genkgo\Mail\Header;
 
-/**
- * Class HeaderValue
- * @package Genkgo\Mail\Header
- */
 final class HeaderValue
 {
-    /**
-     *
-     */
     private const PARSE_START = 1;
-    /**
-     *
-     */
+    
     private const PARSE_QUOTE = 2;
+
     /**
      * @var string
      */
     private $value;
+
     /**
      * @var array
      */
     private $parameters = [];
+
     /**
      * @var array
      */
     private $parametersForceNewLine = [];
+
     /**
      * @var bool
      */
     private $needsEncoding = true;
 
     /**
-     * HeaderValue constructor.
      * @param string $value
      */
     public function __construct(string $value)

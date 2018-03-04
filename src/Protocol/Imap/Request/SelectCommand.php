@@ -8,23 +8,19 @@ use Genkgo\Mail\Protocol\Imap\Tag;
 use Genkgo\Mail\Stream\StringStream;
 use Genkgo\Mail\StreamInterface;
 
-/**
- * Class SelectCommand
- * @package Genkgo\Mail\Protocol\Imap\Request
- */
 final class SelectCommand extends AbstractCommand
 {
     /**
      * @var Tag
      */
     private $tag;
+
     /**
      * @var MailboxName
      */
     private $mailbox;
 
     /**
-     * SelectCommand constructor.
      * @param Tag $tag
      * @param MailboxName $mailbox
      */

@@ -7,23 +7,19 @@ use Genkgo\Mail\Exception\AssertionFailedException;
 use Genkgo\Mail\Protocol\Imap\ResponseInterface;
 use Genkgo\Mail\Protocol\Imap\Tag;
 
-/**
- * Class TaggedResponse
- * @package Genkgo\Mail\Protocol\Imap\Response
- */
 final class TaggedResponse implements ResponseInterface
 {
     /**
      * @var Tag
      */
     private $tag;
+
     /**
      * @var string
      */
     private $line;
 
     /**
-     * TaggedResponse constructor.
      * @param Tag $tag
      * @param string $line
      */

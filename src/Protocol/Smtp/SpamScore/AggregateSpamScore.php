@@ -6,14 +6,12 @@ use Genkgo\Mail\Protocol\Smtp\SpamScoreInterface;
 
 final class AggregateSpamScore implements SpamScoreInterface
 {
-
     /**
      * @var SpamScoreInterface[]
      */
     private $checkers;
 
     /**
-     * AggregateSpamCheck constructor.
      * @param array $checkers
      */
     public function __construct(array $checkers)

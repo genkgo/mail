@@ -3,15 +3,8 @@ declare(strict_types=1);
 
 namespace Genkgo\Mail\Protocol\Imap\MessageData;
 
-/**
- * Class SectionList
- * @package Genkgo\Mail\Protocol\Imap\MessageData
- */
 final class SectionList
 {
-    /**
-     *
-     */
     private const RFC_3501_SECTION_FIXED = [
         'HEADER' => true,
         'TEXT' => true,
@@ -23,7 +16,6 @@ final class SectionList
     private $sections = [];
 
     /**
-     * SectionList constructor.
      * @param array $sections
      */
     public function __construct(array $sections = [])

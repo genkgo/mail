@@ -15,7 +15,6 @@ final class StartTlsCommand extends AbstractCommand
     private $tag;
 
     /**
-     * StartTlsCommand constructor.
      * @param Tag $tag
      */
     public function __construct(Tag $tag)

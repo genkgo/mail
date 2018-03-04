@@ -23,7 +23,6 @@ final class ContentTransferEncoding implements HeaderInterface
     private $encoding;
 
     /**
-     * ContentTypeEncoding constructor.
      * @param string $encoding
      */
     public function __construct($encoding)
@@ -34,7 +33,6 @@ final class ContentTransferEncoding implements HeaderInterface
 
         $this->encoding = $encoding;
     }
-
 
     /**
      * @return HeaderName

@@ -7,17 +7,13 @@ use Genkgo\Mail\Exception\AbstractProtocolException;
 use Genkgo\Mail\Exception\EmptyQueueException;
 use Genkgo\Mail\TransportInterface;
 
-/**
- * Class QueueProcessor
- * @package Genkgo\Mail\Queue
- */
 final class QueueProcessor implements QueueProcessorInterface
 {
-
     /**
      * @var TransportInterface
      */
     private $transport;
+
     /**
      * @var iterable|QueueInterface[]
      */

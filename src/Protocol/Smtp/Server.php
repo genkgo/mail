@@ -21,17 +21,18 @@ final class Server
      * @var ConnectionListenerInterface
      */
     private $listener;
+
     /**
      * @var CapabilityInterface[]
      */
     private $capabilities = [];
+
     /**
      * @var string
      */
     private $serverName;
 
     /**
-     * Client constructor.
      * @param ConnectionListenerInterface $connection
      * @param array $capabilities
      * @param string $serverName
@@ -50,10 +51,7 @@ final class Server
             ]
         );
     }
-
-    /**
-     *
-     */
+    
     public function start(): void
     {
         while ($connection = $this->listener->listen()) {

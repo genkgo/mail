@@ -9,6 +9,7 @@ final class Partial
      * @var int
      */
     private $firstByte;
+
     /**
      * @var int
      */

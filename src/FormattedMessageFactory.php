@@ -11,24 +11,23 @@ use Genkgo\Mail\Mime\HtmlPart;
 use Genkgo\Mail\Mime\PartInterface;
 use Genkgo\Mail\Mime\PlainTextPart;
 
-/**
- * Class FormattedMessageFactory
- * @package Genkgo\Mail
- */
 final class FormattedMessageFactory
 {
     /**
      * @var array
      */
     private $attachments = [];
+
     /**
      * @var array
      */
     private $embedImages = [];
+
     /**
      * @var string
      */
     private $html;
+
     /**
      * @var AlternativeText
      */

@@ -5,23 +5,19 @@ namespace Genkgo\Mail\Protocol\Imap\Response\Command;
 
 use Genkgo\Mail\Protocol\Imap\MessageData\ItemList;
 
-/**
- * Class FetchCommandResponse
- * @package Genkgo\Mail\Protocol\Imap\Response\Command
- */
 final class FetchCommandResponse
 {
     /**
      * @var int
      */
     private $number;
+
     /**
      * @var ItemList
      */
     private $dataItemList;
 
     /**
-     * FetchCommandResponse constructor.
      * @param int $number
      * @param ItemList $dataItemList
      */

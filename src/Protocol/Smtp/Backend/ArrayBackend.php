@@ -11,13 +11,13 @@ final class ArrayBackend implements BackendInterface
      * @var array
      */
     private $addresses;
+
     /**
      * @var \ArrayAccess
      */
     private $backend;
 
     /**
-     * ArrayBackend constructor.
      * @param array $addresses
      * @param \ArrayAccess $backend
      */

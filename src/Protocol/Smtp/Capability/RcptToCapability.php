@@ -11,14 +11,12 @@ use Genkgo\Mail\Protocol\Smtp\Session;
 
 final class RcptToCapability implements CapabilityInterface
 {
-
     /**
      * @var BackendInterface
      */
     private $backend;
 
     /**
-     * RcptToCapability constructor.
      * @param BackendInterface $backend
      */
     public function __construct(BackendInterface $backend)

@@ -7,7 +7,6 @@ use Genkgo\Mail\Protocol\Imap\Request\SequenceSet;
 
 final class SequenceSetCriterion implements CriterionInterface
 {
-
     /**
      * @var SequenceSet
      */

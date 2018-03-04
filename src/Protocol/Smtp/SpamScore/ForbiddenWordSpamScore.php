@@ -6,18 +6,17 @@ use Genkgo\Mail\Protocol\Smtp\SpamScoreInterface;
 
 final class ForbiddenWordSpamScore implements SpamScoreInterface
 {
-
     /**
      * @var array
      */
     private $words;
+
     /**
      * @var int
      */
     private $pointsPerMatchedWord;
 
     /**
-     * ForbiddenWordSpamCheck constructor.
      * @param array $words
      * @param int $pointsPerMatchedWord
      */

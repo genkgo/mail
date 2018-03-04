@@ -5,10 +5,6 @@ namespace Genkgo\Mail\Protocol\Smtp;
 
 use Genkgo\Mail\Protocol\ConnectionInterface;
 
-/**
- * Class NullConnection
- * @package Genkgo\Mail\Protocol
- */
 final class NullConnection implements ConnectionInterface
 {
     private $receive;

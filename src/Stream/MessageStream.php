@@ -16,7 +16,6 @@ final class MessageStream implements StreamInterface
     private $decoratedStream;
 
     /**
-     * MessageStream constructor.
      * @param MessageInterface $message
      */
     public function __construct(MessageInterface $message)
@@ -61,10 +60,7 @@ final class MessageStream implements StreamInterface
     {
         return $this->decoratedStream->__toString();
     }
-
-    /**
-     *
-     */
+    
     public function close(): void
     {
         $this->decoratedStream->close();

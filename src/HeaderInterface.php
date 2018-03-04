@@ -6,13 +6,8 @@ namespace Genkgo\Mail;
 use Genkgo\Mail\Header\HeaderName;
 use Genkgo\Mail\Header\HeaderValue;
 
-/**
- * Interface HeaderInterface
- * @package Genkgo\Mail
- */
 interface HeaderInterface
 {
-
     /**
      * @return HeaderName
      */

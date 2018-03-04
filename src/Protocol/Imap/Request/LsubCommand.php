@@ -8,27 +8,24 @@ use Genkgo\Mail\Protocol\Imap\Tag;
 use Genkgo\Mail\Stream\StringStream;
 use Genkgo\Mail\StreamInterface;
 
-/**
- * Class LsubCommand
- * @package Genkgo\Mail\Protocol\Imap\Request
- */
 final class LsubCommand extends AbstractCommand
 {
     /**
      * @var Tag
      */
     private $tag;
+
     /**
      * @var MailboxWildcard
      */
     private $mailbox;
+
     /**
      * @var MailboxWildcard
      */
     private $referenceName;
 
     /**
-     * LsubCommand constructor.
      * @param Tag $tag
      * @param MailboxWildcard $referenceName
      * @param MailboxWildcard $mailbox

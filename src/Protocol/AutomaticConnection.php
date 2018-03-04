@@ -9,21 +9,23 @@ final class AutomaticConnection implements ConnectionInterface
      * @var ConnectionInterface
      */
     private $decoratedConnection;
+
     /**
      * @var \DateTimeImmutable|null
      */
     private $connectedAt;
+
     /**
      * @var \DateInterval
      */
     private $interval;
+
     /**
      * @var bool
      */
     private $connecting = false;
 
     /**
-     * AppendCrlfConnection constructor.
      * @param ConnectionInterface $decoratedConnection
      * @param \DateInterval $interval
      */
@@ -110,10 +112,7 @@ final class AutomaticConnection implements ConnectionInterface
     {
         return $this->decoratedConnection->getMetaData($keys);
     }
-
-    /**
-     *
-     */
+    
     private function connectIfNotConnected(): void
     {
         if ($this->connectedAt === null) {

@@ -9,18 +9,16 @@ use Genkgo\Mail\Protocol\Smtp\Session;
 
 final class EhloCapability implements CapabilityInterface
 {
-
     /**
      * @var array
      */
     private $capabilities;
+
     /**
      * @var string
      */
     private $serverName;
-    /**
-     *
-     */
+    
     private const PROTOCOL_COMMANDS = [
         'MAIL FROM' => true,
         'EHLO' => true,
@@ -32,7 +30,6 @@ final class EhloCapability implements CapabilityInterface
     ];
 
     /**
-     * EhloCapability constructor.
      * @param string $serverName
      * @param array $capabilities
      */

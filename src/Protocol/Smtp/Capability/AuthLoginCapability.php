@@ -16,7 +16,6 @@ final class AuthLoginCapability implements CapabilityInterface
     private $authentication;
 
     /**
-     * AuthLoginCapability constructor.
      * @param AuthenticationInterface $authentication
      */
     public function __construct(AuthenticationInterface $authentication)

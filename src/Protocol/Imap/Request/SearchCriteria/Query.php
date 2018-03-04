@@ -3,10 +3,6 @@ declare(strict_types=1);
 
 namespace Genkgo\Mail\Protocol\Imap\Request\SearchCriteria;
 
-/**
- * Class SearchCriteria
- * @package Genkgo\Mail\Protocol\Imap
- */
 final class Query implements \Countable
 {
     /**
@@ -15,7 +11,6 @@ final class Query implements \Countable
     private $criteria = [];
 
     /**
-     * Query constructor.
      * @param array $criteria
      */
     public function __construct(array $criteria = [])

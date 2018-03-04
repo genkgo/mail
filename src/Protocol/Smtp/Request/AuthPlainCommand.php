@@ -6,10 +6,6 @@ namespace Genkgo\Mail\Protocol\Smtp\Request;
 use Genkgo\Mail\Protocol\ConnectionInterface;
 use Genkgo\Mail\Protocol\Smtp\RequestInterface;
 
-/**
- * Class AuthPlainCommand
- * @package Genkgo\Mail\Protocol\Smtp\Request
- */
 final class AuthPlainCommand implements RequestInterface
 {
     /**

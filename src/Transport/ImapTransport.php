@@ -17,13 +17,13 @@ final class ImapTransport implements TransportInterface
      * @var Client
      */
     private $client;
+
     /**
      * @var MailboxName
      */
     private $mailbox;
 
     /**
-     * SmtpTransport constructor.
      * @param Client $client
      * @param MailboxName $inbox
      */

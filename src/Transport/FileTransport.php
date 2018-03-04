@@ -14,7 +14,6 @@ class FileTransport implements TransportInterface
     private $fileTransportOptions;
 
     /**
-     * FileTransport constructor.
      * @param FileTransportOptions $fileTransportOptions
      */
     public function __construct(FileTransportOptions $fileTransportOptions)

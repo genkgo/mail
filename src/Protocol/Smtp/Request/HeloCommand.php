@@ -14,7 +14,6 @@ final class HeloCommand implements RequestInterface
     private $hostName;
 
     /**
-     * HeloCommand constructor.
      * @param string $hostName
      */
     public function __construct($hostName)

@@ -5,20 +5,18 @@ use Genkgo\Mail\Exception\AbstractProtocolException;
 use Genkgo\Mail\Exception\EmptyQueueException;
 use Genkgo\Mail\TransportInterface;
 
-/**
- * Class LimitQueueProcessor
- * @package Genkgo\Mail\Queue
- */
 final class LimitQueueProcessor implements QueueProcessorInterface
 {
     /**
      * @var TransportInterface
      */
     private $transport;
+
     /**
      * @var iterable|QueueInterface[]
      */
     private $queue;
+
     /**
      * @var int
      */

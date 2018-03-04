@@ -13,7 +13,6 @@ final class HeaderLine
     private $header;
 
     /**
-     * HeaderLine constructor.
      * @param HeaderInterface $header
      */
     public function __construct(HeaderInterface $header)

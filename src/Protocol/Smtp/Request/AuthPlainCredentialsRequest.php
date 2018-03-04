@@ -8,7 +8,6 @@ use Genkgo\Mail\Protocol\Smtp\RequestInterface;
 
 final class AuthPlainCredentialsRequest implements RequestInterface
 {
-
     /**
      * @var string
      */
@@ -20,7 +19,6 @@ final class AuthPlainCredentialsRequest implements RequestInterface
     private $password;
 
     /**
-     * AuthPlainCommand constructor.
      * @param string $username
      * @param string $password
      */

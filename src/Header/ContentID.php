@@ -13,7 +13,6 @@ final class ContentID implements HeaderInterface
     private $contentID;
 
     /**
-     * From constructor.
      * @param string $contentID
      */
     public function __construct(string $contentID)

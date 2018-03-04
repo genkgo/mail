@@ -5,13 +5,8 @@ namespace Genkgo\Mail\Stream;
 
 use Genkgo\Mail\StreamInterface;
 
-/**
- * Class AsciiEncodedStream
- * @package Genkgo\Mail\Stream
- */
 final class AsciiEncodedStream implements StreamInterface
 {
-
     /**
      * @var string
      */
@@ -40,10 +35,7 @@ final class AsciiEncodedStream implements StreamInterface
     {
         return $this->text;
     }
-
-    /**
-     *
-     */
+    
     public function close(): void
     {
         return;

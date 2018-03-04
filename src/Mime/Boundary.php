@@ -11,7 +11,6 @@ final class Boundary
     private $identifier;
 
     /**
-     * Boundary constructor.
      * @param string $identifier
      */
     public function __construct(string $identifier)

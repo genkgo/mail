@@ -3,28 +3,24 @@ declare(strict_types=1);
 
 namespace Genkgo\Mail;
 
-/**
- * Class EmailAddress
- * @package Genkgo\Mail
- */
 final class EmailAddress
 {
-
     /**
      * @var string
      */
     private $address;
+
     /**
      * @var string
      */
     private $localPart;
+
     /**
      * @var string
      */
     private $domain;
 
     /**
-     * EmailAddress constructor.
      * @param string $address
      */
     public function __construct(string $address)

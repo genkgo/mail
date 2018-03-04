@@ -7,10 +7,6 @@ use Genkgo\Mail\Protocol\Imap\Tag;
 use Genkgo\Mail\Stream\StringStream;
 use Genkgo\Mail\StreamInterface;
 
-/**
- * Class ExpungeCommand
- * @package Genkgo\Mail\Protocol\Imap\Request
- */
 final class ExpungeCommand extends AbstractCommand
 {
     /**
@@ -19,7 +15,6 @@ final class ExpungeCommand extends AbstractCommand
     private $tag;
 
     /**
-     * ExpungeCommand constructor.
      * @param Tag $tag
      */
     public function __construct(Tag $tag)

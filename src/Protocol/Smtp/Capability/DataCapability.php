@@ -18,21 +18,23 @@ final class DataCapability implements CapabilityInterface
      * @var BackendInterface
      */
     private $backend;
+
     /**
      * @var SpamScoreInterface
      */
     private $spamScore;
+
     /**
      * @var SpamDecideScore
      */
     private $spamDecideScore;
+
     /**
      * @var GreyListInterface
      */
     private $greyListing;
 
     /**
-     * DataCapability constructor.
      * @param BackendInterface $backend
      * @param SpamScoreInterface $spamScore
      * @param GreyListInterface $greyListing

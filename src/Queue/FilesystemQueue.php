@@ -7,23 +7,19 @@ use Genkgo\Mail\Exception\EmptyQueueException;
 use Genkgo\Mail\GenericMessage;
 use Genkgo\Mail\MessageInterface;
 
-/**
- * Class FilesystemQueue
- * @package Genkgo\Mail\Queue
- */
 final class FilesystemQueue implements QueueInterface, \Countable
 {
     /**
      * @var string
      */
     private $directory;
+
     /**
      * @var int
      */
     private $mode;
 
     /**
-     * FileStorage constructor.
      * @param string $directory
      * @param int $mode
      */
@@ -32,7 +28,6 @@ final class FilesystemQueue implements QueueInterface, \Countable
         $this->directory = $directory;
         $this->mode = $mode;
     }
-
 
     /**
      * @param MessageInterface $message

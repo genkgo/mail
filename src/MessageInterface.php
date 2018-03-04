@@ -5,7 +5,6 @@ namespace Genkgo\Mail;
 
 interface MessageInterface
 {
-
     /**
      * @return iterable
      */

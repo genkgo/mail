@@ -15,7 +15,6 @@ final class HtmlOnlyMessage implements MessageInterface
     private $decoratedMessage;
 
     /**
-     * HtmlBody constructor.
      * @param string $html
      * @param string $charset
      */

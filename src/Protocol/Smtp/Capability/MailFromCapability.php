@@ -10,7 +10,6 @@ use Genkgo\Mail\Protocol\Smtp\Session;
 
 final class MailFromCapability implements CapabilityInterface
 {
-
     /**
      * @param ConnectionInterface $connection
      * @param Session $session

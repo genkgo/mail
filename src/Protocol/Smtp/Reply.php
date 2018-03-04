@@ -5,31 +5,29 @@ namespace Genkgo\Mail\Protocol\Smtp;
 
 use Genkgo\Mail\Exception\AssertionFailedException;
 
-/**
- * Class Reply
- * @package Genkgo\Mail\Protocol\Smtp
- */
 final class Reply
 {
     /**
      * @var array
      */
     private $lines = [];
+
     /**
      * @var array
      */
     private $codes = [];
+
     /**
      * @var array
      */
     private $messages = [];
+
     /**
      * @var Client
      */
     private $client;
 
     /**
-     * Reply constructor.
      * @param Client $client
      */
     public function __construct(Client $client)

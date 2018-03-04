@@ -15,7 +15,6 @@ final class DataRequest implements RequestInterface
     private $stream;
 
     /**
-     * DataRequest constructor.
      * @param StreamInterface $stream
      */
     public function __construct(StreamInterface $stream)

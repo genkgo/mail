@@ -8,14 +8,12 @@ use Genkgo\Mail\TransportInterface;
 
 final class ArrayObjectTransport implements TransportInterface
 {
-
     /**
      * @var \ArrayObject
      */
     private $storage;
 
     /**
-     * ArrayObjectTransport constructor.
      * @param \ArrayObject $storage
      */
     public function __construct(\ArrayObject $storage)

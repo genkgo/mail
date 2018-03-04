@@ -9,35 +9,34 @@ use Genkgo\Mail\Protocol\Imap\Tag;
 use Genkgo\Mail\Stream\StringStream;
 use Genkgo\Mail\StreamInterface;
 
-/**
- * Class AppendCommand
- * @package Genkgo\Mail\Protocol\Imap\Request
- */
 final class AppendCommand extends AbstractCommand
 {
     /**
      * @var Tag
      */
     private $tag;
+
     /**
      * @var MailboxName
      */
     private $mailbox;
+
     /**
      * @var FlagParenthesizedList|null
      */
     private $flags;
+
     /**
      * @var int
      */
     private $size;
+
     /**
      * @var \DateTimeImmutable|null
      */
     private $internalDate;
 
     /**
-     * AppendCommand constructor.
      * @param Tag $tag
      * @param MailboxName $mailbox
      * @param int $size

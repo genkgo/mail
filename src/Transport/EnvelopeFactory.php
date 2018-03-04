@@ -8,24 +8,18 @@ use Genkgo\Mail\EmailAddress;
 use Genkgo\Mail\Exception\EnvelopeException;
 use Genkgo\Mail\MessageInterface;
 
-/**
- * Class EnvelopOptions
- * @package Genkgo\Mail\Transport
- */
 final class EnvelopeFactory
 {
     /**
      * @var \Closure
      */
     private $callback;
+
     /**
      * @var EmailAddress
      */
     private $fallback;
-
-    /**
-     * EnvelopOptions constructor.
-     */
+    
     private function __construct()
     {
     }

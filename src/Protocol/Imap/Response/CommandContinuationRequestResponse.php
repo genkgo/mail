@@ -14,7 +14,6 @@ final class CommandContinuationRequestResponse implements ResponseInterface
     private $line;
 
     /**
-     * CommandContinuationRequestResponse constructor.
      * @param string $line
      */
     public function __construct(string $line)

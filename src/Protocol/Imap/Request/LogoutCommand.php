@@ -7,10 +7,6 @@ use Genkgo\Mail\Protocol\Imap\Tag;
 use Genkgo\Mail\Stream\StringStream;
 use Genkgo\Mail\StreamInterface;
 
-/**
- * Class LogoutCommand
- * @package Genkgo\Mail\Protocol\Imap\Request
- */
 final class LogoutCommand extends AbstractCommand
 {
     /**
@@ -19,7 +15,6 @@ final class LogoutCommand extends AbstractCommand
     private $tag;
 
     /**
-     * LogoutCommand constructor.
      * @param Tag $tag
      */
     public function __construct(Tag $tag)

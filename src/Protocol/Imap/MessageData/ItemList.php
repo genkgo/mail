@@ -9,41 +9,32 @@ use Genkgo\Mail\Protocol\Imap\MessageData\Item\SectionItem;
 
 final class ItemList
 {
-    /**
-     *
-     */
     private const STATE_NONE = 0;
-    /**
-     *
-     */
+    
     private const STATE_NAME = 1;
-    /**
-     *
-     */
+    
     private const STATE_SECTION = 2;
-    /**
-     *
-     */
+    
     private const STATE_PARTIAL = 3;
-    /**
-     *
-     */
+    
     private const STATE_OCTET = 4;
+
     /**
      * @var array
      */
     private $list = [];
+
     /**
      * @var int
      */
     private $size;
+
     /**
      * @var string
      */
     private $body;
 
     /**
-     * ItemList constructor.
      * @param array $list
      */
     public function __construct(array $list = [])

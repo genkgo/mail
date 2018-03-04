@@ -7,21 +7,19 @@ use Genkgo\Mail\HeaderInterface;
 
 final class ContentType implements HeaderInterface
 {
-    /**
-     *
-     */
     private const RFC_1341_ADDITIONAL_SPECIALS = "\x2F\x3F\x3D";
+
     /**
      * @var string
      */
     private $contentType;
+
     /**
      * @var string
      */
     private $charset;
 
     /**
-     * From constructor.
      * @param string $contentType
      * @param string $charset
      */

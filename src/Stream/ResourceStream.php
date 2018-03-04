@@ -5,20 +5,14 @@ namespace Genkgo\Mail\Stream;
 
 use Genkgo\Mail\StreamInterface;
 
-/**
- * Class ResourceStream
- * @package Genkgo\Mail\Stream
- */
 final class ResourceStream implements StreamInterface
 {
-
     /**
      * @var resource
      */
     private $resource;
 
     /**
-     * ResourceStream constructor.
      * @param resource $resource
      */
     public function __construct($resource)
@@ -39,10 +33,7 @@ final class ResourceStream implements StreamInterface
         \rewind($this->resource);
         return \stream_get_contents($this->resource);
     }
-
-    /**
-     *
-     */
+    
     public function close(): void
     {
         \fclose($this->resource);

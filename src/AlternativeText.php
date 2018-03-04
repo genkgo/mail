@@ -11,7 +11,6 @@ final class AlternativeText
     private $text;
 
     /**
-     * AlternativeText constructor.
      * @param string $text
      */
     public function __construct(string $text)

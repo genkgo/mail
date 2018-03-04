@@ -3,23 +3,19 @@ declare(strict_types=1);
 
 namespace Genkgo\Mail\Protocol\Imap\Request\SearchCriteria;
 
-/**
- * Class CommunicatorCriterion
- * @package Genkgo\Mail\Protocol\Imap\Request\SearchCriteria
- */
 final class CommunicatorCriterion implements CriterionInterface
 {
     /**
      * @var string
      */
     private $name;
+
     /**
      * @var string
      */
     private $query;
 
     /**
-     * RecipientCriterium constructor.
      * @param string $name
      * @param string $query
      */

@@ -14,7 +14,6 @@ final class FixedSpamScore implements SpamScoreInterface
     private $score;
 
     /**
-     * FixedSpamScore constructor.
      * @param int $score
      */
     public function __construct(int $score)

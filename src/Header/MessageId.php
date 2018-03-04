@@ -11,13 +11,13 @@ final class MessageId implements HeaderInterface
      * @var string
      */
     private $leftHand;
+
     /**
      * @var string
      */
     private $rightHand;
 
     /**
-     * MessageId constructor.
      * @param string $leftHand
      * @param string $rightHand
      */
