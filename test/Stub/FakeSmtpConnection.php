@@ -72,7 +72,6 @@ final class FakeSmtpConnection implements ConnectionInterface
     private $isLegacy = false;
 
     /**
-     * FakeSmtpConnection constructor.
      * @param array $advertisements
      */
     public function __construct(array $advertisements = ['250-STARTTLS', '250-AUTH PLAIN', '250 AUTH LOGIN'])
