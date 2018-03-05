@@ -74,9 +74,18 @@ $ composer require genkgo/mail
 - Encrypted and signed messages
 
 
+## Not planned
+
+The following features are not planned for development by the owners, but could become part of the library when 
+initiative is taken by the community.
+
+- POP Support
+- Mailbox abstraction layer
+
+
 ## Documentation
 
-- English documentation, not there yet, want to [help](https://github.com/genkgo/mail/issues/10)?
+- [English documentation](https://mail.readthedocs.io/)
 - [PHP7.1未満お断り！最新PHPメーラーライブラリ Genkgo/Mail を試してみる - Qiita](https://qiita.com/mpyw/items/88161f9a809e063823c6)
 
 ## RFC-compliance
