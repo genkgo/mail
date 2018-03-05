@@ -1,7 +1,7 @@
 {
     "name": "genkgo/mail",
     "description": "Library to send e-mails over different transports and protocols (like SMTP and IMAP) using immutable messages and streams. Also includes SMTP server.",
-    "license": "MIT License",
+    "license": "MIT",
     "require": {
         "php": "^7.1",
         "ext-intl": "*"
