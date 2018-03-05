@@ -47,6 +47,7 @@ Use this if you want to send e-mails over different transports and protocols usi
     :maxdepth: 3
 
     advanced/dkim
+    advanced/queue
 
 .. |clearfloat|  raw:: html
 
