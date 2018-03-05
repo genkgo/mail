@@ -139,4 +139,20 @@ final class AggregateResponse implements \IteratorAggregate
 
         return $clone;
     }
+
+    /**
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return \implode(
+            "\r\n",
+            \array_map(
+                function (ResponseInterface $response) {
+                    return (string)$response;
+                },
+                $this->lines
+            )
+        );
+    }
 }

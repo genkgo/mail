@@ -48,6 +48,11 @@ final class AuthLoginTest extends AbstractTestCase
             ->method('receive')
             ->willReturn(\base64_encode('test'));
 
+        $connection
+            ->expects($this->at(4))
+            ->method('send')
+            ->with('235 Authentication succeeded');
+
         $capability = new AuthLoginCapability(
             new ArrayAuthentication(['test' => 'test'])
         );

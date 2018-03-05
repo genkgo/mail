@@ -2,7 +2,7 @@
 
 use Genkgo\Mail\Protocol\PlainTcpConnectionListener;
 use Genkgo\Mail\Protocol\Smtp\Authentication\ArrayAuthentication;
-use Genkgo\Mail\Protocol\Smtp\Backend\ArrayBackend;
+use Genkgo\Mail\Protocol\Smtp\Backend\ConsoleBackend;
 use Genkgo\Mail\Protocol\Smtp\Capability\AuthLoginCapability;
 use Genkgo\Mail\Protocol\Smtp\Capability\DataCapability;
 use Genkgo\Mail\Protocol\Smtp\Capability\MailFromCapability;
@@ -15,14 +15,16 @@ use Genkgo\Mail\Protocol\Smtp\SpamScore\ForbiddenWordSpamScore;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-$backend = new ArrayBackend(['mailbox@domain.com'], new \ArrayObject());
+$config = (require_once "config.php")['server']['smtp'];
+
+$backend = new ConsoleBackend();
 
 $server = new Server(
-    new PlainTcpConnectionListener('0.0.0.0', 8025),
+    new PlainTcpConnectionListener($config['address'], $config['port']),
     [
         new AuthLoginCapability(
             new ArrayAuthentication(
-                ['username' => 'password']
+                $config['users']
             )
         ),
         new MailFromCapability(),
@@ -30,13 +32,19 @@ $server = new Server(
         new DataCapability(
             $backend,
             new AggregateSpamScore([
-                new ForbiddenWordSpamScore(['viagra'], 5)
+                new ForbiddenWordSpamScore(
+                    $config['spam']['forbidden']['words'],
+                    $config['spam']['forbidden']['points']
+                )
             ]),
             new ArrayGreyList(),
-            new SpamDecideScore(5, 15)
+            new SpamDecideScore(
+                $config['spam']['ham'],
+                $config['spam']['spam']
+            )
         )
     ],
-    'mail.local'
+    $config['name']
 );
 
 $server->start();

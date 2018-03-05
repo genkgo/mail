@@ -194,13 +194,13 @@ final class ClientFactory
             case 'imap':
                 $connection = new PlainTcpConnection(
                     $components['host'],
-                    $components['port'] ?? 587
+                    $components['port'] ?? 143
                 );
                 break;
             case 'imaps':
                 $connection = new SecureConnection(
                     $components['host'],
-                    $components['port'] ?? 465,
+                    $components['port'] ?? 993,
                     new SecureConnectionOptions(
                         (int)($query['crypto'] ?? CryptoConstant::getDefaultMethod(PHP_VERSION))
                     )
@@ -210,7 +210,7 @@ final class ClientFactory
                 $insecureConnectionAllowed = true;
                 $connection = new PlainTcpConnection(
                     $components['host'],
-                    $components['port'] ?? 25
+                    $components['port'] ?? 143
                 );
                 break;
             default:

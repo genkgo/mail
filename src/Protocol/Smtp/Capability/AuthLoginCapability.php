@@ -40,6 +40,7 @@ final class AuthLoginCapability implements CapabilityInterface
             return $session;
         }
 
+        $connection->send('235 Authentication succeeded');
         return $session->withState(Session::STATE_AUTHENTICATED);
     }
 
