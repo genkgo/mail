@@ -228,6 +228,27 @@ final class AggregateResponseTest extends AbstractTestCase
     /**
      * @test
      */
+    public function it_can_be_casted_to_string()
+    {
+        $response = new AggregateResponse(Tag::fromNonce(1));
+        $fetch = \file_get_contents(__DIR__. '/../../../../Stub/Imap/fetch-response.txt');
+
+        $responseString = '* ' . $fetch;
+        foreach (\preg_split('/(\n)/', $responseString, -1, PREG_SPLIT_DELIM_CAPTURE) as $line) {
+            $response = $response->withLine($line);
+        }
+
+        $response = $response->withLine('TAG1 OK FETCH complete');
+
+        $this->assertInstanceOf(UntaggedResponse::class, $response->first());
+        $this->assertInstanceOf(TaggedResponse::class, $response->last());
+        $this->assertSame($fetch, $response->first()->getBody());
+        $this->assertSame($responseString."\r\nTAG1 OK FETCH complete", (string)$response);
+    }
+
+    /**
+     * @test
+     */
     public function it_throws_when_adding_content_line_when_empty_response()
     {
         $this->expectException(\UnexpectedValueException::class);

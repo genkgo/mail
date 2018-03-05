@@ -23,6 +23,7 @@ interface ResponseInterface
 
     /**
      * @return ResponseInterface
+     * @throws AssertionFailedException
      */
     public function assertTagged(): ResponseInterface;
 
