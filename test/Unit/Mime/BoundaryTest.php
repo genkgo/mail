@@ -25,6 +25,26 @@ final class BoundaryTest extends AbstractTestCase
     }
 
     /**
+     * @test
+     */
+    public function it_is_opening()
+    {
+        $this->assertTrue((new Boundary('test'))->isOpening('--test'));
+        $this->assertFalse((new Boundary('test'))->isOpening('--test--'));
+        $this->assertFalse((new Boundary('test'))->isOpening('--other'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_is_closing()
+    {
+        $this->assertTrue((new Boundary('test'))->isClosing('--test--'));
+        $this->assertFalse((new Boundary('test'))->isClosing('--test'));
+        $this->assertFalse((new Boundary('test'))->isClosing('--other--'));
+    }
+
+    /**
      * @return array
      */
     public function provideValues()

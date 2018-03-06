@@ -5,6 +5,7 @@ namespace Genkgo\Mail\Protocol\Smtp\Request;
 
 use Genkgo\Mail\Protocol\ConnectionInterface;
 use Genkgo\Mail\Protocol\Smtp\RequestInterface;
+use Genkgo\Mail\Stream\LineIterator;
 use Genkgo\Mail\StreamInterface;
 
 final class DataRequest implements RequestInterface
@@ -28,27 +29,9 @@ final class DataRequest implements RequestInterface
      */
     public function execute(ConnectionInterface $connection): void
     {
-        $bytes = '';
-
-        $this->stream->rewind();
-        while (!$this->stream->eof()) {
-            $bytes .= $this->stream->read(1000);
-
-            $index = 0;
-            while (isset($bytes[$index])) {
-                if ($bytes[$index] === "\r" && isset($bytes[$index+1]) && $bytes[$index+1] === "\n") {
-                    $line = \substr($bytes, 0, $index);
-                    $bytes = \substr($bytes, $index + 2);
-                    $index = -1;
-
-                    $this->sendLine($connection, $line);
-                }
-
-                $index++;
-            }
+        foreach (new LineIterator($this->stream) as $line) {
+            $this->sendLine($connection, $line);
         }
-
-        $this->sendLine($connection, $bytes);
 
         $connection->send('.');
     }

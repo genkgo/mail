@@ -1,4 +1,5 @@
-<?php declare(strict_types=1);
+<?php
+declare(strict_types=1);
 namespace Genkgo\TestMail\Unit;
 
 use Genkgo\Mail\AlternativeText;
@@ -190,6 +191,30 @@ final class FormattedMessageFactoryTest extends AbstractTestCase
         $this->assertEquals(
             $this->replaceBoundaries(
                 \file_get_contents(__DIR__ . '/../Stub/FormattedMessageFactoryTest/full-formatted-message.eml'),
+                'boundary'
+            ),
+            $this->replaceBoundaries(
+                (string) $message,
+                'boundary'
+            )
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_equal_file_expect_boundaries_when_html_and_text_formatted_message()
+    {
+        $message = (new FormattedMessageFactory())
+            ->withHtml('<html><body><p>Hello World</p></body></html>')
+            ->createMessage()
+            ->withHeader(new Subject('Hello World'))
+            ->withHeader((new To(new AddressList([new Address(new EmailAddress('me@example.com'), 'me')]))))
+            ->withHeader((new Cc(new AddressList([new Address(new EmailAddress('other@example.com'), 'other')]))));
+
+        $this->assertEquals(
+            $this->replaceBoundaries(
+                \file_get_contents(__DIR__ . '/../Stub/FormattedMessageFactoryTest/html-and-text.eml'),
                 'boundary'
             ),
             $this->replaceBoundaries(

@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Genkgo\TestMail\Unit\Mime;
 
+use Genkgo\Mail\GenericMessage;
+use Genkgo\Mail\Mime\MultiPartInterface;
 use Genkgo\TestMail\AbstractTestCase;
 use Genkgo\Mail\Header\ContentType;
 use Genkgo\Mail\Header\GenericHeader;
@@ -80,5 +82,63 @@ final class MultiPartTest extends AbstractTestCase
             (string)$part->getHeader('content-type')->getValue()
         );
         $this->assertCount(1, $part->getHeaders());
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_parse_multi_layer_messages()
+    {
+        $message = GenericMessage::fromString(
+            \file_get_contents(__DIR__. '/../../Stub/FormattedMessageFactoryTest/full-formatted-message.eml')
+        );
+        $multiPart = MultiPart::fromMessage($message);
+
+        $this->assertCount(2, $multiPart->getParts());
+        $this->assertSame('GenkgoMailV2Part6d41f369b545', (string)$multiPart->getBoundary());
+        $this->assertSame(
+            'multipart/mixed; boundary=GenkgoMailV2Part6d41f369b545',
+            (string)$multiPart->getHeader('Content-Type')->getValue()
+        );
+
+        /** @var MultiPartInterface $part */
+        foreach ($multiPart->getParts() as $index => $part) {
+            switch ($index) {
+                case 0:
+                    $this->assertInstanceOf(MultiPart::class, $part);
+                    $this->assertCount(2, $part->getParts());
+                    $this->assertSame(
+                        'multipart/related; boundary=GenkgoMailV2Partecbe5baa2673',
+                        (string)$part->getHeader('Content-Type')->getValue()
+                    );
+                    break;
+                case 1:
+                    $this->assertInstanceOf(GenericPart::class, $part);
+                    $this->assertSame(
+                        'text/plain; charset=UTF-8',
+                        (string)$part->getHeader('Content-Type')->getValue()
+                    );
+                    break;
+            }
+        }
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_parse_layered_messages()
+    {
+        $message = GenericMessage::fromString(
+            \file_get_contents(__DIR__. '/../../Stub/FormattedMessageFactoryTest/html-and-text.eml')
+        );
+
+        $multiPart = MultiPart::fromMessage($message);
+
+        $this->assertCount(2, $multiPart->getParts());
+        $this->assertSame('GenkgoMailV2Part187e28bf3cb4', (string)$multiPart->getBoundary());
+        $this->assertSame(
+            'multipart/alternative; boundary=GenkgoMailV2Part187e28bf3cb4',
+            (string)$multiPart->getHeader('Content-Type')->getValue()
+        );
     }
 }

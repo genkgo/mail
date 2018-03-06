@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Genkgo\TestMail\Unit\Dkim;
 
 use Genkgo\Mail\Dkim\CanonicalizeHeaderSimple;
-use Genkgo\Mail\Header\HeaderLine;
+use Genkgo\Mail\Header\GenericHeader;
 use Genkgo\TestMail\AbstractTestCase;
 
 final class CanonicalizeHeaderSimpleTest extends AbstractTestCase
@@ -18,7 +18,7 @@ final class CanonicalizeHeaderSimpleTest extends AbstractTestCase
 
         $this->assertEquals(
             'A: X ',
-            $canonicalization->canonicalize(HeaderLine::fromString('A: X ')->getHeader())
+            $canonicalization->canonicalize(new GenericHeader('A', 'X '))
         );
     }
 

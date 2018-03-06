@@ -7,6 +7,7 @@ use Genkgo\Mail\Protocol\AppendCrlfConnection;
 use Genkgo\Mail\Protocol\ConnectionInterface;
 use Genkgo\Mail\Protocol\Imap\Negotiation\ReceiveWelcomeNegotiation;
 use Genkgo\Mail\Protocol\Imap\Response\AggregateResponse;
+use Genkgo\Mail\Stream\LineIterator;
 
 final class Client
 {
@@ -75,27 +76,10 @@ final class Client
     public function emit(RequestInterface $request): AggregateResponse
     {
         $stream = $request->toStream();
-        $stream->rewind();
 
-        $bytes = '';
-        while (!$stream->eof()) {
-            $bytes .= $stream->read(1000);
-
-            $index = 0;
-            while (isset($bytes[$index])) {
-                if ($bytes[$index] === "\r" && isset($bytes[$index + 1]) && $bytes[$index + 1] === "\n") {
-                    $line = \substr($bytes, 0, $index);
-                    $bytes = \substr($bytes, $index + 2);
-                    $index = -1;
-
-                    $this->connection->send($line);
-                }
-
-                $index++;
-            }
+        foreach (new LineIterator($stream) as $line) {
+            $this->connection->send($line);
         }
-
-        $this->connection->send($bytes);
 
         $response = new AggregateResponse($request->getTag());
 

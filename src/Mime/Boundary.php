@@ -29,6 +29,24 @@ final class Boundary
     }
 
     /**
+     * @param string $line
+     * @return bool
+     */
+    public function isOpening(string $line): bool
+    {
+        return '--' . $this->identifier === $line;
+    }
+
+    /**
+     * @param string $line
+     * @return bool
+     */
+    public function isClosing(string $line): bool
+    {
+        return '--' . $this->identifier . '--' === $line;
+    }
+
+    /**
      * @return Boundary
      */
     public static function newRandom()

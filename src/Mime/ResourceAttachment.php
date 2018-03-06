@@ -31,8 +31,8 @@ final class ResourceAttachment implements PartInterface
         $this->decoratedPart = (new GenericPart())
             ->withBody(new Base64EncodedStream($resource))
             ->withHeader($contentType)
-            ->withHeader(ContentDisposition::newAttachment($filename))
-            ->withHeader(new ContentTransferEncoding('base64'));
+            ->withHeader(new ContentTransferEncoding('base64'))
+            ->withHeader(ContentDisposition::newAttachment($filename));
     }
 
     /**

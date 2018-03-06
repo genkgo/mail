@@ -74,8 +74,8 @@ final class FormattedMessageFactory
     public function withAttachment(PartInterface $part): FormattedMessageFactory
     {
         try {
-            $disposition = (string) $part->getHeader('Content-Disposition')->getValue();
-            if (\substr($disposition, 0, \strpos($disposition, ';')) !== 'attachment') {
+            $disposition = $part->getHeader('Content-Disposition')->getValue()->getRaw();
+            if ($disposition !== 'attachment') {
                 throw new \InvalidArgumentException(
                     'An attachment must have Content-Disposition header with value `attachment`'
                 );
