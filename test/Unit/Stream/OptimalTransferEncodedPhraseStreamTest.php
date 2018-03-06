@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+
 namespace Genkgo\TestMail\Unit\Stream;
 
 use Genkgo\Mail\Stream\OptimalTransferEncodedPhraseStream;

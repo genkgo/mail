@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+
 namespace Genkgo\Mail\Protocol\Smtp;
 
 final class SpamDecideScore
