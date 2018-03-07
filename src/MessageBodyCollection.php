@@ -160,8 +160,11 @@ final class MessageBodyCollection
     {
         $newMessage = $this->createMessage();
 
-        foreach ($newMessage->getHeader('Content-Type') as $header) {
-            $message = $message->withHeader($header);
+        /** @var HeaderInterface[] $headers */
+        foreach ($newMessage->getHeaders() as $headers) {
+            foreach ($headers as $header) {
+                $message = $message->withHeader($header);
+            }
         }
 
         return $message->withBody($newMessage->getBody());
@@ -247,11 +250,11 @@ final class MessageBodyCollection
             foreach ($message->getHeader('Content-Type') as $header) {
                 $contentType = $header->getValue()->getRaw();
                 if ($contentType === 'text/html') {
-                    $this->html = (string)$message->getBody();
+                    $this->html = \rtrim((string)$message->getBody());
                 }
 
                 if ($contentType === 'text/plain') {
-                    $this->text = new AlternativeText((string)$message->getBody());
+                    $this->text = new AlternativeText(\rtrim((string)$message->getBody()));
                 }
             }
         }

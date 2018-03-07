@@ -110,10 +110,10 @@ final class MessageBodyCollectionTest extends AbstractTestCase
      */
     public function it_should_equal_file_when_html_only()
     {
-        $factory = (new MessageBodyCollection())
+        $body = (new MessageBodyCollection())
             ->withHtmlAndNoGeneratedAlternativeText('<html><body><p>Hello World</p></body></html>');
 
-        $message = $factory->createMessage()
+        $message = $body->createMessage()
             ->withHeader(new Subject('Hello World'))
             ->withHeader((new To(new AddressList([new Address(new EmailAddress('me@example.com'), 'me')]))))
             ->withHeader((new Cc(new AddressList([new Address(new EmailAddress('other@example.com'), 'other')]))));
@@ -127,12 +127,33 @@ final class MessageBodyCollectionTest extends AbstractTestCase
     /**
      * @test
      */
+    public function it_should_equal_file_when_attaching_to_existing_html_only_message()
+    {
+        $body = (new MessageBodyCollection())
+            ->withHtmlAndNoGeneratedAlternativeText('<html><body><p>Hello World</p></body></html>');
+
+        $message = (new GenericMessage())
+            ->withHeader(new Subject('Hello World'))
+            ->withHeader((new To(new AddressList([new Address(new EmailAddress('me@example.com'), 'me')]))))
+            ->withHeader((new Cc(new AddressList([new Address(new EmailAddress('other@example.com'), 'other')]))));
+
+        $message = $body->attachToMessage($message);
+
+        $this->assertEquals(
+            \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollectionTest/html-only.eml'),
+            (string) $message
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_should_equal_file_when_text_only()
     {
-        $factory = (new MessageBodyCollection())
+        $body = (new MessageBodyCollection())
             ->withAlternativeText(new AlternativeText('Hello World'));
 
-        $message = $factory->createMessage()
+        $message = $body->createMessage()
             ->withHeader(new Subject('Hello World'))
             ->withHeader((new To(new AddressList([new Address(new EmailAddress('me@example.com'), 'me')]))))
             ->withHeader((new Cc(new AddressList([new Address(new EmailAddress('other@example.com'), 'other')]))));
@@ -148,9 +169,9 @@ final class MessageBodyCollectionTest extends AbstractTestCase
      */
     public function it_should_equal_empty_text_plain_message_when_no_and_no_text()
     {
-        $factory = (new MessageBodyCollection());
+        $body = (new MessageBodyCollection());
 
-        $message = $factory->createMessage()
+        $message = $body->createMessage()
             ->withHeader(new Subject('Hello World'))
             ->withHeader((new To(new AddressList([new Address(new EmailAddress('me@example.com'), 'me')]))))
             ->withHeader((new Cc(new AddressList([new Address(new EmailAddress('other@example.com'), 'other')]))));
@@ -229,7 +250,7 @@ final class MessageBodyCollectionTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_parses_messages()
+    public function it_parses_full_formatted_messages()
     {
         $message = GenericMessage::fromString(
             \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollectionTest/full-formatted-message.eml')
@@ -240,6 +261,54 @@ final class MessageBodyCollectionTest extends AbstractTestCase
         $this->assertSame('Hello World', (string)$post->getText());
         $this->assertCount(1, $post->getEmbeddedImages());
         $this->assertCount(1, $post->getAttachments());
+    }
+
+    /**
+     * @test
+     */
+    public function it_parses_html_only_messages()
+    {
+        $message = GenericMessage::fromString(
+            \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollectionTest/html-only.eml')
+        );
+
+        $post = MessageBodyCollection::fromMessage($message);
+        $this->assertSame('<html><body><p>Hello World</p></body></html>', $post->getHtml());
+        $this->assertSame('', (string)$post->getText());
+        $this->assertCount(0, $post->getEmbeddedImages());
+        $this->assertCount(0, $post->getAttachments());
+    }
+
+    /**
+     * @test
+     */
+    public function it_parses_text_only_messages()
+    {
+        $message = GenericMessage::fromString(
+            \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollectionTest/text-only.eml')
+        );
+
+        $post = MessageBodyCollection::fromMessage($message);
+        $this->assertSame('', $post->getHtml());
+        $this->assertSame('Hello World', (string)$post->getText());
+        $this->assertCount(0, $post->getEmbeddedImages());
+        $this->assertCount(0, $post->getAttachments());
+    }
+
+    /**
+     * @test
+     */
+    public function it_parses_heml_and_text_messages()
+    {
+        $message = GenericMessage::fromString(
+            \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollectionTest/html-and-text.eml')
+        );
+
+        $post = MessageBodyCollection::fromMessage($message);
+        $this->assertSame('<html><body><p>Hello World</p></body></html>', $post->getHtml());
+        $this->assertSame('Hello World', (string)$post->getText());
+        $this->assertCount(0, $post->getEmbeddedImages());
+        $this->assertCount(0, $post->getAttachments());
     }
 
     /**
