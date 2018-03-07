@@ -18,7 +18,7 @@ Use the formatted message factory to create a message
 
 .. code-block:: php
 
-    $message = (new FormattedMessageFactory())
+    $message = (new MessageBodyCollection())
         ->withHtml('<html><body><p>Hello World</p></body></html>')
         ->withAttachment(new FileAttachment('/order1.pdf', new ContentType('application/pdf')))
         ->createMessage()

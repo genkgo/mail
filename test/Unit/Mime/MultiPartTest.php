@@ -90,7 +90,7 @@ final class MultiPartTest extends AbstractTestCase
     public function it_can_parse_multi_layer_messages()
     {
         $message = GenericMessage::fromString(
-            \file_get_contents(__DIR__. '/../../Stub/FormattedMessageFactoryTest/full-formatted-message.eml')
+            \file_get_contents(__DIR__ . '/../../Stub/MessageBodyCollectionTest/full-formatted-message.eml')
         );
         $multiPart = MultiPart::fromMessage($message);
 
@@ -129,7 +129,7 @@ final class MultiPartTest extends AbstractTestCase
     public function it_can_parse_layered_messages()
     {
         $message = GenericMessage::fromString(
-            \file_get_contents(__DIR__. '/../../Stub/FormattedMessageFactoryTest/html-and-text.eml')
+            \file_get_contents(__DIR__ . '/../../Stub/MessageBodyCollectionTest/html-and-text.eml')
         );
 
         $multiPart = MultiPart::fromMessage($message);

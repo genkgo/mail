@@ -12,7 +12,7 @@ use Genkgo\Mail\Mime\MultiPartInterface;
 use Genkgo\Mail\Mime\PartInterface;
 use Genkgo\Mail\Mime\PlainTextPart;
 
-final class Post
+final class MessageBodyCollection
 {
     /**
      * @var string
@@ -36,7 +36,16 @@ final class Post
 
     /**
      * @param string $html
-     * @return Post
+     */
+    public function __construct(string $html = '')
+    {
+        $this->html = $html;
+        $this->text = AlternativeText::fromHtml($html);
+    }
+
+    /**
+     * @param string $html
+     * @return MessageBodyCollection
      */
     public function withHtml(string $html): self
     {
@@ -48,7 +57,7 @@ final class Post
 
     /**
      * @param string $html
-     * @return Post
+     * @return MessageBodyCollection
      */
     public function withHtmlAndNoGeneratedAlternativeText(string $html): self
     {
@@ -59,9 +68,9 @@ final class Post
 
     /**
      * @param AlternativeText $text
-     * @return Post
+     * @return MessageBodyCollection
      */
-    public function withText(AlternativeText $text): self
+    public function withAlternativeText(AlternativeText $text): self
     {
         $clone = clone $this;
         $clone->text = $text;
@@ -70,7 +79,7 @@ final class Post
 
     /**
      * @param PartInterface $part
-     * @return Post
+     * @return MessageBodyCollection
      */
     public function withAttachment(PartInterface $part): self
     {
@@ -94,7 +103,7 @@ final class Post
 
     /**
      * @param EmbeddedImage $embeddedImage
-     * @return Post
+     * @return MessageBodyCollection
      */
     public function withEmbeddedImage(EmbeddedImage $embeddedImage): self
     {
@@ -144,6 +153,21 @@ final class Post
     }
 
     /**
+     * @param MessageInterface $message
+     * @return MessageInterface
+     */
+    public function attachToMessage(MessageInterface $message): MessageInterface
+    {
+        $newMessage = $this->createMessage();
+
+        foreach ($newMessage->getHeader('Content-Type') as $header) {
+            $message = $message->withHeader($header);
+        }
+
+        return $message->withBody($newMessage->getBody());
+    }
+
+    /**
      * @return PartInterface
      */
     private function createMessageRoot(): PartInterface
@@ -182,11 +206,11 @@ final class Post
      */
     private function createMessageText(): PartInterface
     {
-        if ($this->text === null && $this->html === '') {
+        if ($this->text->isEmpty() && $this->html === '') {
             return new PlainTextPart('');
         }
 
-        if ($this->text === null) {
+        if ($this->text->isEmpty()) {
             return new HtmlPart($this->html);
         }
 
@@ -204,16 +228,16 @@ final class Post
 
     /**
      * @param MessageInterface $message
-     * @return Post
+     * @return MessageBodyCollection
      */
-    public static function fromMessage(MessageInterface $message): Post
+    public static function fromMessage(MessageInterface $message): MessageBodyCollection
     {
         return (new self())->extract($message);
     }
 
     /**
      * @param MessageInterface $message
-     * @return Post
+     * @return MessageBodyCollection
      */
     private function extract(MessageInterface $message): self
     {

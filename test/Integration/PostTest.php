@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Genkgo\TestMail\Integration;
 
-use Genkgo\Mail\Post;
+use Genkgo\Mail\MessageBodyCollection;
 use Genkgo\TestMail\AbstractTestCase;
 use Genkgo\Mail\Header\ContentID;
 use Genkgo\Mail\Header\ContentType;
@@ -18,7 +18,7 @@ final class PostTest extends AbstractTestCase
      */
     public function it_can_parse_a_formatted_message_string_into_a_generic_message()
     {
-        $message = (new Post())
+        $message = (new MessageBodyCollection())
             ->withHtml('<html><body><p>Hello World</p></body></html>')
             ->withAttachment(
                 ResourceAttachment::fromString(
@@ -45,7 +45,7 @@ final class PostTest extends AbstractTestCase
                 'boundary'
             ),
             $this->replaceBoundaries(
-                (string) Post::fromMessage($message)->createMessage()->getBody(),
+                (string) MessageBodyCollection::fromMessage($message)->createMessage()->getBody(),
                 'boundary'
             )
         );

@@ -19,6 +19,14 @@ final class AlternativeText
     }
 
     /**
+     * @return bool
+     */
+    public function isEmpty(): bool
+    {
+        return $this->text === '';
+    }
+
+    /**
      * @return string
      */
     public function __toString(): string
@@ -47,6 +55,10 @@ final class AlternativeText
      */
     public static function fromHtml(string $html): AlternativeText
     {
+        if ($html === '') {
+            return new self($html);
+        }
+
         $html = \preg_replace('/\h\h+/', ' ', $html);
         $html = \preg_replace('/\v/', '', $html);
         $text = new self($html);

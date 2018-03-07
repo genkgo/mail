@@ -18,8 +18,7 @@ Use this if you want to send e-mails over different transports and protocols usi
 ## Send message quick and easy
 
 ```php
-$message = (new FormattedMessageFactory())
-    ->withHtml('<html><body><p>Hello World</p></body></html>')
+$message = (new MessageBodyCollection('<html><body><p>Hello World</p></body></html>'))
     ->withAttachment(new FileAttachment('/order1.pdf', new ContentType('application/pdf')))
     ->createMessage()
     ->withHeader(new Subject('Hello World'))
