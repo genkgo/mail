@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+declare(strict_types=1);
+
 namespace Genkgo\Mail\Protocol\Smtp\SpamScore;
 
 use Genkgo\Mail\MessageInterface;

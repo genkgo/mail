@@ -28,9 +28,9 @@ final class EmbeddedImage implements PartInterface
     {
         $this->decoratedPart = (new GenericPart())
             ->withBody(new Base64EncodedStream($image->detach()))
+            ->withHeader($contentType)
             ->withHeader(new ContentTransferEncoding('base64'))
             ->withHeader(ContentDisposition::newInline(\basename($filename)))
-            ->withHeader($contentType)
             ->withHeader($contentID);
     }
 

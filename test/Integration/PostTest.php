@@ -3,29 +3,22 @@ declare(strict_types=1);
 
 namespace Genkgo\TestMail\Integration;
 
+use Genkgo\Mail\MessageBodyCollection;
 use Genkgo\TestMail\AbstractTestCase;
-use Genkgo\Mail\Address;
-use Genkgo\Mail\AddressList;
-use Genkgo\Mail\EmailAddress;
-use Genkgo\Mail\FormattedMessageFactory;
-use Genkgo\Mail\GenericMessage;
-use Genkgo\Mail\Header\Cc;
 use Genkgo\Mail\Header\ContentID;
 use Genkgo\Mail\Header\ContentType;
-use Genkgo\Mail\Header\Subject;
-use Genkgo\Mail\Header\To;
 use Genkgo\Mail\Mime\EmbeddedImage;
 use Genkgo\Mail\Mime\ResourceAttachment;
 use Genkgo\Mail\Stream\AsciiEncodedStream;
 
-final class ParseFormattedMessageTest extends AbstractTestCase
+final class PostTest extends AbstractTestCase
 {
     /**
      * @test
      */
     public function it_can_parse_a_formatted_message_string_into_a_generic_message()
     {
-        $message = (new FormattedMessageFactory())
+        $message = (new MessageBodyCollection())
             ->withHtml('<html><body><p>Hello World</p></body></html>')
             ->withAttachment(
                 ResourceAttachment::fromString(
@@ -44,17 +37,27 @@ final class ParseFormattedMessageTest extends AbstractTestCase
                     new ContentID('123456')
                 )
             )
-            ->createMessage()
-            ->withHeader(new Subject('Hello World'))
-            ->withHeader((new To(new AddressList([new Address(new EmailAddress('me@example.com'), 'me')]))))
-            ->withHeader((new Cc(new AddressList([new Address(new EmailAddress('other@example.com'), 'other')]))))
-        ;
-
-        $messageString = (string) $message;
+            ->createMessage();
 
         $this->assertEquals(
-            $messageString,
-            (string) GenericMessage::fromString($messageString)
+            $this->replaceBoundaries(
+                (string) $message->getBody(),
+                'boundary'
+            ),
+            $this->replaceBoundaries(
+                (string) MessageBodyCollection::extract($message)->createMessage()->getBody(),
+                'boundary'
+            )
         );
+    }
+
+    /**
+     * @param string $messageString
+     * @param string $boundary
+     * @return string
+     */
+    private function replaceBoundaries(string $messageString, string $boundary): string
+    {
+        return \preg_replace(['/(GenkgoMailV2Part[A-Za-z0-9\-]*)/'], $boundary, $messageString);
     }
 }

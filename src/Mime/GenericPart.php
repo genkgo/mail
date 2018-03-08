@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Genkgo\Mail\Mime;
 
 use Genkgo\Mail\HeaderInterface;
+use Genkgo\Mail\MessageInterface;
 use Genkgo\Mail\Stream\EmptyStream;
 use Genkgo\Mail\StreamInterface;
 
@@ -122,5 +123,25 @@ final class GenericPart implements PartInterface
         if (!isset(self::ALLOWED_HEADERS[$name])) {
             throw new \InvalidArgumentException('Invalid Mime part header ' . $name);
         }
+    }
+
+    /**
+     * @param MessageInterface $message
+     * @return GenericPart
+     */
+    public static function fromMessage(MessageInterface $message): self
+    {
+        $part = new self();
+        foreach ($message->getHeaders() as $headers) {
+            foreach ($headers as $header) {
+                $headerName = \strtolower((string)$header->getName());
+                if (isset(self::ALLOWED_HEADERS[$headerName])) {
+                    $part->headers[$headerName] = $header;
+                }
+            }
+        }
+
+        $part->body = $message->getBody();
+        return $part;
     }
 }

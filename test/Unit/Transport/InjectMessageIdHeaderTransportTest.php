@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+declare(strict_types=1);
+
 namespace Genkgo\TestMail\Unit\Transport;
 
 use Genkgo\Mail\Header\MessageId;

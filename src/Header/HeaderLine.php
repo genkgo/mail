@@ -66,6 +66,11 @@ final class HeaderLine
             $value = \iconv_mime_decode($value);
         }
 
-        return new self(new GenericHeader($name, $value));
+        return new self(
+            new ParsedHeader(
+                new HeaderName($name),
+                HeaderValue::fromString($value)
+            )
+        );
     }
 }

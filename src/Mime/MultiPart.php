@@ -3,11 +3,14 @@ declare(strict_types=1);
 
 namespace Genkgo\Mail\Mime;
 
+use Genkgo\Mail\GenericMessage;
 use Genkgo\Mail\Header\ContentType;
-use Genkgo\Mail\Header\GenericHeader;
+use Genkgo\Mail\Header\ParsedHeader;
 use Genkgo\Mail\Header\HeaderValueParameter;
 use Genkgo\Mail\HeaderInterface;
+use Genkgo\Mail\MessageInterface;
 use Genkgo\Mail\Stream\EmptyStream;
+use Genkgo\Mail\Stream\LineIterator;
 use Genkgo\Mail\StreamInterface;
 
 final class MultiPart implements MultiPartInterface
@@ -41,9 +44,9 @@ final class MultiPart implements MultiPartInterface
 
         $this->decoratedPart = (new GenericPart())
             ->withHeader(
-                new GenericHeader(
-                    (string)$contentType->getName(),
-                    (string)$contentType->getValue()
+                new ParsedHeader(
+                    $contentType->getName(),
+                    $contentType->getValue()
                         ->withParameter(
                             new HeaderValueParameter(
                                 'boundary',
@@ -155,5 +158,71 @@ final class MultiPart implements MultiPartInterface
     public function getParts(): iterable
     {
         return $this->parts;
+    }
+
+    /**
+     * @param MessageInterface $message
+     * @return MultiPart
+     */
+    public static function fromMessage(MessageInterface $message): self
+    {
+        foreach ($message->getHeader('Content-Type') as $header) {
+            $contentType = $header->getValue()->getRaw();
+            if (\substr($contentType, 0, 10) !== 'multipart/') {
+                throw new \InvalidArgumentException(
+                    \sprintf(
+                        'Message is not a multipart/alternative message, but %s',
+                        $contentType
+                    )
+                );
+            }
+
+            try {
+                $boundary = new Boundary($header->getValue()->getParameter('boundary')->getValue());
+            } catch (\UnexpectedValueException $e) {
+                throw new \InvalidArgumentException('Message does not contain a boundary');
+            }
+
+            $part = new self(
+                $boundary,
+                new ContentType($header->getValue()->getRaw())
+            );
+
+            $content = '';
+            $preamble = true;
+            foreach (new LineIterator($message->getBody()) as $line) {
+                if ($boundary->isOpening($line) && $preamble) {
+                    $content = '';
+                    $preamble = false;
+                    continue;
+                }
+
+                if ($boundary->isClosing($line) || $boundary->isOpening($line)) {
+                    $message = GenericMessage::fromString(\rtrim($content));
+
+                    try {
+                        $part->parts[] = MultiPart::fromMessage($message);
+                    } catch (\InvalidArgumentException $e) {
+                        $part->parts[] = GenericPart::fromMessage($message);
+                    }
+
+                    $content = '';
+                }
+
+                if ($boundary->isOpening($line)) {
+                    continue;
+                }
+
+                if ($boundary->isClosing($line)) {
+                    break;
+                }
+
+                $content .= $line . "\r\n";
+            }
+
+            return $part;
+        }
+
+        throw new \InvalidArgumentException('Message is not a multipart/alternative message');
     }
 }
