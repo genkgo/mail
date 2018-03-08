@@ -7,6 +7,16 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 
+## [2.4.0] - 2018-03-08
+
+### Added
+
+- MessageBodyCollection, supersedes FormattedMessageFactory
+- Create a message from a MessageBodyCollection
+- Attach MessageBodyCollection to a message
+- Extract MessageBodyCollection from a message
+
+
 ## [2.3.0] - 2018-03-05
 
 ### Fixed

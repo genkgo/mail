@@ -233,33 +233,26 @@ final class MessageBodyCollection
      * @param MessageInterface $message
      * @return MessageBodyCollection
      */
-    public static function fromMessage(MessageInterface $message): MessageBodyCollection
+    public static function extract(MessageInterface $message): MessageBodyCollection
     {
-        return (new self())->extract($message);
-    }
+        $collection = new self();
 
-    /**
-     * @param MessageInterface $message
-     * @return MessageBodyCollection
-     */
-    private function extract(MessageInterface $message): self
-    {
         try {
-            $this->extractFromMimePart(MultiPart::fromMessage($message));
+            $collection->extractFromMimePart(MultiPart::fromMessage($message));
         } catch (\InvalidArgumentException $e) {
             foreach ($message->getHeader('Content-Type') as $header) {
                 $contentType = $header->getValue()->getRaw();
                 if ($contentType === 'text/html') {
-                    $this->html = \rtrim((string)$message->getBody());
+                    $collection->html = \rtrim((string)$message->getBody());
                 }
 
                 if ($contentType === 'text/plain') {
-                    $this->text = new AlternativeText(\rtrim((string)$message->getBody()));
+                    $collection->text = new AlternativeText(\rtrim((string)$message->getBody()));
                 }
             }
         }
 
-        return $this;
+        return $collection;
     }
 
     /**

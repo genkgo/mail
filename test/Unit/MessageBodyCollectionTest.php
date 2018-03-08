@@ -250,13 +250,13 @@ final class MessageBodyCollectionTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_parses_full_formatted_messages()
+    public function it_extracts_body_from_full_formatted_messages()
     {
         $message = GenericMessage::fromString(
             \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollectionTest/full-formatted-message.eml')
         );
 
-        $post = MessageBodyCollection::fromMessage($message);
+        $post = MessageBodyCollection::extract($message);
         $this->assertSame('<html><body><p>Hello World</p></body></html>', $post->getHtml());
         $this->assertSame('Hello World', (string)$post->getText());
         $this->assertCount(1, $post->getEmbeddedImages());
@@ -266,13 +266,13 @@ final class MessageBodyCollectionTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_parses_html_only_messages()
+    public function it_extracts_body_from_html_only_messages()
     {
         $message = GenericMessage::fromString(
             \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollectionTest/html-only.eml')
         );
 
-        $post = MessageBodyCollection::fromMessage($message);
+        $post = MessageBodyCollection::extract($message);
         $this->assertSame('<html><body><p>Hello World</p></body></html>', $post->getHtml());
         $this->assertSame('', (string)$post->getText());
         $this->assertCount(0, $post->getEmbeddedImages());
@@ -282,13 +282,13 @@ final class MessageBodyCollectionTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_parses_text_only_messages()
+    public function it_extracts_body_from_text_only_messages()
     {
         $message = GenericMessage::fromString(
             \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollectionTest/text-only.eml')
         );
 
-        $post = MessageBodyCollection::fromMessage($message);
+        $post = MessageBodyCollection::extract($message);
         $this->assertSame('', $post->getHtml());
         $this->assertSame('Hello World', (string)$post->getText());
         $this->assertCount(0, $post->getEmbeddedImages());
@@ -298,13 +298,13 @@ final class MessageBodyCollectionTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_parses_heml_and_text_messages()
+    public function it_extracts_body_from_html_and_text_messages()
     {
         $message = GenericMessage::fromString(
             \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollectionTest/html-and-text.eml')
         );
 
-        $post = MessageBodyCollection::fromMessage($message);
+        $post = MessageBodyCollection::extract($message);
         $this->assertSame('<html><body><p>Hello World</p></body></html>', $post->getHtml());
         $this->assertSame('Hello World', (string)$post->getText());
         $this->assertCount(0, $post->getEmbeddedImages());

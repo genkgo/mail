@@ -45,7 +45,7 @@ final class PostTest extends AbstractTestCase
                 'boundary'
             ),
             $this->replaceBoundaries(
-                (string) MessageBodyCollection::fromMessage($message)->createMessage()->getBody(),
+                (string) MessageBodyCollection::extract($message)->createMessage()->getBody(),
                 'boundary'
             )
         );
