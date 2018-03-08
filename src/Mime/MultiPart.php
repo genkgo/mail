@@ -5,7 +5,7 @@ namespace Genkgo\Mail\Mime;
 
 use Genkgo\Mail\GenericMessage;
 use Genkgo\Mail\Header\ContentType;
-use Genkgo\Mail\Header\FixedHeader;
+use Genkgo\Mail\Header\ParsedHeader;
 use Genkgo\Mail\Header\HeaderValueParameter;
 use Genkgo\Mail\HeaderInterface;
 use Genkgo\Mail\MessageInterface;
@@ -44,7 +44,7 @@ final class MultiPart implements MultiPartInterface
 
         $this->decoratedPart = (new GenericPart())
             ->withHeader(
-                new FixedHeader(
+                new ParsedHeader(
                     $contentType->getName(),
                     $contentType->getValue()
                         ->withParameter(

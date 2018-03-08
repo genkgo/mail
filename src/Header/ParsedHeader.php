@@ -5,7 +5,7 @@ namespace Genkgo\Mail\Header;
 
 use Genkgo\Mail\HeaderInterface;
 
-final class FixedHeader implements HeaderInterface
+final class ParsedHeader implements HeaderInterface
 {
     /**
      * @var HeaderName

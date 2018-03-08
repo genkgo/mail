@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Genkgo\Mail;
 
-use Genkgo\Mail\Header\FixedHeader;
+use Genkgo\Mail\Header\ParsedHeader;
 use Genkgo\Mail\Header\HeaderLine;
 use Genkgo\Mail\Header\HeaderName;
 use Genkgo\Mail\Header\HeaderValueParameter;
@@ -130,7 +130,7 @@ final class MimeMessageFactory
         }
 
         return $part->withHeader(
-            new FixedHeader(
+            new ParsedHeader(
                 new HeaderName('Content-Type'),
                 $contentTypeHeader->withParameter(
                     new HeaderValueParameter('charset', 'us-ascii')

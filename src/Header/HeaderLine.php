@@ -67,7 +67,7 @@ final class HeaderLine
         }
 
         return new self(
-            new FixedHeader(
+            new ParsedHeader(
                 new HeaderName($name),
                 HeaderValue::fromString($value)
             )
