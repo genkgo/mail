@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Create a message from a MessageBodyCollection
 - Attach MessageBodyCollection to a message
 - Extract MessageBodyCollection from a message
+- Allow to use stream context options for a secure connection
 
 
 ## [2.3.0] - 2018-03-05
