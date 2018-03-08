@@ -42,16 +42,12 @@ final class SecureConnection extends AbstractConnection
      */
     public function upgrade(int $type): void
     {
-        throw new \InvalidArgumentException('Cannot connection, already secure');
+        throw new \InvalidArgumentException('Cannot upgrade connection, already secure');
     }
     
     public function connect(): void
     {
-        $context = \stream_context_create([
-            'ssl' => [
-                'crypto_method' => $this->options->getMethod(),
-            ]
-        ]);
+        $context = $this->options->createContext();
 
         $resource = @\stream_socket_client(
             'tls://' . $this->host . ':' . $this->port,

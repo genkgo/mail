@@ -19,18 +19,27 @@ final class SecureConnectionOptions
     private $method;
 
     /**
-     * @param int $method
+     * @var array
      */
-    public function __construct(int $method)
+    private $contextOptions = [];
+
+    /**
+     * @param int $method
+     * @param int $timeout
+     * @param array $contextOptions
+     */
+    public function __construct(int $method, int $timeout = 10, array $contextOptions = [])
     {
         $this->method = $method;
+        $this->timeout = $timeout;
+        $this->contextOptions = $contextOptions;
     }
 
     /**
      * @param float $connectionTimeout
      * @return SecureConnectionOptions
      */
-    public function withTimeout(float $connectionTimeout): SecureConnectionOptions
+    public function withTimeout(float $connectionTimeout): self
     {
         $clone = clone $this;
         $clone->timeout = $connectionTimeout;
@@ -41,10 +50,21 @@ final class SecureConnectionOptions
      * @param int $method
      * @return SecureConnectionOptions
      */
-    public function withMethod(int $method): SecureConnectionOptions
+    public function withMethod(int $method): self
     {
         $clone = clone $this;
         $clone->method = $method;
+        return $clone;
+    }
+
+    /**
+     * @param array $contextOptions
+     * @return SecureConnectionOptions
+     */
+    public function withContextOptions(array $contextOptions): self
+    {
+        $clone = clone $this;
+        $clone->contextOptions = $contextOptions;
         return $clone;
     }
 
@@ -62,5 +82,26 @@ final class SecureConnectionOptions
     public function getMethod(): int
     {
         return $this->method;
+    }
+
+    /**
+     * @return array
+     */
+    public function getContextOptions(): array
+    {
+        return $this->contextOptions;
+    }
+
+    /**
+     * @return resource
+     */
+    public function createContext()
+    {
+        return \stream_context_create([
+            'ssl' => \array_merge(
+                $this->contextOptions,
+                ['crypto_method' => $this->method]
+            )
+        ]);
     }
 }
