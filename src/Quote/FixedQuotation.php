@@ -19,7 +19,7 @@ final class FixedQuotation implements QuoteInterface
     /**
      * @param string $headerText
      */
-    public function __construct(string $headerText = "%s (%s):")
+    public function __construct(string $headerText = '%s (%s):')
     {
         $this->headerText = $headerText;
     }
