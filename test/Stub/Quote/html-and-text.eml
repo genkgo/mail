@@ -1,5 +1,7 @@
+Date: Sun, 01 Jan 2017 00:00:00 +0000
 Subject: Hello World
-To: me <me@example.com>
+From: me <me@example.com>
+To: you <you@example.com>
 Cc: other <other@example.com>
 MIME-Version: 1.0
 Content-Type: multipart/alternative; boundary=GenkgoMailV2Part187e28bf3cb4

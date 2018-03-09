@@ -11,6 +11,7 @@ use Genkgo\Mail\GenericMessage;
 use Genkgo\Mail\Header\Cc;
 use Genkgo\Mail\Header\ContentID;
 use Genkgo\Mail\Header\ContentType;
+use Genkgo\Mail\Header\From;
 use Genkgo\Mail\Header\Subject;
 use Genkgo\Mail\Header\To;
 use Genkgo\Mail\MessageBodyCollection;
@@ -119,7 +120,7 @@ final class MessageBodyCollectionTest extends AbstractTestCase
             ->withHeader((new Cc(new AddressList([new Address(new EmailAddress('other@example.com'), 'other')]))));
 
         $this->assertEquals(
-            \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollectionTest/html-only.eml'),
+            \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollection/html-only.eml'),
             (string) $message
         );
     }
@@ -140,7 +141,7 @@ final class MessageBodyCollectionTest extends AbstractTestCase
         $message = $body->attachToMessage($message);
 
         $this->assertEquals(
-            \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollectionTest/html-only.eml'),
+            \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollection/html-only.eml'),
             (string) $message
         );
     }
@@ -159,7 +160,7 @@ final class MessageBodyCollectionTest extends AbstractTestCase
             ->withHeader((new Cc(new AddressList([new Address(new EmailAddress('other@example.com'), 'other')]))));
 
         $this->assertEquals(
-            \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollectionTest/text-only.eml'),
+            \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollection/text-only.eml'),
             (string) $message
         );
     }
@@ -177,7 +178,7 @@ final class MessageBodyCollectionTest extends AbstractTestCase
             ->withHeader((new Cc(new AddressList([new Address(new EmailAddress('other@example.com'), 'other')]))));
 
         $this->assertEquals(
-            \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollectionTest/empty-email.eml'),
+            \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollection/empty-email.eml'),
             (string) $message
         );
     }
@@ -213,7 +214,7 @@ final class MessageBodyCollectionTest extends AbstractTestCase
 
         $this->assertEquals(
             $this->replaceBoundaries(
-                \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollectionTest/full-formatted-message.eml'),
+                \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollection/full-formatted-message.eml'),
                 'boundary'
             ),
             $this->replaceBoundaries(
@@ -232,12 +233,13 @@ final class MessageBodyCollectionTest extends AbstractTestCase
             ->withHtml('<html><body><p>Hello World</p></body></html>')
             ->createMessage()
             ->withHeader(new Subject('Hello World'))
-            ->withHeader((new To(new AddressList([new Address(new EmailAddress('me@example.com'), 'me')]))))
+            ->withHeader((new From(new Address(new EmailAddress('me@example.com'), 'me'))))
+            ->withHeader((new To(new AddressList([new Address(new EmailAddress('you@example.com'), 'you')]))))
             ->withHeader((new Cc(new AddressList([new Address(new EmailAddress('other@example.com'), 'other')]))));
 
         $this->assertEquals(
             $this->replaceBoundaries(
-                \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollectionTest/html-and-text.eml'),
+                \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollection/html-and-text.eml'),
                 'boundary'
             ),
             $this->replaceBoundaries(
@@ -253,7 +255,7 @@ final class MessageBodyCollectionTest extends AbstractTestCase
     public function it_extracts_body_from_full_formatted_messages()
     {
         $message = GenericMessage::fromString(
-            \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollectionTest/full-formatted-message.eml')
+            \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollection/full-formatted-message.eml')
         );
 
         $post = MessageBodyCollection::extract($message);
@@ -269,7 +271,7 @@ final class MessageBodyCollectionTest extends AbstractTestCase
     public function it_extracts_body_from_html_only_messages()
     {
         $message = GenericMessage::fromString(
-            \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollectionTest/html-only.eml')
+            \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollection/html-only.eml')
         );
 
         $post = MessageBodyCollection::extract($message);
@@ -285,7 +287,7 @@ final class MessageBodyCollectionTest extends AbstractTestCase
     public function it_extracts_body_from_text_only_messages()
     {
         $message = GenericMessage::fromString(
-            \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollectionTest/text-only.eml')
+            \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollection/text-only.eml')
         );
 
         $post = MessageBodyCollection::extract($message);
@@ -301,7 +303,7 @@ final class MessageBodyCollectionTest extends AbstractTestCase
     public function it_extracts_body_from_html_and_text_messages()
     {
         $message = GenericMessage::fromString(
-            \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollectionTest/html-and-text.eml')
+            \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollection/html-and-text.eml')
         );
 
         $post = MessageBodyCollection::extract($message);

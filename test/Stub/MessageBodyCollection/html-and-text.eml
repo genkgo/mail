@@ -1,0 +1,21 @@
+Subject: Hello World
+From: me <me@example.com>
+To: you <you@example.com>
+Cc: other <other@example.com>
+MIME-Version: 1.0
+Content-Type: multipart/alternative; boundary=GenkgoMailV2Part187e28bf3cb4
+
+This is a multipart message in MIME format.
+
+--GenkgoMailV2Part187e28bf3cb4
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+Hello World
+
+--GenkgoMailV2Part187e28bf3cb4
+Content-Type: text/html; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+<html><body><p>Hello World</p></body></html>
+--GenkgoMailV2Part187e28bf3cb4--
