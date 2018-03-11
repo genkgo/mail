@@ -5,7 +5,7 @@ namespace Genkgo\TestMail\Unit\Quotation;
 
 use Genkgo\Mail\GenericMessage;
 use Genkgo\Mail\MessageBodyCollection;
-use Genkgo\Mail\Quote\FixedQuotation;
+use Genkgo\Mail\Quotation\FixedQuotation;
 use Genkgo\TestMail\AbstractTestCase;
 
 final class FixedQuotationTest extends AbstractTestCase

@@ -21,7 +21,7 @@ use Genkgo\Mail\MessageBodyCollection;
 use Genkgo\Mail\Mime\EmbeddedImage;
 use Genkgo\Mail\Mime\HtmlPart;
 use Genkgo\Mail\Mime\ResourceAttachment;
-use Genkgo\Mail\Quote\FixedQuotation;
+use Genkgo\Mail\Quotation\FixedQuotation;
 use Genkgo\Mail\Stream\AsciiEncodedStream;
 use Genkgo\TestMail\AbstractTestCase;
 

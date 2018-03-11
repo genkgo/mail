@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Genkgo\Mail\Quote;
+namespace Genkgo\Mail\Quotation;
 
 use Genkgo\Mail\Address;
 use Genkgo\Mail\AlternativeText;
