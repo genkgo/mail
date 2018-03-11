@@ -97,12 +97,13 @@ final class FixedQuotation implements QuotationInterface
         }
 
         $body = $document->getElementsByTagName('body');
+        $quote = $document->createElement('blockquote');
+        $quote->setAttribute('type', 'cite');
+
         if ($body->length === 0) {
-            $quote = $document->createElement('blockquote');
             $quote->appendChild($document->removeChild($document->documentElement));
         } else {
             $root = $body->item(0);
-            $quote = $document->createElement('blockquote');
             while ($root->childNodes->length !== 0) {
                 $quote->appendChild($root->childNodes->item(0));
             }
