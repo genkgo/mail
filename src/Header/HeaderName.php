@@ -22,6 +22,15 @@ final class HeaderName
 
     /**
      * @param string $name
+     * @return bool
+     */
+    public function is(string $name): bool
+    {
+        return \strcasecmp($this->name, $name) === 0;
+    }
+
+    /**
+     * @param string $name
      */
     private function assert(string $name)
     {

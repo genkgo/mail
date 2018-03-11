@@ -7,9 +7,9 @@ use Genkgo\Mail\Address;
 use Genkgo\Mail\AlternativeText;
 use Genkgo\Mail\MessageBodyCollection;
 use Genkgo\Mail\MessageInterface;
-use Genkgo\Mail\QuoteInterface;
+use Genkgo\Mail\QuotationInterface;
 
-final class FixedQuotation implements QuoteInterface
+final class FixedQuotation implements QuotationInterface
 {
     /**
      * @var string

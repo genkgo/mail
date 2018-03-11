@@ -1,0 +1,21 @@
+Subject: Re: Hello World
+To: me <me@example.com>
+Cc: cc@example.com
+MIME-Version: 1.0
+Content-Type: multipart/alternative; boundary=boundary
+
+This is a multipart message in MIME format.
+
+--boundary
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+Hello World
+
+--boundary
+Content-Type: text/html; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+<html><body><p>Reply text</p><p>me (unknown):</p><blockquote><p>Hello
+World</p></blockquote></body></html>
+--boundary--

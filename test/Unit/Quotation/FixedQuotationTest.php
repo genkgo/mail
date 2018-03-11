@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Genkgo\TestMail\Unit\Quote;
+namespace Genkgo\TestMail\Unit\Quotation;
 
 use Genkgo\Mail\GenericMessage;
 use Genkgo\Mail\MessageBodyCollection;

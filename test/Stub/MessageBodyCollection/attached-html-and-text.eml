@@ -1,0 +1,38 @@
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary=GenkgoMailV2Partd00da1fe277a
+
+This is a multipart message in MIME format.
+
+--GenkgoMailV2Partd00da1fe277a
+Content-Type: multipart/alternative; boundary=GenkgoMailV2Part1088cfc2cd8d
+
+
+--GenkgoMailV2Part1088cfc2cd8d
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+Reply text
+
+--GenkgoMailV2Part1088cfc2cd8d
+Content-Type: text/html; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+<html><body><p>Reply text</p></body></html>
+--GenkgoMailV2Part1088cfc2cd8d--
+
+--GenkgoMailV2Partd00da1fe277a
+Content-Type: message/rfc822
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="Hello World.eml"
+
+U3ViamVjdDogSGVsbG8gV29ybGQNCkZyb206IG1lIDxtZUBleGFtcGxlLmNvbT4NClRvOiB5b3Ug
+PHlvdUBleGFtcGxlLmNvbT4NCkNjOiBvdGhlciA8b3RoZXJAZXhhbXBsZS5jb20+DQpNSU1FLVZl
+cnNpb246IDEuMA0KQ29udGVudC1UeXBlOiBtdWx0aXBhcnQvYWx0ZXJuYXRpdmU7IGJvdW5kYXJ5
+PUdlbmtnb01haWxWMlBhcnQxODdlMjhiZjNjYjQNCg0KVGhpcyBpcyBhIG11bHRpcGFydCBtZXNz
+YWdlIGluIE1JTUUgZm9ybWF0Lg0KDQotLUdlbmtnb01haWxWMlBhcnQxODdlMjhiZjNjYjQNCkNv
+bnRlbnQtVHlwZTogdGV4dC9wbGFpbjsgY2hhcnNldD11cy1hc2NpaQ0KQ29udGVudC1UcmFuc2Zl
+ci1FbmNvZGluZzogN2JpdA0KDQpIZWxsbyBXb3JsZA0KDQotLUdlbmtnb01haWxWMlBhcnQxODdl
+MjhiZjNjYjQNCkNvbnRlbnQtVHlwZTogdGV4dC9odG1sOyBjaGFyc2V0PXVzLWFzY2lpDQpDb250
+ZW50LVRyYW5zZmVyLUVuY29kaW5nOiA3Yml0DQoNCjxodG1sPjxib2R5PjxwPkhlbGxvIFdvcmxk
+PC9wPjwvYm9keT48L2h0bWw+DQotLUdlbmtnb01haWxWMlBhcnQxODdlMjhiZjNjYjQtLQ0K
+--GenkgoMailV2Partd00da1fe277a--

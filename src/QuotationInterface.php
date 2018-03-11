@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Genkgo\Mail;
 
-interface QuoteInterface
+interface QuotationInterface
 {
     /**
      * @param MessageBodyCollection $body
