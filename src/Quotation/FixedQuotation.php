@@ -180,14 +180,13 @@ final class FixedQuotation implements QuotationInterface
         AlternativeText $newText,
         AlternativeText $originalText,
         string $headerText
-    ): AlternativeText
-    {
+    ): AlternativeText {
         return new AlternativeText(
-            sprintf(
+            \sprintf(
                 "%s\n\n%s\n>%s",
                 (string)$newText,
                 $headerText,
-                str_replace("\n", "\n>", $originalText)
+                \str_replace("\n", "\n>", $originalText)
             )
         );
     }
