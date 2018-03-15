@@ -62,7 +62,13 @@ final class FixedQuotation implements QuotationInterface
                     $headerText
                 )
             )
-            ->withAlternativeText($this->quoteText($body->getText(), $originalBody->getText()));
+            ->withAlternativeText(
+                $this->quoteText(
+                    $body->getText(),
+                    $originalBody->getText(),
+                    $headerText
+                )
+            );
     }
 
     /**
@@ -167,10 +173,22 @@ final class FixedQuotation implements QuotationInterface
     /**
      * @param AlternativeText $newText
      * @param AlternativeText $originalText
+     * @param string $headerText
      * @return AlternativeText
      */
-    private function quoteText(AlternativeText $newText, AlternativeText $originalText): AlternativeText
+    private function quoteText(
+        AlternativeText $newText,
+        AlternativeText $originalText,
+        string $headerText
+    ): AlternativeText
     {
-        return $originalText;
+        return new AlternativeText(
+            sprintf(
+                "%s\n\n%s\n>%s",
+                (string)$newText,
+                $headerText,
+                str_replace("\n", "\n>", $originalText)
+            )
+        );
     }
 }
