@@ -73,4 +73,24 @@ final class FixedQuotationTest extends AbstractTestCase
             )
         );
     }
+
+    /**
+     * @test
+     */
+    public function it_quotes_text_only()
+    {
+        $quotation = new FixedQuotation();
+
+        $original = GenericMessage::fromString(
+            \file_get_contents(__DIR__ . '/../../Stub/Quote/text.eml')
+        );
+
+        $reply = (new MessageBodyCollection(''))
+            ->withAlternativeText(new AlternativeText('Hello Universe'));
+
+        $this->assertSame(
+            \file_get_contents(__DIR__ . '/../../Stub/Quote/text-quoted.txt'),
+            (string)$quotation->quote($reply, $original)->getText()
+        );
+    }
 }
