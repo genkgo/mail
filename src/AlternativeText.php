@@ -317,7 +317,7 @@ final class AlternativeText
 
         $iterator = \IntlBreakIterator::createCharacterInstance(\Locale::getDefault());
         $iterator->setText($unwrappedText);
-        foreach($iterator->getPartsIterator() as $char) {
+        foreach ($iterator->getPartsIterator() as $char) {
             if ($char === "\r\n") {
                 $lineChars = -1;
                 $quoteLength = 0;
