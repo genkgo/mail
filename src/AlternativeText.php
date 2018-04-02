@@ -50,8 +50,8 @@ final class AlternativeText
     {
         return $this->wrap(
             \str_replace(
-                ["  ", "\n ", " \n", "\t"],
-                [" ", "\n", "\n", "    "],
+                ["  ", "\n ", " \n", " \r\n", "\t"],
+                [" ", "\n", "\n", "\r\n", "    "],
                 \trim($string)
             )
         );
@@ -101,10 +101,10 @@ final class AlternativeText
     {
         $xpath = new \DOMXPath($document);
         $break = [
-            'br' => "\n",
-            'ul' => "\n",
-            'ol' => "\n",
-            'dl' => "\n",
+            'br' => "\r\n",
+            'ul' => "\r\n",
+            'ol' => "\r\n",
+            'dl' => "\r\n",
         ];
 
         /** @var \DOMElement $element */
@@ -112,7 +112,7 @@ final class AlternativeText
             if (isset($break[$element->nodeName])) {
                 $textNode = $document->createTextNode($break[$element->nodeName]);
             } else {
-                $textNode = $document->createTextNode("\n\n");
+                $textNode = $document->createTextNode("\r\n\r\n");
             }
 
             $element->appendChild($textNode);
@@ -174,7 +174,7 @@ final class AlternativeText
             }
 
             $element->appendChild(
-                $document->createTextNode("\n")
+                $document->createTextNode("\r\n")
             );
         }
 
@@ -196,7 +196,7 @@ final class AlternativeText
             }
 
             $element->appendChild(
-                $document->createTextNode("\n")
+                $document->createTextNode("\r\n")
             );
         }
 
@@ -210,7 +210,7 @@ final class AlternativeText
         /** @var \DOMElement $element */
         foreach ($xpath->query('//dl/dd') as $element) {
             $element->appendChild(
-                $document->createTextNode("\n")
+                $document->createTextNode("\r\n")
             );
         }
     }
@@ -275,7 +275,7 @@ final class AlternativeText
             $document->documentElement->appendChild(
                 $document->createTextNode(
                     \sprintf(
-                        "[%s] %s\n",
+                        "[%s] %s\r\n",
                         $itemUnicode,
                         $element->getAttribute('href')
                     )
