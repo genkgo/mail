@@ -93,4 +93,24 @@ final class FixedQuotationTest extends AbstractTestCase
             (string)$quotation->quote($reply, $original)->getText()
         );
     }
+
+    /**
+     * @test
+     */
+    public function it_quotes_deep_text()
+    {
+        $quotation = new FixedQuotation();
+
+        $original = GenericMessage::fromString(
+            \file_get_contents(__DIR__ . '/../../Stub/Quote/deep-text.eml')
+        );
+
+        $reply = (new MessageBodyCollection(''))
+            ->withAlternativeText(new AlternativeText('Hello Universe'));
+
+        $this->assertSame(
+            \file_get_contents(__DIR__ . '/../../Stub/Quote/deep-text-quoted.txt'),
+            (string)$quotation->quote($reply, $original)->getText()
+        );
+    }
 }

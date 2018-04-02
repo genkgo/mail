@@ -186,7 +186,7 @@ final class FixedQuotation implements QuotationInterface
                 "%s\n\n%s\n>%s",
                 (string)$newText,
                 $headerText,
-                \str_replace("\n", "\n>", $originalText)
+                \str_replace("\n", "\n>", $originalText->getRaw())
             )
         );
     }

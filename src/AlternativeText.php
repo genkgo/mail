@@ -29,6 +29,14 @@ final class AlternativeText
     /**
      * @return string
      */
+    public function getRaw(): string
+    {
+        return $this->text;
+    }
+
+    /**
+     * @return string
+     */
     public function __toString(): string
     {
         return $this->normalizeSpace($this->text);
@@ -40,7 +48,7 @@ final class AlternativeText
      */
     private function normalizeSpace(string $string): string
     {
-        return \wordwrap(
+        return $this->wrap(
             \str_replace(
                 ["  ", "\n ", " \n", "\t"],
                 [" ", "\n", "\n", "    "],
@@ -292,5 +300,62 @@ final class AlternativeText
             $head = $heads->item(0);
             $head->parentNode->removeChild($head);
         }
+    }
+
+    /**
+     * @param string $unwrappedText
+     * @param int $width
+     * @return string
+     */
+    private function wrap(string $unwrappedText, int $width = 75): string
+    {
+        $result = [];
+        $carriageReturn = false;
+        $lineChars = -1;
+        $quote = false;
+        $quoteLength = 0;
+
+        $iterator = \IntlBreakIterator::createCharacterInstance(\Locale::getDefault());
+        $iterator->setText($unwrappedText);
+        foreach($iterator->getPartsIterator() as $char) {
+            if ($char === "\r\n") {
+                $lineChars = -1;
+                $quoteLength = 0;
+                $quote = false;
+            } elseif ($char === "\r") {
+                $carriageReturn = true;
+            } elseif ($char === "\n") {
+                if (!$carriageReturn) {
+                    $char = "\r\n";
+                }
+
+                $lineChars = -1;
+                $quoteLength = 0;
+                $quote = false;
+            }
+
+            if ($lineChars >= $width && \IntlChar::isWhitespace($char)) {
+                $char = "\r\n" . \str_pad('', $quoteLength - 1, '>');
+                $lineChars = -1;
+                $quoteLength = 0;
+                $quote = false;
+            }
+
+            $result[] = $char;
+            $lineChars++;
+
+            if ($lineChars === 1 && $char === ">") {
+                $quote = true;
+                $quoteLength = 1;
+            }
+
+            if ($quote && $char === ">") {
+                $quoteLength++;
+            } else {
+                $quote = false;
+            }
+        }
+
+        return \implode('', $result);
     }
 }
