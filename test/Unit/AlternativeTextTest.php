@@ -39,7 +39,7 @@ final class AlternativeTextTest extends AbstractTestCase
     public function provideHtmlFiles()
     {
         return [
-            ['simple.html', 'simple.txt'],
+            ['simple.html', 'simple.crlf.txt'],
             ['error.html', 'error.txt'],
         ];
     }

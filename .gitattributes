@@ -1,2 +1,3 @@
 # Declare files that will always have CRLF line endings on checkout.
 *.eml text eol=crlf
+*.crlf.txt text eol=crlf

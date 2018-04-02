@@ -34,7 +34,7 @@ final class FixedQuotationTest extends AbstractTestCase
             $quotation->quote($reply, $original)->getHtml()
         );
         $this->assertSame(
-            \file_get_contents(__DIR__ . '/../../Stub/Quote/html-and-text-quoted.txt'),
+            \file_get_contents(__DIR__ . '/../../Stub/Quote/html-and-text-quoted.crlf.txt'),
             (string)$quotation->quote($reply, $original)->getText()
         );
     }
@@ -52,7 +52,7 @@ final class FixedQuotationTest extends AbstractTestCase
 
         $original = $original->withAlternativeText(
             new AlternativeText(
-                \file_get_contents(__DIR__ . '/../../Stub/Quote/html-and-text-quoted.txt')
+                \file_get_contents(__DIR__ . '/../../Stub/Quote/html-and-text-quoted.crlf.txt')
             )
         );
 
@@ -89,7 +89,7 @@ final class FixedQuotationTest extends AbstractTestCase
             ->withAlternativeText(new AlternativeText('Hello Universe'));
 
         $this->assertSame(
-            \file_get_contents(__DIR__ . '/../../Stub/Quote/text-quoted.txt'),
+            \file_get_contents(__DIR__ . '/../../Stub/Quote/text-quoted.crlf.txt'),
             (string)$quotation->quote($reply, $original)->getText()
         );
     }
@@ -109,7 +109,7 @@ final class FixedQuotationTest extends AbstractTestCase
             ->withAlternativeText(new AlternativeText('Hello Universe'));
 
         $this->assertSame(
-            \file_get_contents(__DIR__ . '/../../Stub/Quote/deep-text-quoted.txt'),
+            \file_get_contents(__DIR__ . '/../../Stub/Quote/deep-text-quoted.crlf.txt'),
             (string)$quotation->quote($reply, $original)->getText()
         );
     }
