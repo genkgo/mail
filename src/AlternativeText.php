@@ -334,6 +334,10 @@ final class AlternativeText
                 $quote = false;
             }
 
+            if ($char !== "\r") {
+                $carriageReturn = false;
+            }
+
             if ($lineChars >= $width && \IntlChar::isWhitespace($char)) {
                 $char = "\r\n" . \str_pad('', $quoteLength, '>');
                 $lineChars = -1;
