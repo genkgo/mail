@@ -19,7 +19,7 @@ a euismod ex. Fusce ullamcorper metus non augue placerat imperdiet. Vestibulum
 consequat ex vitae felis accumsan, non gravida eros consectetur. Nulla et augue
 congue, interdum tortor vel, porttitor dui.
 
-a random image from the webⁱ
+>> a random image from the web <image.jpg>
 
 ==============================================================================
 
@@ -28,11 +28,11 @@ a random image from the webⁱ
 This library supports the following transports.
 
     - SMTP
-    - PHP mail² function
+    - PHP >> mail <http://php.net/mail> function
 
 Maybe we should *stop* using the mail function.
 
-    1. It can be dangerous³
+    1. It can be >> dangerous <https://www.ripstech.com/blog/2017/why-mail-is-dangerous-in-php/>
     2. It modifies message without really knowing
 
 ***Details***
@@ -42,7 +42,3 @@ How do we break this line?
 
 MIME: Multipurpose Internet Mail Extensions
 SMTP: Simple Mail Transfer Protocol
-
-[ⁱ] image.jpg
-[²] http://php.net/mail
-[³] https://www.ripstech.com/blog/2017/why-mail-is-dangerous-in-php/

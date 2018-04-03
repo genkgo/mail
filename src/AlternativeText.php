@@ -251,39 +251,28 @@ final class AlternativeText
     {
         $xpath = new \DOMXPath($document);
         $item = 1;
-        $conversion = [
-            '0' => "\u{2070}",
-            '1' => "\u{2071}",
-            '2' => "\u{00B2}",
-            '3' => "\u{00B3}",
-            '4' => "\u{2074}",
-            '5' => "\u{2075}",
-            '6' => "\u{2076}",
-            '7' => "\u{2077}",
-            '8' => "\u{2078}",
-            '9' => "\u{2079}",
-        ];
 
         /** @var \DOMElement $element */
         foreach ($xpath->query('//a[@href and @href != .]') as $element) {
             $itemString = (string) $item;
-            $itemUnicode = '';
-            for ($i = 0, $j = \strlen($itemString); $i < $j; $i++) {
-                $itemUnicode .= $conversion[$itemString[$i]];
-            }
 
-            $document->documentElement->appendChild(
+            $element->insertBefore(
                 $document->createTextNode(
                     \sprintf(
-                        "[%s] %s\r\n",
-                        $itemUnicode,
-                        $element->getAttribute('href')
+                        ">> ",
+                        $itemString
                     )
-                )
+                ),
+                $element->firstChild
             );
 
             $element->appendChild(
-                $document->createTextNode($itemUnicode)
+                $document->createTextNode(
+                    \sprintf(
+                        " <%s>",
+                        $element->getAttribute('href')
+                    )
+                )
             );
 
             $item++;
