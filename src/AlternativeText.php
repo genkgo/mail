@@ -335,7 +335,7 @@ final class AlternativeText
             }
 
             if ($lineChars >= $width && \IntlChar::isWhitespace($char)) {
-                $char = "\r\n" . \str_pad('', $quoteLength - 1, '>');
+                $char = "\r\n" . \str_pad('', $quoteLength, '>');
                 $lineChars = -1;
                 $quoteLength = 0;
                 $quote = false;
@@ -347,9 +347,7 @@ final class AlternativeText
             if ($lineChars === 1 && $char === ">") {
                 $quote = true;
                 $quoteLength = 1;
-            }
-
-            if ($quote && $char === ">") {
+            } elseif ($quote && $char === ">") {
                 $quoteLength++;
             } else {
                 $quote = false;
