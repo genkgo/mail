@@ -21,12 +21,12 @@ final class HeaderName
     }
 
     /**
-     * @param string $name
+     * @param HeaderName $headerName
      * @return bool
      */
-    public function is(string $name): bool
+    public function equals(self $headerName): bool
     {
-        return \strcasecmp($this->name, $name) === 0;
+        return \strcasecmp($this->name, $headerName->name) === 0;
     }
 
     /**

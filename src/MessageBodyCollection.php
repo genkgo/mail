@@ -405,7 +405,7 @@ final class MessageBodyCollection
     private function determineReplyHeader(HeaderInterface $header): HeaderInterface
     {
         $headerName = $header->getName();
-        if ($headerName->is('Reply-To') || $headerName->is('From')) {
+        if ($headerName->equals(new HeaderName('Reply-To')) || $headerName->equals(new HeaderName('From'))) {
             return new To(AddressList::fromString((string)$header->getValue()));
         }
 
