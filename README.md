@@ -44,6 +44,8 @@ $ composer require genkgo/mail
 ## Features
 
 - Use SMTP or mail() to send messages
+- Use IMAPv4 to read messages from your mailbox (no extension required)
+- Create replies and forward messages, including quoting of original message
 - Queue messages when transport fails
 - Automatically connects and reconnects after interval to SMTP server
 - Automatically generate alternative text for formatted messages
@@ -60,7 +62,6 @@ $ composer require genkgo/mail
 - Discourages SSL
 - DKIM signed message
 - Security is highly prioritized
-- Use IMAPv4 to read messages from your mailbox (no extension required) 
 - SMTP server for testing purposes
 - Great RFC compliance
 - Cast messages to valid string source
