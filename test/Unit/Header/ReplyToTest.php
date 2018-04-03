@@ -25,7 +25,7 @@ final class ReplyToTest extends AbstractTestCase
             ])
         );
 
-        $this->assertEquals('ReplyTo', (string)$header->getName());
+        $this->assertEquals('Reply-To', (string)$header->getName());
         $this->assertEquals('Name <me@example.com>', (string)$header->getValue());
     }
 }

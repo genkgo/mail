@@ -21,6 +21,15 @@ final class HeaderName
     }
 
     /**
+     * @param HeaderName $headerName
+     * @return bool
+     */
+    public function equals(self $headerName): bool
+    {
+        return \strcasecmp($this->name, $headerName->name) === 0;
+    }
+
+    /**
      * @param string $name
      */
     private function assert(string $name)

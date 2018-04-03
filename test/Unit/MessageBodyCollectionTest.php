@@ -11,12 +11,17 @@ use Genkgo\Mail\GenericMessage;
 use Genkgo\Mail\Header\Cc;
 use Genkgo\Mail\Header\ContentID;
 use Genkgo\Mail\Header\ContentType;
+use Genkgo\Mail\Header\From;
+use Genkgo\Mail\Header\GenericHeader;
+use Genkgo\Mail\Header\MessageId;
+use Genkgo\Mail\Header\ReplyTo;
 use Genkgo\Mail\Header\Subject;
 use Genkgo\Mail\Header\To;
 use Genkgo\Mail\MessageBodyCollection;
 use Genkgo\Mail\Mime\EmbeddedImage;
 use Genkgo\Mail\Mime\HtmlPart;
 use Genkgo\Mail\Mime\ResourceAttachment;
+use Genkgo\Mail\Quotation\FixedQuotation;
 use Genkgo\Mail\Stream\AsciiEncodedStream;
 use Genkgo\TestMail\AbstractTestCase;
 
@@ -119,7 +124,7 @@ final class MessageBodyCollectionTest extends AbstractTestCase
             ->withHeader((new Cc(new AddressList([new Address(new EmailAddress('other@example.com'), 'other')]))));
 
         $this->assertEquals(
-            \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollectionTest/html-only.eml'),
+            \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollection/html-only.eml'),
             (string) $message
         );
     }
@@ -140,7 +145,7 @@ final class MessageBodyCollectionTest extends AbstractTestCase
         $message = $body->attachToMessage($message);
 
         $this->assertEquals(
-            \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollectionTest/html-only.eml'),
+            \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollection/html-only.eml'),
             (string) $message
         );
     }
@@ -159,7 +164,7 @@ final class MessageBodyCollectionTest extends AbstractTestCase
             ->withHeader((new Cc(new AddressList([new Address(new EmailAddress('other@example.com'), 'other')]))));
 
         $this->assertEquals(
-            \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollectionTest/text-only.eml'),
+            \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollection/text-only.eml'),
             (string) $message
         );
     }
@@ -177,7 +182,7 @@ final class MessageBodyCollectionTest extends AbstractTestCase
             ->withHeader((new Cc(new AddressList([new Address(new EmailAddress('other@example.com'), 'other')]))));
 
         $this->assertEquals(
-            \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollectionTest/empty-email.eml'),
+            \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollection/empty-email.eml'),
             (string) $message
         );
     }
@@ -213,13 +218,9 @@ final class MessageBodyCollectionTest extends AbstractTestCase
 
         $this->assertEquals(
             $this->replaceBoundaries(
-                \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollectionTest/full-formatted-message.eml'),
-                'boundary'
+                \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollection/full-formatted-message.eml')
             ),
-            $this->replaceBoundaries(
-                (string) $message,
-                'boundary'
-            )
+            $this->replaceBoundaries((string) $message)
         );
     }
 
@@ -232,18 +233,15 @@ final class MessageBodyCollectionTest extends AbstractTestCase
             ->withHtml('<html><body><p>Hello World</p></body></html>')
             ->createMessage()
             ->withHeader(new Subject('Hello World'))
-            ->withHeader((new To(new AddressList([new Address(new EmailAddress('me@example.com'), 'me')]))))
+            ->withHeader((new From(new Address(new EmailAddress('me@example.com'), 'me'))))
+            ->withHeader((new To(new AddressList([new Address(new EmailAddress('you@example.com'), 'you')]))))
             ->withHeader((new Cc(new AddressList([new Address(new EmailAddress('other@example.com'), 'other')]))));
 
         $this->assertEquals(
             $this->replaceBoundaries(
-                \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollectionTest/html-and-text.eml'),
-                'boundary'
+                \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollection/html-and-text.eml')
             ),
-            $this->replaceBoundaries(
-                (string) $message,
-                'boundary'
-            )
+            $this->replaceBoundaries((string) $message)
         );
     }
     
@@ -253,14 +251,14 @@ final class MessageBodyCollectionTest extends AbstractTestCase
     public function it_extracts_body_from_full_formatted_messages()
     {
         $message = GenericMessage::fromString(
-            \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollectionTest/full-formatted-message.eml')
+            \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollection/full-formatted-message.eml')
         );
 
-        $post = MessageBodyCollection::extract($message);
-        $this->assertSame('<html><body><p>Hello World</p></body></html>', $post->getHtml());
-        $this->assertSame('Hello World', (string)$post->getText());
-        $this->assertCount(1, $post->getEmbeddedImages());
-        $this->assertCount(1, $post->getAttachments());
+        $body = MessageBodyCollection::extract($message);
+        $this->assertSame('<html><body><p>Hello World</p></body></html>', $body->getHtml());
+        $this->assertSame('Hello World', (string)$body->getText());
+        $this->assertCount(1, $body->getEmbeddedImages());
+        $this->assertCount(1, $body->getAttachments());
     }
 
     /**
@@ -269,14 +267,14 @@ final class MessageBodyCollectionTest extends AbstractTestCase
     public function it_extracts_body_from_html_only_messages()
     {
         $message = GenericMessage::fromString(
-            \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollectionTest/html-only.eml')
+            \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollection/html-only.eml')
         );
 
-        $post = MessageBodyCollection::extract($message);
-        $this->assertSame('<html><body><p>Hello World</p></body></html>', $post->getHtml());
-        $this->assertSame('', (string)$post->getText());
-        $this->assertCount(0, $post->getEmbeddedImages());
-        $this->assertCount(0, $post->getAttachments());
+        $body = MessageBodyCollection::extract($message);
+        $this->assertSame('<html><body><p>Hello World</p></body></html>', $body->getHtml());
+        $this->assertSame('', (string)$body->getText());
+        $this->assertCount(0, $body->getEmbeddedImages());
+        $this->assertCount(0, $body->getAttachments());
     }
 
     /**
@@ -285,14 +283,14 @@ final class MessageBodyCollectionTest extends AbstractTestCase
     public function it_extracts_body_from_text_only_messages()
     {
         $message = GenericMessage::fromString(
-            \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollectionTest/text-only.eml')
+            \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollection/text-only.eml')
         );
 
-        $post = MessageBodyCollection::extract($message);
-        $this->assertSame('', $post->getHtml());
-        $this->assertSame('Hello World', (string)$post->getText());
-        $this->assertCount(0, $post->getEmbeddedImages());
-        $this->assertCount(0, $post->getAttachments());
+        $body = MessageBodyCollection::extract($message);
+        $this->assertSame('', $body->getHtml());
+        $this->assertSame('Hello World', (string)$body->getText());
+        $this->assertCount(0, $body->getEmbeddedImages());
+        $this->assertCount(0, $body->getAttachments());
     }
 
     /**
@@ -301,23 +299,219 @@ final class MessageBodyCollectionTest extends AbstractTestCase
     public function it_extracts_body_from_html_and_text_messages()
     {
         $message = GenericMessage::fromString(
-            \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollectionTest/html-and-text.eml')
+            \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollection/html-and-text.eml')
         );
 
-        $post = MessageBodyCollection::extract($message);
-        $this->assertSame('<html><body><p>Hello World</p></body></html>', $post->getHtml());
-        $this->assertSame('Hello World', (string)$post->getText());
-        $this->assertCount(0, $post->getEmbeddedImages());
-        $this->assertCount(0, $post->getAttachments());
+        $body = MessageBodyCollection::extract($message);
+        $this->assertSame('<html><body><p>Hello World</p></body></html>', $body->getHtml());
+        $this->assertSame('Hello World', (string)$body->getText());
+        $this->assertCount(0, $body->getEmbeddedImages());
+        $this->assertCount(0, $body->getAttachments());
     }
 
     /**
-     * @param string $messageString
-     * @param string $boundary
-     * @return string
+     * @test
      */
-    private function replaceBoundaries(string $messageString, string $boundary): string
+    public function it_should_attach_messages()
     {
-        return \preg_replace(['/(GenkgoMailV2Part[A-Za-z0-9\-]*)/'], $boundary, $messageString);
+        $message = GenericMessage::fromString(
+            \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollection/html-and-text.eml')
+        );
+
+        $body = (new MessageBodyCollection('<html><body><p>Reply text</p></body></html>'))
+            ->withAttachedMessage($message);
+
+        $expectedMessage = \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollection/attached-html-and-text.eml');
+
+        $this->assertSame(
+            $this->replaceBoundaries($expectedMessage),
+            $this->replaceBoundaries((string)$body->createMessage())
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_quote_an_original_message()
+    {
+        $message = GenericMessage::fromString(
+            \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollection/html-and-text.eml')
+        );
+
+        $body = (new MessageBodyCollection('<html><body><p>Reply text</p></body></html>'))
+            ->withQuotedMessage($message, new FixedQuotation());
+
+        $expectedMessage = \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollection/quoted-html-and-text.eml');
+
+        $this->assertSame(
+            $this->replaceBoundaries($expectedMessage),
+            $this->replaceBoundaries((string)$body->createMessage())
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_create_reply_message()
+    {
+        $message = GenericMessage::fromString(
+            \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollection/html-and-text.eml')
+        );
+
+        $body = (new MessageBodyCollection('<html><body><p>Reply text</p></body></html>'))
+            ->withQuotedMessage($message, new FixedQuotation());
+
+        $expectedMessage = \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollection/reply-html-and-text.eml');
+
+        $this->assertSame(
+            $this->replaceBoundaries($expectedMessage),
+            $this->replaceBoundaries((string)$body->inReplyTo($message))
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_not_reply_to_other_address_than_to()
+    {
+        $message = GenericMessage::fromString(
+            \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollection/html-and-text.eml')
+        )
+            ->withHeader(new Cc(AddressList::fromString('cc@example.com')));
+
+        $body = (new MessageBodyCollection('<html><body><p>Reply text</p></body></html>'))
+            ->withQuotedMessage($message, new FixedQuotation());
+
+        $expectedMessage = \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollection/reply-html-and-text.eml');
+
+        $this->assertSame(
+            $this->replaceBoundaries($expectedMessage),
+            $this->replaceBoundaries((string)$body->inReplyTo($message))
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_use_reply_to_header_when_replying()
+    {
+        $message = GenericMessage::fromString(
+            \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollection/html-and-text.eml')
+        )
+            ->withHeader(new ReplyTo(AddressList::fromString('other@example.com')));
+
+        $body = (new MessageBodyCollection('<html><body><p>Reply text</p></body></html>'))
+            ->withQuotedMessage($message, new FixedQuotation());
+
+        $expectedMessage = \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollection/reply-to-html-and-text.eml');
+
+        $this->assertSame(
+            $this->replaceBoundaries($expectedMessage),
+            $this->replaceBoundaries((string)$body->inReplyTo($message))
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_equal_file_when_replying_all()
+    {
+        $message = GenericMessage::fromString(
+            \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollection/html-and-text.eml')
+        )
+            ->withHeader(new Cc(AddressList::fromString('cc@example.com')));
+
+        $body = (new MessageBodyCollection('<html><body><p>Reply text</p></body></html>'))
+            ->withQuotedMessage($message, new FixedQuotation());
+
+        $expectedMessage = \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollection/reply-all-html-and-text.eml');
+
+        $this->assertSame(
+            $this->replaceBoundaries($expectedMessage),
+            $this->replaceBoundaries((string)$body->inReplyToAll($message))
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_use_reply_to_when_replying_all()
+    {
+        $message = GenericMessage::fromString(
+            \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollection/html-and-text.eml')
+        )
+            ->withHeader(new ReplyTo(AddressList::fromString('other@example.com')));
+
+        $body = (new MessageBodyCollection('<html><body><p>Reply text</p></body></html>'))
+            ->withQuotedMessage($message, new FixedQuotation());
+
+        $expectedMessage = \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollection/reply-to-all-html-and-text.eml');
+
+        $this->assertSame(
+            $this->replaceBoundaries($expectedMessage),
+            $this->replaceBoundaries((string)$body->inReplyToAll($message))
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_creates_reply_headers()
+    {
+        $messageId = MessageId::newRandom('domain');
+
+        $message = (new GenericMessage())
+            ->withHeader($messageId);
+
+        $body = new MessageBodyCollection();
+        $reply = $body->inReplyTo($message);
+
+        $this->assertTrue($reply->hasHeader('In-Reply-To'));
+        $this->assertTrue($reply->hasHeader('References'));
+        $this->assertSame((string)$messageId->getValue(), (string)$reply->getHeader('References')[0]->getValue());
+        $this->assertSame((string)$messageId->getValue(), (string)$reply->getHeader('In-Reply-To')[0]->getValue());
+    }
+
+    /**
+     * @test
+     */
+    public function it_adds_reference()
+    {
+        $messageId = MessageId::newRandom('domain');
+
+        $message = (new GenericMessage())
+            ->withHeader($messageId)
+            ->withHeader(new GenericHeader('References', '<id@domain.com>'));
+
+        $body = new MessageBodyCollection();
+        $reply = $body->inReplyTo($message);
+
+        $this->assertTrue($reply->hasHeader('In-Reply-To'));
+        $this->assertTrue($reply->hasHeader('References'));
+        $this->assertSame((string)$messageId->getValue(), (string)$reply->getHeader('In-Reply-To')[0]->getValue());
+        $this->assertSame(
+            '<id@domain.com>, '.(string)$messageId->getValue(),
+            (string)$reply->getHeader('References')[0]->getValue()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_create_forward_message()
+    {
+        $message = GenericMessage::fromString(
+            \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollection/html-and-text.eml')
+        );
+
+        $body = (new MessageBodyCollection('<html><body><p>Reply text</p></body></html>'))
+            ->withQuotedMessage($message, new FixedQuotation());
+
+        $expectedMessage = \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollection/forward-html-and-text.eml');
+
+        $this->assertSame(
+            $this->replaceBoundaries($expectedMessage),
+            $this->replaceBoundaries((string)$body->asForwardTo($message))
+        );
     }
 }

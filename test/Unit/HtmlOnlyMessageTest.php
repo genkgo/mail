@@ -30,7 +30,7 @@ final class HtmlOnlyMessageTest extends AbstractTestCase
             ->withHeader((new Cc(new AddressList([new Address(new EmailAddress('other@example.com'), 'other')]))));
 
         $this->assertEquals(
-            \file_get_contents(__DIR__ . '/../Stub/HtmlOnlyMessageTest/message.eml'),
+            \file_get_contents(__DIR__ . '/../Stub/HtmlOnlyMessage/message.eml'),
             (string) $message
         );
     }

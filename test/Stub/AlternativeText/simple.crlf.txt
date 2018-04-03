@@ -1,0 +1,44 @@
+*Hello world*
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla facilisis nibh
+a luctus dignissim. Nullam tempor ultrices tristique. Integer vulputate sem
+felis, id placerat mi scelerisque sit amet. Curabitur vel pretium lorem, et
+vulputate nisi. Nam bibendum lectus eget sagittis sagittis. Fusce sed tempor
+sem, sit amet tincidunt ex. Curabitur magna lectus, luctus at libero id, convallis
+egestas lectus. Pellentesque ante metus, dictum at efficitur lacinia, pulvinar
+quis erat. Proin sed dui sit amet nulla porttitor gravida. Vivamus placerat
+odio sit amet pharetra facilisis. Integer molestie velit et ante convallis,
+at facilisis lorem finibus. Aliquam viverra augue non urna fringilla vestibulum.
+Aenean aliquet lorem in lorem imperdiet, nec faucibus dui ultricies. Nullam
+congue massa a odio dictum, quis varius purus placerat. Donec mollis eget nunc
+vel molestie.
+
+Sed vel massa auctor, imperdiet enim eget, aliquet orci. Curabitur ut metus
+ultrices, consectetur metus sed, hendrerit ante. Aenean non turpis leo. Nunc
+a euismod ex. Fusce ullamcorper metus non augue placerat imperdiet. Vestibulum
+consequat ex vitae felis accumsan, non gravida eros consectetur. Nulla et augue
+congue, interdum tortor vel, porttitor dui.
+
+>> a random image from the web <image.jpg>
+
+==============================================================================
+
+**Library**
+
+This library supports the following transports.
+
+    - SMTP
+    - PHP >> mail <http://php.net/mail> function
+
+Maybe we should *stop* using the mail function.
+
+    1. It can be >> dangerous <https://www.ripstech.com/blog/2017/why-mail-is-dangerous-in-php/>
+    2. It modifies message without really knowing
+
+***Details***
+
+The devil is in the details.
+How do we break this line?
+
+MIME: Multipurpose Internet Mail Extensions
+SMTP: Simple Mail Transfer Protocol

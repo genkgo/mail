@@ -11,7 +11,7 @@ use Genkgo\Mail\Mime\EmbeddedImage;
 use Genkgo\Mail\Mime\ResourceAttachment;
 use Genkgo\Mail\Stream\AsciiEncodedStream;
 
-final class PostTest extends AbstractTestCase
+final class MessageBodyCollectionTest extends AbstractTestCase
 {
     /**
      * @test
@@ -40,24 +40,10 @@ final class PostTest extends AbstractTestCase
             ->createMessage();
 
         $this->assertEquals(
+            $this->replaceBoundaries((string) $message->getBody()),
             $this->replaceBoundaries(
-                (string) $message->getBody(),
-                'boundary'
-            ),
-            $this->replaceBoundaries(
-                (string) MessageBodyCollection::extract($message)->createMessage()->getBody(),
-                'boundary'
+                (string) MessageBodyCollection::extract($message)->createMessage()->getBody()
             )
         );
-    }
-
-    /**
-     * @param string $messageString
-     * @param string $boundary
-     * @return string
-     */
-    private function replaceBoundaries(string $messageString, string $boundary): string
-    {
-        return \preg_replace(['/(GenkgoMailV2Part[A-Za-z0-9\-]*)/'], $boundary, $messageString);
     }
 }

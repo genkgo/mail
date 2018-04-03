@@ -30,7 +30,7 @@ final class PlainTextMessageTest extends AbstractTestCase
             ->withHeader((new Cc(new AddressList([new Address(new EmailAddress('other@example.com'), 'other')]))));
 
         $this->assertEquals(
-            \file_get_contents(__DIR__ . '/../Stub/PlainTextMessageTest/message.eml'),
+            \file_get_contents(__DIR__ . '/../Stub/PlainTextMessage/message.eml'),
             (string) $message
         );
     }

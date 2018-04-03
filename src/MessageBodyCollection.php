@@ -3,7 +3,13 @@ declare(strict_types=1);
 
 namespace Genkgo\Mail;
 
+use Genkgo\Mail\Header\Cc;
 use Genkgo\Mail\Header\ContentType;
+use Genkgo\Mail\Header\GenericHeader;
+use Genkgo\Mail\Header\HeaderName;
+use Genkgo\Mail\Header\ParsedHeader;
+use Genkgo\Mail\Header\Subject;
+use Genkgo\Mail\Header\To;
 use Genkgo\Mail\Mime\Boundary;
 use Genkgo\Mail\Mime\EmbeddedImage;
 use Genkgo\Mail\Mime\HtmlPart;
@@ -11,6 +17,7 @@ use Genkgo\Mail\Mime\MultiPart;
 use Genkgo\Mail\Mime\MultiPartInterface;
 use Genkgo\Mail\Mime\PartInterface;
 use Genkgo\Mail\Mime\PlainTextPart;
+use Genkgo\Mail\Mime\ResourceAttachment;
 
 final class MessageBodyCollection
 {
@@ -113,6 +120,35 @@ final class MessageBodyCollection
     }
 
     /**
+     * @param MessageInterface $message
+     * @return MessageBodyCollection
+     */
+    public function withAttachedMessage(MessageInterface $message): self
+    {
+        return $this
+            ->withAttachment(
+                ResourceAttachment::fromString(
+                    (string)$message,
+                    \transliterator_transliterate(
+                        'Any-Latin; NFD; [:Nonspacing Mark:] Remove; NFC; [:Punctuation:] Remove;',
+                        $this->extractSubject($message)
+                    ) . '.eml',
+                    new ContentType('message/rfc822')
+                )
+            );
+    }
+
+    /**
+     * @param MessageInterface $message
+     * @param QuotationInterface $quotation
+     * @return MessageBodyCollection
+     */
+    public function withQuotedMessage(MessageInterface $message, QuotationInterface $quotation): self
+    {
+        return $quotation->quote($this, $message);
+    }
+
+    /**
      * @return string
      */
     public function getHtml(): string
@@ -168,6 +204,61 @@ final class MessageBodyCollection
         }
 
         return $message->withBody($newMessage->getBody());
+    }
+
+    /**
+     * @param MessageInterface $originalMessage
+     * @return MessageInterface
+     */
+    public function inReplyTo(MessageInterface $originalMessage): MessageInterface
+    {
+        return $this->newReply(
+            $originalMessage,
+            $originalMessage->hasHeader('Reply-To') ? ['Reply-To'] : ['From']
+        );
+    }
+
+    /**
+     * @param MessageInterface $originalMessage
+     * @return MessageInterface
+     */
+    public function inReplyToAll(MessageInterface $originalMessage): MessageInterface
+    {
+        return $this->newReply(
+            $originalMessage,
+            $originalMessage->hasHeader('Reply-To') ? ['Reply-To'] : ['From', 'Cc']
+        );
+    }
+
+    /**
+     * @param MessageInterface $originalMessage
+     * @param array $replyRecipientHeaderNames
+     * @return MessageInterface
+     */
+    private function newReply(MessageInterface $originalMessage, array $replyRecipientHeaderNames): MessageInterface
+    {
+        $reply = $this
+            ->createReferencedMessage($originalMessage)
+            ->withHeader(new Subject('Re: ' . $this->extractSubject($originalMessage)));
+
+        foreach ($replyRecipientHeaderNames as $replyRecipientHeaderName) {
+            foreach ($originalMessage->getHeader($replyRecipientHeaderName) as $recipientHeader) {
+                $reply = $reply->withHeader($this->determineReplyHeader($recipientHeader));
+            }
+        }
+
+        return $reply;
+    }
+
+    /**
+     * @param MessageInterface $originalMessage
+     * @return MessageInterface
+     */
+    public function asForwardTo(MessageInterface $originalMessage): MessageInterface
+    {
+        return $this
+            ->createReferencedMessage($originalMessage)
+            ->withHeader(new Subject('Fwd: ' . $this->extractSubject($originalMessage)));
     }
 
     /**
@@ -292,5 +383,59 @@ final class MessageBodyCollection
                 $this->extractFromMimePart($part);
             }
         }
+    }
+
+    /**
+     * @param MessageInterface $message
+     * @return string
+     */
+    private function extractSubject(MessageInterface $message): string
+    {
+        foreach ($message->getHeader('Subject') as $header) {
+            return $header->getValue()->getRaw();
+        }
+
+        return '';
+    }
+
+    /**
+     * @param HeaderInterface $header
+     * @return HeaderInterface
+     */
+    private function determineReplyHeader(HeaderInterface $header): HeaderInterface
+    {
+        $headerName = $header->getName();
+        if ($headerName->equals(new HeaderName('Reply-To')) || $headerName->equals(new HeaderName('From'))) {
+            return new To(AddressList::fromString((string)$header->getValue()));
+        }
+
+        return new Cc(AddressList::fromString((string)$header->getValue()));
+    }
+
+    /**
+     * @param MessageInterface $originalMessage
+     * @return MessageInterface
+     */
+    private function createReferencedMessage(MessageInterface $originalMessage): MessageInterface
+    {
+        $reply = $this->createMessage();
+
+        foreach ($originalMessage->getHeader('Message-ID') as $messageIdHeader) {
+            $references = $messageIdHeader->getValue()->getRaw();
+            foreach ($originalMessage->getHeader('References') as $referenceHeader) {
+                $references = $referenceHeader->getValue()->getRaw() . ', ' . $references;
+            }
+
+            return $reply
+                ->withHeader(
+                    new ParsedHeader(
+                        new HeaderName('In-Reply-To'),
+                        $messageIdHeader->getValue()
+                    )
+                )
+                ->withHeader(new GenericHeader('References', $references));
+        }
+
+        return $reply;
     }
 }

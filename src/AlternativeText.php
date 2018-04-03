@@ -29,6 +29,14 @@ final class AlternativeText
     /**
      * @return string
      */
+    public function getRaw(): string
+    {
+        return $this->text;
+    }
+
+    /**
+     * @return string
+     */
     public function __toString(): string
     {
         return $this->normalizeSpace($this->text);
@@ -40,10 +48,10 @@ final class AlternativeText
      */
     private function normalizeSpace(string $string): string
     {
-        return \wordwrap(
+        return $this->wrap(
             \str_replace(
-                ["  ", "\n ", " \n", "\t"],
-                [" ", "\n", "\n", "    "],
+                ["  ", "\n ", " \n", " \r\n", "\t"],
+                [" ", "\n", "\n", "\r\n", "    "],
                 \trim($string)
             )
         );
@@ -93,10 +101,10 @@ final class AlternativeText
     {
         $xpath = new \DOMXPath($document);
         $break = [
-            'br' => "\n",
-            'ul' => "\n",
-            'ol' => "\n",
-            'dl' => "\n",
+            'br' => "\r\n",
+            'ul' => "\r\n",
+            'ol' => "\r\n",
+            'dl' => "\r\n",
         ];
 
         /** @var \DOMElement $element */
@@ -104,7 +112,7 @@ final class AlternativeText
             if (isset($break[$element->nodeName])) {
                 $textNode = $document->createTextNode($break[$element->nodeName]);
             } else {
-                $textNode = $document->createTextNode("\n\n");
+                $textNode = $document->createTextNode("\r\n\r\n");
             }
 
             $element->appendChild($textNode);
@@ -166,7 +174,7 @@ final class AlternativeText
             }
 
             $element->appendChild(
-                $document->createTextNode("\n")
+                $document->createTextNode("\r\n")
             );
         }
 
@@ -188,7 +196,7 @@ final class AlternativeText
             }
 
             $element->appendChild(
-                $document->createTextNode("\n")
+                $document->createTextNode("\r\n")
             );
         }
 
@@ -202,7 +210,7 @@ final class AlternativeText
         /** @var \DOMElement $element */
         foreach ($xpath->query('//dl/dd') as $element) {
             $element->appendChild(
-                $document->createTextNode("\n")
+                $document->createTextNode("\r\n")
             );
         }
     }
@@ -242,43 +250,22 @@ final class AlternativeText
     private function updateLinks(\DOMDocument $document): void
     {
         $xpath = new \DOMXPath($document);
-        $item = 1;
-        $conversion = [
-            '0' => "\u{2070}",
-            '1' => "\u{2071}",
-            '2' => "\u{00B2}",
-            '3' => "\u{00B3}",
-            '4' => "\u{2074}",
-            '5' => "\u{2075}",
-            '6' => "\u{2076}",
-            '7' => "\u{2077}",
-            '8' => "\u{2078}",
-            '9' => "\u{2079}",
-        ];
 
         /** @var \DOMElement $element */
         foreach ($xpath->query('//a[@href and @href != .]') as $element) {
-            $itemString = (string) $item;
-            $itemUnicode = '';
-            for ($i = 0, $j = \strlen($itemString); $i < $j; $i++) {
-                $itemUnicode .= $conversion[$itemString[$i]];
-            }
+            $element->insertBefore(
+                $document->createTextNode('>> '),
+                $element->firstChild
+            );
 
-            $document->documentElement->appendChild(
+            $element->appendChild(
                 $document->createTextNode(
                     \sprintf(
-                        "[%s] %s\n",
-                        $itemUnicode,
+                        " <%s>",
                         $element->getAttribute('href')
                     )
                 )
             );
-
-            $element->appendChild(
-                $document->createTextNode($itemUnicode)
-            );
-
-            $item++;
         }
     }
 
@@ -292,5 +279,64 @@ final class AlternativeText
             $head = $heads->item(0);
             $head->parentNode->removeChild($head);
         }
+    }
+
+    /**
+     * @param string $unwrappedText
+     * @param int $width
+     * @return string
+     */
+    private function wrap(string $unwrappedText, int $width = 75): string
+    {
+        $result = [];
+        $carriageReturn = false;
+        $lineChars = -1;
+        $quote = false;
+        $quoteLength = 0;
+
+        $iterator = \IntlBreakIterator::createCharacterInstance(\Locale::getDefault());
+        $iterator->setText($unwrappedText);
+        foreach ($iterator->getPartsIterator() as $char) {
+            if ($char === "\r\n") {
+                $lineChars = -1;
+                $quoteLength = 0;
+                $quote = false;
+            } elseif ($char === "\r") {
+                $carriageReturn = true;
+            } elseif ($char === "\n") {
+                if (!$carriageReturn) {
+                    $char = "\r\n";
+                }
+
+                $lineChars = -1;
+                $quoteLength = 0;
+                $quote = false;
+            }
+
+            if ($char !== "\r") {
+                $carriageReturn = false;
+            }
+
+            if ($lineChars >= $width && \IntlChar::isWhitespace($char)) {
+                $char = "\r\n" . \str_pad('', $quoteLength, '>');
+                $lineChars = -1;
+                $quoteLength = 0;
+                $quote = false;
+            }
+
+            $result[] = $char;
+            $lineChars++;
+
+            if ($lineChars === 1 && $char === ">") {
+                $quote = true;
+                $quoteLength = 1;
+            } elseif ($quote && $char === ">") {
+                $quoteLength++;
+            } else {
+                $quote = false;
+            }
+        }
+
+        return \implode('', $result);
     }
 }

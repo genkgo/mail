@@ -10,6 +10,6 @@ final class ReplyTo extends AbstractRecipient
      */
     public function getName(): HeaderName
     {
-        return new HeaderName('ReplyTo');
+        return new HeaderName('Reply-To');
     }
 }
