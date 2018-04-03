@@ -250,19 +250,11 @@ final class AlternativeText
     private function updateLinks(\DOMDocument $document): void
     {
         $xpath = new \DOMXPath($document);
-        $item = 1;
 
         /** @var \DOMElement $element */
         foreach ($xpath->query('//a[@href and @href != .]') as $element) {
-            $itemString = (string) $item;
-
             $element->insertBefore(
-                $document->createTextNode(
-                    \sprintf(
-                        ">> ",
-                        $itemString
-                    )
-                ),
+                $document->createTextNode('>> '),
                 $element->firstChild
             );
 
@@ -274,8 +266,6 @@ final class AlternativeText
                     )
                 )
             );
-
-            $item++;
         }
     }
 
