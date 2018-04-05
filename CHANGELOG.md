@@ -7,6 +7,23 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 
+## [2.5.0] - 2018-04-03
+
+### Added
+
+- Create reply messages
+- Create forward messages
+- Quote message in a new message
+- Add message as attachment to new message
+
+### Fixed
+
+- AlternativeText now always uses CRLF for breaks
+- Improved wrapping quoted text in AlternativeText
+- Do not use Unicode for links in HTML converted alternative text
+- Wrapping in AlternativeText is now multibyte friendly
+
+
 ## [2.4.0] - 2018-03-08
 
 ### Added
