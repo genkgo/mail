@@ -1,8 +1,5 @@
 language: php
-php:
-  - 7.1
-  - 7.2
-  - nightly
+sudo: false
 matrix:
   include:
     - php: 7.1
@@ -13,6 +10,7 @@ matrix:
       env: dependencies=lowest
     - php: 7.2
       env: dependencies=highest
+    - php: nightly
   allow_failures:
     - php: nightly
 script:
