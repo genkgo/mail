@@ -50,4 +50,22 @@ final class FromTest extends AbstractTestCase
         $header = From::fromEmailAddress('me@example.com');
         $this->assertEquals('me@example.com', (string)$header->getValue());
     }
+
+    /**
+     * @test
+     */
+    public function it_uses_correct_encoding_with_long_names()
+    {
+        $from = new From(
+            new Address(
+                new EmailAddress('webmaster@xyz.domain.com'),
+                'Webmaster Organization Name With a Very Long Name Somewhere-Somehwere'
+            )
+        );
+
+        $this->assertEquals(
+            "Webmaster Organization Name With a Very Long Name\r\n Somewhere-Somehwere <webmaster@xyz.domain.com>",
+            (string)$from->getValue()
+        );
+    }
 }

@@ -35,7 +35,7 @@ final class From implements HeaderInterface
      */
     public function getValue(): HeaderValue
     {
-        return new HeaderValue((string)$this->from);
+        return HeaderValue::fromEncodedString((string)$this->from);
     }
 
     /**
