@@ -8,6 +8,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 
 
+
+## [2.5.2] - 2018-10-30
+
+### Fixed
+
+- Allow addresses and headers to contain multi-byte strings that contain a new line when interpreted as single bytes.
+
+
 ## [2.5.1] - 2018-06-04
 
 ### Fixed
