@@ -25,6 +25,15 @@ final class SubjectTest extends AbstractTestCase
     }
 
     /**
+     * @test
+     */
+    public function it_can_be_constructed_with_a_multi_byte_name_leading_to_new_line_in_single_byte()
+    {
+        $subject = new Subject('Миха');
+        $this->assertEquals('=?UTF-8?B?0JzQuNGF0LA=?=', (string)$subject->getValue());
+    }
+
+    /**
      * @return array
      */
     public function provideValues()

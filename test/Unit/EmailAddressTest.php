@@ -51,6 +51,15 @@ final class EmailAddressTest extends AbstractTestCase
     /**
      * @test
      */
+    public function it_can_be_constructed_with_a_multi_byte_name_leading_to_new_line_in_single_byte()
+    {
+        $address = new EmailAddress('Миха@domain.com');
+        $this->assertEquals('Миха@domain.com', (string)$address);
+    }
+
+    /**
+     * @test
+     */
     public function it_is_equal_when_it_has_same_value()
     {
         $address = new EmailAddress('me@example.com');

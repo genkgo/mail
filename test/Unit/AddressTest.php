@@ -121,6 +121,15 @@ final class AddressTest extends AbstractTestCase
     }
 
     /**
+     * @test
+     */
+    public function it_can_be_constructed_with_a_multi_byte_name_leading_to_new_line_in_single_byte()
+    {
+        $address = new Address(new EmailAddress('local@domain.com'), 'Миха');
+        $this->assertEquals('=?UTF-8?B?0JzQuNGF0LA=?= <local@domain.com>', (string)$address);
+    }
+
+    /**
      * @return array
      */
     public function provideAddressStrings()
