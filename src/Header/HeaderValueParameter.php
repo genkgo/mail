@@ -31,11 +31,11 @@ final class HeaderValueParameter
     public function __construct(string $name, string $value)
     {
         if ($name === '' || \strcspn($name, self::ANY_ASCII_EXCEPT_SPACE_CTL) !== \strlen($name)) {
-            throw new \InvalidArgumentException('Incorrect name');
+            throw new \InvalidArgumentException('Parameters contains incorrect name: ' . $name);
         }
 
         if (\strcspn($value, self::ANY_ASCII_EXCEPT_SPACE_CTL) !== \strlen($value)) {
-            throw new \InvalidArgumentException('Incorrect value');
+            throw new \InvalidArgumentException('Parameters contains incorrect value: ' . $value);
         }
 
         $this->name = $name;
