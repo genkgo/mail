@@ -44,7 +44,7 @@ final class ContentDisposition implements HeaderInterface
             ->withParameter(
                 new HeaderValueParameter(
                     'filename',
-                    $this->filename
+                    (string)OptimalEncodedHeaderValue::forPhrase($this->filename)
                 )
             );
     }

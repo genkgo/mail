@@ -1,0 +1,17 @@
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary=GenkgoMailV2Partfd6a87d339fb
+
+This is a multipart message in MIME format.
+
+--GenkgoMailV2Partfd6a87d339fb
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+
+--GenkgoMailV2Partfd6a87d339fb
+Content-Type: text/txt; charset=UTF-8
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="=?UTF-8?B?w7MueHl6?="
+
+dGVzdA==
+--GenkgoMailV2Partfd6a87d339fb--

@@ -514,4 +514,20 @@ final class MessageBodyCollectionTest extends AbstractTestCase
             $this->replaceBoundaries((string)$body->asForwardTo($message))
         );
     }
+
+    /**
+     * @test
+     */
+    public function it_should_accept_an_attachment_with_a_filename_containing_special_characters()
+    {
+        $body = (new MessageBodyCollection())
+            ->withAttachment(ResourceAttachment::fromString('test', 'ó.xyz', new ContentType('text/txt')));
+
+        $expectedMessage = \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollection/attachment-special-char-filename.eml');
+
+        $this->assertSame(
+            $this->replaceBoundaries($expectedMessage),
+            $this->replaceBoundaries((string)$body->createMessage())
+        );
+    }
 }

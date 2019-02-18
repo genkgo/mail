@@ -74,7 +74,7 @@ final class HeaderValueParameter
      */
     public function __toString(): string
     {
-        if (\strcspn($this->value, $this->specials) !== \strlen($this->value)) {
+        if ($this->value !== '' && ($this->value[0] === '=' || \strcspn($this->value, $this->specials) !== \strlen($this->value))) {
             return \sprintf('%s="%s"', $this->name, $this->value);
         }
 
