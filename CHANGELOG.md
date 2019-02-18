@@ -9,6 +9,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 
 
+## [2.5.4] - 2019-02-18
+
+### Fixed
+
+- Allow special characters in filenames of content disposition.
+ 
+
+## [2.5.3] - 2019-02-14
+
+### Changed
+
+- Increases verbosity of message when an exception occurs due to an invalid header value parameter.
+
+
 ## [2.5.2] - 2018-10-30
 
 ### Fixed
