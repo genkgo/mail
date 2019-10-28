@@ -105,6 +105,7 @@ This library tends to be as compliant with e-mail RFCs as possible. It should be
 - [RFC 3501, Internet Message Access Protocol - version 4rev1](https://tools.ietf.org/html/rfc3501)
 - [RFC 4954, SMTP Service Extension for Authentication](https://tools.ietf.org/html/rfc4954)
 - [RFC 5321, Simple Mail Transfer Protocol](https://tools.ietf.org/html/rfc5321)
+- [RFC 6530, Overview and Framework for Internationalized Email](https://tools.ietf.org/html/rfc6530)
 
 
 ## Credits
