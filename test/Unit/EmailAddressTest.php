@@ -33,6 +33,7 @@ final class EmailAddressTest extends AbstractTestCase
         return [
             ['local-part@domain.com', true, 'local-part', 'domain.com'],
             ['local-part@münchen.com', true, 'local-part', 'münchen.com'],
+            ['münchen@münchen.com', true, 'münchen', 'münchen.com'],
             ['local-part@[IPv6:2001:db8:1ff::a0b:dbd0]', true, 'local-part', '[IPv6:2001:db8:1ff::a0b:dbd0]'],
             ['local-part+symbol@domain.com', true, 'local-part+symbol', 'domain.com'],
             ['"local-part with-space"@domain.com', true, '"local-part with-space"', 'domain.com'],
@@ -75,5 +76,15 @@ final class EmailAddressTest extends AbstractTestCase
                 new EmailAddress('different@example.com')
             )
         );
+    }
+
+    /**
+     * @test
+     */
+    public function it_puny_codes_local_part_and_domain()
+    {
+        $address = new EmailAddress('münchen@münchen.com');
+
+        $this->assertEquals('xn--mnchen-3ya@xn--mnchen-3ya.com', $address->getPunyCode());
     }
 }
