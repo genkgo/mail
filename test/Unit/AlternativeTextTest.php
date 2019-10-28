@@ -41,6 +41,7 @@ final class AlternativeTextTest extends AbstractTestCase
         return [
             ['simple.html', 'simple.crlf.txt'],
             ['error.html', 'error.txt'],
+            ['bug_59.html', 'bug_59.txt'],
         ];
     }
 }

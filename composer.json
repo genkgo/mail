@@ -34,5 +34,16 @@
         "psr-4": {
             "Genkgo\\TestMail\\": ["test"]
         }
+    },
+    "scripts": {
+        "lint": [
+            "./vendor/bin/php-cs-fixer fix --verbose --config .php_cs.dist ./src ./test"
+        ],
+        "test": [
+            "./vendor/bin/phpunit -c phpunit.xml",
+            "./vendor/bin/php-cs-fixer fix --verbose --dry-run --config .php_cs.dist ./src ./test",
+            "./vendor/bin/phpstan analyse -l max src",
+            "./vendor/bin/phpstan analyse -l max -c .phpstan.test.neon test"
+        ]
     }
 }
