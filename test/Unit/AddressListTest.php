@@ -55,14 +55,14 @@ final class AddressListTest extends AbstractTestCase
             $addressList,
             $addressList->withAddress(
                 new Address(new EmailAddress('me1@example.com'), 'name')
-        )
+            )
         );
 
         $this->assertNotSame(
             $addressList,
             $addressList->withoutAddress(
                 new Address(new EmailAddress('me1@example.com'), 'name')
-        )
+            )
         );
     }
 
