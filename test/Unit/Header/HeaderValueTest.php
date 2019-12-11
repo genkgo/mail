@@ -110,4 +110,16 @@ final class HeaderValueTest extends AbstractTestCase
         $this->assertEquals('charset=utf-8', (string)$header->getParameter('charset'));
         $this->assertEquals('foo=bar', (string)$header->getParameter('foo'));
     }
+
+    /**
+     * @test
+     */
+    public function it_can_parse_a_string_with_more_than_one_line()
+    {
+        $header1 = HeaderValue::fromString("Name \"Quoted Name\"\r\n <name@domain.com>");
+        $header2 = HeaderValue::fromString("Name \"Quoted Name\"\r\n  <name@domain.com>");
+
+        $this->assertEquals('Name "Quoted Name"<name@domain.com>', $header1->getRaw());
+        $this->assertEquals('Name "Quoted Name" <name@domain.com>', $header2->getRaw());
+    }
 }

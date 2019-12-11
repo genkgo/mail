@@ -156,7 +156,7 @@ final class HeaderValue
     {
         $values = [];
 
-        $headerValueAsString = \trim($headerValueAsString);
+        $headerValueAsString = \str_replace("\r\n ", '', \trim($headerValueAsString));
 
         $length = \strlen($headerValueAsString) - 1;
         $n = -1;
