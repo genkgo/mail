@@ -32,7 +32,6 @@ install:
     - ps: Set-Service wuauserv -StartupType Manual
     - IF EXIST c:\tools\php (SET PHP=0)
     - choco install -y php --version %PHP_VERSION%  --params '""/InstallDir:C:\tools\php""'
-    - choco install -y composer
     - cd c:\tools\php
     - IF %PHP%==1 copy php.ini-production php.ini /Y
     - IF %PHP%==1 echo date.timezone="UTC" >> php.ini
@@ -41,6 +40,8 @@ install:
     - IF %PHP%==1 echo extension=php_mbstring.dll >> php.ini
     - IF %PHP%==1 echo extension=php_fileinfo.dll >> php.ini
     - IF %PHP%==1 echo extension=php_intl.dll >> php.ini
+    - IF %PHP%==1 echo @php %%~dp0composer.phar %%* > composer.bat
+    - appveyor-retry appveyor DownloadFile https://getcomposer.org/composer.phar
     - cd c:\projects\php-project-workspace
     - composer update --no-progress --profile -n
     - composer show
