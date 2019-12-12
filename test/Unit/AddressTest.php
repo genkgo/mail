@@ -108,7 +108,6 @@ final class AddressTest extends AbstractTestCase
 
     /**
      * @test
-     * @dataProvider provideAddressStrings
      */
     public function it_can_be_converted_to_readable_string()
     {
@@ -129,6 +128,22 @@ final class AddressTest extends AbstractTestCase
     {
         $address = new Address(new EmailAddress('local@domain.com'), 'Миха');
         $this->assertEquals('=?UTF-8?B?0JzQuNGF0LA=?= <local@domain.com>', (string)$address);
+    }
+
+    /**
+     * @test
+     */
+    public function it_quotes_folded_addresses_with_quotes_near_the_end()
+    {
+        $address = new Address(
+            new EmailAddress('address@domain.com'),
+            'Long 7bit name with only normal characters but with quoted characters near the "end"'
+        );
+
+        $this->assertEquals(
+            "\"Long 7bit name with only normal characters but with quoted\r\n characters near the \\\"end\\\"\" <address@domain.com>",
+            (string)$address
+        );
     }
 
     /**

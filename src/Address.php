@@ -73,13 +73,15 @@ final class Address
             return (string)$this->address;
         }
 
-        $encodedName = (string) OptimalEncodedHeaderValue::forPhrase($this->name);
-        if ($encodedName === $this->name) {
-            $encodedName = \addcslashes($encodedName, "\0..\37\177\\\"");
+        $encodedPhrase = OptimalEncodedHeaderValue::forPhrase($this->name);
+        if ($encodedPhrase->getEncoding() === '7bit' || $encodedPhrase->getEncoding() === '8bit') {
+            $encodedName = \addslashes((string)$encodedPhrase);
 
-            if ($encodedName !== $this->name || \preg_match('/[^A-Za-z0-9!#$%&\'*+\/=?^_`{|}~ -]/', $this->name) === 1) {
+            if (\preg_match('/[^A-Za-z0-9\s!#$%&\'*+\/=?^_`{|}~\-]/', $this->name) === 1) {
                 $encodedName = \sprintf('"%s"', $encodedName);
             }
+        } else {
+            $encodedName = (string)$encodedPhrase;
         }
 
         return \sprintf('%s <%s>', $encodedName, $this->address->getPunyCode());

@@ -3,13 +3,10 @@ platform:
   - x64
 clone_folder: c:\projects\php-project-workspace
 
-## Build matrix for lowest and highest possible targets
+## Build matrix for single php version
 environment:
   matrix:
-  - dependencies: lowest
-    php_ver_target: 7.3.11
-  - dependencies: highest
-    php_ver_target: 7.3.11
+  - { PHP_VERSION: '7.3.11' }
 
 ## Cancel all if one fails
 matrix:
@@ -32,8 +29,9 @@ init:
 
 ## Install PHP and composer, and run the appropriate composer command
 install:
+    - ps: Set-Service wuauserv -StartupType Manual
     - IF EXIST c:\tools\php (SET PHP=0)
-    - ps: appveyor-retry cinst --params '""/InstallDir:C:\tools\php""' --ignore-checksums -y php --version ((choco search php --exact --all-versions -r | select-string -pattern $env:php_ver_target | sort { [version]($_ -split '\|' | select -last 1) } -Descending | Select-Object -first 1) -replace '[php|]','')
+    - choco install -y php --version %PHP_VERSION%  --params '""/InstallDir:C:\tools\php""'
     - cd c:\tools\php
     - IF %PHP%==1 copy php.ini-production php.ini /Y
     - IF %PHP%==1 echo date.timezone="UTC" >> php.ini
@@ -45,9 +43,7 @@ install:
     - IF %PHP%==1 echo @php %%~dp0composer.phar %%* > composer.bat
     - appveyor-retry appveyor DownloadFile https://getcomposer.org/composer.phar
     - cd c:\projects\php-project-workspace
-    - IF %dependencies%==lowest appveyor-retry composer update --prefer-lowest --no-progress --profile -n
-    - IF %dependencies%==current appveyor-retry composer install --no-progress --profile
-    - IF %dependencies%==highest appveyor-retry composer update --no-progress --profile -n
+    - composer update --no-progress --profile -n
     - composer show
 
 ## Run the actual test
