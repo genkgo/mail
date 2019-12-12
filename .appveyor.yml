@@ -3,13 +3,10 @@ platform:
   - x64
 clone_folder: c:\projects\php-project-workspace
 
-## Build matrix for lowest and highest possible targets
+## Build matrix for single php version
 environment:
   matrix:
-  - dependencies: lowest
-    php_ver_target: 7.3.11
-  - dependencies: highest
-    php_ver_target: 7.3.11
+  - { PHP_VERSION: '7.3.11' }
 
 ## Cancel all if one fails
 matrix:
@@ -33,7 +30,7 @@ init:
 ## Install PHP and composer, and run the appropriate composer command
 install:
     - IF EXIST c:\tools\php (SET PHP=0)
-    - ps: appveyor-retry cinst --params '""/InstallDir:C:\tools\php""' --ignore-checksums -y php --version ((choco search php --exact --all-versions -r | select-string -pattern $env:php_ver_target | sort { [version]($_ -split '\|' | select -last 1) } -Descending | Select-Object -first 1) -replace '[php|]','')
+    - choco install -y php --version %PHP_VERSION%
     - cd c:\tools\php
     - IF %PHP%==1 copy php.ini-production php.ini /Y
     - IF %PHP%==1 echo date.timezone="UTC" >> php.ini
