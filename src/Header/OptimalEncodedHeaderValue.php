@@ -13,19 +13,43 @@ final class OptimalEncodedHeaderValue
     /**
      * @var string
      */
-    private $value;
+    private $encoded;
 
     /**
-     * @var bool
+     * @var string
      */
-    private $phrase = false;
+    private $encoding = '7bit';
 
     /**
      * @param string $value
+     * @param bool $phrase
      */
-    public function __construct(string $value)
+    public function __construct(string $value, bool $phrase = false)
     {
-        $this->value = $value;
+        if ($phrase === true) {
+            $encoded = new OptimalTransferEncodedPhraseStream($value, 68, self::FOLDING);
+
+            $this->encoding = $encoded->getMetadata(['transfer-encoding'])['transfer-encoding'];
+        } else {
+            $encoded = new OptimalTransferEncodedTextStream($value, 68, self::FOLDING);
+
+            $this->encoding = $encoded->getMetadata(['transfer-encoding'])['transfer-encoding'];
+        }
+
+        switch ($this->encoding) {
+            case '7bit':
+            case '8bit':
+                $this->encoded = (string) $encoded;
+                break;
+            case 'base64':
+                $this->encoded = \sprintf('=?%s?B?%s?=', 'UTF-8', (string) $encoded);
+                break;
+            case 'quoted-printable':
+                $this->encoded = \sprintf('=?%s?Q?%s?=', 'UTF-8', (string) $encoded);
+                break;
+            default:
+                throw new \UnexpectedValueException('Unknown encoding ' . $this->encoding);
+        }
     }
 
     /**
@@ -33,25 +57,15 @@ final class OptimalEncodedHeaderValue
      */
     public function __toString(): string
     {
-        if ($this->phrase === true) {
-            $encoded = new OptimalTransferEncodedPhraseStream($this->value, 68, self::FOLDING);
+        return $this->encoded;
+    }
 
-            $encoding = $encoded->getMetadata(['transfer-encoding'])['transfer-encoding'];
-        } else {
-            $encoded = new OptimalTransferEncodedTextStream($this->value, 68, self::FOLDING);
-
-            $encoding = $encoded->getMetadata(['transfer-encoding'])['transfer-encoding'];
-        }
-
-        if ($encoding === '7bit' || $encoding === '8bit') {
-            return (string) $encoded;
-        }
-
-        if ($encoding === 'base64') {
-            return \sprintf('=?%s?B?%s?=', 'UTF-8', (string) $encoded);
-        }
-
-        return \sprintf('=?%s?Q?%s?=', 'UTF-8', (string) $encoded);
+    /**
+     * @return string
+     */
+    public function getEncoding(): string
+    {
+        return $this->encoding;
     }
 
     /**
@@ -60,9 +74,6 @@ final class OptimalEncodedHeaderValue
      */
     public static function forPhrase(string $value): self
     {
-        $encoded = new self($value);
-        $encoded->value = $value;
-        $encoded->phrase = true;
-        return $encoded;
+        return new self($value, true);
     }
 }
