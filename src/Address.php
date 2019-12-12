@@ -74,7 +74,7 @@ final class Address
         }
 
         $encodedPhrase = OptimalEncodedHeaderValue::forPhrase($this->name);
-        if ($encodedPhrase->getEncoding() === '7bit') {
+        if ($encodedPhrase->getEncoding() === '7bit' || $encodedPhrase->getEncoding() === '8bit') {
             $encodedName = \addslashes((string)$encodedPhrase);
 
             if (\preg_match('/[^A-Za-z0-9\s!#$%&\'*+\/=?^_`{|}~\-]/', $this->name) === 1) {
