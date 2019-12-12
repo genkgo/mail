@@ -29,6 +29,7 @@ init:
 
 ## Install PHP and composer, and run the appropriate composer command
 install:
+    - ps: Set-Service wuauserv -StartupType Manual
     - IF EXIST c:\tools\php (SET PHP=0)
     - choco install -y php --version %PHP_VERSION%
     - cd c:\tools\php
