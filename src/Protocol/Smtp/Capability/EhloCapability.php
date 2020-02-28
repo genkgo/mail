@@ -10,7 +10,7 @@ use Genkgo\Mail\Protocol\Smtp\Session;
 final class EhloCapability implements CapabilityInterface
 {
     /**
-     * @var array
+     * @var CapabilityInterface[]
      */
     private $capabilities;
 
@@ -31,7 +31,7 @@ final class EhloCapability implements CapabilityInterface
 
     /**
      * @param string $serverName
-     * @param array $capabilities
+     * @param array|CapabilityInterface[] $capabilities
      */
     public function __construct(string $serverName, array $capabilities)
     {

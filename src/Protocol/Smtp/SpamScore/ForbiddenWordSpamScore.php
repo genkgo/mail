@@ -9,7 +9,7 @@ use Genkgo\Mail\Protocol\Smtp\SpamScoreInterface;
 final class ForbiddenWordSpamScore implements SpamScoreInterface
 {
     /**
-     * @var array
+     * @var array<int, string>
      */
     private $words;
 
@@ -19,7 +19,7 @@ final class ForbiddenWordSpamScore implements SpamScoreInterface
     private $pointsPerMatchedWord;
 
     /**
-     * @param array $words
+     * @param array<int, string> $words
      * @param int $pointsPerMatchedWord
      */
     public function __construct(array $words, int $pointsPerMatchedWord)

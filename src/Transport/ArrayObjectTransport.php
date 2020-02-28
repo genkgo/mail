@@ -9,12 +9,12 @@ use Genkgo\Mail\TransportInterface;
 final class ArrayObjectTransport implements TransportInterface
 {
     /**
-     * @var \ArrayObject
+     * @var \ArrayObject<int, MessageInterface>
      */
     private $storage;
 
     /**
-     * @param \ArrayObject $storage
+     * @param \ArrayObject<int, MessageInterface> $storage
      */
     public function __construct(\ArrayObject $storage)
     {

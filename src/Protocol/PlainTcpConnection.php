@@ -30,7 +30,7 @@ final class PlainTcpConnection extends AbstractConnection
      * @param int $port
      * @param float $connectionTimeout
      */
-    public function __construct(string $host, int $port, float $connectionTimeout = 1)
+    public function __construct(string $host, int $port, float $connectionTimeout = 1.0)
     {
         $this->host = $host;
         $this->port = $port;
@@ -42,7 +42,7 @@ final class PlainTcpConnection extends AbstractConnection
      */
     public function upgrade(int $type): void
     {
-        if (\stream_socket_enable_crypto($this->resource, true, $type) === false) {
+        if ($this->resource && \stream_socket_enable_crypto($this->resource, true, $type) === false) {
             throw new \InvalidArgumentException('Cannot upgrade connection to requested encryption type');
         }
     }

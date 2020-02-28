@@ -55,6 +55,10 @@ final class FilesystemQueue implements QueueInterface, \Countable
         /** @var \SplFileInfo $item */
         foreach ($queue as $item) {
             $messageString = \file_get_contents($item->getPathname());
+            if ($messageString === false) {
+                throw new \UnexpectedValueException('Cannot fetch message from file');
+            }
+
             \unlink($item->getPathname());
             return GenericMessage::fromString($messageString);
         }

@@ -20,7 +20,12 @@ final class MessageStream implements StreamInterface
      */
     public function __construct(MessageInterface $message)
     {
-        $this->decoratedStream = new LazyStream(function () use ($message) {
+        $headers = $message->getHeaders();
+        if (!\is_array($headers)) {
+            $headers = \iterator_to_array($headers);
+        }
+
+        $this->decoratedStream = new LazyStream(function () use ($headers, $message) {
             $headerString = \implode(
                 "\r\n",
                 \array_values(
@@ -37,7 +42,7 @@ final class MessageStream implements StreamInterface
                                     )
                                 );
                             },
-                            $message->getHeaders()
+                            $headers
                         )
                     )
                 )
@@ -168,8 +173,8 @@ final class MessageStream implements StreamInterface
     }
 
     /**
-     * @param array $keys
-     * @return array
+     * @param array<string, mixed> $keys
+     * @return array<string, mixed>
      */
     public function getMetadata(array $keys = []): array
     {

@@ -105,8 +105,8 @@ final class AutomaticConnection implements ConnectionInterface
     }
 
     /**
-     * @param array $keys
-     * @return array
+     * @param array<string, mixed> $keys
+     * @return array<string, mixed>
      */
     public function getMetaData(array $keys = []): array
     {

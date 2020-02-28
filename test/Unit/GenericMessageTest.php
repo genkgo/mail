@@ -72,7 +72,7 @@ final class GenericMessageTest extends AbstractTestCase
             ->withHeader(new MimeVersion());
 
         $this->assertEquals((string) $message1, (string) $message2);
-        $this->assertContains("Subject: Value\r\nMIME-Version: 1.0", (string)$message1);
+        $this->assertStringContainsString("Subject: Value\r\nMIME-Version: 1.0", (string)$message1);
     }
 
     /**

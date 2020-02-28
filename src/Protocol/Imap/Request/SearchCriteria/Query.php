@@ -6,12 +6,12 @@ namespace Genkgo\Mail\Protocol\Imap\Request\SearchCriteria;
 final class Query implements \Countable
 {
     /**
-     * @var array
+     * @var array|CriterionInterface[]
      */
     private $criteria = [];
 
     /**
-     * @param array $criteria
+     * @param array|CriterionInterface[] $criteria
      */
     public function __construct(array $criteria = [])
     {

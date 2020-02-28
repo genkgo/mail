@@ -11,12 +11,12 @@ final class SectionList
     ];
 
     /**
-     * @var array
+     * @var array<int, string>
      */
     private $sections = [];
 
     /**
-     * @param array $sections
+     * @param array<int, string> $sections
      */
     public function __construct(array $sections = [])
     {

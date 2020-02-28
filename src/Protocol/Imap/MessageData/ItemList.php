@@ -20,7 +20,7 @@ final class ItemList
     private const STATE_OCTET = 4;
 
     /**
-     * @var array
+     * @var array<string, ItemInterface>
      */
     private $list = [];
 
@@ -35,7 +35,7 @@ final class ItemList
     private $body;
 
     /**
-     * @param array $list
+     * @param array<string, ItemInterface> $list
      */
     public function __construct(array $list = [])
     {

@@ -11,7 +11,7 @@ use Genkgo\Mail\Queue\FilesystemQueue;
 
 final class FilesystemQueueTest extends AbstractTestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         $directory = \sys_get_temp_dir();
         $iterator = new \GlobIterator($directory . '/*.eml');

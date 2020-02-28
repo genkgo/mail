@@ -191,7 +191,7 @@ final class ClientFactory
     public static function fromString(string $dataSourceName):ClientFactory
     {
         $components = \parse_url($dataSourceName);
-        if (!isset($components['scheme']) || !isset($components['host'])) {
+        if ($components === false || !isset($components['scheme']) || !isset($components['host'])) {
             throw new \InvalidArgumentException('Scheme and host are required');
         }
 
@@ -235,7 +235,7 @@ final class ClientFactory
         $factory = new self($connection);
         $factory->insecureConnectionAllowed = $insecureConnectionAllowed;
 
-        if (isset($components['user']) && isset($components['pass'])) {
+        if (isset($components['user'], $components['pass'])) {
             $factory->authMethod = Client::AUTH_AUTO;
             $factory->username = \urldecode($components['user']);
             $factory->password = \urldecode($components['pass']);

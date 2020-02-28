@@ -8,12 +8,12 @@ use Genkgo\Mail\Protocol\Smtp\AuthenticationInterface;
 final class ArrayAuthentication implements AuthenticationInterface
 {
     /**
-     * @var array
+     * @var array<int, string>
      */
     private $users;
 
     /**
-     * @param array $users
+     * @param array<int, string> $users
      */
     public function __construct(array $users)
     {

@@ -22,10 +22,10 @@ final class AuthNegotiationTest extends AbstractTestCase
         $negotiator = new AuthNegotiation('hostname', Client::AUTH_AUTO, 'user', 'pass');
         $negotiator->negotiate(new Client($connection));
 
-        $this->assertArraySubset(
-            ['state' => true, 'username' => 'user', 'password' => 'pass', 'method' => 'LOGIN'],
-            $connection->getMetaData()['auth']
-        );
+        $advertised = $connection->getMetaData()['auth'];
+        foreach (['state' => true, 'username' => 'user', 'password' => 'pass', 'method' => 'LOGIN'] as $key => $value) {
+            $this->assertSame($value, $advertised[$key]);
+        }
     }
 
     /**
@@ -39,10 +39,10 @@ final class AuthNegotiationTest extends AbstractTestCase
         $negotiator = new AuthNegotiation('hostname', Client::AUTH_LOGIN, 'user', 'pass');
         $negotiator->negotiate(new Client($connection));
 
-        $this->assertArraySubset(
-            ['state' => true, 'username' => 'user', 'password' => 'pass', 'method' => 'LOGIN'],
-            $connection->getMetaData()['auth']
-        );
+        $advertised = $connection->getMetaData()['auth'];
+        foreach (['state' => true, 'username' => 'user', 'password' => 'pass', 'method' => 'LOGIN'] as $key => $value) {
+            $this->assertSame($value, $advertised[$key]);
+        }
     }
 
     /**
@@ -56,10 +56,10 @@ final class AuthNegotiationTest extends AbstractTestCase
         $negotiator = new AuthNegotiation('hostname', Client::AUTH_PLAIN, 'user', 'pass');
         $negotiator->negotiate(new Client($connection));
 
-        $this->assertArraySubset(
-            ['state' => true, 'username' => 'user', 'password' => 'pass', 'method' => 'PLAIN'],
-            $connection->getMetaData()['auth']
-        );
+        $advertised = $connection->getMetaData()['auth'];
+        foreach (['state' => true, 'username' => 'user', 'password' => 'pass', 'method' => 'PLAIN'] as $key => $value) {
+            $this->assertSame($value, $advertised[$key]);
+        }
     }
 
     /**

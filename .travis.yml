@@ -2,25 +2,14 @@ language: php
 sudo: false
 matrix:
   include:
-    - php: 7.1
-    - php: 7.1
-      env: dependencies=lowest
-    - php: 7.1
-      env: dependencies=highest
-    - php: 7.2
-    - php: 7.2
-      env: dependencies=lowest
-    - php: 7.2
-      env: dependencies=highest
     - php: 7.3
     - php: 7.3
       env: dependencies=lowest
     - php: 7.3
       env: dependencies=highest
-    - php: 7.4snapshot
+    - php: 7.4
     - php: nightly
   allow_failures:
-    - php: 7.4snapshot
     - php: nightly
 script:
     - ./vendor/bin/phpunit -c phpunit.xml --coverage-clover=coverage.clover

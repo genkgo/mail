@@ -10,25 +10,31 @@ use Genkgo\Mail\Protocol\Smtp\BackendInterface;
 final class ArrayBackend implements BackendInterface
 {
     /**
-     * @var array
+     * @var array<int, string>
      */
     private $addresses;
 
     /**
-     * @var \ArrayAccess
+     * @var \ArrayAccess<string, mixed>
      */
     private $backend;
 
     /**
-     * @param array $addresses
-     * @param \ArrayAccess $backend
+     * @param array<int, string> $addresses
+     * @param \ArrayAccess<string, mixed> $backend
      */
     public function __construct(array $addresses, \ArrayAccess $backend)
     {
-        $this->addresses = \array_combine(
+        $addresses = \array_combine(
             $addresses,
             \array_fill(0, \count($addresses), true)
         );
+
+        if ($addresses === false) {
+            throw new \UnexpectedValueException('Cannot combine arrays');
+        }
+
+        $this->addresses = $addresses;
         $this->backend = $backend;
     }
 

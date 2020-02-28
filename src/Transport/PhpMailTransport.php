@@ -17,7 +17,7 @@ final class PhpMailTransport implements TransportInterface
     private $envelopeFactory;
 
     /**
-     * @var array
+     * @var array<string, mixed>
      */
     private $parameters;
 
@@ -28,7 +28,7 @@ final class PhpMailTransport implements TransportInterface
 
     /**
      * @param EnvelopeFactory $envelopeFactory
-     * @param array $parameters
+     * @param array<string, mixed> $parameters
      */
     public function __construct(EnvelopeFactory $envelopeFactory, array $parameters = [])
     {
@@ -91,6 +91,15 @@ final class PhpMailTransport implements TransportInterface
      */
     private function extractHeaders(MessageInterface $message): string
     {
+        $headers = $message
+            ->withoutHeader('to')
+            ->withoutHeader('subject')
+            ->getHeaders();
+
+        if (!\is_array($headers)) {
+            $headers = \iterator_to_array($headers);
+        }
+
         return \implode(
             "\r\n",
             \array_values(
@@ -107,10 +116,7 @@ final class PhpMailTransport implements TransportInterface
                                 )
                             );
                         },
-                        $message
-                            ->withoutHeader('to')
-                            ->withoutHeader('subject')
-                            ->getHeaders()
+                        $headers
                     )
                 )
             )
@@ -137,7 +143,7 @@ final class PhpMailTransport implements TransportInterface
     /**
      * @param \Closure $callback
      * @param EnvelopeFactory $envelopeFactory
-     * @param array $parameters
+     * @param array<string, mixed> $parameters
      * @return PhpMailTransport
      */
     public static function newReplaceMailMethod(

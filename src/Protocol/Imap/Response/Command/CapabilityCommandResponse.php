@@ -6,12 +6,12 @@ namespace Genkgo\Mail\Protocol\Imap\Response\Command;
 final class CapabilityCommandResponse
 {
     /**
-     * @var array
+     * @var array<int, string>
      */
     private $advertisements = [];
 
     /**
-     * @param array $list
+     * @param array<int, string> $list
      */
     public function __construct(array $list)
     {
@@ -58,12 +58,19 @@ final class CapabilityCommandResponse
         }
 
         $advertisements = \preg_split('/[\s]+/', \substr($response, $commandLength));
+        if ($advertisements === false) {
+            $advertisements = [];
+        }
 
-        return new self(
-            \array_combine(
-                $advertisements,
-                \array_fill(0, \count($advertisements), true)
-            )
+        $list = \array_combine(
+            $advertisements,
+            \array_fill(0, \count($advertisements), true)
         );
+
+        if ($list === false) {
+            throw new \UnexpectedValueException('Cannot create capability list');
+        }
+
+        return new self($list);
     }
 }

@@ -70,7 +70,15 @@ final class TimeLimitedQueue implements QueueInterface
     private function getSubmissionTimestamp(MessageInterface $message): int
     {
         $queuedAt = $message->getHeader(QueueIfFailedTransport::QUEUED_HEADER);
+        if (!\is_array($queuedAt)) {
+            $queuedAt = \iterator_to_array($queuedAt);
+        }
 
-        return (int) \strtotime(\reset($queuedAt)->getValue()->getRaw());
+        $header = \reset($queuedAt);
+        if ($header === false) {
+            throw new \UnexpectedValueException('Cannot extract queue header from message');
+        }
+
+        return (int) \strtotime($header->getValue()->getRaw());
     }
 }

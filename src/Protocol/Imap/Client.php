@@ -37,7 +37,7 @@ final class Client
     /**
      * @param ConnectionInterface $connection
      * @param TagFactoryInterface $tagFactory
-     * @param iterable $negotiators
+     * @param iterable|NegotiationInterface[] $negotiators
      */
     public function __construct(
         ConnectionInterface $connection,
@@ -64,7 +64,7 @@ final class Client
     /**
      * @param NegotiationInterface $negotiation
      */
-    private function addNegotiator(NegotiationInterface $negotiation)
+    private function addNegotiator(NegotiationInterface $negotiation): void
     {
         $this->negotiators[] = $negotiation;
     }
