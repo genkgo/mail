@@ -28,7 +28,7 @@ final class PsrLogExceptionTransportTest extends AbstractTestCase
             ->with(LogLevel::INFO, 'Failed to send e-mail message. Exception class always throws an exception', [
                 'exception' => [
                     'class' => 'RuntimeException',
-                    'file' => realpath(__DIR__ . '/../../Stub/Transport/ExceptionTransport.php'),
+                    'file' => \realpath(__DIR__ . '/../../Stub/Transport/ExceptionTransport.php'),
                     'line' => 16,
                     'message' => 'Exception class always throws an exception'
                 ]
