@@ -36,7 +36,7 @@ final class GenericPart implements PartInterface
     }
 
     /**
-     * @return iterable
+     * @return iterable<HeaderInterface>
      */
     public function getHeaders(): iterable
     {
@@ -118,7 +118,7 @@ final class GenericPart implements PartInterface
     /**
      * @param string $name
      */
-    private function assertValidHeader(string $name)
+    private function assertValidHeader(string $name): void
     {
         if (!isset(self::ALLOWED_HEADERS[$name])) {
             throw new \InvalidArgumentException('Invalid Mime part header ' . $name);

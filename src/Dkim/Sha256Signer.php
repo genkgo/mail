@@ -75,7 +75,12 @@ final class Sha256Signer implements SignInterface
             throw new \InvalidArgumentException('File does not exist');
         }
 
-        return self::fromString(\file_get_contents($file), $passphrase);
+        $content = \file_get_contents($file);
+        if ($content === false) {
+            throw new \UnexpectedValueException('Cannot read file ' . $file);
+        }
+
+        return self::fromString($content, $passphrase);
     }
 
     /**

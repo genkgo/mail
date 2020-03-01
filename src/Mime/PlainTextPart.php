@@ -31,7 +31,7 @@ final class PlainTextPart implements PartInterface
     }
 
     /**
-     * @return iterable
+     * @return iterable<HeaderInterface>
      */
     public function getHeaders(): iterable
     {

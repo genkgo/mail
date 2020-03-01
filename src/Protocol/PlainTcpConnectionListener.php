@@ -71,7 +71,13 @@ final class PlainTcpConnectionListener implements ConnectionListenerInterface
              */
                 public function upgrade(int $type): void
                 {
-                    if ($this->resource && \stream_socket_enable_crypto($this->resource, true, $type) === false) {
+                    if ($this->resource === null) {
+                        throw new \InvalidArgumentException('Cannot upgrade connection, resource not available');
+                    }
+
+                    /** @var int|bool $result */
+                    $result = \stream_socket_enable_crypto($this->resource, true, $type);
+                    if ($result === false) {
                         throw new \InvalidArgumentException('Cannot upgrade connection to requested encryption type');
                     }
                 }

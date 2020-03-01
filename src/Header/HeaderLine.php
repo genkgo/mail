@@ -56,7 +56,7 @@ final class HeaderLine
     {
         $parts = \preg_split('/\s*\:\s*/', $line, 2);
 
-        if (\count($parts) !== 2) {
+        if ($parts === false || \count($parts) !== 2) {
             throw new \InvalidArgumentException('Invalid header line');
         }
 
@@ -64,6 +64,9 @@ final class HeaderLine
 
         if (\substr($value, 0, 2) === '=?' && \substr($value, -2, 2) === '?=') {
             $value = \iconv_mime_decode($value);
+            if ($value === false) {
+                throw new \UnexpectedValueException('Cannot iconv decode header line');
+            }
         }
 
         return new self(

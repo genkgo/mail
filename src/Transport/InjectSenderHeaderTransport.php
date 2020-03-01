@@ -30,6 +30,10 @@ final class InjectSenderHeaderTransport implements TransportInterface
     public function send(MessageInterface $message): void
     {
         $fromHeaders = $message->getHeader('from');
+        if (!\is_array($fromHeaders)) {
+            $fromHeaders = \iterator_to_array($fromHeaders);
+        }
+
         if (isset($fromHeaders[0])) {
             $addressList = AddressList::fromString(
                 $fromHeaders[0]->getValue()->getRaw()

@@ -104,10 +104,13 @@ final class FixedQuotation implements QuotationInterface
         if ($document->documentElement !== null) {
             $query = new \DOMXPath($document);
             $removeItems = $query->query('//head|//script|//body/@style|//html/@style', $document->documentElement);
-            /** @var \DOMElement $removeItem */
-            foreach ($removeItems as $removeItem) {
-                $parent = $removeItem->parentNode;
-                $parent->removeChild($removeItem);
+            if ($removeItems instanceof \DOMNodeList) {
+                /** @var \DOMElement $removeItem */
+                foreach ($removeItems as $removeItem) {
+                    /** @var \DOMElement $parent */
+                    $parent = $removeItem->parentNode;
+                    $parent->removeChild($removeItem);
+                }
             }
 
             $body = $document->getElementsByTagName('body');
@@ -118,8 +121,12 @@ final class FixedQuotation implements QuotationInterface
                 $quote->appendChild($document->removeChild($document->documentElement));
             } else {
                 $root = $body->item(0);
-                while ($root->childNodes->length !== 0) {
-                    $quote->appendChild($root->childNodes->item(0));
+                if ($root instanceof \DOMElement) {
+                    while ($root->childNodes->length !== 0) {
+                        /** @var \DOMElement $child */
+                        $child = $root->childNodes->item(0);
+                        $quote->appendChild($child);
+                    }
                 }
             }
 
@@ -138,8 +145,11 @@ final class FixedQuotation implements QuotationInterface
             $header = $newDocument->createElement('p');
             $header->textContent = $headerText;
 
-            $quotedNode->parentNode->insertBefore($header, $quotedNode);
-            return \trim($newDocument->saveHTML());
+            /** @var \DOMElement $parent */
+            $parent = $quotedNode->parentNode;
+            $parent->insertBefore($header, $quotedNode);
+
+            return \trim((string)$newDocument->saveHTML());
         }
 
         return '';
@@ -151,6 +161,10 @@ final class FixedQuotation implements QuotationInterface
      */
     private function prepareBody(\DOMDocument $document): \DOMElement
     {
+        if (!$document->documentElement) {
+            throw new \UnexpectedValueException('Cannot prepare empty document');
+        }
+
         $bodyList = $document->getElementsByTagName('body');
         if ($bodyList->length === 0) {
             $html = $document->createElement('html');
@@ -162,11 +176,13 @@ final class FixedQuotation implements QuotationInterface
             return $body;
         }
 
+        /** @var \DOMElement $body */
         $body = $bodyList->item(0);
 
         $queryHtml = new \DOMXPath($document);
         $htmlTags = $queryHtml->query('//html');
-        if ($htmlTags->length > 0) {
+        if ($htmlTags && $htmlTags->length > 0) {
+            /** @var \DOMElement $html */
             $html = $htmlTags->item(0);
             $html->appendChild($body);
             $document->removeChild($document->documentElement);

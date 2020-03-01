@@ -43,7 +43,7 @@ interface ConnectionInterface
     public function timeout(float $timeout): void;
 
     /**
-     * @param array<string, mixed> $keys
+     * @param array<int, string> $keys
      * @return array<string, mixed>
      */
     public function getMetaData(array $keys = []): array;

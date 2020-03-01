@@ -232,7 +232,7 @@ final class MessageBodyCollection
 
     /**
      * @param MessageInterface $originalMessage
-     * @param array $replyRecipientHeaderNames
+     * @param array<int, string> $replyRecipientHeaderNames
      * @return MessageInterface
      */
     private function newReply(MessageInterface $originalMessage, array $replyRecipientHeaderNames): MessageInterface

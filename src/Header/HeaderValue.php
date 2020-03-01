@@ -15,12 +15,12 @@ final class HeaderValue
     private $value;
 
     /**
-     * @var array
+     * @var array<string, HeaderValueParameter>
      */
     private $parameters = [];
 
     /**
-     * @var array
+     * @var array<string, bool>
      */
     private $parametersForceNewLine = [];
 

@@ -78,7 +78,7 @@ interface StreamInterface
     public function getContents(): string;
 
     /**
-     * @param array<string, mixed> $keys
+     * @param array<int, string> $keys
      * @return array<string, mixed>
      */
     public function getMetadata(array $keys = []): array;

@@ -80,6 +80,10 @@ final class EnvelopeFactory
     private function extractFromAddressListHeader(MessageInterface $message, string $headerName): EmailAddress
     {
         $headers = $message->getHeader($headerName);
+        if (!\is_array($headers)) {
+            $headers = \iterator_to_array($headers);
+        }
+
         if (isset($headers[0])) {
             return AddressList::fromString((string)$headers[0]->getValue()->getRaw())->first()->getAddress();
         }

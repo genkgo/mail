@@ -34,7 +34,7 @@ final class HtmlOnlyMessage implements MessageInterface
     }
 
     /**
-     * @return iterable
+     * @return iterable<iterable<HeaderInterface>>
      */
     public function getHeaders(): iterable
     {
@@ -52,7 +52,7 @@ final class HtmlOnlyMessage implements MessageInterface
 
     /**
      * @param string $name
-     * @return iterable
+     * @return iterable|HeaderInterface[]
      */
     public function getHeader(string $name): iterable
     {

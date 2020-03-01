@@ -35,7 +35,7 @@ final class EmbeddedImage implements PartInterface
     }
 
     /**
-     * @return iterable
+     * @return iterable<HeaderInterface>
      */
     public function getHeaders(): iterable
     {

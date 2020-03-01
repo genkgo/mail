@@ -77,7 +77,7 @@ final class AppendCrlfConnection implements ConnectionInterface
     }
 
     /**
-     * @param array<string, mixed> $keys
+     * @param array<int, string> $keys
      * @return array<string, mixed>
      */
     public function getMetaData(array $keys = []): array

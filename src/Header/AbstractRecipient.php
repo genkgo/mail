@@ -54,7 +54,7 @@ abstract class AbstractRecipient implements HeaderInterface
     }
 
     /**
-     * @param array $array pairs of email address and name
+     * @param array<mixed> $array pairs of email address and name
      * @return AbstractRecipient
      */
     final public static function fromArray(array $array): AbstractRecipient
