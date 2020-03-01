@@ -1,4 +1,4 @@
-# Genkgo/Mail - Modern PHP 7.1+ Mail Library
+# Genkgo/Mail - Modern PHP 7.3+ Mail Library
 
 
 [![Latest Version](https://img.shields.io/github/release/genkgo/mail.svg?style=flat-square)](https://github.com/genkgo/mail/releases)
@@ -66,7 +66,7 @@ $ composer require genkgo/mail
 - Great RFC compliance
 - Cast messages to valid string source
 - Library has no external dependencies (but uses intl extension)
-- Only PHP 7.1 and up
+- Only PHP 7.3 and up
 
 
 ## Upcoming features
