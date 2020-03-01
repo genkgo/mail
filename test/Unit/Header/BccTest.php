@@ -14,7 +14,7 @@ final class BccTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_produces_correct_values()
+    public function it_produces_correct_values(): void
     {
         $header = new Bcc(
             new AddressList([

@@ -16,7 +16,7 @@ final class ClientFactoryTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_is_immutable()
+    public function it_is_immutable(): void
     {
         $factory = new ClientFactory(new FakeSmtpConnection());
 
@@ -30,7 +30,7 @@ final class ClientFactoryTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throws_when_using_wrong_auth_method()
+    public function it_throws_when_using_wrong_auth_method(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -41,7 +41,7 @@ final class ClientFactoryTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_creates_connection_negotiator()
+    public function it_creates_connection_negotiator(): void
     {
         $connection = new FakeSmtpConnection();
 
@@ -57,7 +57,7 @@ final class ClientFactoryTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_creates_connection_and_authentication_negotiator()
+    public function it_creates_connection_and_authentication_negotiator(): void
     {
         $connection = new FakeSmtpConnection();
 
@@ -75,7 +75,7 @@ final class ClientFactoryTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_uses_only_welcome()
+    public function it_uses_only_welcome(): void
     {
         $connection = new FakeSmtpConnection();
 
@@ -99,7 +99,7 @@ final class ClientFactoryTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_constructs_tcp_from_data_source_name()
+    public function it_constructs_tcp_from_data_source_name(): void
     {
         $this->expectException(ConnectionRefusedException::class);
 
@@ -115,7 +115,7 @@ final class ClientFactoryTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_constructs_plain_tcp_from_data_source_name()
+    public function it_constructs_plain_tcp_from_data_source_name(): void
     {
         $this->expectException(ConnectionRefusedException::class);
 
@@ -127,7 +127,7 @@ final class ClientFactoryTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_constructs_tls_from_data_source_name()
+    public function it_constructs_tls_from_data_source_name(): void
     {
         $this->expectException(ConnectionRefusedException::class);
 
@@ -139,7 +139,7 @@ final class ClientFactoryTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_constructs_specific_tls_version_from_data_source_name()
+    public function it_constructs_specific_tls_version_from_data_source_name(): void
     {
         $this->expectException(ConnectionRefusedException::class);
 
@@ -153,7 +153,7 @@ final class ClientFactoryTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throws_when_incorrect_dsn()
+    public function it_throws_when_incorrect_dsn(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -163,7 +163,7 @@ final class ClientFactoryTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throws_when_incorrect_protocol()
+    public function it_throws_when_incorrect_protocol(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 

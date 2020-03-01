@@ -17,7 +17,7 @@ final class FetchCommandTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_creates_a_stream()
+    public function it_creates_a_stream(): void
     {
         $command = new FetchCommand(
             Tag::fromNonce(1),

@@ -11,7 +11,7 @@ final class HeaderValueParameterTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throws_with_wrong_values()
+    public function it_throws_with_wrong_values(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         new HeaderValueParameter('test', 'ë');
@@ -20,7 +20,7 @@ final class HeaderValueParameterTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throws_with_new_line()
+    public function it_throws_with_new_line(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         new HeaderValueParameter('test', "\n");
@@ -29,7 +29,7 @@ final class HeaderValueParameterTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_encodes_with_t_specials()
+    public function it_encodes_with_t_specials(): void
     {
         $parameter = new HeaderValueParameter('test', 'something(else)');
         $this->assertEquals('test="something(else)"', (string)$parameter);
@@ -38,7 +38,7 @@ final class HeaderValueParameterTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_can_parse_a_string()
+    public function it_can_parse_a_string(): void
     {
         $parameter = HeaderValueParameter::fromString('charset="utf-8"');
 
@@ -50,7 +50,7 @@ final class HeaderValueParameterTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_can_parse_an_unquoted_string()
+    public function it_can_parse_an_unquoted_string(): void
     {
         $parameter = HeaderValueParameter::fromString('charset=utf-8');
 
@@ -62,7 +62,7 @@ final class HeaderValueParameterTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_does_not_parse_invalid_values()
+    public function it_does_not_parse_invalid_values(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         HeaderValueParameter::fromString('charset,utf-8');

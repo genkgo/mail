@@ -12,7 +12,7 @@ final class FlagParenthesizedListTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_returns_an_empty_string_when_list_is_empty()
+    public function it_returns_an_empty_string_when_list_is_empty(): void
     {
         $this->assertSame('', (string)new FlagParenthesizedList());
     }
@@ -20,7 +20,7 @@ final class FlagParenthesizedListTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_uses_parenthesizes_when_list_is_not_empty()
+    public function it_uses_parenthesizes_when_list_is_not_empty(): void
     {
         $list = (new FlagParenthesizedList())->with(new Flag('\\Answered'));
         $this->assertSame('(', ((string)$list)[0]);
@@ -30,7 +30,7 @@ final class FlagParenthesizedListTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_uses_spaces_as_separator()
+    public function it_uses_spaces_as_separator(): void
     {
         $list = (new FlagParenthesizedList())->with(new Flag('\\Answered'))->with(new Flag('\\Seen'));
         $this->assertSame('(\\Answered \\Seen)', (string)$list);
@@ -39,7 +39,7 @@ final class FlagParenthesizedListTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_is_immutable()
+    public function it_is_immutable(): void
     {
         $list = new FlagParenthesizedList();
         $this->assertNotSame($list, $list->with(new Flag('\\Answered')));
@@ -49,7 +49,7 @@ final class FlagParenthesizedListTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_adds_to_and_removes_from_the_list()
+    public function it_adds_to_and_removes_from_the_list(): void
     {
         $list = (new FlagParenthesizedList())->with(new Flag('\\Answered'));
         $this->assertSame('(\\Answered)', (string)$list);

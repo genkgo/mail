@@ -12,7 +12,7 @@ final class LoginCommandTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_creates_a_stream()
+    public function it_creates_a_stream(): void
     {
         $command = new LoginCommand(
             Tag::fromNonce(1),
@@ -27,7 +27,7 @@ final class LoginCommandTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throws_when_username_contains_whitespace()
+    public function it_throws_when_username_contains_whitespace(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -41,7 +41,7 @@ final class LoginCommandTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throws_when_password_contains_whitespace()
+    public function it_throws_when_password_contains_whitespace(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 

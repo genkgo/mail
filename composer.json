@@ -43,7 +43,7 @@
             "./vendor/bin/phpunit -c phpunit.xml",
             "./vendor/bin/php-cs-fixer fix --verbose --dry-run --config .php_cs.dist ./src ./test",
             "./vendor/bin/phpstan analyse -l max src",
-            "./vendor/bin/phpstan analyse -l max -c .phpstan.test.neon test"
+            "./vendor/bin/phpstan analyse -l 5 -c .phpstan.test.neon test"
         ]
     }
 }

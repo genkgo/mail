@@ -14,7 +14,7 @@ final class EhloResponseTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_sends_advertisements()
+    public function it_sends_advertisements(): void
     {
         $reply = (new Reply(new Client(new FakeSmtpConnection())))
             ->withLine(250, 'hello')
@@ -27,7 +27,7 @@ final class EhloResponseTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_sends_advertisements_with_parameters()
+    public function it_sends_advertisements_with_parameters(): void
     {
         $reply = (new Reply(new Client(new FakeSmtpConnection())))
             ->withLine(250, 'hello')

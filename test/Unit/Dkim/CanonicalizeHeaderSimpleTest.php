@@ -12,7 +12,7 @@ final class CanonicalizeHeaderSimpleTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_canonicalizes_example_from_rfc()
+    public function it_canonicalizes_example_from_rfc(): void
     {
         $canonicalization = new CanonicalizeHeaderSimple();
 
@@ -25,7 +25,7 @@ final class CanonicalizeHeaderSimpleTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_is_called_simple()
+    public function it_is_called_simple(): void
     {
         $canonicalization = new CanonicalizeHeaderSimple();
 

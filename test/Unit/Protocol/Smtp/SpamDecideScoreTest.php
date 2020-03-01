@@ -11,7 +11,7 @@ final class SpamDecideScoreTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_uses_correct_classification()
+    public function it_uses_correct_classification(): void
     {
         $decide = new SpamDecideScore(4, 15);
         $this->assertTrue($decide->isHam(3));

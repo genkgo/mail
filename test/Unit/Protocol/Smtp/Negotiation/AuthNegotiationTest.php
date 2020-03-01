@@ -14,7 +14,7 @@ final class AuthNegotiationTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_uses_advertised()
+    public function it_uses_advertised(): void
     {
         $connection = new FakeSmtpConnection();
         $connection->connect();
@@ -31,7 +31,7 @@ final class AuthNegotiationTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_uses_login()
+    public function it_uses_login(): void
     {
         $connection = new FakeSmtpConnection();
         $connection->connect();
@@ -48,7 +48,7 @@ final class AuthNegotiationTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_uses_plain()
+    public function it_uses_plain(): void
     {
         $connection = new FakeSmtpConnection();
         $connection->connect();
@@ -65,7 +65,7 @@ final class AuthNegotiationTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_will_throw_when_not_advertised()
+    public function it_will_throw_when_not_advertised(): void
     {
         $this->expectException(SmtpAuthenticationException::class);
 

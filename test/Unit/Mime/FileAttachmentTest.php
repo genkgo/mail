@@ -15,7 +15,7 @@ final class FileAttachmentTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_is_immutable()
+    public function it_is_immutable(): void
     {
         $file = \sys_get_temp_dir() . '/attachment.txt';
         \file_put_contents($file, 'content');
@@ -29,7 +29,7 @@ final class FileAttachmentTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_cannot_modify_body()
+    public function it_cannot_modify_body(): void
     {
         $this->expectException(\RuntimeException::class);
 
@@ -43,7 +43,7 @@ final class FileAttachmentTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_has_header_content_type()
+    public function it_has_header_content_type(): void
     {
         $file = \sys_get_temp_dir() . '/attachment.txt';
         \file_put_contents($file, 'content');
@@ -62,7 +62,7 @@ final class FileAttachmentTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throws_when_file_not_exists()
+    public function it_throws_when_file_not_exists(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -72,7 +72,7 @@ final class FileAttachmentTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throws_when_adding_content_disposition_header()
+    public function it_throws_when_adding_content_disposition_header(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -87,7 +87,7 @@ final class FileAttachmentTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throws_when_removing_content_disposition_header()
+    public function it_throws_when_removing_content_disposition_header(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -102,7 +102,7 @@ final class FileAttachmentTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_encodes_body_with_base64()
+    public function it_encodes_body_with_base64(): void
     {
         $file = \sys_get_temp_dir() . '/attachment.txt';
         \file_put_contents($file, 'content');
@@ -115,7 +115,7 @@ final class FileAttachmentTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_is_able_to_detect_mime_type()
+    public function it_is_able_to_detect_mime_type(): void
     {
         $attachment = FileAttachment::fromUnknownFileType(
             __DIR__ .'/../../Stub/minimal.pdf'

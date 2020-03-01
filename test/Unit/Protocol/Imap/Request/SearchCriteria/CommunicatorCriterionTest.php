@@ -11,7 +11,7 @@ final class CommunicatorCriterionTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_casts_to_string()
+    public function it_casts_to_string(): void
     {
         $this->assertSame('TO test', (string)CommunicatorCriterion::to('test'));
     }
@@ -19,7 +19,7 @@ final class CommunicatorCriterionTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_uses_to()
+    public function it_uses_to(): void
     {
         $this->assertSame('TO query', (string)CommunicatorCriterion::to('query'));
     }
@@ -27,7 +27,7 @@ final class CommunicatorCriterionTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_uses_cc()
+    public function it_uses_cc(): void
     {
         $this->assertSame('CC query', (string)CommunicatorCriterion::cc('query'));
     }
@@ -35,7 +35,7 @@ final class CommunicatorCriterionTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_uses_bcc()
+    public function it_uses_bcc(): void
     {
         $this->assertSame('BCC query', (string)CommunicatorCriterion::bcc('query'));
     }
@@ -43,7 +43,7 @@ final class CommunicatorCriterionTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_uses_from()
+    public function it_uses_from(): void
     {
         $this->assertSame('FROM query', (string)CommunicatorCriterion::from('query'));
     }

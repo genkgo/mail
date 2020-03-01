@@ -17,7 +17,7 @@ final class FormattedMessageFactoryTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_is_immutable()
+    public function it_is_immutable(): void
     {
         $message = new FormattedMessageFactory();
 

@@ -23,7 +23,7 @@ final class ParseFormattedMessageTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_can_parse_a_formatted_message_string_into_a_generic_message()
+    public function it_can_parse_a_formatted_message_string_into_a_generic_message(): void
     {
         $message = (new FormattedMessageFactory())
             ->withHtml('<html><body><p>Hello World</p></body></html>')

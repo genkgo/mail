@@ -12,7 +12,7 @@ final class AlternativeTextTest extends AbstractTestCase
      * @test
      * @dataProvider provideHtmlFiles
      */
-    public function it_converts_html_to_plain_text($htmlFile, $txtFile)
+    public function it_converts_html_to_plain_text($htmlFile, $txtFile): void
     {
         $html = \file_get_contents(__DIR__ . '/../Stub/AlternativeText/' . $htmlFile);
         $text = \file_get_contents(__DIR__ . '/../Stub/AlternativeText/' . $txtFile);
@@ -24,7 +24,7 @@ final class AlternativeTextTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_strips_tags_on_dom_exception()
+    public function it_strips_tags_on_dom_exception(): void
     {
         $html = '';
         $text = '';
@@ -36,7 +36,7 @@ final class AlternativeTextTest extends AbstractTestCase
     /**
      * @return array
      */
-    public function provideHtmlFiles()
+    public function provideHtmlFiles(): array
     {
         return [
             ['simple.html', 'simple.crlf.txt'],

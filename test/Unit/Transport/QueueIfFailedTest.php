@@ -18,7 +18,7 @@ final class QueueIfFailedTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_queues_when_transport_fails()
+    public function it_queues_when_transport_fails(): void
     {
         $transport = $this->createMock(TransportInterface::class);
         $queue = $this->createMock(QueueInterface::class);
@@ -41,7 +41,7 @@ final class QueueIfFailedTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_tries_multiple_transports_before_queueing()
+    public function it_tries_multiple_transports_before_queueing(): void
     {
         $transport1 = $this->createMock(TransportInterface::class);
         $transport2 = $this->createMock(TransportInterface::class);
@@ -68,7 +68,7 @@ final class QueueIfFailedTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_tries_multiple_queues()
+    public function it_tries_multiple_queues(): void
     {
         $transport1 = $this->createMock(TransportInterface::class);
         $transport2 = $this->createMock(TransportInterface::class);
@@ -102,7 +102,7 @@ final class QueueIfFailedTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throws_when_transport_and_queue_fails()
+    public function it_throws_when_transport_and_queue_fails(): void
     {
         $this->expectException(QueueIfFailedException::class);
 
@@ -139,7 +139,7 @@ final class QueueIfFailedTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_only_adds_queued_at_header_once()
+    public function it_only_adds_queued_at_header_once(): void
     {
         $transport = $this->createMock(TransportInterface::class);
         $queue = $this->createMock(QueueInterface::class);

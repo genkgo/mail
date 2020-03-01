@@ -14,7 +14,7 @@ final class ClientTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_creates_a_reply()
+    public function it_creates_a_reply(): void
     {
         $connection = new FakeSmtpConnection();
         $connection->connect();
@@ -30,7 +30,7 @@ final class ClientTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_creates_a_reply_with_multiple_lines()
+    public function it_creates_a_reply_with_multiple_lines(): void
     {
         $connection = new FakeSmtpConnection();
         $connection->connect();

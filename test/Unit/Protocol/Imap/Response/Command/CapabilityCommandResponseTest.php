@@ -11,7 +11,7 @@ final class CapabilityCommandResponseTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_can_be_constructed_from_string()
+    public function it_can_be_constructed_from_string(): void
     {
         $response = CapabilityCommandResponse::fromString('CAPABILITY IMAP4rev1 STARTTLS AUTH=GSSAPI');
         $this->assertSame('CAPABILITY IMAP4rev1 STARTTLS AUTH=GSSAPI', (string)$response);
@@ -20,7 +20,7 @@ final class CapabilityCommandResponseTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_can_be_checked_for_advertisements()
+    public function it_can_be_checked_for_advertisements(): void
     {
         $response = CapabilityCommandResponse::fromString('CAPABILITY IMAP4rev1 STARTTLS AUTH=GSSAPI');
         $this->assertTrue($response->isAdvertising('IMAP4rev1'));
@@ -32,7 +32,7 @@ final class CapabilityCommandResponseTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throws_when_constructing_non_capability_command()
+    public function it_throws_when_constructing_non_capability_command(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         CapabilityCommandResponse::fromString('STORE COMMAND');

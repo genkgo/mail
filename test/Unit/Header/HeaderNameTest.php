@@ -12,7 +12,7 @@ final class HeaderNameTest extends AbstractTestCase
      * @test
      * @dataProvider provideNames
      */
-    public function validate_name(string $name, bool $expected)
+    public function validate_name(string $name, bool $expected): void
     {
         if ($expected) {
             $this->assertInstanceOf(HeaderName::class, new HeaderName($name));
@@ -25,7 +25,7 @@ final class HeaderNameTest extends AbstractTestCase
     /**
      * @return array
      */
-    public function provideNames()
+    public function provideNames(): array
     {
         return [
             ['Subject', true],

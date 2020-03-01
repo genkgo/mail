@@ -15,7 +15,7 @@ final class GenericMessageTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_is_immutable()
+    public function it_is_immutable(): void
     {
         $message = new GenericMessage();
 
@@ -28,7 +28,7 @@ final class GenericMessageTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_has_case_insensitive_headers()
+    public function it_has_case_insensitive_headers(): void
     {
         $message = (new GenericMessage())
             ->withHeader(new GenericHeader('X', 'Y'))
@@ -50,7 +50,7 @@ final class GenericMessageTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_return_an_empty_array_when_there_are_no_headers()
+    public function it_return_an_empty_array_when_there_are_no_headers(): void
     {
         $message = (new GenericMessage());
 
@@ -61,7 +61,7 @@ final class GenericMessageTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_orders_headers()
+    public function it_orders_headers(): void
     {
         $message1 = (new GenericMessage())
             ->withHeader(new MimeVersion())
@@ -78,7 +78,7 @@ final class GenericMessageTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_can_parse_a_message_from_string()
+    public function it_can_parse_a_message_from_string(): void
     {
         $message = (new GenericMessage())
             ->withHeader(new GenericHeader('Subject', 'Hello World'))
@@ -95,7 +95,7 @@ final class GenericMessageTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_can_parse_a_message_with_header_folding_from_string()
+    public function it_can_parse_a_message_with_header_folding_from_string(): void
     {
         $message = (new GenericMessage())
             ->withHeader(new GenericHeader('Subject', 'Hello World'))
@@ -114,7 +114,7 @@ final class GenericMessageTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_can_parse_a_message_with_tabbed_header_folding_from_string()
+    public function it_can_parse_a_message_with_tabbed_header_folding_from_string(): void
     {
         $lines = [
             "Received: from example.com ([0.0.0.0 helo=localhost)\r\n\tby smtp.server.com with esmtps",

@@ -13,7 +13,7 @@ final class AddressTest extends AbstractTestCase
      * @test
      * @dataProvider provideAddresses
      */
-    public function it_validates_addresses(string $email, string $name, bool $constructed, $string)
+    public function it_validates_addresses(string $email, string $name, bool $constructed, $string): void
     {
         if ($constructed) {
             $address = new Address(new EmailAddress($email), $name);
@@ -29,7 +29,7 @@ final class AddressTest extends AbstractTestCase
     /**
      * @return array
      */
-    public function provideAddresses()
+    public function provideAddresses(): array
     {
         return [
             ['local-part@domain.com', 'Name', true, 'Name <local-part@domain.com>'],
@@ -48,7 +48,7 @@ final class AddressTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_is_equal_when_it_has_same_value()
+    public function it_is_equal_when_it_has_same_value(): void
     {
         $address = new Address(new EmailAddress('me@example.com'), 'name');
         
@@ -80,7 +80,7 @@ final class AddressTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_fails_when_it_contains_bad_characters()
+    public function it_fails_when_it_contains_bad_characters(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -109,7 +109,7 @@ final class AddressTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_can_be_converted_to_readable_string()
+    public function it_can_be_converted_to_readable_string(): void
     {
         $address = new Address(new EmailAddress('local-part@münchen.com'), 'sprode, henriëtte');
         $this->assertEquals('"sprode, henriëtte" <local-part@münchen.com>', $address->toReadableString());
@@ -124,7 +124,7 @@ final class AddressTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_can_be_constructed_with_a_multi_byte_name_leading_to_new_line_in_single_byte()
+    public function it_can_be_constructed_with_a_multi_byte_name_leading_to_new_line_in_single_byte(): void
     {
         $address = new Address(new EmailAddress('local@domain.com'), 'Миха');
         $this->assertEquals('=?UTF-8?B?0JzQuNGF0LA=?= <local@domain.com>', (string)$address);
@@ -133,7 +133,7 @@ final class AddressTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_quotes_folded_addresses_with_quotes_near_the_end()
+    public function it_quotes_folded_addresses_with_quotes_near_the_end(): void
     {
         $address = new Address(
             new EmailAddress('address@domain.com'),

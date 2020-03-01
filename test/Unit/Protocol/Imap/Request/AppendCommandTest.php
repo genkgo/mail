@@ -15,7 +15,7 @@ final class AppendCommandTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_creates_a_stream()
+    public function it_creates_a_stream(): void
     {
         $command = new AppendCommand(
             Tag::fromNonce(1),
@@ -30,7 +30,7 @@ final class AppendCommandTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_creates_a_stream_with_flags()
+    public function it_creates_a_stream_with_flags(): void
     {
         $command = new AppendCommand(
             Tag::fromNonce(1),
@@ -45,7 +45,7 @@ final class AppendCommandTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_creates_a_stream_with_flags_and_internal_date()
+    public function it_creates_a_stream_with_flags_and_internal_date(): void
     {
         $command = new AppendCommand(
             Tag::fromNonce(1),
@@ -64,7 +64,7 @@ final class AppendCommandTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_creates_a_stream_with_only_internal_date()
+    public function it_creates_a_stream_with_only_internal_date(): void
     {
         $command = new AppendCommand(
             Tag::fromNonce(1),

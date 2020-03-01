@@ -11,7 +11,7 @@ final class NameItemTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_has_a_name()
+    public function it_has_a_name(): void
     {
         $item = new NameItem('TEST');
         $this->assertSame('TEST', $item->getName());
@@ -20,7 +20,7 @@ final class NameItemTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_can_be_casted_as_string()
+    public function it_can_be_casted_as_string(): void
     {
         $item = new NameItem('TEST');
         $this->assertSame('TEST', (string)$item);
@@ -29,7 +29,7 @@ final class NameItemTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throws_when_using_invalid_name()
+    public function it_throws_when_using_invalid_name(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         new NameItem('TEST' . "\u{1000}");

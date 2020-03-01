@@ -12,7 +12,7 @@ final class MessageIdTest extends AbstractTestCase
      * @test
      * @dataProvider provideValues
      */
-    public function it_produces_correct_values($left, $right, $headerName, $headerValue)
+    public function it_produces_correct_values($left, $right, $headerName, $headerValue): void
     {
         $header = new MessageId($left, $right);
         $this->assertEquals($headerName, (string)$header->getName());
@@ -22,7 +22,7 @@ final class MessageIdTest extends AbstractTestCase
     /**
      * @return array
      */
-    public function provideValues()
+    public function provideValues(): array
     {
         return [
             ['left', 'right', 'Message-ID', '<left@right>'],

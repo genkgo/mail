@@ -12,7 +12,7 @@ abstract class AbstractQueueDecoratorTestCase extends TestCase
     /**
      * @test
      */
-    public function it_will_use_decorated_store_method()
+    public function it_will_use_decorated_store_method(): void
     {
         $message = $this->createMock(MessageInterface::class);
         $queue = $this->createMock(QueueInterface::class);
@@ -27,7 +27,7 @@ abstract class AbstractQueueDecoratorTestCase extends TestCase
     /**
      * @test
      */
-    public function it_will_use_decorated_fetch_method()
+    public function it_will_use_decorated_fetch_method(): void
     {
         $queue = $this->createMock(QueueInterface::class);
         $queue

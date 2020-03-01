@@ -21,7 +21,7 @@ final class PlainTextMessageTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_correctly_produces_message_string()
+    public function it_correctly_produces_message_string(): void
     {
         $message = (new PlainTextMessage('Hello World'))
             ->withHeader(new Date(new \DateTimeImmutable('2017-01-01 18:15:00')))
@@ -38,7 +38,7 @@ final class PlainTextMessageTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_is_immutable()
+    public function it_is_immutable(): void
     {
         $message = new PlainTextMessage('Hello World');
 
@@ -51,7 +51,7 @@ final class PlainTextMessageTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_has_case_insensitive_headers()
+    public function it_has_case_insensitive_headers(): void
     {
         $message = (new PlainTextMessage('Hello World'))
             ->withHeader(new GenericHeader('X', 'Y'))
@@ -73,7 +73,7 @@ final class PlainTextMessageTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_uses_an_optimal_encoding_for_body()
+    public function it_uses_an_optimal_encoding_for_body(): void
     {
         $message = new PlainTextMessage('Hello World');
 

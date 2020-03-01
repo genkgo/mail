@@ -12,7 +12,7 @@ final class HeaderCriterionTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_casts_to_string()
+    public function it_casts_to_string(): void
     {
         $this->assertSame(
             'HEADER X-Priority "1"',
@@ -23,7 +23,7 @@ final class HeaderCriterionTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_adds_slashes()
+    public function it_adds_slashes(): void
     {
         $this->assertSame(
             'HEADER X-Custom-Header "\"Test\""',
@@ -34,7 +34,7 @@ final class HeaderCriterionTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throws_when_empty_query()
+    public function it_throws_when_empty_query(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         new HeaderCriterion(new HeaderName('X-Custom-Header'), '');
@@ -43,7 +43,7 @@ final class HeaderCriterionTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throws_when_query_contains_cr()
+    public function it_throws_when_query_contains_cr(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         new HeaderCriterion(new HeaderName('X-Custom-Header'), "\r");
@@ -52,7 +52,7 @@ final class HeaderCriterionTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throws_when_query_contains_lf()
+    public function it_throws_when_query_contains_lf(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         new HeaderCriterion(new HeaderName('X-Custom-Header'), "\n");

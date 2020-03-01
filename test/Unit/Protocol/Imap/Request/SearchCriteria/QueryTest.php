@@ -13,7 +13,7 @@ final class QueryTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_can_be_constructed_with_criteria()
+    public function it_can_be_constructed_with_criteria(): void
     {
         $query = new Query([MatchContentCriterion::text('Hello World')]);
         $this->assertSame('TEXT "Hello World"', (string)$query);
@@ -22,7 +22,7 @@ final class QueryTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_can_be_extended_with_more_criteria()
+    public function it_can_be_extended_with_more_criteria(): void
     {
         $query = (new Query())
             ->with(DateCriterion::after(new \DateTimeImmutable('2015-01-01')))
@@ -34,7 +34,7 @@ final class QueryTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_is_immutable()
+    public function it_is_immutable(): void
     {
         $query = new Query();
         $this->assertNotSame($query, $query->with(DateCriterion::after(new \DateTimeImmutable('2015-01-01'))));
@@ -43,7 +43,7 @@ final class QueryTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_can_be_counted()
+    public function it_can_be_counted(): void
     {
         $query = new Query();
         $this->assertCount(0, $query);

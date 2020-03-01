@@ -12,7 +12,7 @@ final class HeaderLineTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_folds_headers_when_name_plus_value_is_longer_than_78_characters()
+    public function it_folds_headers_when_name_plus_value_is_longer_than_78_characters(): void
     {
         $line = new HeaderLine(
             new GenericHeader(
@@ -30,7 +30,7 @@ final class HeaderLineTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_creates_a_line_from_a_string()
+    public function it_creates_a_line_from_a_string(): void
     {
         $line = HeaderLine::fromString('X: Y');
         $this->assertEquals('X', (string) $line->getHeader()->getName());
@@ -40,7 +40,7 @@ final class HeaderLineTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_creates_a_line_from_a_encoded_string()
+    public function it_creates_a_line_from_a_encoded_string(): void
     {
         $line = HeaderLine::fromString('X: =?UTF-8?Q?t=C3=ABst?=');
         $this->assertEquals('X', (string) $line->getHeader()->getName());
@@ -54,7 +54,7 @@ final class HeaderLineTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_creates_a_line_from_a_partial_encoded_string()
+    public function it_creates_a_line_from_a_partial_encoded_string(): void
     {
         $line = HeaderLine::fromString('X: =?UTF-8?Q?t=C3=ABst?= <local-part@domain.com>');
         $this->assertEquals('X', (string) $line->getHeader()->getName());
@@ -68,7 +68,7 @@ final class HeaderLineTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throws_an_exception_when_there_is_no_colon()
+    public function it_throws_an_exception_when_there_is_no_colon(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         HeaderLine::fromString('test');

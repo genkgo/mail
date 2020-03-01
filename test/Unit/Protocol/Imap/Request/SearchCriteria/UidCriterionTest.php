@@ -12,7 +12,7 @@ final class UidCriterionTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_casts_to_string()
+    public function it_casts_to_string(): void
     {
         $this->assertSame('UID 1453543:5435342543', (string)new UidCriterion(SequenceSet::range(1453543, 5435342543)));
     }

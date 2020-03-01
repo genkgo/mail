@@ -11,7 +11,7 @@ final class CryptoConstantTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_uses_method_negotiate_in_any_version()
+    public function it_uses_method_negotiate_in_any_version(): void
     {
         $tls012 = STREAM_CRYPTO_METHOD_TLSv1_0_CLIENT | STREAM_CRYPTO_METHOD_TLSv1_1_CLIENT | STREAM_CRYPTO_METHOD_TLSv1_2_CLIENT;
         $this->assertEquals($tls012, CryptoConstant::getDefaultMethod('7.2.0'));

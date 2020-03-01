@@ -11,7 +11,7 @@ final class ContentIDTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_can_be_constructed_with_any_string()
+    public function it_can_be_constructed_with_any_string(): void
     {
         $header = new ContentID('abc123');
         $this->assertSame('abc123', (string)$header->getValue());
@@ -21,7 +21,7 @@ final class ContentIDTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_can_be_created_from_an_url_address()
+    public function it_can_be_created_from_an_url_address(): void
     {
         $header = ContentID::fromUrlAddress('local', 'domain.com');
         $this->assertSame('<local@domain.com>', (string)$header->getValue());
@@ -31,7 +31,7 @@ final class ContentIDTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_uses_puny_code_for_domains()
+    public function it_uses_puny_code_for_domains(): void
     {
         $header = ContentID::fromUrlAddress('local', 'münchen.com');
         $this->assertSame('<local@xn--mnchen-3ya.com>', (string)$header->getValue());

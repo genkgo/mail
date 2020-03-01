@@ -13,7 +13,7 @@ final class RcptToCommandTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_executes()
+    public function it_executes(): void
     {
         $connection = $this->createMock(ConnectionInterface::class);
         $connection

@@ -13,7 +13,7 @@ final class DevNullBackendTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_contains_addresses()
+    public function it_contains_addresses(): void
     {
         $backend = new DevNullBackend();
 
@@ -24,7 +24,7 @@ final class DevNullBackendTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_stores_messages()
+    public function it_stores_messages(): void
     {
         $backend = new DevNullBackend();
 

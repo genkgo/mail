@@ -12,7 +12,7 @@ final class SequenceSetCriterionTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_casts_to_string()
+    public function it_casts_to_string(): void
     {
         $this->assertSame('1:5', (string)new SequenceSetCriterion(SequenceSet::range(1, 5)));
     }

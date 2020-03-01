@@ -12,7 +12,7 @@ final class FetchCommandResponseTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_can_be_constructed_from_string()
+    public function it_can_be_constructed_from_string(): void
     {
         $stub = \file_get_contents(__DIR__. '/../../../../../Stub/Imap/fetch-response.txt');
 
@@ -24,7 +24,7 @@ final class FetchCommandResponseTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_contains_message_data()
+    public function it_contains_message_data(): void
     {
         $stub = \file_get_contents(__DIR__. '/../../../../../Stub/Imap/fetch-response.txt');
         $response = FetchCommandResponse::fromString($stub);
@@ -36,7 +36,7 @@ final class FetchCommandResponseTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throws_when_not_a_fetch_command()
+    public function it_throws_when_not_a_fetch_command(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         FetchCommandResponse::fromString('CAPABILITY STARTTLS');

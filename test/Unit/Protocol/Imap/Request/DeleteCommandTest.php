@@ -13,7 +13,7 @@ final class DeleteCommandTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_creates_a_stream()
+    public function it_creates_a_stream(): void
     {
         $command = new DeleteCommand(
             Tag::fromNonce(1),

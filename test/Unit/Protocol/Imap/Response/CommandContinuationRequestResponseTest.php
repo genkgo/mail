@@ -13,7 +13,7 @@ final class CommandContinuationRequestResponseTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_can_be_casted_to_string()
+    public function it_can_be_casted_to_string(): void
     {
         $this->assertSame(
             '+ OK successful',
@@ -24,7 +24,7 @@ final class CommandContinuationRequestResponseTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_is_immutable()
+    public function it_is_immutable(): void
     {
         $response = new CommandContinuationRequestResponse('OK successful');
         $this->assertNotSame($response, $response->withAddedBody('body'));
@@ -33,7 +33,7 @@ final class CommandContinuationRequestResponseTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_can_be_extended_with_more_body()
+    public function it_can_be_extended_with_more_body(): void
     {
         $response = new CommandContinuationRequestResponse('OK successful');
         $this->assertSame('OK successfully', $response->withAddedBody('ly')->getBody());
@@ -42,7 +42,7 @@ final class CommandContinuationRequestResponseTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throws_when_asserting_completion()
+    public function it_throws_when_asserting_completion(): void
     {
         $this->expectException(AssertionFailedException::class);
         $response = new CommandContinuationRequestResponse('OK hello world');
@@ -52,7 +52,7 @@ final class CommandContinuationRequestResponseTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_does_not_throw_when_asserting_continuation()
+    public function it_does_not_throw_when_asserting_continuation(): void
     {
         $response = new CommandContinuationRequestResponse('NO unsuccessful');
         $response->assertContinuation();
@@ -62,7 +62,7 @@ final class CommandContinuationRequestResponseTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throws_when_asserting_tagged()
+    public function it_throws_when_asserting_tagged(): void
     {
         $this->expectException(AssertionFailedException::class);
         $response = new CommandContinuationRequestResponse('NO unsuccessful');

@@ -19,7 +19,7 @@ abstract class AbstractQueueProcessorTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_transport_messages_from_queue()
+    public function it_transport_messages_from_queue(): void
     {
         $queue = new ArrayObjectQueue(new \ArrayObject());
         $queue->store($this->newMessage('Test 1'));
@@ -60,7 +60,7 @@ abstract class AbstractQueueProcessorTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_will_readd_failed_messages_to_queue()
+    public function it_will_readd_failed_messages_to_queue(): void
     {
         $storage = new \ArrayObject();
 
@@ -90,7 +90,7 @@ abstract class AbstractQueueProcessorTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_will_readd_messages_resulting_in_any_protocol_exception()
+    public function it_will_readd_messages_resulting_in_any_protocol_exception(): void
     {
         $storage = new \ArrayObject();
 

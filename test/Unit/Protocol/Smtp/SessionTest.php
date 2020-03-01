@@ -13,7 +13,7 @@ final class SessionTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_is_immutable()
+    public function it_is_immutable(): void
     {
         $session = new Session();
         $this->assertNotSame($session, $session->withCommand('x'));
@@ -26,7 +26,7 @@ final class SessionTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_carries_command()
+    public function it_carries_command(): void
     {
         $session = new Session();
         $this->assertSame('x', $session->withCommand('x')->getCommand());
@@ -35,7 +35,7 @@ final class SessionTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_carries_envelope()
+    public function it_carries_envelope(): void
     {
         $session = new Session();
 
@@ -49,7 +49,7 @@ final class SessionTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_carries_message()
+    public function it_carries_message(): void
     {
         $session = new Session();
 
@@ -63,7 +63,7 @@ final class SessionTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_carries_recipient()
+    public function it_carries_recipient(): void
     {
         $session = new Session();
 
@@ -87,7 +87,7 @@ final class SessionTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_carries_state()
+    public function it_carries_state(): void
     {
         $session = new Session();
 
@@ -101,7 +101,7 @@ final class SessionTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throws_without_command()
+    public function it_throws_without_command(): void
     {
         $this->expectException(\UnexpectedValueException::class);
 
@@ -113,7 +113,7 @@ final class SessionTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throws_without_envelope()
+    public function it_throws_without_envelope(): void
     {
         $this->expectException(\UnexpectedValueException::class);
 
@@ -125,7 +125,7 @@ final class SessionTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throws_without_message()
+    public function it_throws_without_message(): void
     {
         $this->expectException(\UnexpectedValueException::class);
 
@@ -137,7 +137,7 @@ final class SessionTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_has_default_state()
+    public function it_has_default_state(): void
     {
         $session = new Session();
 

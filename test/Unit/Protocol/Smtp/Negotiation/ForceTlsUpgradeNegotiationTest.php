@@ -16,7 +16,7 @@ final class ForceTlsUpgradeNegotiationTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_tries_to_upgrade_when_not_secure()
+    public function it_tries_to_upgrade_when_not_secure(): void
     {
         $connection = new FakeSmtpConnection();
         $connection->connect();
@@ -34,7 +34,7 @@ final class ForceTlsUpgradeNegotiationTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throw_when_not_secure()
+    public function it_throw_when_not_secure(): void
     {
         $this->expectException(ConnectionInsecureException::class);
 
@@ -52,7 +52,7 @@ final class ForceTlsUpgradeNegotiationTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_uses_legacy_rfc821_helo_when_ehlo_not_supported()
+    public function it_uses_legacy_rfc821_helo_when_ehlo_not_supported(): void
     {
         $connection = FakeSmtpConnection::newLegacyRfc821();
         $connection->connect();
@@ -70,7 +70,7 @@ final class ForceTlsUpgradeNegotiationTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throws_when_using_legacy_rfc821_and_starttls_not_supported()
+    public function it_throws_when_using_legacy_rfc821_and_starttls_not_supported(): void
     {
         $this->expectException(ConnectionInsecureException::class);
 
@@ -129,7 +129,7 @@ final class ForceTlsUpgradeNegotiationTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_does_not_upgrade_when_already_crypto()
+    public function it_does_not_upgrade_when_already_crypto(): void
     {
         $connection = $this->createMock(ConnectionInterface::class);
 

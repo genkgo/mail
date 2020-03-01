@@ -15,7 +15,7 @@ final class InjectMessageIdHeaderTransportTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_injects_message_id_header_in_message()
+    public function it_injects_message_id_header_in_message(): void
     {
         $message = new GenericMessage();
         $storage = new \ArrayObject();
@@ -34,7 +34,7 @@ final class InjectMessageIdHeaderTransportTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_does_not_inject_a_message_id_header_when_there_is_one()
+    public function it_does_not_inject_a_message_id_header_when_there_is_one(): void
     {
         $message = (new GenericMessage())
             ->withHeader(new MessageId('left', 'right'));

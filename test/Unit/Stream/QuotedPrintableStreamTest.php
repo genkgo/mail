@@ -11,7 +11,7 @@ final class QuotedPrintableStreamTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_produces_equally_result_with_to_string_and_read()
+    public function it_produces_equally_result_with_to_string_and_read(): void
     {
         $decoded = \str_repeat('test1 test2', 50);
         $stream = QuotedPrintableStream::fromString($decoded);
@@ -28,7 +28,7 @@ final class QuotedPrintableStreamTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_has_a_correct_size()
+    public function it_has_a_correct_size(): void
     {
         $stream = QuotedPrintableStream::fromString('tëst1test2');
 
@@ -38,7 +38,7 @@ final class QuotedPrintableStreamTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_reads_remaining_contents()
+    public function it_reads_remaining_contents(): void
     {
         $decoded = 'tëst1 test2';
 
@@ -51,7 +51,7 @@ final class QuotedPrintableStreamTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_is_rewindable()
+    public function it_is_rewindable(): void
     {
         $decoded = 'tëst1 test2';
 
@@ -64,7 +64,7 @@ final class QuotedPrintableStreamTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_can_seek()
+    public function it_can_seek(): void
     {
         $stream = QuotedPrintableStream::fromString('test1test2');
 
@@ -75,7 +75,7 @@ final class QuotedPrintableStreamTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_cannot_be_written_to()
+    public function it_cannot_be_written_to(): void
     {
         $this->expectException(\RuntimeException::class);
 
@@ -88,7 +88,7 @@ final class QuotedPrintableStreamTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_uses_correct_max_lines()
+    public function it_uses_correct_max_lines(): void
     {
         $decoded = \str_repeat('tëst1 test2', 50);
         $stream = QuotedPrintableStream::fromString($decoded);
@@ -108,7 +108,7 @@ final class QuotedPrintableStreamTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_uses_correct_line_endings_to_string()
+    public function it_uses_correct_line_endings_to_string(): void
     {
         $decoded = \str_repeat("tëst1 test2\n", 50);
         $stream = QuotedPrintableStream::fromString($decoded);
@@ -120,7 +120,7 @@ final class QuotedPrintableStreamTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_uses_correct_line_endings_read()
+    public function it_uses_correct_line_endings_read(): void
     {
         $decoded = \str_repeat("tëst1 test2\n", 50);
         $stream = QuotedPrintableStream::fromString($decoded);
@@ -136,7 +136,7 @@ final class QuotedPrintableStreamTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_uses_correct_line_endings_tab()
+    public function it_uses_correct_line_endings_tab(): void
     {
         $decoded = \str_repeat("tëst1\ttest2\t\n", 50);
         $stream = QuotedPrintableStream::fromString($decoded);
@@ -152,7 +152,7 @@ final class QuotedPrintableStreamTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_produces_equally_result_with_to_string_twice()
+    public function it_produces_equally_result_with_to_string_twice(): void
     {
         $stream = QuotedPrintableStream::fromString(
             \file_get_contents(__DIR__.'/../../Stub/BugReport/issue-30.txt')

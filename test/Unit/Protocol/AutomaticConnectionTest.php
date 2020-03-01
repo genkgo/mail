@@ -13,7 +13,7 @@ final class AutomaticConnectionTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_reconnects_when_time_passed()
+    public function it_reconnects_when_time_passed(): void
     {
         $decorated = $this->createMock(ConnectionInterface::class);
 
@@ -42,7 +42,7 @@ final class AutomaticConnectionTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_decorates_another_connection()
+    public function it_decorates_another_connection(): void
     {
         $decorated = $this->createMock(ConnectionInterface::class);
 
@@ -92,7 +92,7 @@ final class AutomaticConnectionTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throws_again_when_connecting_after_failure()
+    public function it_throws_again_when_connecting_after_failure(): void
     {
         $this->expectException(ConnectionRefusedException::class);
 

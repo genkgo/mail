@@ -26,7 +26,7 @@ final class PhpMailTransportTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_sends_messages()
+    public function it_sends_messages(): void
     {
         $transport = PhpMailTransport::newReplaceMailMethod(
             \Closure::fromCallable([$this, 'callbackTestMailParameters']),
@@ -54,7 +54,7 @@ final class PhpMailTransportTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throws_when_missing_to_header()
+    public function it_throws_when_missing_to_header(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -74,7 +74,7 @@ final class PhpMailTransportTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throws_when_missing_subject_header()
+    public function it_throws_when_missing_subject_header(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -94,7 +94,7 @@ final class PhpMailTransportTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_prevents_parameter_injection()
+    public function it_prevents_parameter_injection(): void
     {
         $this->expectException(EnvelopeException::class);
         $this->expectExceptionMessage('Unable to guarantee injection-free envelop');

@@ -13,7 +13,7 @@ final class NotCriterionTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_casts_to_string()
+    public function it_casts_to_string(): void
     {
         $this->assertSame(
             '(NOT BODY "Hello World")',
@@ -24,7 +24,7 @@ final class NotCriterionTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throws_when_subquery_is_empty()
+    public function it_throws_when_subquery_is_empty(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         new NotCriterion(new Query());

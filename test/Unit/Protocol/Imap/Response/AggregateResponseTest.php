@@ -15,7 +15,7 @@ final class AggregateResponseTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_can_be_iterated()
+    public function it_can_be_iterated(): void
     {
         $this->assertTrue(\is_iterable(new AggregateResponse(Tag::fromNonce(1))));
         $this->assertInstanceOf(
@@ -27,7 +27,7 @@ final class AggregateResponseTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_is_immutable()
+    public function it_is_immutable(): void
     {
         $response = new AggregateResponse(Tag::fromNonce(1));
         $this->assertNotSame($response, $response->withLine('* Untagged'));
@@ -36,7 +36,7 @@ final class AggregateResponseTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throws_when_first_with_empty_response()
+    public function it_throws_when_first_with_empty_response(): void
     {
         $this->expectException(\OutOfBoundsException::class);
 
@@ -46,7 +46,7 @@ final class AggregateResponseTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throws_when_last_with_empty_response()
+    public function it_throws_when_last_with_empty_response(): void
     {
         $this->expectException(\OutOfBoundsException::class);
 
@@ -56,7 +56,7 @@ final class AggregateResponseTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throws_when_at_with_empty_response()
+    public function it_throws_when_at_with_empty_response(): void
     {
         $this->expectException(\OutOfBoundsException::class);
 
@@ -66,7 +66,7 @@ final class AggregateResponseTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_can_return_the_first_line()
+    public function it_can_return_the_first_line(): void
     {
         $this->assertInstanceOf(
             UntaggedResponse::class,
@@ -77,7 +77,7 @@ final class AggregateResponseTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_can_return_the_first_line_with_multiple_lines()
+    public function it_can_return_the_first_line_with_multiple_lines(): void
     {
         $this->assertInstanceOf(
             TaggedResponse::class,
@@ -91,7 +91,7 @@ final class AggregateResponseTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_can_return_the_last_line()
+    public function it_can_return_the_last_line(): void
     {
         $this->assertInstanceOf(
             UntaggedResponse::class,
@@ -102,7 +102,7 @@ final class AggregateResponseTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_can_return_the_last_line_with_multiple_lines()
+    public function it_can_return_the_last_line_with_multiple_lines(): void
     {
         $this->assertInstanceOf(
             UntaggedResponse::class,
@@ -116,7 +116,7 @@ final class AggregateResponseTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_can_return_the_line_at_with_multiple_lines()
+    public function it_can_return_the_line_at_with_multiple_lines(): void
     {
         $tag = Tag::fromNonce(1);
 
@@ -140,7 +140,7 @@ final class AggregateResponseTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_knows_when_response_is_completed()
+    public function it_knows_when_response_is_completed(): void
     {
         $tag = Tag::fromNonce(1);
 
@@ -172,7 +172,7 @@ final class AggregateResponseTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_defines_an_untagged_response()
+    public function it_defines_an_untagged_response(): void
     {
         $response = new AggregateResponse(Tag::fromNonce(1));
         $line = $response->withLine('* Untagged')->first();
@@ -184,7 +184,7 @@ final class AggregateResponseTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_defines_a_tagged_response()
+    public function it_defines_a_tagged_response(): void
     {
         $response = new AggregateResponse(Tag::fromNonce(1));
         $line = $response->withLine('TAG1 OK')->first();
@@ -196,7 +196,7 @@ final class AggregateResponseTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_defines_a_continuation_response()
+    public function it_defines_a_continuation_response(): void
     {
         $response = new AggregateResponse(Tag::fromNonce(1));
         $line = $response->withLine('+ Please continue')->first();
@@ -208,7 +208,7 @@ final class AggregateResponseTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_deals_with_multi_line_untagged_response()
+    public function it_deals_with_multi_line_untagged_response(): void
     {
         $response = new AggregateResponse(Tag::fromNonce(1));
         $fetch = \file_get_contents(__DIR__. '/../../../../Stub/Imap/fetch-response.txt');
@@ -228,7 +228,7 @@ final class AggregateResponseTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_can_be_casted_to_string()
+    public function it_can_be_casted_to_string(): void
     {
         $response = new AggregateResponse(Tag::fromNonce(1));
         $fetch = \file_get_contents(__DIR__. '/../../../../Stub/Imap/fetch-response.txt');
@@ -249,7 +249,7 @@ final class AggregateResponseTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throws_when_adding_content_line_when_empty_response()
+    public function it_throws_when_adding_content_line_when_empty_response(): void
     {
         $this->expectException(\UnexpectedValueException::class);
 

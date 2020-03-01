@@ -11,7 +11,7 @@ final class TagTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_can_be_cast_to_string()
+    public function it_can_be_cast_to_string(): void
     {
         $this->assertSame('TAG1', (string)new Tag('TAG1'));
     }
@@ -19,7 +19,7 @@ final class TagTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_can_be_created_from_a_nonce()
+    public function it_can_be_created_from_a_nonce(): void
     {
         $this->assertSame('TAG1', (string)Tag::fromNonce(1));
     }
@@ -27,7 +27,7 @@ final class TagTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_can_extract_body_from_a_line_starting_with_tag()
+    public function it_can_extract_body_from_a_line_starting_with_tag(): void
     {
         $tag = Tag::fromNonce(1);
         $this->assertSame('hello world', $tag->extractBodyFromLine('TAG1 hello world'));
@@ -36,7 +36,7 @@ final class TagTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throws_when_line_does_not_start_with_tag()
+    public function it_throws_when_line_does_not_start_with_tag(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         Tag::fromNonce(1)->extractBodyFromLine('OTHER hello world');

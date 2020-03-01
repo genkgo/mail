@@ -12,7 +12,7 @@ final class NullTransportTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_does_actually_nothing_at_all()
+    public function it_does_actually_nothing_at_all(): void
     {
         $message = new GenericMessage();
 

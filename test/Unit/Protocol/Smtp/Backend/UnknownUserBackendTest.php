@@ -13,7 +13,7 @@ final class UnknownUserBackendTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_contains_addresses()
+    public function it_contains_addresses(): void
     {
         $backend = new UnknownUserBackend();
 
@@ -24,7 +24,7 @@ final class UnknownUserBackendTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throws_when_storing_messages()
+    public function it_throws_when_storing_messages(): void
     {
         $this->expectException(\UnexpectedValueException::class);
 

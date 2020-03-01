@@ -14,7 +14,7 @@ final class AuthLoginTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_advertises()
+    public function it_advertises(): void
     {
         $capability = new AuthLoginCapability(
             new ArrayAuthentication(['test' => 'test'])
@@ -26,7 +26,7 @@ final class AuthLoginTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_can_login()
+    public function it_can_login(): void
     {
         $connection = $this->createMock(ConnectionInterface::class);
 
@@ -64,7 +64,7 @@ final class AuthLoginTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_refuses_to_login()
+    public function it_refuses_to_login(): void
     {
         $connection = $this->createMock(ConnectionInterface::class);
 

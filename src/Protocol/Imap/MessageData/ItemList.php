@@ -35,11 +35,13 @@ final class ItemList
     private $body;
 
     /**
-     * @param array<string, ItemInterface> $list
+     * @param array|ItemInterface[] $list
      */
     public function __construct(array $list = [])
     {
-        $this->list = $list;
+        foreach ($list as $item) {
+            $this->list[$item->getName()] = $list;
+        }
     }
 
     /**

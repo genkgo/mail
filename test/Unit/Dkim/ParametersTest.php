@@ -11,7 +11,7 @@ final class ParametersTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_creates_a_header_value()
+    public function it_creates_a_header_value(): void
     {
         $parameters = new Parameters('x', 'example.com');
         $headerValue = $parameters->newHeaderValue();
@@ -22,7 +22,7 @@ final class ParametersTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_internationalizes_selector_and_domain()
+    public function it_internationalizes_selector_and_domain(): void
     {
         $parameters = new Parameters('ë', 'täst.de');
         $headerValue = $parameters->newHeaderValue();
@@ -33,7 +33,7 @@ final class ParametersTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_adds_signature_timestamp_in_correct_timezone()
+    public function it_adds_signature_timestamp_in_correct_timezone(): void
     {
         $parameters = (new Parameters('x', 'example.com'))
             ->withSignatureTimestamp(
@@ -48,7 +48,7 @@ final class ParametersTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_adds_signature_expiration_in_correct_timezone()
+    public function it_adds_signature_expiration_in_correct_timezone(): void
     {
         $parameters = (new Parameters('x', 'example.com'))
             ->withSignatureExpiration(

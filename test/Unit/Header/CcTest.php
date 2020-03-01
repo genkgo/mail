@@ -14,7 +14,7 @@ final class CcTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_produces_correct_values()
+    public function it_produces_correct_values(): void
     {
         $header = new Cc(
             new AddressList([

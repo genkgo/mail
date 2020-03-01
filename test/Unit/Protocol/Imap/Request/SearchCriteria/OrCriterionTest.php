@@ -13,7 +13,7 @@ final class OrCriterionTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_casts_to_string()
+    public function it_casts_to_string(): void
     {
         $this->assertSame(
             '(OR BODY "Hello World" BODY "Hello Planet")',
@@ -31,7 +31,7 @@ final class OrCriterionTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throws_when_subquery_is_empty()
+    public function it_throws_when_subquery_is_empty(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         new OrCriterion(new Query());
@@ -40,7 +40,7 @@ final class OrCriterionTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throws_when_subquery_contains_one_criterion()
+    public function it_throws_when_subquery_contains_one_criterion(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         new OrCriterion(new Query([MatchContentCriterion::body('Hello World'),]));
@@ -49,7 +49,7 @@ final class OrCriterionTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throws_when_subquery_contains_more_than_two_criteria()
+    public function it_throws_when_subquery_contains_more_than_two_criteria(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         new OrCriterion(

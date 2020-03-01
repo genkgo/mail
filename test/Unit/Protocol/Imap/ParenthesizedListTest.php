@@ -11,7 +11,7 @@ final class ParenthesizedListTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_returns_an_empty_string_when_list_is_empty()
+    public function it_returns_an_empty_string_when_list_is_empty(): void
     {
         $this->assertSame('', (string)new ParenthesizedList());
     }
@@ -19,7 +19,7 @@ final class ParenthesizedListTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_uses_parenthesizes_when_list_is_not_empty()
+    public function it_uses_parenthesizes_when_list_is_not_empty(): void
     {
         $list = (new ParenthesizedList())->with('BODY');
         $this->assertSame('(', ((string)$list)[0]);
@@ -29,7 +29,7 @@ final class ParenthesizedListTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_uses_spaces_as_separator()
+    public function it_uses_spaces_as_separator(): void
     {
         $list = (new ParenthesizedList())->with('BODY')->with('HEADER');
         $this->assertSame('(BODY HEADER)', (string)$list);
@@ -38,7 +38,7 @@ final class ParenthesizedListTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_is_immutable()
+    public function it_is_immutable(): void
     {
         $list = new ParenthesizedList();
         $this->assertNotSame($list, $list->with('BODY'));
@@ -48,7 +48,7 @@ final class ParenthesizedListTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_adds_to_and_removes_from_the_list()
+    public function it_adds_to_and_removes_from_the_list(): void
     {
         $list = (new ParenthesizedList())->with('BODY');
         $this->assertSame('(BODY)', (string)$list);

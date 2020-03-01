@@ -17,7 +17,7 @@ final class PhpMailTransport implements TransportInterface
     private $envelopeFactory;
 
     /**
-     * @var array<string, mixed>
+     * @var array<int, string>
      */
     private $parameters;
 
@@ -143,7 +143,7 @@ final class PhpMailTransport implements TransportInterface
     /**
      * @param \Closure $callback
      * @param EnvelopeFactory $envelopeFactory
-     * @param array<string, mixed> $parameters
+     * @param array<int, string> $parameters
      * @return PhpMailTransport
      */
     public static function newReplaceMailMethod(

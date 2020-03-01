@@ -12,7 +12,7 @@ final class OptimalTransferEncodedTextStreamTest extends AbstractTestCase
      * @test
      * @dataProvider provideText
      */
-    public function it_uses_correct_transfer_encoding($text, $expectedEncoding)
+    public function it_uses_correct_transfer_encoding($text, $expectedEncoding): void
     {
         $stream = new OptimalTransferEncodedTextStream($text);
 
@@ -22,7 +22,7 @@ final class OptimalTransferEncodedTextStreamTest extends AbstractTestCase
     /**
      * @return array
      */
-    public function provideText()
+    public function provideText(): array
     {
         return [
             [\str_repeat('test1 test2', 50), '7bit'],

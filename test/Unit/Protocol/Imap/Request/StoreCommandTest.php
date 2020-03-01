@@ -16,7 +16,7 @@ final class StoreCommandTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_creates_a_stream()
+    public function it_creates_a_stream(): void
     {
         $command = new StoreCommand(
             Tag::fromNonce(1),

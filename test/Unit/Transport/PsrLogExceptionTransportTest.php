@@ -15,7 +15,7 @@ final class PsrLogExceptionTransportTest extends AbstractTestCase
     /**
      * @test
      */
-    public function throw_exception()
+    public function it_logs_an_exception(): void
     {
         $this->expectException(\RuntimeException::class);
 

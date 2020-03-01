@@ -11,7 +11,7 @@ final class MatchContentCriterionTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_casts_to_string()
+    public function it_casts_to_string(): void
     {
         $this->assertSame('BODY "Hello World"', (string)MatchContentCriterion::body('Hello World'));
     }
@@ -19,7 +19,7 @@ final class MatchContentCriterionTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_can_search_in_all_text()
+    public function it_can_search_in_all_text(): void
     {
         $this->assertSame('TEXT "Hello World"', (string)MatchContentCriterion::text('Hello World'));
     }
@@ -27,7 +27,7 @@ final class MatchContentCriterionTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_can_search_in_body()
+    public function it_can_search_in_body(): void
     {
         $this->assertSame('BODY "Hello World!"', (string)MatchContentCriterion::body('Hello World!'));
     }
@@ -35,7 +35,7 @@ final class MatchContentCriterionTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_can_search_in_subject()
+    public function it_can_search_in_subject(): void
     {
         $this->assertSame('SUBJECT "Hello World!"', (string)MatchContentCriterion::subject('Hello World!'));
     }
@@ -43,7 +43,7 @@ final class MatchContentCriterionTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throws_when_empty_query()
+    public function it_throws_when_empty_query(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         MatchContentCriterion::text('');
@@ -52,7 +52,7 @@ final class MatchContentCriterionTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throws_when_empty_using_lf()
+    public function it_throws_when_empty_using_lf(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         MatchContentCriterion::text("\n");
@@ -61,7 +61,7 @@ final class MatchContentCriterionTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throws_when_empty_using_cr()
+    public function it_throws_when_empty_using_cr(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         MatchContentCriterion::text("\r");

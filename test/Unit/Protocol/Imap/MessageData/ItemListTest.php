@@ -13,7 +13,7 @@ final class ItemListTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_is_immutable()
+    public function it_is_immutable(): void
     {
         $list = new ItemList();
 
@@ -25,7 +25,7 @@ final class ItemListTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_stores_items_by_name()
+    public function it_stores_items_by_name(): void
     {
         $item = new NameItem('TEST');
         $list = new ItemList();
@@ -37,7 +37,7 @@ final class ItemListTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_stores_last_item()
+    public function it_stores_last_item(): void
     {
         $list = new ItemList();
 
@@ -53,7 +53,7 @@ final class ItemListTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throw_when_empty_list()
+    public function it_throw_when_empty_list(): void
     {
         $this->expectException(\OutOfBoundsException::class);
 
@@ -64,7 +64,7 @@ final class ItemListTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_casts_to_string_with_item()
+    public function it_casts_to_string_with_item(): void
     {
         $list = new ItemList();
         $list = $list->withItem(new NameItem('TEST'));
@@ -75,7 +75,7 @@ final class ItemListTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_casts_to_string_with_item_octet()
+    public function it_casts_to_string_with_item_octet(): void
     {
         $list = new ItemList();
         $list = $list->withItem(new NameItem('TEST'));
@@ -87,7 +87,7 @@ final class ItemListTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_casts_to_string_with_item_octet_body()
+    public function it_casts_to_string_with_item_octet_body(): void
     {
         $list = new ItemList();
         $list = $list->withItem(new NameItem('TEST'));
@@ -100,7 +100,7 @@ final class ItemListTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_parses_string_to_list()
+    public function it_parses_string_to_list(): void
     {
         $list = ItemList::fromString("(TEST[HEADER] {100}\nHello World.)");
 
@@ -111,7 +111,7 @@ final class ItemListTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throws_when_parsing_empty_string()
+    public function it_throws_when_parsing_empty_string(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         ItemList::fromString('');
@@ -120,7 +120,7 @@ final class ItemListTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throws_when_using_brackets_when_already_in_section()
+    public function it_throws_when_using_brackets_when_already_in_section(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         ItemList::fromString('BODY[HEADER[]');
@@ -129,7 +129,7 @@ final class ItemListTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throws_when_using_brackets_not_in_section()
+    public function it_throws_when_using_brackets_not_in_section(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         ItemList::fromString('BODY]');
@@ -138,7 +138,7 @@ final class ItemListTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throws_when_using_less_than_sign_when_in_section()
+    public function it_throws_when_using_less_than_sign_when_in_section(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         ItemList::fromString('BODY[HEADER<]');
@@ -147,7 +147,7 @@ final class ItemListTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throws_when_using_greater_than_sign_when_in_section()
+    public function it_throws_when_using_greater_than_sign_when_in_section(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         ItemList::fromString('BODY[HEADER>]');
@@ -156,7 +156,7 @@ final class ItemListTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throws_when_using_left_curly_bracket_when_in_section()
+    public function it_throws_when_using_left_curly_bracket_when_in_section(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         ItemList::fromString('BODY[HEADER{]');
@@ -165,7 +165,7 @@ final class ItemListTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throws_when_using_right_curly_bracket_when_in_section()
+    public function it_throws_when_using_right_curly_bracket_when_in_section(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         ItemList::fromString('BODY[HEADER}]');
@@ -174,7 +174,7 @@ final class ItemListTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_separates_spaces()
+    public function it_separates_spaces(): void
     {
         $itemList = ItemList::fromString('BODY HEADER');
         $this->assertSame('BODY', (string)$itemList->getItem('BODY'));
@@ -184,7 +184,7 @@ final class ItemListTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_parses_partial()
+    public function it_parses_partial(): void
     {
         $itemList = ItemList::fromString('BODY[]<0.100>');
         $this->assertInstanceOf(PartialItem::class, $itemList->getItem('BODY'));
@@ -194,7 +194,7 @@ final class ItemListTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throws_when_unknown_item()
+    public function it_throws_when_unknown_item(): void
     {
         $this->expectException(\UnexpectedValueException::class);
         ItemList::fromString('BODY')->getItem('HEADER');

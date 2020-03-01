@@ -12,7 +12,7 @@ final class ExpungeCommandTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_creates_a_stream()
+    public function it_creates_a_stream(): void
     {
         $command = new ExpungeCommand(Tag::fromNonce(1));
 

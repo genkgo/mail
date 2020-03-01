@@ -14,7 +14,7 @@ final class ReceiveWelcomeNegotiationTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_emits_auth_plain()
+    public function it_emits_auth_plain(): void
     {
         $connection = $this->createMock(ConnectionInterface::class);
         $connection

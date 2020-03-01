@@ -14,7 +14,7 @@ final class SearchCommandTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_creates_a_stream()
+    public function it_creates_a_stream(): void
     {
         $command = new SearchCommand(
             Tag::fromNonce(1),
@@ -28,7 +28,7 @@ final class SearchCommandTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_creates_a_stream_with_a_charset()
+    public function it_creates_a_stream_with_a_charset(): void
     {
         $command = new SearchCommand(
             Tag::fromNonce(1),
@@ -43,7 +43,7 @@ final class SearchCommandTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throws_with_an_invalid_charset()
+    public function it_throws_with_an_invalid_charset(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 

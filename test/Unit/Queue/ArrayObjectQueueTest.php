@@ -14,7 +14,7 @@ final class ArrayObjectQueueTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_can_store_a_message_in_array_object()
+    public function it_can_store_a_message_in_array_object(): void
     {
         $message = (new GenericMessage())
             ->withHeader(new Date(new \DateTimeImmutable('2017-01-01 18:15:00')));
@@ -32,7 +32,7 @@ final class ArrayObjectQueueTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_can_fetch_a_message_from_the_array_object()
+    public function it_can_fetch_a_message_from_the_array_object(): void
     {
         $message = (new GenericMessage())
             ->withHeader(new Date(new \DateTimeImmutable('2017-01-01 18:15:00')));
@@ -50,7 +50,7 @@ final class ArrayObjectQueueTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_will_throw_when_no_message_left()
+    public function it_will_throw_when_no_message_left(): void
     {
         $this->expectException(EmptyQueueException::class);
 
@@ -68,7 +68,7 @@ final class ArrayObjectQueueTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_can_count_messages_in_queue()
+    public function it_can_count_messages_in_queue(): void
     {
         $message = (new GenericMessage())
             ->withHeader(new Date(new \DateTimeImmutable('2017-01-01 18:15:00')));

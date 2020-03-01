@@ -14,7 +14,7 @@ final class ReplyTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_has_messages()
+    public function it_has_messages(): void
     {
         $reply = (new Reply(new Client(new FakeSmtpConnection())))
             ->withLine(250, 'hello')
@@ -27,7 +27,7 @@ final class ReplyTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_asserts()
+    public function it_asserts(): void
     {
         $client = new Client(new FakeSmtpConnection());
 
@@ -42,7 +42,7 @@ final class ReplyTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_asserts_completed()
+    public function it_asserts_completed(): void
     {
         $client = new Client(new FakeSmtpConnection());
 
@@ -57,7 +57,7 @@ final class ReplyTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_asserts_intermediate()
+    public function it_asserts_intermediate(): void
     {
         $client = new Client(new FakeSmtpConnection());
 
@@ -71,7 +71,7 @@ final class ReplyTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throws_when_making_wrong_assertions()
+    public function it_throws_when_making_wrong_assertions(): void
     {
         $this->expectException(AssertionFailedException::class);
 
@@ -86,7 +86,7 @@ final class ReplyTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_is_an_error_400()
+    public function it_is_an_error_400(): void
     {
         $client = new Client(new FakeSmtpConnection());
 
@@ -99,7 +99,7 @@ final class ReplyTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_is_an_error_500()
+    public function it_is_an_error_500(): void
     {
         $client = new Client(new FakeSmtpConnection());
 
@@ -112,7 +112,7 @@ final class ReplyTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_is_an_implemented_command()
+    public function it_is_an_implemented_command(): void
     {
         $client = new Client(new FakeSmtpConnection());
 
