@@ -28,7 +28,7 @@ final class PhpMailTransport implements TransportInterface
 
     /**
      * @param EnvelopeFactory $envelopeFactory
-     * @param array<string, mixed> $parameters
+     * @param array<int, string> $parameters
      */
     public function __construct(EnvelopeFactory $envelopeFactory, array $parameters = [])
     {

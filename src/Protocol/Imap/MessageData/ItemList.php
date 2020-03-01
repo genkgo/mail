@@ -40,7 +40,7 @@ final class ItemList
     public function __construct(array $list = [])
     {
         foreach ($list as $item) {
-            $this->list[$item->getName()] = $list;
+            $this->list[$item->getName()] = $item;
         }
     }
 
