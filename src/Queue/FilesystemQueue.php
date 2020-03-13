@@ -51,7 +51,13 @@ final class FilesystemQueue implements QueueInterface, \Countable
      */
     public function fetch(): MessageInterface
     {
-        $queue = new \GlobIterator($this->directory . '/*.eml');
+        $queue = new \CallbackFilterIterator(
+            new \FilesystemIterator($this->directory),
+            function (\SplFileInfo $file) {
+                return $file->getExtension() === 'eml';
+            }
+        );
+
         /** @var \SplFileInfo $item */
         foreach ($queue as $item) {
             $messageString = \file_get_contents($item->getPathname());
