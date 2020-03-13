@@ -14,7 +14,7 @@ final class GenericPartTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_is_immutable()
+    public function it_is_immutable(): void
     {
         $part = new GenericPart();
 
@@ -26,7 +26,7 @@ final class GenericPartTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_has_case_insensitive_headers()
+    public function it_has_case_insensitive_headers(): void
     {
         $part = (new GenericPart())
             ->withHeader(new ContentType('text/html'));
@@ -43,7 +43,7 @@ final class GenericPartTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throws_when_receives_wrong_header()
+    public function it_throws_when_receives_wrong_header(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 

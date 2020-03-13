@@ -19,14 +19,14 @@ final class SecureConnectionOptions
     private $method;
 
     /**
-     * @var array
+     * @var array<string, mixed>
      */
     private $contextOptions = [];
 
     /**
      * @param int $method
      * @param int $timeout
-     * @param array $contextOptions
+     * @param array<string, mixed> $contextOptions
      */
     public function __construct(int $method, int $timeout = 10, array $contextOptions = [])
     {
@@ -58,7 +58,7 @@ final class SecureConnectionOptions
     }
 
     /**
-     * @param array $contextOptions
+     * @param array<string, mixed> $contextOptions
      * @return SecureConnectionOptions
      */
     public function withContextOptions(array $contextOptions): self
@@ -85,7 +85,7 @@ final class SecureConnectionOptions
     }
 
     /**
-     * @return array
+     * @return array<string, mixed>
      */
     public function getContextOptions(): array
     {

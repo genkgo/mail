@@ -2,30 +2,19 @@ language: php
 sudo: false
 matrix:
   include:
-    - php: 7.1
-    - php: 7.1
-      env: dependencies=lowest
-    - php: 7.1
-      env: dependencies=highest
-    - php: 7.2
-    - php: 7.2
-      env: dependencies=lowest
-    - php: 7.2
-      env: dependencies=highest
     - php: 7.3
     - php: 7.3
       env: dependencies=lowest
     - php: 7.3
       env: dependencies=highest
-    - php: 7.4snapshot
+    - php: 7.4
     - php: nightly
   allow_failures:
-    - php: 7.4snapshot
     - php: nightly
 script:
     - ./vendor/bin/phpunit -c phpunit.xml --coverage-clover=coverage.clover
     - ./vendor/bin/phpstan analyse -l max src
-    - ./vendor/bin/phpstan analyse -l max -c .phpstan.test.neon test
+    - ./vendor/bin/phpstan analyse -l 5 -c .phpstan.test.neon test
     - if [ "$TRAVIS_PHP_VERSION" != "nightly" ] && [ -z "$dependencies" ]; then ./vendor/bin/php-cs-fixer fix --dry-run --verbose --config .php_cs.dist ./src ./test ; fi
 before_script:
   - composer self-update

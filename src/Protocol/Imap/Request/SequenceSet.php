@@ -6,7 +6,7 @@ namespace Genkgo\Mail\Protocol\Imap\Request;
 final class SequenceSet
 {
     /**
-     * @var array
+     * @var array<int, mixed>
      */
     private $set = [];
     

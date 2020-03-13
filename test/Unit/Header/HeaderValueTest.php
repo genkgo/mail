@@ -13,7 +13,7 @@ final class HeaderValueTest extends AbstractTestCase
      * @test
      * @dataProvider provideValues
      */
-    public function it_validates_values_and_produces_correct_output(string $value, bool $expected, string $expectedOutput)
+    public function it_validates_values_and_produces_correct_output(string $value, bool $expected, string $expectedOutput): void
     {
         if ($expected) {
             $header = new HeaderValue($value);
@@ -27,7 +27,7 @@ final class HeaderValueTest extends AbstractTestCase
     /**
      * @return array
      */
-    public function provideValues()
+    public function provideValues(): array
     {
         return [
             ['Ascii', true, 'Ascii'],
@@ -55,7 +55,7 @@ final class HeaderValueTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_separates_parameters_correctly()
+    public function it_separates_parameters_correctly(): void
     {
         $header = (new HeaderValue('value'))
             ->withParameter(new HeaderValueParameter('name1', 'value1'))
@@ -67,7 +67,7 @@ final class HeaderValueTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_overwrites_parameters()
+    public function it_overwrites_parameters(): void
     {
         $header = (new HeaderValue('value'))
             ->withParameter(new HeaderValueParameter('name1', 'value1'))
@@ -79,7 +79,7 @@ final class HeaderValueTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_can_prepend_a_new_line_to_a_parameter()
+    public function it_can_prepend_a_new_line_to_a_parameter(): void
     {
         $header = (new HeaderValue('value'))
             ->withParameter(new HeaderValueParameter('name1', 'value1'), true)
@@ -91,7 +91,7 @@ final class HeaderValueTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_can_parse_a_string()
+    public function it_can_parse_a_string(): void
     {
         $header = HeaderValue::fromString('application/pdf; charset="utf-8"');
 
@@ -102,7 +102,7 @@ final class HeaderValueTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_can_parse_a_string_with_more_than_one_parameter()
+    public function it_can_parse_a_string_with_more_than_one_parameter(): void
     {
         $header = HeaderValue::fromString('application/pdf; charset="utf-8"; foo="bar"');
 
@@ -114,7 +114,7 @@ final class HeaderValueTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_can_parse_a_string_with_more_than_one_line()
+    public function it_can_parse_a_string_with_more_than_one_line(): void
     {
         $header1 = HeaderValue::fromString("Name \"Quoted Name\"\r\n <name@domain.com>");
         $header2 = HeaderValue::fromString("Name \"Quoted Name\"\r\n  <name@domain.com>");

@@ -15,7 +15,7 @@ final class AppendDataRequestTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_creates_a_stream()
+    public function it_creates_a_stream(): void
     {
         $message = (new PlainTextMessage('Hello World'))
             ->withHeader(new Subject('Test'))

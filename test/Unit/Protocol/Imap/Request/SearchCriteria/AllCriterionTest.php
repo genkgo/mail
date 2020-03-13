@@ -11,7 +11,7 @@ final class AllCriterionTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_casts_to_string()
+    public function it_casts_to_string(): void
     {
         $this->assertSame('ALL', (string)new AllCriterion());
     }

@@ -9,7 +9,7 @@ use Genkgo\Mail\StreamInterface;
 interface PartInterface
 {
     /**
-     * @return iterable
+     * @return iterable<HeaderInterface>
      */
     public function getHeaders(): iterable;
 

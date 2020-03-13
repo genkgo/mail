@@ -34,7 +34,7 @@ final class Server
 
     /**
      * @param ConnectionListenerInterface $connection
-     * @param array $capabilities
+     * @param array|CapabilityInterface[] $capabilities
      * @param string $serverName
      */
     public function __construct(ConnectionListenerInterface $connection, array $capabilities, string $serverName)
@@ -83,7 +83,7 @@ final class Server
      * @param ConnectionInterface $connection
      * @param \Closure $callback
      */
-    private function transport(ConnectionInterface $connection, \Closure $callback)
+    private function transport(ConnectionInterface $connection, \Closure $callback): void
     {
         try {
             $callback($connection);

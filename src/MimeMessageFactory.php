@@ -92,6 +92,11 @@ final class MimeMessageFactory
      */
     private function createHeaderLines(PartInterface $part): string
     {
+        $headers = $part->getHeaders();
+        if (!\is_array($headers)) {
+            $headers = \iterator_to_array($headers);
+        }
+
         return \implode(
             "\r\n",
             \array_values(
@@ -99,7 +104,7 @@ final class MimeMessageFactory
                     function (HeaderInterface $header) {
                         return (string) (new HeaderLine($header));
                     },
-                    $part->getHeaders()
+                    $headers
                 )
             )
         );

@@ -20,7 +20,7 @@ final class ItemList
     private const STATE_OCTET = 4;
 
     /**
-     * @var array
+     * @var array<string, ItemInterface>
      */
     private $list = [];
 
@@ -35,11 +35,13 @@ final class ItemList
     private $body;
 
     /**
-     * @param array $list
+     * @param array|ItemInterface[] $list
      */
     public function __construct(array $list = [])
     {
-        $this->list = $list;
+        foreach ($list as $item) {
+            $this->list[$item->getName()] = $item;
+        }
     }
 
     /**

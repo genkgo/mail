@@ -13,7 +13,7 @@ final class EhloResponse
     private $greeting = '';
 
     /**
-     * @var array
+     * @var array<string, bool>
      */
     private $advertisements = [];
 
@@ -29,6 +29,9 @@ final class EhloResponse
 
             foreach (\array_slice($messages, 1) as $message) {
                 $advertisement = \preg_split('/[\s]+/', $message);
+                if ($advertisement === false) {
+                    $advertisement = [];
+                }
 
                 if (\count($advertisement) > 1) {
                     foreach (\array_slice($advertisement, 1) as $command) {

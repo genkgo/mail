@@ -12,7 +12,7 @@ final class DateTest extends AbstractTestCase
      * @test
      * @dataProvider provideValues
      */
-    public function it_produces_correct_values($date, $headerName, $headerValue)
+    public function it_produces_correct_values($date, $headerName, $headerValue): void
     {
         $header = new Date(new \DateTimeImmutable($date));
         $this->assertEquals($headerName, (string)$header->getName());
@@ -22,7 +22,7 @@ final class DateTest extends AbstractTestCase
     /**
      * @return array
      */
-    public function provideValues()
+    public function provideValues(): array
     {
         return [
             ['2017-01-01 18:15:00', 'Date', 'Sun, 01 Jan 2017 18:15:00 +0000'],

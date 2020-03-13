@@ -13,7 +13,7 @@ final class MailFromTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_advertises_itself()
+    public function it_advertises_itself(): void
     {
         $capability = new MailFromCapability();
 
@@ -23,7 +23,7 @@ final class MailFromTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_accepts_addresses()
+    public function it_accepts_addresses(): void
     {
         $connection = $this->createMock(ConnectionInterface::class);
 
@@ -41,7 +41,7 @@ final class MailFromTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_rejects_invalid_addresses()
+    public function it_rejects_invalid_addresses(): void
     {
         $connection = $this->createMock(ConnectionInterface::class);
 

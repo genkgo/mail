@@ -18,7 +18,7 @@ final class MultiPartTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_is_immutable()
+    public function it_is_immutable(): void
     {
         $part = new MultiPart(new Boundary('test'), new ContentType('multipart/mixed'));
 
@@ -29,7 +29,7 @@ final class MultiPartTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_cannot_add_headers()
+    public function it_cannot_add_headers(): void
     {
         $this->expectException(\RuntimeException::class);
 
@@ -40,7 +40,7 @@ final class MultiPartTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_cannot_remove_headers()
+    public function it_cannot_remove_headers(): void
     {
         $this->expectException(\RuntimeException::class);
 
@@ -51,7 +51,7 @@ final class MultiPartTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_cannot_modify_body()
+    public function it_cannot_modify_body(): void
     {
         $this->expectException(\RuntimeException::class);
 
@@ -62,7 +62,7 @@ final class MultiPartTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throws_when_receives_wrong_content_type()
+    public function it_throws_when_receives_wrong_content_type(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -72,7 +72,7 @@ final class MultiPartTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_has_header_content_type()
+    public function it_has_header_content_type(): void
     {
         $part = new MultiPart(new Boundary('test'), new ContentType('multipart/mixed'));
 
@@ -87,7 +87,7 @@ final class MultiPartTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_can_parse_multi_layer_messages()
+    public function it_can_parse_multi_layer_messages(): void
     {
         $message = GenericMessage::fromString(
             \file_get_contents(__DIR__ . '/../../Stub/MessageBodyCollection/full-formatted-message.eml')
@@ -113,7 +113,6 @@ final class MultiPartTest extends AbstractTestCase
                     );
                     break;
                 case 1:
-                    $this->assertInstanceOf(GenericPart::class, $part);
                     $this->assertSame(
                         'text/plain; charset=UTF-8',
                         (string)$part->getHeader('Content-Type')->getValue()
@@ -126,7 +125,7 @@ final class MultiPartTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_can_parse_layered_messages()
+    public function it_can_parse_layered_messages(): void
     {
         $message = GenericMessage::fromString(
             \file_get_contents(__DIR__ . '/../../Stub/MessageBodyCollection/html-and-text.eml')

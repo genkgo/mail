@@ -13,7 +13,7 @@ final class ListCommandTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_creates_a_stream()
+    public function it_creates_a_stream(): void
     {
         $command = new ListCommand(
             Tag::fromNonce(1),
@@ -28,7 +28,7 @@ final class ListCommandTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_allows_empty_searches()
+    public function it_allows_empty_searches(): void
     {
         $command = new ListCommand(
             Tag::fromNonce(1),

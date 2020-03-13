@@ -23,7 +23,7 @@ final class DKIMHeaderRelaxedTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_formats_dkim_header_correctly()
+    public function it_formats_dkim_header_correctly(): void
     {
         $factory = new HeaderV1Factory(
             Sha256Signer::fromFile(__DIR__ . '/../Stub/Dkim/dkim.test.priv'),

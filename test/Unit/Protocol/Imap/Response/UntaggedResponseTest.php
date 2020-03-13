@@ -13,7 +13,7 @@ final class UntaggedResponseTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_can_be_casted_to_string()
+    public function it_can_be_casted_to_string(): void
     {
         $this->assertSame(
             '* OK successful',
@@ -24,7 +24,7 @@ final class UntaggedResponseTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_is_immutable()
+    public function it_is_immutable(): void
     {
         $response = new UntaggedResponse('OK successful');
         $this->assertNotSame($response, $response->withAddedBody('body'));
@@ -33,7 +33,7 @@ final class UntaggedResponseTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_can_be_extended_with_more_body()
+    public function it_can_be_extended_with_more_body(): void
     {
         $response = new UntaggedResponse('OK successful');
         $this->assertSame('OK successfully', $response->withAddedBody('ly')->getBody());
@@ -42,7 +42,7 @@ final class UntaggedResponseTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_can_assert_completion_result()
+    public function it_can_assert_completion_result(): void
     {
         $response = new UntaggedResponse('OK successful');
         $response->assertCompletion(CompletionResult::ok());
@@ -52,7 +52,7 @@ final class UntaggedResponseTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throws_when_invalid_completion_result_asserted()
+    public function it_throws_when_invalid_completion_result_asserted(): void
     {
         $this->expectException(AssertionFailedException::class);
         $response = new UntaggedResponse('NO unsuccessful');
@@ -62,7 +62,7 @@ final class UntaggedResponseTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throws_when_body_does_not_contain_completion_result()
+    public function it_throws_when_body_does_not_contain_completion_result(): void
     {
         $this->expectException(AssertionFailedException::class);
         $response = new UntaggedResponse('hello world');
@@ -72,7 +72,7 @@ final class UntaggedResponseTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throws_when_asserting_continuation()
+    public function it_throws_when_asserting_continuation(): void
     {
         $this->expectException(AssertionFailedException::class);
         $response = new UntaggedResponse('NO unsuccessful');
@@ -82,7 +82,7 @@ final class UntaggedResponseTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throws_when_asserting_tagged()
+    public function it_throws_when_asserting_tagged(): void
     {
         $this->expectException(AssertionFailedException::class);
         $response = new UntaggedResponse('NO unsuccessful');

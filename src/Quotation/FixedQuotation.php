@@ -37,11 +37,18 @@ final class FixedQuotation implements QuotationInterface
         foreach ($originalMessage->getHeader('Date') as $header) {
             try {
                 $date = new \DateTimeImmutable($header->getValue()->getRaw());
-                $dateString = \IntlDateFormatter::create(
+                $formatter = \IntlDateFormatter::create(
                     \Locale::getDefault(),
                     \IntlDateFormatter::MEDIUM,
                     \IntlDateFormatter::MEDIUM
-                )->format($date);
+                );
+
+                if ($formatter === false) {
+                    throw new \UnexpectedValueException('Cannot create date formatter');
+                }
+
+                $dateString = $formatter->format($date);
+                break;
             } catch (\Exception $e) {
             }
         }
@@ -94,44 +101,58 @@ final class FixedQuotation implements QuotationInterface
             throw new \DOMException('Incorrect HTML');
         }
 
-        $query = new \DOMXPath($document);
-        $removeItems = $query->query('//head|//script|//body/@style|//html/@style', $document->documentElement);
-        /** @var \DOMElement $removeItem */
-        foreach ($removeItems as $removeItem) {
-            $parent = $removeItem->parentNode;
-            $parent->removeChild($removeItem);
-        }
-
-        $body = $document->getElementsByTagName('body');
-        $quote = $document->createElement('blockquote');
-        $quote->setAttribute('type', 'cite');
-
-        if ($body->length === 0) {
-            $quote->appendChild($document->removeChild($document->documentElement));
-        } else {
-            $root = $body->item(0);
-            while ($root->childNodes->length !== 0) {
-                $quote->appendChild($root->childNodes->item(0));
+        if ($document->documentElement !== null) {
+            $query = new \DOMXPath($document);
+            $removeItems = $query->query('//head|//script|//body/@style|//html/@style', $document->documentElement);
+            if ($removeItems instanceof \DOMNodeList) {
+                /** @var \DOMElement $removeItem */
+                foreach ($removeItems as $removeItem) {
+                    /** @var \DOMElement $parent */
+                    $parent = $removeItem->parentNode;
+                    $parent->removeChild($removeItem);
+                }
             }
+
+            $body = $document->getElementsByTagName('body');
+            $quote = $document->createElement('blockquote');
+            $quote->setAttribute('type', 'cite');
+
+            if ($body->length === 0) {
+                $quote->appendChild($document->removeChild($document->documentElement));
+            } else {
+                $root = $body->item(0);
+                if ($root instanceof \DOMElement) {
+                    while ($root->childNodes->length !== 0) {
+                        /** @var \DOMElement $child */
+                        $child = $root->childNodes->item(0);
+                        $quote->appendChild($child);
+                    }
+                }
+            }
+
+            $newDocument = new \DOMDocument();
+            $newDocument->substituteEntities = false;
+            $newDocument->resolveExternals = false;
+            $result = @$newDocument->loadHTML($newHtml, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+            if ($result === false) {
+                throw new \DOMException('Incorrect HTML');
+            }
+
+            $quotedNode = $newDocument->importNode($quote, true);
+            $newBody = $this->prepareBody($newDocument);
+            $newBody->appendChild($quotedNode);
+
+            $header = $newDocument->createElement('p');
+            $header->textContent = $headerText;
+
+            /** @var \DOMElement $parent */
+            $parent = $quotedNode->parentNode;
+            $parent->insertBefore($header, $quotedNode);
+
+            return \trim((string)$newDocument->saveHTML());
         }
 
-        $newDocument = new \DOMDocument();
-        $newDocument->substituteEntities = false;
-        $newDocument->resolveExternals = false;
-        $result = @$newDocument->loadHTML($newHtml, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-        if ($result === false) {
-            throw new \DOMException('Incorrect HTML');
-        }
-
-        $quotedNode = $newDocument->importNode($quote, true);
-        $newBody = $this->prepareBody($newDocument);
-        $newBody->appendChild($quotedNode);
-
-        $header = $newDocument->createElement('p');
-        $header->textContent = $headerText;
-
-        $quotedNode->parentNode->insertBefore($header, $quotedNode);
-        return \trim($newDocument->saveHTML());
+        return '';
     }
 
     /**
@@ -140,6 +161,10 @@ final class FixedQuotation implements QuotationInterface
      */
     private function prepareBody(\DOMDocument $document): \DOMElement
     {
+        if (!$document->documentElement) {
+            throw new \UnexpectedValueException('Cannot prepare empty document');
+        }
+
         $bodyList = $document->getElementsByTagName('body');
         if ($bodyList->length === 0) {
             $html = $document->createElement('html');
@@ -151,11 +176,13 @@ final class FixedQuotation implements QuotationInterface
             return $body;
         }
 
+        /** @var \DOMElement $body */
         $body = $bodyList->item(0);
 
         $queryHtml = new \DOMXPath($document);
         $htmlTags = $queryHtml->query('//html');
-        if ($htmlTags->length > 0) {
+        if ($htmlTags && $htmlTags->length > 0) {
+            /** @var \DOMElement $html */
             $html = $htmlTags->item(0);
             $html->appendChild($body);
             $document->removeChild($document->documentElement);

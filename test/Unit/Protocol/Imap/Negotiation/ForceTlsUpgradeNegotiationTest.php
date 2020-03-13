@@ -16,7 +16,7 @@ final class ForceTlsUpgradeNegotiationTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_upgrades_if_advertised()
+    public function it_upgrades_if_advertised(): void
     {
         $connection = $this->createMock(ConnectionInterface::class);
         $connection
@@ -74,7 +74,7 @@ final class ForceTlsUpgradeNegotiationTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throws_if_not_advertised()
+    public function it_throws_if_not_advertised(): void
     {
         $this->expectException(ConnectionInsecureException::class);
 
@@ -120,7 +120,7 @@ final class ForceTlsUpgradeNegotiationTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_does_not_upgrade_when_already_encrypted()
+    public function it_does_not_upgrade_when_already_encrypted(): void
     {
         $connection = $this->createMock(ConnectionInterface::class);
         $connection

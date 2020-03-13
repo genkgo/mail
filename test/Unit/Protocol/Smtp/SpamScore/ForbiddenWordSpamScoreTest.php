@@ -12,7 +12,7 @@ final class ForbiddenWordSpamScoreTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_calculates_total_of_spam_checkers()
+    public function it_calculates_total_of_spam_checkers(): void
     {
         $checker = new ForbiddenWordSpamScore(['forbidden', 'word'], 3);
 

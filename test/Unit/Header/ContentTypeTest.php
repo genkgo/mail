@@ -12,7 +12,7 @@ final class ContentTypeTest extends AbstractTestCase
      * @test
      * @dataProvider provideValues
      */
-    public function it_produces_correct_values($contentType, $charset, $headerName, $headerValue)
+    public function it_produces_correct_values($contentType, $charset, $headerName, $headerValue): void
     {
         $header = new ContentType($contentType, $charset);
         $this->assertEquals($headerName, (string)$header->getName());
@@ -22,7 +22,7 @@ final class ContentTypeTest extends AbstractTestCase
     /**
      * @return array
      */
-    public function provideValues()
+    public function provideValues(): array
     {
         return [
             ['text/html', 'UTF-8', 'Content-Type', 'text/html; charset=UTF-8'],

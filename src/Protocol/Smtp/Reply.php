@@ -8,17 +8,17 @@ use Genkgo\Mail\Exception\AssertionFailedException;
 final class Reply
 {
     /**
-     * @var array
+     * @var array<int, array<int|string>>
      */
     private $lines = [];
 
     /**
-     * @var array
+     * @var array<int, bool>
      */
     private $codes = [];
 
     /**
-     * @var array
+     * @var array<int, string>
      */
     private $messages = [];
 
@@ -62,7 +62,7 @@ final class Reply
     }
 
     /**
-     * @return array
+     * @return array<int, string>
      */
     public function getMessages(): array
     {

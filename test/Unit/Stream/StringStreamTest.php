@@ -11,7 +11,7 @@ final class StringStreamTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_produces_equally_result_with_to_string_and_read()
+    public function it_produces_equally_result_with_to_string_and_read(): void
     {
         $stream = new StringStream('test1');
 
@@ -26,7 +26,7 @@ final class StringStreamTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_folds_lines()
+    public function it_folds_lines(): void
     {
         $value = \str_repeat('test1', 50);
 
@@ -38,7 +38,7 @@ final class StringStreamTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_has_a_correct_size()
+    public function it_has_a_correct_size(): void
     {
         $stream = new StringStream('test1');
 
@@ -48,7 +48,7 @@ final class StringStreamTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_reads_remaining_contents()
+    public function it_reads_remaining_contents(): void
     {
         $stream = new StringStream('test1');
 
@@ -60,7 +60,7 @@ final class StringStreamTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_is_rewindable()
+    public function it_is_rewindable(): void
     {
         $stream = new StringStream('test1');
 
@@ -73,7 +73,7 @@ final class StringStreamTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_can_seek()
+    public function it_can_seek(): void
     {
         $stream = new StringStream('test1');
 
@@ -86,7 +86,7 @@ final class StringStreamTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_can_be_written_to()
+    public function it_can_be_written_to(): void
     {
         $stream = new StringStream('test1');
         $this->assertTrue($stream->isWritable());

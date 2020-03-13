@@ -14,7 +14,7 @@ final class HtmlPartTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_is_immutable()
+    public function it_is_immutable(): void
     {
         $part = new HtmlPart('<html></html>');
 
@@ -25,7 +25,7 @@ final class HtmlPartTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_cannot_modify_body()
+    public function it_cannot_modify_body(): void
     {
         $this->expectException(\RuntimeException::class);
 
@@ -36,7 +36,7 @@ final class HtmlPartTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_has_header_content_type()
+    public function it_has_header_content_type(): void
     {
         $part = new HtmlPart('<html></html>');
 
@@ -51,7 +51,7 @@ final class HtmlPartTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_picks_optimal_encoding()
+    public function it_picks_optimal_encoding(): void
     {
         $part = new HtmlPart('<html></html>');
 
@@ -61,7 +61,7 @@ final class HtmlPartTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throws_when_content_is_empty()
+    public function it_throws_when_content_is_empty(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 

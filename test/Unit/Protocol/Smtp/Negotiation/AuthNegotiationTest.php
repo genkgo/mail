@@ -14,7 +14,7 @@ final class AuthNegotiationTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_uses_advertised()
+    public function it_uses_advertised(): void
     {
         $connection = new FakeSmtpConnection();
         $connection->connect();
@@ -22,16 +22,16 @@ final class AuthNegotiationTest extends AbstractTestCase
         $negotiator = new AuthNegotiation('hostname', Client::AUTH_AUTO, 'user', 'pass');
         $negotiator->negotiate(new Client($connection));
 
-        $this->assertArraySubset(
-            ['state' => true, 'username' => 'user', 'password' => 'pass', 'method' => 'LOGIN'],
-            $connection->getMetaData()['auth']
-        );
+        $advertised = $connection->getMetaData()['auth'];
+        foreach (['state' => true, 'username' => 'user', 'password' => 'pass', 'method' => 'LOGIN'] as $key => $value) {
+            $this->assertSame($value, $advertised[$key]);
+        }
     }
 
     /**
      * @test
      */
-    public function it_uses_login()
+    public function it_uses_login(): void
     {
         $connection = new FakeSmtpConnection();
         $connection->connect();
@@ -39,16 +39,16 @@ final class AuthNegotiationTest extends AbstractTestCase
         $negotiator = new AuthNegotiation('hostname', Client::AUTH_LOGIN, 'user', 'pass');
         $negotiator->negotiate(new Client($connection));
 
-        $this->assertArraySubset(
-            ['state' => true, 'username' => 'user', 'password' => 'pass', 'method' => 'LOGIN'],
-            $connection->getMetaData()['auth']
-        );
+        $advertised = $connection->getMetaData()['auth'];
+        foreach (['state' => true, 'username' => 'user', 'password' => 'pass', 'method' => 'LOGIN'] as $key => $value) {
+            $this->assertSame($value, $advertised[$key]);
+        }
     }
 
     /**
      * @test
      */
-    public function it_uses_plain()
+    public function it_uses_plain(): void
     {
         $connection = new FakeSmtpConnection();
         $connection->connect();
@@ -56,16 +56,16 @@ final class AuthNegotiationTest extends AbstractTestCase
         $negotiator = new AuthNegotiation('hostname', Client::AUTH_PLAIN, 'user', 'pass');
         $negotiator->negotiate(new Client($connection));
 
-        $this->assertArraySubset(
-            ['state' => true, 'username' => 'user', 'password' => 'pass', 'method' => 'PLAIN'],
-            $connection->getMetaData()['auth']
-        );
+        $advertised = $connection->getMetaData()['auth'];
+        foreach (['state' => true, 'username' => 'user', 'password' => 'pass', 'method' => 'PLAIN'] as $key => $value) {
+            $this->assertSame($value, $advertised[$key]);
+        }
     }
 
     /**
      * @test
      */
-    public function it_will_throw_when_not_advertised()
+    public function it_will_throw_when_not_advertised(): void
     {
         $this->expectException(SmtpAuthenticationException::class);
 

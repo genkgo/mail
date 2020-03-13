@@ -11,7 +11,7 @@ use Genkgo\Mail\Queue\FilesystemQueue;
 
 final class FilesystemQueueTest extends AbstractTestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         $directory = \sys_get_temp_dir();
         $iterator = new \GlobIterator($directory . '/*.eml');
@@ -23,7 +23,7 @@ final class FilesystemQueueTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_can_store_a_message_onto_the_filesystem()
+    public function it_can_store_a_message_onto_the_filesystem(): void
     {
         $directory = \sys_get_temp_dir();
 
@@ -45,7 +45,7 @@ final class FilesystemQueueTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_can_fetch_a_message_from_the_filesystem()
+    public function it_can_fetch_a_message_from_the_filesystem(): void
     {
         $directory = \sys_get_temp_dir();
 
@@ -67,7 +67,7 @@ final class FilesystemQueueTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_will_throw_when_no_message_left()
+    public function it_will_throw_when_no_message_left(): void
     {
         $this->expectException(EmptyQueueException::class);
 
@@ -86,7 +86,7 @@ final class FilesystemQueueTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_can_count_messages_in_queue()
+    public function it_can_count_messages_in_queue(): void
     {
         $directory = \sys_get_temp_dir();
 

@@ -17,7 +17,7 @@ interface MultiPartInterface extends PartInterface
     public function withPart(PartInterface $part): MultiPartInterface;
 
     /**
-     * @param iterable|MultiPartInterface[] $parts
+     * @param iterable|PartInterface[] $parts
      * @return MultiPartInterface
      */
     public function withParts(iterable $parts): MultiPartInterface;

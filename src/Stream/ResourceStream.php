@@ -31,7 +31,7 @@ final class ResourceStream implements StreamInterface
     public function __toString(): string
     {
         \rewind($this->resource);
-        return \stream_get_contents($this->resource);
+        return (string)\stream_get_contents($this->resource);
     }
     
     public function close(): void
@@ -52,7 +52,12 @@ final class ResourceStream implements StreamInterface
      */
     public function getSize(): ?int
     {
-        return \fstat($this->resource)['size'];
+        $stat = \fstat($this->resource);
+        if ($stat === false) {
+            throw new \UnexpectedValueException('Cannot get stat from resource');
+        }
+
+        return $stat['size'];
     }
 
     /**
@@ -61,7 +66,12 @@ final class ResourceStream implements StreamInterface
      */
     public function tell(): int
     {
-        return \ftell($this->resource);
+        $tell = \ftell($this->resource);
+        if ($tell === false) {
+            throw new \UnexpectedValueException('Cannot get tell from resource');
+        }
+
+        return $tell;
     }
 
     /**
@@ -78,7 +88,7 @@ final class ResourceStream implements StreamInterface
     public function isSeekable(): bool
     {
         $metaData = \stream_get_meta_data($this->resource);
-        if (!$metaData || !isset($metaData['seekable'])) {
+        if (!isset($metaData['seekable'])) {
             return false;
         }
 
@@ -109,7 +119,7 @@ final class ResourceStream implements StreamInterface
     public function isWritable(): bool
     {
         $metaData = \stream_get_meta_data($this->resource);
-        if (!$metaData || !isset($metaData['uri'])) {
+        if (!isset($metaData['uri'])) {
             return false;
         }
 
@@ -122,7 +132,12 @@ final class ResourceStream implements StreamInterface
      */
     public function write($string): int
     {
-        return \fwrite($this->resource, $string);
+        $written = \fwrite($this->resource, $string);
+        if ($written === false) {
+            throw new \UnexpectedValueException('Cannot write data to resource');
+        }
+
+        return $written;
     }
 
     /**
@@ -139,7 +154,12 @@ final class ResourceStream implements StreamInterface
      */
     public function read(int $length): string
     {
-        return \fread($this->resource, $length);
+        $bytes = \fread($this->resource, $length);
+        if ($bytes === false) {
+            throw new \UnexpectedValueException('Cannot read from resource');
+        }
+
+        return $bytes;
     }
 
     /**
@@ -147,19 +167,21 @@ final class ResourceStream implements StreamInterface
      */
     public function getContents(): string
     {
-        return \stream_get_contents($this->resource);
+        $contents = \stream_get_contents($this->resource);
+        if ($contents === false) {
+            throw new \UnexpectedValueException('Cannot read contents from resource');
+        }
+
+        return $contents;
     }
 
     /**
-     * @param array $keys
-     * @return array
+     * @param array<int, string> $keys
+     * @return array<string, mixed>
      */
     public function getMetadata(array $keys = []): array
     {
         $metaData = \stream_get_meta_data($this->resource);
-        if (!$metaData) {
-            return [];
-        }
 
         $keys = \array_map('strtolower', $keys);
 

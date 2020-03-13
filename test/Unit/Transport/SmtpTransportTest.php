@@ -24,7 +24,7 @@ final class SmtpTransportTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_sends_messages()
+    public function it_sends_messages(): void
     {
         $at = -1;
         $connection = $this->createMock(ConnectionInterface::class);

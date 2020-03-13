@@ -7,6 +7,9 @@ use Genkgo\Mail\Exception\AssertionFailedException;
 use Genkgo\Mail\Protocol\Imap\ResponseInterface;
 use Genkgo\Mail\Protocol\Imap\Tag;
 
+/**
+ * @implements \IteratorAggregate<int, ResponseInterface[]>
+ */
 final class AggregateResponse implements \IteratorAggregate
 {
     /**

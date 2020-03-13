@@ -26,7 +26,7 @@ final class MultiPart implements MultiPartInterface
     private $boundary;
 
     /**
-     * @var iterable|PartInterface[]
+     * @var array|PartInterface[]
      */
     private $parts = [];
 
@@ -58,7 +58,7 @@ final class MultiPart implements MultiPartInterface
     }
 
     /**
-     * @return iterable
+     * @return iterable<HeaderInterface>
      */
     public function getHeaders(): iterable
     {

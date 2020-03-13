@@ -67,9 +67,9 @@ final class AlternativeText
             return new self($html);
         }
 
-        $html = \preg_replace('/\h\h+/', ' ', $html);
-        $html = \preg_replace('/\v/', '', $html);
-        $text = new self($html);
+        $html = \preg_replace('/\h\h+/', ' ', (string)$html);
+        $html = \preg_replace('/\v/', '', (string)$html);
+        $text = new self((string)$html);
 
         try {
             $document = new \DOMDocument();
@@ -107,15 +107,18 @@ final class AlternativeText
             'dl' => "\r\n",
         ];
 
-        /** @var \DOMElement $element */
-        foreach ($xpath->query('//p|//br|//h1|//h2|//h3|//h4|//h5|//h6|//ul|//ol|//dl|//hr') as $element) {
-            if (isset($break[$element->nodeName])) {
-                $textNode = $document->createTextNode($break[$element->nodeName]);
-            } else {
-                $textNode = $document->createTextNode("\r\n\r\n");
-            }
+        $query = $xpath->query('//p|//br|//h1|//h2|//h3|//h4|//h5|//h6|//ul|//ol|//dl|//hr');
+        if ($query) {
+            /** @var \DOMElement $element */
+            foreach ($query as $element) {
+                if (isset($break[$element->nodeName])) {
+                    $textNode = $document->createTextNode($break[$element->nodeName]);
+                } else {
+                    $textNode = $document->createTextNode("\r\n\r\n");
+                }
 
-            $element->appendChild($textNode);
+                $element->appendChild($textNode);
+            }
         }
     }
 
@@ -138,17 +141,20 @@ final class AlternativeText
             'i' => "*",
         ];
 
-        /** @var \DOMElement $element */
-        foreach ($xpath->query('//h1|//h2|//h3|//h4|//h5|//h6|//strong|//b|//em|//i') as $element) {
-            $element->appendChild(
-                $document->createTextNode($wrap[$element->nodeName])
-            );
-
-            if ($element->firstChild !== null) {
-                $element->insertBefore(
-                    $document->createTextNode($wrap[$element->nodeName]),
-                    $element->firstChild
+        $query = $xpath->query('//h1|//h2|//h3|//h4|//h5|//h6|//strong|//b|//em|//i');
+        if ($query) {
+            /** @var \DOMElement $element */
+            foreach ($query as $element) {
+                $element->appendChild(
+                    $document->createTextNode($wrap[$element->nodeName])
                 );
+
+                if ($element->firstChild !== null) {
+                    $element->insertBefore(
+                        $document->createTextNode($wrap[$element->nodeName]),
+                        $element->firstChild
+                    );
+                }
             }
         }
     }
@@ -160,58 +166,70 @@ final class AlternativeText
     {
         $xpath = new \DOMXPath($document);
 
-        /** @var \DOMElement $element */
-        foreach ($xpath->query('//ul/li') as $element) {
-            if ($element->firstChild !== null) {
-                $element->insertBefore(
-                    $document->createTextNode("\t- "),
-                    $element->firstChild
-                );
-            } else {
+        $query = $xpath->query('//ul/li');
+        if ($query) {
+            /** @var \DOMElement $element */
+            foreach ($query as $element) {
+                if ($element->firstChild !== null) {
+                    $element->insertBefore(
+                        $document->createTextNode("\t- "),
+                        $element->firstChild
+                    );
+                } else {
+                    $element->appendChild(
+                        $document->createTextNode("\t- ")
+                    );
+                }
+
                 $element->appendChild(
-                    $document->createTextNode("\t- ")
+                    $document->createTextNode("\r\n")
                 );
             }
-
-            $element->appendChild(
-                $document->createTextNode("\r\n")
-            );
         }
 
-        /** @var \DOMElement $element */
-        foreach ($xpath->query('//ol/li') as $element) {
-            $itemPath = new \DOMXPath($document);
-            $itemNumber = (int)$itemPath->evaluate('string(count(preceding-sibling::li))', $element) + 1;
-            $text = \sprintf("\t%d. ", $itemNumber);
+        $query = $xpath->query('//ol/li');
+        if ($query) {
+            /** @var \DOMElement $element */
+            foreach ($query as $element) {
+                $itemPath = new \DOMXPath($document);
+                $itemNumber = (int)$itemPath->evaluate('string(count(preceding-sibling::li))', $element) + 1;
+                $text = \sprintf("\t%d. ", $itemNumber);
 
-            if ($element->firstChild !== null) {
-                $element->insertBefore(
-                    $document->createTextNode($text),
-                    $element->firstChild
-                );
-            } else {
+                if ($element->firstChild !== null) {
+                    $element->insertBefore(
+                        $document->createTextNode($text),
+                        $element->firstChild
+                    );
+                } else {
+                    $element->appendChild(
+                        $document->createTextNode($text)
+                    );
+                }
+
                 $element->appendChild(
-                    $document->createTextNode($text)
+                    $document->createTextNode("\r\n")
                 );
             }
-
-            $element->appendChild(
-                $document->createTextNode("\r\n")
-            );
         }
 
-        /** @var \DOMElement $element */
-        foreach ($xpath->query('//dl/dt') as $element) {
-            $element->appendChild(
-                $document->createTextNode(': ')
-            );
+        $query = $xpath->query('//dl/dt');
+        if ($query) {
+            /** @var \DOMElement $element */
+            foreach ($query as $element) {
+                $element->appendChild(
+                    $document->createTextNode(': ')
+                );
+            }
         }
 
-        /** @var \DOMElement $element */
-        foreach ($xpath->query('//dl/dd') as $element) {
-            $element->appendChild(
-                $document->createTextNode("\r\n")
-            );
+        $query = $xpath->query('//dl/dd');
+        if ($query) {
+            /** @var \DOMElement $element */
+            foreach ($query as $element) {
+                $element->appendChild(
+                    $document->createTextNode("\r\n")
+                );
+            }
         }
     }
 
@@ -221,13 +239,19 @@ final class AlternativeText
     private function updateImages(\DOMDocument $document): void
     {
         $xpath = new \DOMXPath($document);
+        $query = $xpath->query('//img[@src and @alt]');
 
-        /** @var \DOMElement $element */
-        foreach ($xpath->query('//img[@src and @alt]') as $element) {
-            $link = $document->createElement('a');
-            $link->setAttribute('href', $element->getAttribute('src'));
-            $link->textContent = $element->getAttribute('alt');
-            $element->parentNode->replaceChild($link, $element);
+        if ($query) {
+            /** @var \DOMElement $element */
+            foreach ($query as $element) {
+                $link = $document->createElement('a');
+                $link->setAttribute('href', $element->getAttribute('src'));
+                $link->textContent = $element->getAttribute('alt');
+                $parent = $element->parentNode;
+                if ($parent) {
+                    $parent->replaceChild($link, $element);
+                }
+            }
         }
     }
 
@@ -237,10 +261,13 @@ final class AlternativeText
     private function updateHorizontalRule(\DOMDocument $document): void
     {
         $xpath = new \DOMXPath($document);
+        $query = $xpath->query('//hr');
 
-        /** @var \DOMElement $element */
-        foreach ($xpath->query('//hr') as $element) {
-            $element->textContent = \str_repeat('=', 78);
+        if ($query) {
+            /** @var \DOMElement $element */
+            foreach ($query as $element) {
+                $element->textContent = \str_repeat('=', 78);
+            }
         }
     }
 
@@ -250,22 +277,27 @@ final class AlternativeText
     private function updateLinks(\DOMDocument $document): void
     {
         $xpath = new \DOMXPath($document);
+        $query = $xpath->query('//a[@href and @href != .]');
 
-        /** @var \DOMElement $element */
-        foreach ($xpath->query('//a[@href and @href != .]') as $element) {
-            $element->insertBefore(
-                $document->createTextNode('>> '),
-                $element->firstChild
-            );
+        if ($query) {
+            /** @var \DOMElement $element */
+            foreach ($query as $element) {
+                if ($element->firstChild) {
+                    $element->insertBefore(
+                        $document->createTextNode('>> '),
+                        $element->firstChild
+                    );
+                }
 
-            $element->appendChild(
-                $document->createTextNode(
-                    \sprintf(
-                        " <%s>",
-                        $element->getAttribute('href')
+                $element->appendChild(
+                    $document->createTextNode(
+                        \sprintf(
+                            " <%s>",
+                            $element->getAttribute('href')
+                        )
                     )
-                )
-            );
+                );
+            }
         }
     }
 
@@ -276,8 +308,11 @@ final class AlternativeText
     {
         $heads = $document->getElementsByTagName('head');
         while ($heads->length > 0) {
+            /** @var \DOMElement $head */
             $head = $heads->item(0);
-            $head->parentNode->removeChild($head);
+            /** @var \DOMElement $parent */
+            $parent = $head->parentNode;
+            $parent->removeChild($head);
         }
     }
 

@@ -26,7 +26,7 @@ final class DkimV1SignedTransportTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_adds_a_dkim_header_to_message()
+    public function it_adds_a_dkim_header_to_message(): void
     {
         $signer = $this->createMock(SignInterface::class);
         $signer->expects($this->at(0))

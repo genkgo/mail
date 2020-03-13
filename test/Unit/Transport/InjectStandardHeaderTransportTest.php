@@ -20,7 +20,7 @@ final class InjectStandardHeaderTransportTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_injects_standard_headers_in_message()
+    public function it_injects_standard_headers_in_message(): void
     {
         $message = (new GenericMessage())
             ->withHeader(

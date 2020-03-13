@@ -6,7 +6,7 @@ namespace Genkgo\Mail;
 interface MessageInterface
 {
     /**
-     * @return iterable
+     * @return iterable<iterable<HeaderInterface>>
      */
     public function getHeaders(): iterable;
 

@@ -18,7 +18,7 @@ final class EnvelopeFactoryTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_extracts_from_sender_header()
+    public function it_extracts_from_sender_header(): void
     {
         $factory = EnvelopeFactory::useExtractedHeader();
 
@@ -33,7 +33,7 @@ final class EnvelopeFactoryTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_extracts_from_from_header()
+    public function it_extracts_from_from_header(): void
     {
         $factory = EnvelopeFactory::useExtractedHeader();
 
@@ -48,7 +48,7 @@ final class EnvelopeFactoryTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_extracts_raw_header_value()
+    public function it_extracts_raw_header_value(): void
     {
         $factory = EnvelopeFactory::useExtractedHeader();
 
@@ -63,7 +63,7 @@ final class EnvelopeFactoryTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_extracts_from_from_header_when_sender_is_empty()
+    public function it_extracts_from_from_header_when_sender_is_empty(): void
     {
         $factory = EnvelopeFactory::useExtractedHeader();
 
@@ -79,7 +79,7 @@ final class EnvelopeFactoryTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throws_when_cannot_extract()
+    public function it_throws_when_cannot_extract(): void
     {
         $this->expectException(EnvelopeException::class);
 
@@ -93,7 +93,7 @@ final class EnvelopeFactoryTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_falls_back_when_specified()
+    public function it_falls_back_when_specified(): void
     {
         $factory = EnvelopeFactory::useExtractedHeader()
             ->withFallback(new EmailAddress('fallback@example.com'));
@@ -108,7 +108,7 @@ final class EnvelopeFactoryTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_uses_a_fixed_address()
+    public function it_uses_a_fixed_address(): void
     {
         $factory = EnvelopeFactory::useFixed(new EmailAddress('fixed@example.com'));
 
@@ -122,7 +122,7 @@ final class EnvelopeFactoryTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_uses_a_callback()
+    public function it_uses_a_callback(): void
     {
         $factory = EnvelopeFactory::useCallback(
             function () {
@@ -140,7 +140,7 @@ final class EnvelopeFactoryTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_uses_a_fallback_when_runtime_exception()
+    public function it_uses_a_fallback_when_runtime_exception(): void
     {
         $factory = EnvelopeFactory::useCallback(
             function () {
@@ -158,7 +158,7 @@ final class EnvelopeFactoryTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_does_not_use_the_fallback_when_other_than_runtime_exception()
+    public function it_does_not_use_the_fallback_when_other_than_runtime_exception(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 

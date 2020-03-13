@@ -12,7 +12,7 @@ final class AppendCrlfConnectionTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_adds_a_crlf_when_sending()
+    public function it_adds_a_crlf_when_sending(): void
     {
         $decorated = $this->createMock(ConnectionInterface::class);
 
@@ -28,7 +28,7 @@ final class AppendCrlfConnectionTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_decorates_another_connection()
+    public function it_decorates_another_connection(): void
     {
         $decorated = $this->createMock(ConnectionInterface::class);
 

@@ -34,6 +34,9 @@ final class FileAttachment implements PartInterface
         }
 
         $resource = \fopen($filename, 'r');
+        if ($resource === false) {
+            throw new \UnexpectedValueException('Cannot open file ' . $filename . ' for reading');
+        }
 
         $this->decoratedPart = (new GenericPart())
             ->withBody(new Base64EncodedStream($resource))
@@ -51,6 +54,13 @@ final class FileAttachment implements PartInterface
     {
         $fileInfo = new \finfo(FILEINFO_MIME);
         $mime = $fileInfo->file($filename);
+        if ($mime === false) {
+            return new self(
+                $filename,
+                new ContentType('application/octet-stream'),
+                $attachmentName
+            );
+        }
 
         $headerValue = HeaderValue::fromString($mime);
 
@@ -73,7 +83,7 @@ final class FileAttachment implements PartInterface
     }
 
     /**
-     * @return iterable
+     * @return iterable<HeaderInterface>
      */
     public function getHeaders(): iterable
     {

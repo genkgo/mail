@@ -24,7 +24,7 @@ final class HeaderV1FactoryTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_creates_a_dkim_signature()
+    public function it_creates_a_dkim_signature(): void
     {
         $signer = $this->createMock(SignInterface::class);
         $signer->expects($this->at(0))
@@ -70,7 +70,7 @@ final class HeaderV1FactoryTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_skips_bcc_header_signing_signature()
+    public function it_skips_bcc_header_signing_signature(): void
     {
         $signer = $this->createMock(SignInterface::class);
         $signer->expects($this->at(0))

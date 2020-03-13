@@ -18,7 +18,7 @@ final class DataTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_advertises()
+    public function it_advertises(): void
     {
         $capability = new DataCapability(
             new ArrayBackend(['test@genkgo.nl'], new \ArrayObject()),
@@ -33,7 +33,7 @@ final class DataTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_will_accept_messages()
+    public function it_will_accept_messages(): void
     {
         $connection = $this->createMock(ConnectionInterface::class);
 
@@ -75,7 +75,7 @@ final class DataTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_will_not_accepted_malformed_messages()
+    public function it_will_not_accepted_malformed_messages(): void
     {
         $connection = $this->createMock(ConnectionInterface::class);
 
@@ -117,7 +117,7 @@ final class DataTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_will_greylist()
+    public function it_will_greylist(): void
     {
         $connection = $this->createMock(ConnectionInterface::class);
 
@@ -164,7 +164,7 @@ final class DataTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_will_bounce_spam()
+    public function it_will_bounce_spam(): void
     {
         $connection = $this->createMock(ConnectionInterface::class);
 
@@ -211,7 +211,7 @@ final class DataTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_will_deliver_to_junk_after_greylist()
+    public function it_will_deliver_to_junk_after_greylist(): void
     {
         $greylist = new ArrayGreyList();
         $messages = new \ArrayObject();

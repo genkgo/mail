@@ -6,12 +6,12 @@ namespace Genkgo\Mail\Protocol\Imap;
 final class FlagParenthesizedList
 {
     /**
-     * @var array
+     * @var array|Flag[]
      */
     private $flags = [];
 
     /**
-     * @param array $list
+     * @param array|Flag[] $list
      */
     public function __construct(array $list = [])
     {

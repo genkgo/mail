@@ -15,7 +15,7 @@ final class AuthNegotiationTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_emits_auth_plain()
+    public function it_emits_auth_plain(): void
     {
         $connection = $this->createMock(ConnectionInterface::class);
         $connection
@@ -51,7 +51,7 @@ final class AuthNegotiationTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_uses_capability_when_method_is_auto()
+    public function it_uses_capability_when_method_is_auto(): void
     {
         $connection = $this->createMock(ConnectionInterface::class);
         $connection
@@ -102,7 +102,7 @@ final class AuthNegotiationTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_requests_capabilities_when_method_is_auto_and_uses_login_when_not_otherwise_advertised()
+    public function it_requests_capabilities_when_method_is_auto_and_uses_login_when_not_otherwise_advertised(): void
     {
         $connection = $this->createMock(ConnectionInterface::class);
         $connection
@@ -144,7 +144,7 @@ final class AuthNegotiationTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_uses_capability_when_method_is_auto_and_not_advertised_and_login_disabled()
+    public function it_uses_capability_when_method_is_auto_and_not_advertised_and_login_disabled(): void
     {
         $this->expectException(ImapAuthenticationException::class);
 

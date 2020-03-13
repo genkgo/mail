@@ -19,7 +19,7 @@ final class ClientTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_will_register_negotiators()
+    public function it_will_register_negotiators(): void
     {
         $connection = $this->createMock(ConnectionInterface::class);
         $negotiator = $this->createMock(NegotiationInterface::class);
@@ -47,7 +47,7 @@ final class ClientTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_will_issue_new_tags()
+    public function it_will_issue_new_tags(): void
     {
         $connection = $this->createMock(ConnectionInterface::class);
         $factory = $this->createMock(TagFactoryInterface::class);
@@ -64,7 +64,7 @@ final class ClientTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_will_emit_commands()
+    public function it_will_emit_commands(): void
     {
         $connection = $this->createMock(ConnectionInterface::class);
 
@@ -89,7 +89,7 @@ final class ClientTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_will_split_commands_per_line()
+    public function it_will_split_commands_per_line(): void
     {
         $connection = $this->createMock(ConnectionInterface::class);
         $command = $this->createMock(RequestInterface::class);

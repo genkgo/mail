@@ -13,7 +13,7 @@ final class DataRequestTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_executes()
+    public function it_executes(): void
     {
         $connection = $this->createMock(ConnectionInterface::class);
         $connection
@@ -33,7 +33,7 @@ final class DataRequestTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_escapes_lines_starting_with_a_dot()
+    public function it_escapes_lines_starting_with_a_dot(): void
     {
         $connection = $this->createMock(ConnectionInterface::class);
         $connection
@@ -53,7 +53,7 @@ final class DataRequestTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_trims_carriage_returns()
+    public function it_trims_carriage_returns(): void
     {
         $connection = $this->createMock(ConnectionInterface::class);
         $connection
@@ -73,7 +73,7 @@ final class DataRequestTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_sends_lines()
+    public function it_sends_lines(): void
     {
         $connection = $this->createMock(ConnectionInterface::class);
         $connection
@@ -113,7 +113,7 @@ final class DataRequestTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_does_not_add_lines()
+    public function it_does_not_add_lines(): void
     {
         $connection = $this->createMock(ConnectionInterface::class);
         $connection
@@ -127,7 +127,7 @@ final class DataRequestTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_rewinds_stream_beforehand()
+    public function it_rewinds_stream_beforehand(): void
     {
         $connection = $this->createMock(ConnectionInterface::class);
         $connection

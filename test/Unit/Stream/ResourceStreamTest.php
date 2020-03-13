@@ -11,7 +11,7 @@ final class ResourceStreamTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_produces_equally_result_with_to_string_and_read()
+    public function it_produces_equally_result_with_to_string_and_read(): void
     {
         $resource = \fopen('php://memory', 'r+');
         \fwrite($resource, 'test1test2');
@@ -29,7 +29,7 @@ final class ResourceStreamTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_has_a_correct_size()
+    public function it_has_a_correct_size(): void
     {
         $resource = \fopen('php://memory', 'r+');
         \fwrite($resource, 'test1test2');
@@ -42,7 +42,7 @@ final class ResourceStreamTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_reads_remaining_contents()
+    public function it_reads_remaining_contents(): void
     {
         $resource = \fopen('php://memory', 'r+');
         \fwrite($resource, 'test1test2');
@@ -57,7 +57,7 @@ final class ResourceStreamTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_is_rewindable()
+    public function it_is_rewindable(): void
     {
         $resource = \fopen('php://memory', 'r+');
         \fwrite($resource, 'test1test2');
@@ -73,7 +73,7 @@ final class ResourceStreamTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_can_seek()
+    public function it_can_seek(): void
     {
         $resource = \fopen('php://memory', 'r+');
         \fwrite($resource, 'test1test2');
@@ -89,7 +89,7 @@ final class ResourceStreamTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_can_be_written_to()
+    public function it_can_be_written_to(): void
     {
         $resource = \fopen('php://memory', 'r+');
         \fwrite($resource, 'test1test2');

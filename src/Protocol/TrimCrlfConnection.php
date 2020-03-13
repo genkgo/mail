@@ -77,8 +77,8 @@ final class TrimCrlfConnection implements ConnectionInterface
     }
 
     /**
-     * @param array $keys
-     * @return array
+     * @param array<int, string> $keys
+     * @return array<string, mixed>
      */
     public function getMetaData(array $keys = []): array
     {

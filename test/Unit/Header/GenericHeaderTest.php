@@ -11,7 +11,7 @@ final class GenericHeaderTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_produces_correct_values()
+    public function it_produces_correct_values(): void
     {
         $header = new GenericHeader('Name', 'Value');
 

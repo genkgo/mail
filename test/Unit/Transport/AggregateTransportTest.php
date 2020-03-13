@@ -13,7 +13,7 @@ final class AggregateTransportTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_stores_message_in_an_array_object()
+    public function it_stores_message_in_an_array_object(): void
     {
         $message = new GenericMessage();
         $storage1 = new \ArrayObject();

@@ -30,7 +30,7 @@ final class MessageBodyCollectionTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_is_immutable()
+    public function it_is_immutable(): void
     {
         $message = new MessageBodyCollection();
 
@@ -78,7 +78,7 @@ final class MessageBodyCollectionTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throws_exception_when_attachment_does_not_have_content_disposition()
+    public function it_throws_exception_when_attachment_does_not_have_content_disposition(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -92,7 +92,7 @@ final class MessageBodyCollectionTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throws_exception_when_attachment_header_content_disposition_does_not_equals_attachment()
+    public function it_throws_exception_when_attachment_header_content_disposition_does_not_equals_attachment(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -113,7 +113,7 @@ final class MessageBodyCollectionTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_should_equal_file_when_html_only()
+    public function it_should_equal_file_when_html_only(): void
     {
         $body = (new MessageBodyCollection())
             ->withHtmlAndNoGeneratedAlternativeText('<html><body><p>Hello World</p></body></html>');
@@ -132,7 +132,7 @@ final class MessageBodyCollectionTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_should_equal_file_when_attaching_to_existing_html_only_message()
+    public function it_should_equal_file_when_attaching_to_existing_html_only_message(): void
     {
         $body = (new MessageBodyCollection())
             ->withHtmlAndNoGeneratedAlternativeText('<html><body><p>Hello World</p></body></html>');
@@ -153,7 +153,7 @@ final class MessageBodyCollectionTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_should_equal_file_when_text_only()
+    public function it_should_equal_file_when_text_only(): void
     {
         $body = (new MessageBodyCollection())
             ->withAlternativeText(new AlternativeText('Hello World'));
@@ -172,7 +172,7 @@ final class MessageBodyCollectionTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_should_equal_empty_text_plain_message_when_no_and_no_text()
+    public function it_should_equal_empty_text_plain_message_when_no_and_no_text(): void
     {
         $body = (new MessageBodyCollection());
 
@@ -190,7 +190,7 @@ final class MessageBodyCollectionTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_should_equal_file_expect_boundaries_when_full_formatted_message()
+    public function it_should_equal_file_expect_boundaries_when_full_formatted_message(): void
     {
         $message = (new MessageBodyCollection())
             ->withHtml('<html><body><p>Hello World</p></body></html>')
@@ -227,7 +227,7 @@ final class MessageBodyCollectionTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_should_equal_file_expect_boundaries_when_html_and_text_formatted_message()
+    public function it_should_equal_file_expect_boundaries_when_html_and_text_formatted_message(): void
     {
         $message = (new MessageBodyCollection())
             ->withHtml('<html><body><p>Hello World</p></body></html>')
@@ -248,7 +248,7 @@ final class MessageBodyCollectionTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_extracts_body_from_full_formatted_messages()
+    public function it_extracts_body_from_full_formatted_messages(): void
     {
         $message = GenericMessage::fromString(
             \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollection/full-formatted-message.eml')
@@ -264,7 +264,7 @@ final class MessageBodyCollectionTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_extracts_body_from_html_only_messages()
+    public function it_extracts_body_from_html_only_messages(): void
     {
         $message = GenericMessage::fromString(
             \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollection/html-only.eml')
@@ -280,7 +280,7 @@ final class MessageBodyCollectionTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_extracts_body_from_text_only_messages()
+    public function it_extracts_body_from_text_only_messages(): void
     {
         $message = GenericMessage::fromString(
             \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollection/text-only.eml')
@@ -296,7 +296,7 @@ final class MessageBodyCollectionTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_extracts_body_from_html_and_text_messages()
+    public function it_extracts_body_from_html_and_text_messages(): void
     {
         $message = GenericMessage::fromString(
             \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollection/html-and-text.eml')
@@ -312,7 +312,7 @@ final class MessageBodyCollectionTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_should_attach_messages()
+    public function it_should_attach_messages(): void
     {
         $message = GenericMessage::fromString(
             \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollection/html-and-text.eml')
@@ -332,7 +332,7 @@ final class MessageBodyCollectionTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_should_quote_an_original_message()
+    public function it_should_quote_an_original_message(): void
     {
         $message = GenericMessage::fromString(
             \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollection/html-and-text.eml')
@@ -352,7 +352,7 @@ final class MessageBodyCollectionTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_should_create_reply_message()
+    public function it_should_create_reply_message(): void
     {
         $message = GenericMessage::fromString(
             \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollection/html-and-text.eml')
@@ -372,7 +372,7 @@ final class MessageBodyCollectionTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_should_not_reply_to_other_address_than_to()
+    public function it_should_not_reply_to_other_address_than_to(): void
     {
         $message = GenericMessage::fromString(
             \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollection/html-and-text.eml')
@@ -393,7 +393,7 @@ final class MessageBodyCollectionTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_should_use_reply_to_header_when_replying()
+    public function it_should_use_reply_to_header_when_replying(): void
     {
         $message = GenericMessage::fromString(
             \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollection/html-and-text.eml')
@@ -414,7 +414,7 @@ final class MessageBodyCollectionTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_should_equal_file_when_replying_all()
+    public function it_should_equal_file_when_replying_all(): void
     {
         $message = GenericMessage::fromString(
             \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollection/html-and-text.eml')
@@ -435,7 +435,7 @@ final class MessageBodyCollectionTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_should_use_reply_to_when_replying_all()
+    public function it_should_use_reply_to_when_replying_all(): void
     {
         $message = GenericMessage::fromString(
             \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollection/html-and-text.eml')
@@ -456,7 +456,7 @@ final class MessageBodyCollectionTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_creates_reply_headers()
+    public function it_creates_reply_headers(): void
     {
         $messageId = MessageId::newRandom('domain');
 
@@ -475,7 +475,7 @@ final class MessageBodyCollectionTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_adds_reference()
+    public function it_adds_reference(): void
     {
         $messageId = MessageId::newRandom('domain');
 
@@ -498,7 +498,7 @@ final class MessageBodyCollectionTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_should_create_forward_message()
+    public function it_should_create_forward_message(): void
     {
         $message = GenericMessage::fromString(
             \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollection/html-and-text.eml')
@@ -518,7 +518,7 @@ final class MessageBodyCollectionTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_should_accept_an_attachment_with_a_filename_containing_special_characters()
+    public function it_should_accept_an_attachment_with_a_filename_containing_special_characters(): void
     {
         $body = (new MessageBodyCollection())
             ->withAttachment(ResourceAttachment::fromString('test', 'ó.xyz', new ContentType('text/txt')));

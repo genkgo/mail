@@ -13,7 +13,7 @@ final class AddressListTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_produces_the_correct_recipient_string_with_a_single_address()
+    public function it_produces_the_correct_recipient_string_with_a_single_address(): void
     {
         $addressList = new AddressList([
             new Address(new EmailAddress('me1@example.com'), 'name'),
@@ -28,7 +28,7 @@ final class AddressListTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_produces_the_correct_recipient_string_with_multiple_addresses()
+    public function it_produces_the_correct_recipient_string_with_multiple_addresses(): void
     {
         $addressList = new AddressList([
             new Address(new EmailAddress('me1@example.com'), 'name'),
@@ -45,7 +45,7 @@ final class AddressListTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_is_immutable()
+    public function it_is_immutable(): void
     {
         $addressList = new AddressList([
             new Address(new EmailAddress('me1@example.com'), 'name'),
@@ -69,7 +69,7 @@ final class AddressListTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_can_add_an_address()
+    public function it_can_add_an_address(): void
     {
         $addressList = new AddressList([
             new Address(new EmailAddress('me1@example.com'), 'name'),
@@ -86,7 +86,7 @@ final class AddressListTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_can_remove_an_address()
+    public function it_can_remove_an_address(): void
     {
         $addressList = new AddressList([
             new Address(new EmailAddress('me1@example.com'), 'name'),
@@ -103,7 +103,7 @@ final class AddressListTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throws_when_providing_incorrect_array()
+    public function it_throws_when_providing_incorrect_array(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         new AddressList(['']);
@@ -112,7 +112,7 @@ final class AddressListTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_returns_the_first_address()
+    public function it_returns_the_first_address(): void
     {
         $firstAddress = new Address(new EmailAddress('x@y.com'));
         $list = new AddressList([$firstAddress]);
@@ -122,7 +122,7 @@ final class AddressListTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throws_when_first_called_without_addresses()
+    public function it_throws_when_first_called_without_addresses(): void
     {
         $this->expectException(\OutOfRangeException::class);
 
@@ -134,7 +134,7 @@ final class AddressListTest extends AbstractTestCase
      * @test
      * @dataProvider provideAddressListStrings
      */
-    public function it_parses_address_strings(string $addressListString, bool $constructed, int $count, string $exceptionMessage)
+    public function it_parses_address_strings(string $addressListString, bool $constructed, int $count, string $exceptionMessage): void
     {
         if ($constructed) {
             $addressList = AddressList::fromString($addressListString);
@@ -149,7 +149,7 @@ final class AddressListTest extends AbstractTestCase
     /**
      * @return array
      */
-    public function provideAddressListStrings()
+    public function provideAddressListStrings(): array
     {
         return [
             ['', true, 0, ''],

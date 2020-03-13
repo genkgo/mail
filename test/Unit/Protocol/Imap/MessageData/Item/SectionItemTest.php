@@ -13,7 +13,7 @@ final class SectionItemTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_has_the_name_of_decorated_item()
+    public function it_has_the_name_of_decorated_item(): void
     {
         $item = new SectionItem(new NameItem('TEST'), new SectionList());
         $this->assertSame('TEST', $item->getName());
@@ -22,7 +22,7 @@ final class SectionItemTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_generates_a_section_list()
+    public function it_generates_a_section_list(): void
     {
         $item = new SectionItem(new NameItem('TEST'), new SectionList());
         $this->assertSame('TEST[]', (string)$item);

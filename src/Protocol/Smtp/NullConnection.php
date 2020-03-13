@@ -7,7 +7,8 @@ use Genkgo\Mail\Protocol\ConnectionInterface;
 
 final class NullConnection implements ConnectionInterface
 {
-    private $receive;
+    /** @var string */
+    private $receive = '';
 
     public function addListener(string $name, \Closure $callback): void
     {
@@ -41,6 +42,10 @@ final class NullConnection implements ConnectionInterface
     {
     }
 
+    /**
+     * @param array<int, string> $keys
+     * @return array<string, mixed>
+     */
     public function getMetaData(array $keys = []): array
     {
         return [];

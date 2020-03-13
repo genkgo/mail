@@ -13,7 +13,7 @@ final class ArrayBackendTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_contains_addresses()
+    public function it_contains_addresses(): void
     {
         $backend = new ArrayBackend(
             ['test@genkgo.nl'],
@@ -27,7 +27,7 @@ final class ArrayBackendTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_stores_messages()
+    public function it_stores_messages(): void
     {
         $messages = new \ArrayObject();
 
@@ -52,7 +52,7 @@ final class ArrayBackendTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throws_when_storing_messages_to_unknown_user()
+    public function it_throws_when_storing_messages_to_unknown_user(): void
     {
         $this->expectException(\UnexpectedValueException::class);
 

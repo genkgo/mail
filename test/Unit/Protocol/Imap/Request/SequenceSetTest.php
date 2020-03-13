@@ -11,7 +11,7 @@ final class SequenceSetTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_can_be_casted_to_string()
+    public function it_can_be_casted_to_string(): void
     {
         $this->assertSame('1', (string)SequenceSet::single(1));
     }
@@ -19,7 +19,7 @@ final class SequenceSetTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_can_be_single()
+    public function it_can_be_single(): void
     {
         $this->assertSame('1', (string)SequenceSet::single(1));
     }
@@ -27,7 +27,7 @@ final class SequenceSetTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_can_be_range()
+    public function it_can_be_range(): void
     {
         $this->assertSame('1:5', (string)SequenceSet::range(1, 5));
     }
@@ -35,7 +35,7 @@ final class SequenceSetTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_can_be_infinite_range()
+    public function it_can_be_infinite_range(): void
     {
         $this->assertSame('1:*', (string)SequenceSet::infiniteRange(1));
     }
@@ -43,7 +43,7 @@ final class SequenceSetTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_can_be_all()
+    public function it_can_be_all(): void
     {
         $this->assertSame('*', (string)SequenceSet::all());
     }
@@ -51,7 +51,7 @@ final class SequenceSetTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_can_be_extended_with_single()
+    public function it_can_be_extended_with_single(): void
     {
         $this->assertSame('1,5', (string)SequenceSet::single(1)->withSingle(5));
     }
@@ -59,7 +59,7 @@ final class SequenceSetTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_can_be_extended_with_range()
+    public function it_can_be_extended_with_range(): void
     {
         $this->assertSame('1,3:5', (string)SequenceSet::single(1)->withRange(3, 5));
     }
@@ -67,7 +67,7 @@ final class SequenceSetTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_can_be_extended_with_infinite_range()
+    public function it_can_be_extended_with_infinite_range(): void
     {
         $this->assertSame('1,3:*', (string)SequenceSet::single(1)->withInfiniteRange(3));
     }

@@ -36,7 +36,7 @@ final class HtmlPart implements PartInterface
     }
 
     /**
-     * @return iterable
+     * @return iterable<HeaderInterface>
      */
     public function getHeaders(): iterable
     {

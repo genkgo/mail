@@ -17,7 +17,7 @@ final class LineIterator extends \IteratorIterator
 
     /**
      * @param StreamInterface $stream
-     * @return \Generator
+     * @return \Generator<string>
      */
     private function newIterator(StreamInterface $stream): \Generator
     {

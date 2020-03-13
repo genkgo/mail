@@ -14,7 +14,7 @@ final class FromTest extends AbstractTestCase
      * @test
      * @dataProvider provideValues
      */
-    public function it_produces_correct_values($recipientEmail, $recipientName, $headerName, $headerValue)
+    public function it_produces_correct_values($recipientEmail, $recipientName, $headerName, $headerValue): void
     {
         $header = new From(new Address(new EmailAddress($recipientEmail), $recipientName));
         $this->assertEquals($headerName, (string)$header->getName());
@@ -24,7 +24,7 @@ final class FromTest extends AbstractTestCase
     /**
      * @return array
      */
-    public function provideValues()
+    public function provideValues(): array
     {
         return [
             ['me@example.com', 'Name', 'From', 'Name <me@example.com>'],
@@ -35,7 +35,7 @@ final class FromTest extends AbstractTestCase
      * @test
      * @dataProvider provideValues
      */
-    public function it_can_be_easier_constructed_with_email_address_and_name()
+    public function it_can_be_easier_constructed_with_email_address_and_name(): void
     {
         $header = From::fromAddress('me@example.com', 'Name');
         $this->assertEquals('Name <me@example.com>', (string)$header->getValue());
@@ -45,7 +45,7 @@ final class FromTest extends AbstractTestCase
      * @test
      * @dataProvider provideValues
      */
-    public function it_can_be_easier_constructed_with_email_address()
+    public function it_can_be_easier_constructed_with_email_address(): void
     {
         $header = From::fromEmailAddress('me@example.com');
         $this->assertEquals('me@example.com', (string)$header->getValue());
@@ -54,7 +54,7 @@ final class FromTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_uses_correct_encoding_with_long_names()
+    public function it_uses_correct_encoding_with_long_names(): void
     {
         $from = new From(
             new Address(

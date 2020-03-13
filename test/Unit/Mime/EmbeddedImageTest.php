@@ -16,7 +16,7 @@ final class EmbeddedImageTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_is_immutable()
+    public function it_is_immutable(): void
     {
         $part = new EmbeddedImage(
             new AsciiEncodedStream(
@@ -34,7 +34,7 @@ final class EmbeddedImageTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_cannot_modify_body()
+    public function it_cannot_modify_body(): void
     {
         $this->expectException(\RuntimeException::class);
 
@@ -52,7 +52,7 @@ final class EmbeddedImageTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_has_header_content_type()
+    public function it_has_header_content_type(): void
     {
         $part = new EmbeddedImage(
             new AsciiEncodedStream(
@@ -74,7 +74,7 @@ final class EmbeddedImageTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throws_when_adding_content_disposition_header()
+    public function it_throws_when_adding_content_disposition_header(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -93,7 +93,7 @@ final class EmbeddedImageTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throws_when_removing_content_disposition_header()
+    public function it_throws_when_removing_content_disposition_header(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -112,7 +112,7 @@ final class EmbeddedImageTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_encodes_body_with_base64()
+    public function it_encodes_body_with_base64(): void
     {
         $attachment = new EmbeddedImage(
             new AsciiEncodedStream(

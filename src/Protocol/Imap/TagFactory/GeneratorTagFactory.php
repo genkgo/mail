@@ -9,7 +9,7 @@ use Genkgo\Mail\Protocol\Imap\TagFactoryInterface;
 final class GeneratorTagFactory implements TagFactoryInterface
 {
     /**
-     * @var \Generator
+     * @var \Generator|Tag[]
      */
     private $iterator;
     
@@ -29,7 +29,7 @@ final class GeneratorTagFactory implements TagFactoryInterface
     }
 
     /**
-     * @return \Generator
+     * @return \Generator|Tag[]
      * @codeCoverageIgnore
      */
     private function newList(): \Generator

@@ -1,7 +1,5 @@
 parameters:
-    ignoreErrors:
-        # Tested error for wrongly passed argument to Address constructor:
-        - '#array<Genkgo\\Mail\\Address>, array<int, string>#'
+    checkMissingIterableValueType: false
 
 includes:
 - vendor/phpstan/phpstan-phpunit/extension.neon

@@ -12,7 +12,7 @@ final class AuthPlainCredentialsRequestTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_creates_a_stream()
+    public function it_creates_a_stream(): void
     {
         $command = new AuthPlainCredentialsRequest(
             Tag::fromNonce(1),

@@ -44,6 +44,10 @@ final class StringStream implements StreamInterface
     public function detach()
     {
         $handle = \fopen('php://memory', 'r+');
+        if ($handle === false) {
+            throw new \UnexpectedValueException('Cannot open php://memory for writing');
+        }
+
         \fwrite($handle, $this->text);
         return $handle;
     }
@@ -154,8 +158,8 @@ final class StringStream implements StreamInterface
     }
 
     /**
-     * @param array $keys
-     * @return array
+     * @param array<int, string> $keys
+     * @return array<string, mixed>
      */
     public function getMetadata(array $keys = []): array
     {

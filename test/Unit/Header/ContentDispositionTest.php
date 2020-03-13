@@ -12,7 +12,7 @@ final class ContentDispositionTest extends AbstractTestCase
      * @test
      * @dataProvider provideValues
      */
-    public function it_produces_correct_values($method, $filename, $headerName, $headerValue)
+    public function it_produces_correct_values($method, $filename, $headerName, $headerValue): void
     {
         $header = \call_user_func([ContentDisposition::class, $method], $filename);
         $this->assertEquals($headerName, (string)$header->getName());
@@ -22,7 +22,7 @@ final class ContentDispositionTest extends AbstractTestCase
     /**
      * @return array
      */
-    public function provideValues()
+    public function provideValues(): array
     {
         return [
             ['newInline', 'inline.txt', 'Content-Disposition', 'inline; filename="inline.txt"'],

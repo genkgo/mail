@@ -11,7 +11,7 @@ final class GeneratorTagFactoryTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_generates_a_new_tag_using_a_nonce()
+    public function it_generates_a_new_tag_using_a_nonce(): void
     {
         $factory = new GeneratorTagFactory();
         $this->assertSame('TAG1', (string)$factory->newTag());

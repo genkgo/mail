@@ -124,8 +124,8 @@ final class EmptyStream implements StreamInterface
     }
 
     /**
-     * @param array $keys
-     * @return array
+     * @param array<int, string> $keys
+     * @return array<string, mixed>
      */
     public function getMetadata(array $keys = []): array
     {

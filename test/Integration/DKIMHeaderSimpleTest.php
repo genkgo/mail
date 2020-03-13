@@ -23,7 +23,7 @@ final class DKIMHeaderSimpleTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_formats_dkim_header_correctly()
+    public function it_formats_dkim_header_correctly(): void
     {
         $message = new PlainTextMessage('Hello World');
         $factory = new HeaderV1Factory(

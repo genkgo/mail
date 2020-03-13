@@ -11,7 +11,7 @@ final class SizeCriterionTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_casts_to_string()
+    public function it_casts_to_string(): void
     {
         $this->assertSame('LARGER 5', (string)SizeCriterion::larger(5));
     }
@@ -19,7 +19,7 @@ final class SizeCriterionTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_queries_messages_larger_than()
+    public function it_queries_messages_larger_than(): void
     {
         $this->assertSame('LARGER 10', (string)SizeCriterion::larger(10));
     }
@@ -27,7 +27,7 @@ final class SizeCriterionTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_queries_messages_smaller_than()
+    public function it_queries_messages_smaller_than(): void
     {
         $this->assertSame('SMALLER 10', (string)SizeCriterion::smaller(10));
     }

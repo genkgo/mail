@@ -13,7 +13,7 @@ final class AggregateSpamScoreTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_calculates_spam_score()
+    public function it_calculates_spam_score(): void
     {
         $checker = new AggregateSpamScore([
             new FixedSpamScore(1),

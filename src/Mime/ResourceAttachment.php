@@ -44,12 +44,16 @@ final class ResourceAttachment implements PartInterface
     public static function fromString(string $string, string $filename, ContentType $contentType)
     {
         $resource = \fopen('php://memory', 'r+');
+        if ($resource === false) {
+            throw new \UnexpectedValueException('Cannot open php://memory for writing');
+        }
+
         \fwrite($resource, $string);
         return new self($resource, $filename, $contentType);
     }
 
     /**
-     * @return iterable
+     * @return iterable<HeaderInterface>
      */
     public function getHeaders(): iterable
     {

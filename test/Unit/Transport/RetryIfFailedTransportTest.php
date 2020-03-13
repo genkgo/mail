@@ -14,7 +14,7 @@ final class RetryIfFailedTransportTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_does_not_retry_when_successful()
+    public function it_does_not_retry_when_successful(): void
     {
         $decoratedTransport = $this->createMock(TransportInterface::class);
 
@@ -29,7 +29,7 @@ final class RetryIfFailedTransportTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_retries_once_when_only_first_time_fails()
+    public function it_retries_once_when_only_first_time_fails(): void
     {
         $decoratedTransport = $this->createMock(TransportInterface::class);
 
@@ -49,7 +49,7 @@ final class RetryIfFailedTransportTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_retries_once_when_first_two_times_fail()
+    public function it_retries_once_when_first_two_times_fail(): void
     {
         $decoratedTransport = $this->createMock(TransportInterface::class);
 
@@ -74,7 +74,7 @@ final class RetryIfFailedTransportTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throws_the_last_exception_when_last_retry_fails()
+    public function it_throws_the_last_exception_when_last_retry_fails(): void
     {
         $this->expectException(ConnectionRefusedException::class);
 

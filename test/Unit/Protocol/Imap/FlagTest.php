@@ -11,7 +11,7 @@ final class FlagTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_allows_rfc_fixed()
+    public function it_allows_rfc_fixed(): void
     {
         new Flag('\\Answered');
         new Flag('\\Flagged');
@@ -24,7 +24,7 @@ final class FlagTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_casts_to_string()
+    public function it_casts_to_string(): void
     {
         $this->assertSame('Keyword', (string)new Flag('Keyword'));
     }
@@ -32,7 +32,7 @@ final class FlagTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_allows_keywords()
+    public function it_allows_keywords(): void
     {
         new Flag('Keyword');
         $this->addToAssertionCount(1);
@@ -41,7 +41,7 @@ final class FlagTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_allows_custom_flags()
+    public function it_allows_custom_flags(): void
     {
         new Flag('\\OtherFlag');
         $this->addToAssertionCount(1);
@@ -50,7 +50,7 @@ final class FlagTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throws_when_using_atom_special()
+    public function it_throws_when_using_atom_special(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         new Flag('\\Flag(');
@@ -59,7 +59,7 @@ final class FlagTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throws_when_using_space()
+    public function it_throws_when_using_space(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         new Flag('\\Flag Test');
@@ -68,7 +68,7 @@ final class FlagTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throws_when_using_atom_special_in_keyword()
+    public function it_throws_when_using_atom_special_in_keyword(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         new Flag('Flag(');
@@ -77,7 +77,7 @@ final class FlagTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throws_when_using_space_in_keyword()
+    public function it_throws_when_using_space_in_keyword(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         new Flag('Flag Test');
@@ -86,7 +86,7 @@ final class FlagTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throws_when_empty()
+    public function it_throws_when_empty(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         new Flag('');
@@ -95,7 +95,7 @@ final class FlagTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_equals_another_value()
+    public function it_equals_another_value(): void
     {
         $flag = new Flag('\\Answered');
         $this->assertTrue($flag->equals(new Flag('\\Answered')));
@@ -104,7 +104,7 @@ final class FlagTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_knows_when_keyword()
+    public function it_knows_when_keyword(): void
     {
         $flag = new Flag('\\Answered');
         $keyword = new Flag('Test');

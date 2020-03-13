@@ -56,13 +56,17 @@ final class QuotedPrintableStream implements StreamInterface
         );
 
         $resource = \fopen('php://memory', 'r+');
+        if ($resource === false) {
+            throw new \UnexpectedValueException('Cannot open php://memory for writing');
+        }
+
         \fwrite($resource, $string);
         return new self($resource, $lineLength, $lineBreak);
     }
     
     private function applyFilter(): void
     {
-        $this->filter = \stream_filter_prepend(
+        $filter = \stream_filter_prepend(
             $this->decoratedStream->detach(),
             'convert.quoted-printable-encode',
             STREAM_FILTER_READ,
@@ -71,6 +75,12 @@ final class QuotedPrintableStream implements StreamInterface
                 'line-break-chars' => $this->lineBreak
             ]
         );
+
+        if ($filter === false) {
+            throw new \UnexpectedValueException('Cannot append filter to stream');
+        }
+
+        $this->filter = $filter;
     }
     
     private function removeFilter(): void
@@ -202,8 +212,8 @@ final class QuotedPrintableStream implements StreamInterface
     }
 
     /**
-     * @param array $keys
-     * @return array
+     * @param array<int, string> $keys
+     * @return array<string, mixed>
      */
     public function getMetadata(array $keys = []): array
     {

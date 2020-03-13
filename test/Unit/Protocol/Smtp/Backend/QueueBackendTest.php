@@ -14,7 +14,7 @@ final class QueueBackendTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_contains_addresses()
+    public function it_contains_addresses(): void
     {
         $backend = new QueueBackend(new ArrayObjectQueue(new \ArrayObject()));
 
@@ -25,7 +25,7 @@ final class QueueBackendTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_stores_messages()
+    public function it_stores_messages(): void
     {
         $messages = new \ArrayObject();
         $backend = new QueueBackend(new ArrayObjectQueue($messages));

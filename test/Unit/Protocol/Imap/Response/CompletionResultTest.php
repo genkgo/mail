@@ -11,7 +11,7 @@ final class CompletionResultTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_can_be_constructed_through_valid_result_types()
+    public function it_can_be_constructed_through_valid_result_types(): void
     {
         CompletionResult::fromString('OK');
         CompletionResult::fromString('BAD');
@@ -23,7 +23,7 @@ final class CompletionResultTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throws_when_using_unknown_type()
+    public function it_throws_when_using_unknown_type(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         CompletionResult::fromString('UNKNOWN');
@@ -32,7 +32,7 @@ final class CompletionResultTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_is_equals_another_result()
+    public function it_is_equals_another_result(): void
     {
         $result = CompletionResult::ok();
         $this->assertTrue($result->equals(CompletionResult::ok()));
@@ -42,7 +42,7 @@ final class CompletionResultTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_can_be_casted_to_string()
+    public function it_can_be_casted_to_string(): void
     {
         $this->assertSame('OK', (string)CompletionResult::ok());
     }
@@ -50,7 +50,7 @@ final class CompletionResultTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_can_be_created_from_line()
+    public function it_can_be_created_from_line(): void
     {
         $this->assertSame('OK', (string)CompletionResult::fromLine('OK success'));
         $this->assertSame('OK', (string)CompletionResult::fromLine('OK'));

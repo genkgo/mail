@@ -10,12 +10,12 @@ use Genkgo\Mail\MessageInterface;
 final class ArrayObjectQueue implements QueueInterface, \Countable
 {
     /**
-     * @var \ArrayObject
+     * @var \ArrayObject<int, string>
      */
     private $storage;
 
     /**
-     * @param \ArrayObject $storage
+     * @param \ArrayObject<int, string> $storage
      */
     public function __construct(\ArrayObject $storage)
     {

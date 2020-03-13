@@ -32,7 +32,7 @@ final class HeaderName
     /**
      * @param string $name
      */
-    private function assert(string $name)
+    private function assert(string $name): void
     {
         if ($this->validate($name) === false) {
             throw new \InvalidArgumentException(

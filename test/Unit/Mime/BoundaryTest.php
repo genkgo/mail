@@ -12,7 +12,7 @@ final class BoundaryTest extends AbstractTestCase
      * @test
      * @dataProvider provideValues
      */
-    public function it_validates_correct_boundary_values($boundaryString, $constructed)
+    public function it_validates_correct_boundary_values($boundaryString, $constructed): void
     {
         if ($constructed) {
             $boundary = new Boundary($boundaryString);
@@ -27,7 +27,7 @@ final class BoundaryTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_is_opening()
+    public function it_is_opening(): void
     {
         $this->assertTrue((new Boundary('test'))->isOpening('--test'));
         $this->assertFalse((new Boundary('test'))->isOpening('--test--'));
@@ -37,7 +37,7 @@ final class BoundaryTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_is_closing()
+    public function it_is_closing(): void
     {
         $this->assertTrue((new Boundary('test'))->isClosing('--test--'));
         $this->assertFalse((new Boundary('test'))->isClosing('--test'));
@@ -47,7 +47,7 @@ final class BoundaryTest extends AbstractTestCase
     /**
      * @return array
      */
-    public function provideValues()
+    public function provideValues(): array
     {
         return [
             ['correct', true],

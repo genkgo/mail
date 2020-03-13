@@ -14,7 +14,7 @@ final class RcptToTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_advertises_itself()
+    public function it_advertises_itself(): void
     {
         $capability = new RcptToCapability(new ArrayBackend([], new \ArrayObject()));
 
@@ -24,7 +24,7 @@ final class RcptToTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_accepts_addresses()
+    public function it_accepts_addresses(): void
     {
         $connection = $this->createMock(ConnectionInterface::class);
 
@@ -42,7 +42,7 @@ final class RcptToTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_rejects_invalid_addresses()
+    public function it_rejects_invalid_addresses(): void
     {
         $connection = $this->createMock(ConnectionInterface::class);
 
@@ -60,7 +60,7 @@ final class RcptToTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_rejects_unknown_mailbox()
+    public function it_rejects_unknown_mailbox(): void
     {
         $connection = $this->createMock(ConnectionInterface::class);
 

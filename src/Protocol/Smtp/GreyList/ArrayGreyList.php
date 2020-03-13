@@ -9,7 +9,7 @@ use Genkgo\Mail\Protocol\Smtp\GreyListInterface;
 final class ArrayGreyList implements GreyListInterface
 {
     /**
-     * @var array
+     * @var array<string, bool>
      */
     private $list = [];
 

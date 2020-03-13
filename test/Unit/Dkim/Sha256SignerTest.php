@@ -11,7 +11,7 @@ final class Sha256SignerTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_loads_from_file()
+    public function it_loads_from_file(): void
     {
         $this->assertInstanceOf(
             Sha256Signer::class,
@@ -22,7 +22,7 @@ final class Sha256SignerTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throws_on_invalid_key()
+    public function it_throws_on_invalid_key(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         Sha256Signer::fromString('i_do_not_exist.key');
@@ -31,7 +31,7 @@ final class Sha256SignerTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throws_on_invalid_file()
+    public function it_throws_on_invalid_file(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('File does not exist');
@@ -41,7 +41,7 @@ final class Sha256SignerTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throws_on_invalid_constructor_argument()
+    public function it_throws_on_invalid_constructor_argument(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         new Sha256Signer(\fopen('data://text/plain;base64,SSBsb3ZlIFBIUAo=', 'r+'));
@@ -50,7 +50,7 @@ final class Sha256SignerTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throws_on_encrypted_key()
+    public function it_throws_on_encrypted_key(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Cannot create resource from private key string');
@@ -61,7 +61,7 @@ final class Sha256SignerTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_signs_with_key()
+    public function it_signs_with_key(): void
     {
         $body = 'test-body';
         $header = 'test-header';
@@ -84,7 +84,7 @@ final class Sha256SignerTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_signs_with_protected_key()
+    public function it_signs_with_protected_key(): void
     {
         $body = 'test-body';
         $header = 'test-header';

@@ -13,7 +13,7 @@ final class SelectCommandTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_creates_a_stream()
+    public function it_creates_a_stream(): void
     {
         $command = new SelectCommand(
             Tag::fromNonce(1),

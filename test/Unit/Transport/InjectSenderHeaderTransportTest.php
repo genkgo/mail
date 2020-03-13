@@ -19,7 +19,7 @@ final class InjectSenderHeaderTransportTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_injects_sender_header_in_message()
+    public function it_injects_sender_header_in_message(): void
     {
         $message = (new GenericMessage())
             ->withHeader(
@@ -48,7 +48,7 @@ final class InjectSenderHeaderTransportTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_leaves_message_without_from()
+    public function it_leaves_message_without_from(): void
     {
         $message = (new GenericMessage());
 
@@ -68,7 +68,7 @@ final class InjectSenderHeaderTransportTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_does_inject_when_only_one_address()
+    public function it_does_inject_when_only_one_address(): void
     {
         $message = (new GenericMessage())
             ->withHeader(new From(new Address(new EmailAddress('example@domain.com'))));

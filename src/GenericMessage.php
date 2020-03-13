@@ -12,7 +12,7 @@ use Genkgo\Mail\Stream\StringStream;
 final class GenericMessage implements MessageInterface
 {
     /**
-     * @var array
+     * @var array<string, array<int, HeaderInterface>>
      */
     private $headers = [
         'return-path' => [],
@@ -45,7 +45,7 @@ final class GenericMessage implements MessageInterface
     }
 
     /**
-     * @return iterable
+     * @return iterable<iterable<HeaderInterface>>
      */
     public function getHeaders(): iterable
     {
@@ -146,6 +146,10 @@ final class GenericMessage implements MessageInterface
         $message = new self();
 
         $lines = \preg_split('/\r\n/', $messageString);
+        if ($lines === false) {
+            throw new \UnexpectedValueException('Cannot parse from string, cannot split lines');
+        }
+
         for ($n = 0, $length = \count($lines); $n < $length; $n++) {
             $line = $lines[$n];
 

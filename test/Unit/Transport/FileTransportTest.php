@@ -15,7 +15,7 @@ final class FileTransportTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_saves_messages_with_correct_name()
+    public function it_saves_messages_with_correct_name(): void
     {
         $directory = \sys_get_temp_dir();
 

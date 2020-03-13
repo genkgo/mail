@@ -13,7 +13,7 @@ final class ResetTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_advertises_itself()
+    public function it_advertises_itself(): void
     {
         $capability = new ResetCapability();
 
@@ -23,7 +23,7 @@ final class ResetTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_advertises_others()
+    public function it_advertises_others(): void
     {
         $connection = $this->createMock(ConnectionInterface::class);
 

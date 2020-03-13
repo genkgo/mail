@@ -14,7 +14,7 @@ final class ToTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_produces_correct_values()
+    public function it_produces_correct_values(): void
     {
         $header = new To(
             new AddressList([
@@ -32,7 +32,7 @@ final class ToTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_encodes_correctly()
+    public function it_encodes_correctly(): void
     {
         $header = new To(
             new AddressList([
@@ -60,7 +60,7 @@ final class ToTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_can_be_easier_constructed_for_single_address()
+    public function it_can_be_easier_constructed_for_single_address(): void
     {
         $header = To::fromSingleRecipient('me@example.com', 'Name');
         $this->assertEquals('Name <me@example.com>', (string)$header->getValue());
@@ -69,7 +69,7 @@ final class ToTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_can_be_easier_constructed_for_multiple_addresses()
+    public function it_can_be_easier_constructed_for_multiple_addresses(): void
     {
         $header = To::fromArray([['bob@example.com', 'Bob'], ['john@example.com', 'John'], ['noname@example.com']]);
         $this->assertEquals("Bob <bob@example.com>,\r\n John <john@example.com>,\r\n noname@example.com", (string)$header->getValue());
@@ -78,7 +78,7 @@ final class ToTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_cannot_be_easier_constructed_with_invalid_entry()
+    public function it_cannot_be_easier_constructed_with_invalid_entry(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         To::fromArray([['bob@example.com', 'Bob'], ['john@example.com', 'John'], ['invalid@example.com', 'Foo', 'Bar']]);

@@ -6,13 +6,12 @@ namespace Genkgo\Mail\Protocol\Imap;
 final class ParenthesizedList
 {
     /**
-     * @var array
+     * @var array<string, string>
      */
     private $list = [];
 
     /**
-     * ParenthesizedList constructor.
-     * @param array $list
+     * @param array<string, string> $list
      */
     public function __construct(array $list = [])
     {

@@ -23,7 +23,7 @@ final class ConcatenatedStream implements StreamInterface
     private $index = 0;
 
     /**
-     * @param iterable $streams
+     * @param iterable<StreamInterface> $streams
      */
     public function __construct(iterable $streams)
     {
@@ -230,8 +230,8 @@ final class ConcatenatedStream implements StreamInterface
     }
 
     /**
-     * @param array $keys
-     * @return array
+     * @param array<int, string> $keys
+     * @return array<string, mixed>
      */
     public function getMetadata(array $keys = []): array
     {

@@ -14,7 +14,7 @@ final class InjectDateHeaderTransportTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_injects_date_header_in_message()
+    public function it_injects_date_header_in_message(): void
     {
         $message = new GenericMessage();
         $storage = new \ArrayObject();

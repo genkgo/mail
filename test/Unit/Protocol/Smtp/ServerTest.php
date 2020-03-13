@@ -17,7 +17,7 @@ final class ServerTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_listens()
+    public function it_listens(): void
     {
         $this->expectException(ConnectionListenerException::class);
 
@@ -60,7 +60,7 @@ final class ServerTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_does_not_accept_unknown_commands()
+    public function it_does_not_accept_unknown_commands(): void
     {
         $this->expectException(ConnectionListenerException::class);
 
@@ -103,7 +103,7 @@ final class ServerTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_closes_connection_after_timeout()
+    public function it_closes_connection_after_timeout(): void
     {
         $this->expectException(ConnectionListenerException::class);
 
@@ -145,7 +145,7 @@ final class ServerTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_closes_connection_when_client_closed_it()
+    public function it_closes_connection_when_client_closed_it(): void
     {
         $this->expectException(ConnectionListenerException::class);
 
@@ -182,7 +182,7 @@ final class ServerTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_closes_broken_connections_and_notifies_client()
+    public function it_closes_broken_connections_and_notifies_client(): void
     {
         $this->expectException(ConnectionListenerException::class);
 
@@ -224,7 +224,7 @@ final class ServerTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_closes_broken_connections_and_disconnects_if_notification_fails()
+    public function it_closes_broken_connections_and_disconnects_if_notification_fails(): void
     {
         $this->expectException(ConnectionListenerException::class);
 

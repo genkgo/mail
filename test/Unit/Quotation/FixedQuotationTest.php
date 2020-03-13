@@ -17,7 +17,7 @@ final class FixedQuotationTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_quotes_other_message_body_collections()
+    public function it_quotes_other_message_body_collections(): void
     {
         $quotation = new FixedQuotation();
 
@@ -42,7 +42,7 @@ final class FixedQuotationTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_quotes_already_quoted_other_message_body_collections()
+    public function it_quotes_already_quoted_other_message_body_collections(): void
     {
         $quotation = new FixedQuotation();
 
@@ -77,7 +77,7 @@ final class FixedQuotationTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_quotes_text_only()
+    public function it_quotes_text_only(): void
     {
         $quotation = new FixedQuotation();
 
@@ -97,7 +97,7 @@ final class FixedQuotationTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_quotes_deep_text()
+    public function it_quotes_deep_text(): void
     {
         $quotation = new FixedQuotation();
 

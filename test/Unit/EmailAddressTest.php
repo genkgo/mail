@@ -12,7 +12,7 @@ final class EmailAddressTest extends AbstractTestCase
      * @test
      * @dataProvider provideAddresses
      */
-    public function it_validates_addresses(string $address, bool $expected, $localPart, $domain)
+    public function it_validates_addresses(string $address, bool $expected, $localPart, $domain): void
     {
         if ($expected) {
             $address = new EmailAddress($address);
@@ -28,7 +28,7 @@ final class EmailAddressTest extends AbstractTestCase
     /**
      * @return array
      */
-    public function provideAddresses()
+    public function provideAddresses(): array
     {
         return [
             ['local-part@domain.com', true, 'local-part', 'domain.com'],
@@ -52,7 +52,7 @@ final class EmailAddressTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_can_be_constructed_with_a_multi_byte_name_leading_to_new_line_in_single_byte()
+    public function it_can_be_constructed_with_a_multi_byte_name_leading_to_new_line_in_single_byte(): void
     {
         $address = new EmailAddress('Миха@domain.com');
         $this->assertEquals('Миха@domain.com', (string)$address);
@@ -61,7 +61,7 @@ final class EmailAddressTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_is_equal_when_it_has_same_value()
+    public function it_is_equal_when_it_has_same_value(): void
     {
         $address = new EmailAddress('me@example.com');
 
@@ -81,7 +81,7 @@ final class EmailAddressTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_puny_codes_local_part_and_domain()
+    public function it_puny_codes_local_part_and_domain(): void
     {
         $address = new EmailAddress('münchen@münchen.com');
 

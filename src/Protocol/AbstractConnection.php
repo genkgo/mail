@@ -21,7 +21,7 @@ abstract class AbstractConnection implements ConnectionInterface
     protected $resource;
 
     /**
-     * @var array
+     * @var array<string, array<int, \Closure>>
      */
     private $listeners = [
         'connect' => []
@@ -70,7 +70,7 @@ abstract class AbstractConnection implements ConnectionInterface
      */
     final public function timeout(float $timeout): void
     {
-        \stream_set_timeout($this->resource, $timeout);
+        \stream_set_timeout($this->verifyConnection(), (int)$timeout);
     }
 
     /**
@@ -80,9 +80,7 @@ abstract class AbstractConnection implements ConnectionInterface
      */
     final public function send(string $request): int
     {
-        $this->verifyConnection();
-
-        $bytesWritten = \fwrite($this->resource, $request);
+        $bytesWritten = \fwrite($this->verifyConnection(), $request);
 
         if ($bytesWritten === false) {
             throw new CannotWriteToStreamException();
@@ -96,9 +94,7 @@ abstract class AbstractConnection implements ConnectionInterface
      */
     final public function receive(): string
     {
-        $this->verifyConnection();
-
-        $response = \fgets($this->resource, self::RECEIVE_BYTES);
+        $response = \fgets($this->verifyConnection(), self::RECEIVE_BYTES);
 
         $this->verifyAlive();
 
@@ -110,18 +106,14 @@ abstract class AbstractConnection implements ConnectionInterface
     }
 
     /**
-     * @param array $keys
-     * @return array
+     * @param array<int, string> $keys
+     * @return array<string, mixed>
      */
     final public function getMetaData(array $keys = []): array
     {
-        $this->verifyConnection();
-        $this->verifyAlive();
+        $resource = $this->verifyAlive();
 
-        $metaData = \stream_get_meta_data($this->resource);
-        if (!$metaData) {
-            return [];
-        }
+        $metaData = \stream_get_meta_data($resource);
 
         $keys = \array_map('strtolower', $keys);
 
@@ -133,17 +125,28 @@ abstract class AbstractConnection implements ConnectionInterface
             ARRAY_FILTER_USE_KEY
         );
     }
-    
+
+    /**
+     * @return resource
+     */
     private function verifyConnection()
     {
         if ($this->resource === null) {
             throw new \UnexpectedValueException('Cannot communicate when there is no connection');
         }
+
+        return $this->resource;
     }
-    
+
+    /**
+     * @return resource
+     * @throws ConnectionClosedException
+     * @throws ConnectionTimeoutException
+     */
     private function verifyAlive()
     {
-        $info = \stream_get_meta_data($this->resource);
+        $resource = $this->verifyConnection();
+        $info = \stream_get_meta_data($resource);
         if ($info['timed_out']) {
             throw new ConnectionTimeoutException('Connection has timed out');
         }
@@ -151,5 +154,7 @@ abstract class AbstractConnection implements ConnectionInterface
         if ($info['eof']) {
             throw new ConnectionClosedException('Connection is gone');
         }
+
+        return $resource;
     }
 }

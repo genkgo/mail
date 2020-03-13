@@ -35,7 +35,7 @@ final class PlainTcpConnectionListener implements ConnectionListenerInterface
      * @param int $port
      * @param float $timeout
      */
-    public function __construct(string $host, int $port, float $timeout = -1)
+    public function __construct(string $host, int $port, float $timeout = -1.0)
     {
         $this->host = $host;
         $this->port = $port;
@@ -71,7 +71,13 @@ final class PlainTcpConnectionListener implements ConnectionListenerInterface
              */
                 public function upgrade(int $type): void
                 {
-                    if (\stream_socket_enable_crypto($this->resource, true, $type) === false) {
+                    if ($this->resource === null) {
+                        throw new \InvalidArgumentException('Cannot upgrade connection, resource not available');
+                    }
+
+                    /** @var int|bool $result */
+                    $result = \stream_socket_enable_crypto($this->resource, true, $type);
+                    if ($result === false) {
                         throw new \InvalidArgumentException('Cannot upgrade connection to requested encryption type');
                     }
                 }
@@ -84,11 +90,17 @@ final class PlainTcpConnectionListener implements ConnectionListenerInterface
     private function validateResource(): void
     {
         if ($this->resource === null) {
-            $this->resource = @\stream_socket_server(
+            $resource = @\stream_socket_server(
                 'tcp://' . $this->host . ':' . $this->port,
                 $errorCode,
                 $errorMessage
             );
+
+            if ($resource === false) {
+                throw new \UnexpectedValueException('Cannot create socket server');
+            }
+
+            $this->resource = $resource;
         }
     }
 }

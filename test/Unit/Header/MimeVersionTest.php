@@ -12,7 +12,7 @@ final class MimeVersionTest extends AbstractTestCase
      * @test
      * @dataProvider provideValues
      */
-    public function it_produces_correct_values($headerName, $headerValue)
+    public function it_produces_correct_values($headerName, $headerValue): void
     {
         $header = new MimeVersion();
         $this->assertEquals($headerName, (string)$header->getName());
@@ -22,7 +22,7 @@ final class MimeVersionTest extends AbstractTestCase
     /**
      * @return array
      */
-    public function provideValues()
+    public function provideValues(): array
     {
         return [
             ['MIME-Version', '1.0'],
