@@ -45,7 +45,11 @@ final class OptimalEncodedHeaderValue
                 $this->encoded = \sprintf('=?%s?B?%s?=', 'UTF-8', (string) $encoded);
                 break;
             case 'quoted-printable':
-                $this->encoded = \sprintf('=?%s?Q?%s?=', 'UTF-8', (string) $encoded);
+                $this->encoded = \str_replace(
+                    self::FOLDING,
+                    '?=' . self::FOLDING . '=?UTF-8?Q?',
+                    \sprintf('=?%s?Q?%s?=', 'UTF-8', (string) $encoded)
+                );
                 break;
             default:
                 throw new \UnexpectedValueException('Unknown encoding ' . $this->encoding);
