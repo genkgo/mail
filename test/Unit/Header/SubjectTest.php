@@ -34,6 +34,18 @@ final class SubjectTest extends AbstractTestCase
     }
 
     /**
+     * @test
+     */
+    public function it_does_not_add_a_space_in_subject(): void
+    {
+        $subject = new Subject('AAAAAAAAAAA - Aaaaaa aaa aaaaaaa: “Aaaa Aaaaaaaaa aaaaa aaaa aaaaaa aaaaaaaaa”');
+        $this->assertEquals(
+            "=?UTF-8?Q?AAAAAAAAAAA - Aaaaaa aaa aaaaaaa: =E2=80=9CAaaa Aaaaaaaaa aaaaa aaa=?=\r\n =?UTF-8?Q?a aaaaaa aaaaaaaaa=E2=80=9D?=",
+            (string)$subject->getValue()
+        );
+    }
+
+    /**
      * @return array
      */
     public function provideValues(): array
