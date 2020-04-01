@@ -9,6 +9,42 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 
 
+## [2.6.0] - 2020-04-01
+
+### Added
+
+- Added PsrLogExceptionTransport
+
+### Changed
+
+- Upgraded PHPStan to version 0.12, various fixes 
+
+### Fixed
+
+- Fix space showing up in subject words due message folding (#66)
+
+
+## [2.5.7] - 2020-03-13
+
+### Fixed
+
+- Supports streams for FilesystemQueue.
+
+
+## [2.5.6] - 2019-12-12
+
+### Fixed
+
+- Fixes address containing quotes on the folded line
+
+
+## [2.5.5] - 2019-12-12
+
+### Fixed
+
+- Fix header value parsing, should remove line separations
+
+
 ## [2.5.4] - 2019-02-18
 
 ### Fixed
