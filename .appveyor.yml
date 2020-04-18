@@ -43,6 +43,7 @@ install:
     - IF %PHP%==1 echo @php %%~dp0composer.phar %%* > composer.bat
     - appveyor-retry appveyor DownloadFile https://getcomposer.org/composer.phar
     - cd c:\projects\php-project-workspace
+    - composer --version
     - composer update --no-progress --profile -n
     - composer show
 
