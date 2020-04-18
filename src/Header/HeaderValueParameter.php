@@ -34,7 +34,8 @@ final class HeaderValueParameter
             throw new \InvalidArgumentException('Parameters contains incorrect name: ' . $name);
         }
 
-        if (\strcspn($value, self::ANY_ASCII_EXCEPT_SPACE_CTL) !== \strlen($value)) {
+        $decoded = \str_replace(OptimalEncodedHeaderValue::FOLDING, '', $value);
+        if (\strcspn($decoded, self::ANY_ASCII_EXCEPT_SPACE_CTL) !== \strlen($decoded)) {
             throw new \InvalidArgumentException('Parameters contains incorrect value: ' . $value);
         }
 

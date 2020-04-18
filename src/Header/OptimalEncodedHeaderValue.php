@@ -8,7 +8,7 @@ use Genkgo\Mail\Stream\OptimalTransferEncodedTextStream;
 
 final class OptimalEncodedHeaderValue
 {
-    private const FOLDING = "\r\n ";
+    public const FOLDING = "\r\n ";
 
     /**
      * @var string
