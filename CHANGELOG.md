@@ -9,6 +9,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 
 
+## [2.6.1] - 2020-04-19
+
+### Fixed
+
+- Fix long attachment filenames (#67)
+
+
 ## [2.6.0] - 2020-04-01
 
 ### Added
