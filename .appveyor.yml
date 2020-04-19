@@ -6,7 +6,7 @@ clone_folder: c:\projects\php-project-workspace
 ## Build matrix for single php version
 environment:
   matrix:
-  - { PHP_VERSION: '7.3.11' }
+  - { PHP_VERSION: '7.3.17' }
 
 ## Cancel all if one fails
 matrix:
@@ -43,6 +43,7 @@ install:
     - IF %PHP%==1 echo @php %%~dp0composer.phar %%* > composer.bat
     - appveyor-retry appveyor DownloadFile https://getcomposer.org/composer.phar
     - cd c:\projects\php-project-workspace
+    - composer --version
     - composer update --no-progress --profile -n
     - composer show
 

@@ -530,4 +530,20 @@ final class MessageBodyCollectionTest extends AbstractTestCase
             $this->replaceBoundaries((string)$body->createMessage())
         );
     }
+
+    /**
+     * @test
+     */
+    public function it_should_accept_an_attachment_with_a_long_filename(): void
+    {
+        $body = (new MessageBodyCollection())
+            ->withAttachment(ResourceAttachment::fromString('test', 'AAAAAAAA-AAAAAAAAAAAA-AAA_AAAA AAAAAAA AAAAA AAAAA AAAAAAAAAAAA AAAAAAAAAAAAAAAAAA.pdf', new ContentType('text/txt')));
+
+        $expectedMessage = \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollection/attachment-long-filename.eml');
+
+        $this->assertSame(
+            $this->replaceBoundaries($expectedMessage),
+            $this->replaceBoundaries((string)$body->createMessage())
+        );
+    }
 }
