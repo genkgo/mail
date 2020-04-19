@@ -6,7 +6,7 @@ clone_folder: c:\projects\php-project-workspace
 ## Build matrix for single php version
 environment:
   matrix:
-  - { PHP_VERSION: '7.3.11' }
+  - { PHP_VERSION: '7.3.17' }
 
 ## Cancel all if one fails
 matrix:
@@ -14,7 +14,7 @@ matrix:
 
 ## Cache composer, chocolatey and php bits
 cache:
-#    - '%LOCALAPPDATA%\Composer\files -> composer.lock'
+    - '%LOCALAPPDATA%\Composer\files -> composer.lock'
     - composer.phar
     - C:\ProgramData\chocolatey\bin -> .appveyor.yml
     - C:\ProgramData\chocolatey\lib -> .appveyor.yml
