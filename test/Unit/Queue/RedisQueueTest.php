@@ -28,7 +28,7 @@ final class RedisQueueTest extends AbstractTestCase
         $client
             ->expects($this->once())
             ->method('__call')
-            ->with('rpush', ['queue', (string)$message]);
+            ->with('rpush', ['queue', [(string)$message]]);
 
         $queue = new RedisQueue($client, 'queue');
         $queue->store($message);
@@ -47,7 +47,7 @@ final class RedisQueueTest extends AbstractTestCase
         $client
             ->expects($this->at(0))
             ->method('__call')
-            ->with('rpush', ['queue', (string)$message]);
+            ->with('rpush', ['queue', [(string)$message]]);
 
         $client
             ->expects($this->at(1))
@@ -79,7 +79,7 @@ final class RedisQueueTest extends AbstractTestCase
         $client
             ->expects($this->at(0))
             ->method('__call')
-            ->with('rpush', ['queue', (string)$message]);
+            ->with('rpush', ['queue', [(string)$message]]);
 
         $client
             ->expects($this->at(1))
@@ -134,7 +134,7 @@ final class RedisQueueTest extends AbstractTestCase
         $this->expectExceptionMessageMatches('/Cannot add message to redis queue/');
 
         $message = $this->createMock(MessageInterface::class);
-        $client = $this->newConnectionExceptionClient('rpush', ['queue', '']);
+        $client = $this->newConnectionExceptionClient('rpush', ['queue', ['']]);
         $queue = new RedisQueue($client, 'queue');
 
         $queue->store($message);
