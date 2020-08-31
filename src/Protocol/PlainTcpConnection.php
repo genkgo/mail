@@ -26,15 +26,22 @@ final class PlainTcpConnection extends AbstractConnection
     private $connectionTimeout;
 
     /**
+     * @var array<string, array<string, mixed>>
+     */
+    private $contextOptions;
+
+    /**
      * @param string $host
      * @param int $port
      * @param float $connectionTimeout
+     * @param array<string, array<string, mixed>> $contextOptions
      */
-    public function __construct(string $host, int $port, float $connectionTimeout = 1.0)
+    public function __construct(string $host, int $port, float $connectionTimeout = 1.0, array $contextOptions = [])
     {
         $this->host = $host;
         $this->port = $port;
         $this->connectionTimeout = $connectionTimeout;
+        $this->contextOptions = $contextOptions;
     }
 
     /**
@@ -49,11 +56,15 @@ final class PlainTcpConnection extends AbstractConnection
     
     public function connect(): void
     {
+        $context = \stream_context_create($this->contextOptions);
+
         $resource = @\stream_socket_client(
             'tcp://' . $this->host . ':' . $this->port,
             $errorCode,
             $errorMessage,
-            $this->connectionTimeout
+            $this->connectionTimeout,
+            \STREAM_CLIENT_CONNECT,
+            $context
         );
 
         if ($resource === false) {
