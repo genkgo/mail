@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Genkgo\Mail\Protocol;
 
+use Genkgo\Mail\Exception\SecureConnectionUpgradeException;
+
 interface ConnectionInterface
 {
     /**
@@ -34,6 +36,7 @@ interface ConnectionInterface
 
     /**
      * @param int $type
+     * @throws SecureConnectionUpgradeException
      */
     public function upgrade(int $type): void;
 

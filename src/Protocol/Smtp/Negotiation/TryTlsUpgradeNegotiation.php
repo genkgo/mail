@@ -5,6 +5,7 @@ namespace Genkgo\Mail\Protocol\Smtp\Negotiation;
 
 use Genkgo\Mail\Exception\AssertionFailedException;
 use Genkgo\Mail\Exception\ConnectionInsecureException;
+use Genkgo\Mail\Exception\SecureConnectionUpgradeException;
 use Genkgo\Mail\Protocol\ConnectionInterface;
 use Genkgo\Mail\Protocol\Smtp\Client;
 use Genkgo\Mail\Protocol\Smtp\NegotiationInterface;
@@ -71,6 +72,9 @@ final class TryTlsUpgradeNegotiation implements NegotiationInterface
             } catch (AssertionFailedException $e) {
                 // apparently HELO OR STARTTLS command is also not implemented
                 // but failure of STARTTLS is allowed
+            } catch (SecureConnectionUpgradeException $e) {
+                // apparently STARTTLS command is implemented
+                // but failed to start a secure connection
             }
         } else {
             $reply->assertCompleted();

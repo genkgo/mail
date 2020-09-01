@@ -45,7 +45,6 @@ final class SubjectTest extends AbstractTestCase
         );
     }
 
-
     /**
      * @test
      */
