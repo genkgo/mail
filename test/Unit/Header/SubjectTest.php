@@ -45,6 +45,22 @@ final class SubjectTest extends AbstractTestCase
         );
     }
 
+
+    /**
+     * @test
+     */
+    public function it_encodes_a_question_mark_with_quoted_printable_encoding(): void
+    {
+        $subject = new Subject(
+            'Aaaaaaaaaaaaaaaaaa én aa aaaa aaaa aaa aaaaaa (aaa)aaaa? Aaaa aaaa aaaaaa!'
+        );
+
+        $this->assertEquals(
+            "=?UTF-8?Q?Aaaaaaaaaaaaaaaaaa =C3=A9n aa aaaa aaaa aaa aaaaaa (aaa)aaaa=3F Aaaa =?=\r\n =?UTF-8?Q?aaaa aaaaaa!?=",
+            (string)$subject->getValue()
+        );
+    }
+
     /**
      * @return array
      */
