@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Genkgo\Mail\Protocol;
 
 use Genkgo\Mail\Exception\ConnectionRefusedException;
+use Genkgo\Mail\Exception\SecureConnectionUpgradeException;
 
 /**
  * @codeCoverageIgnore
@@ -49,8 +50,12 @@ final class PlainTcpConnection extends AbstractConnection
      */
     public function upgrade(int $type): void
     {
-        if ($this->resource === null || \stream_socket_enable_crypto($this->resource, true, $type) === false) {
+        if ($this->resource === null) {
             throw new \InvalidArgumentException('Cannot upgrade connection, resource not available');
+        }
+
+        if (@\stream_socket_enable_crypto($this->resource, true, $type) === false) {
+            throw new SecureConnectionUpgradeException('Failed to upgrade connection to a secure one');
         }
     }
     

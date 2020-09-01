@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Genkgo\Mail\Protocol\Imap\Negotiation;
 
 use Genkgo\Mail\Exception\ConnectionInsecureException;
+use Genkgo\Mail\Exception\SecureConnectionUpgradeException;
 use Genkgo\Mail\Protocol\ConnectionInterface;
 use Genkgo\Mail\Protocol\Imap\Client;
 use Genkgo\Mail\Protocol\Imap\NegotiationInterface;
@@ -59,7 +60,10 @@ final class TryTlsUpgradeNegotiation implements NegotiationInterface
                     ->assertCompletion(CompletionResult::ok())
                     ->assertTagged();
 
-                $this->connection->upgrade($this->crypto);
+                try {
+                    $this->connection->upgrade($this->crypto);
+                } catch (SecureConnectionUpgradeException $e) {
+                }
             }
         }
     }
