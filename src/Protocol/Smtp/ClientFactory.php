@@ -202,6 +202,7 @@ final class ClientFactory
         }
 
         $insecureConnectionAllowed = false;
+        $startTls = true;
         switch ($components['scheme']) {
             case 'smtp':
                 $connection = new PlainTcpConnection(
@@ -220,6 +221,17 @@ final class ClientFactory
                 break;
             case 'smtp-starttls':
                 $insecureConnectionAllowed = true;
+                $startTls = false;
+
+                $connection = new PlainTcpConnection(
+                    $components['host'],
+                    $components['port'] ?? 25
+                );
+                break;
+            case 'smtp+starttls':
+                $insecureConnectionAllowed = true;
+                $startTls = true;
+
                 $connection = new PlainTcpConnection(
                     $components['host'],
                     $components['port'] ?? 25
@@ -253,7 +265,9 @@ final class ClientFactory
             $factory->reconnectAfter = $query['reconnectAfter'];
         }
 
-        if (isset($query['crypto'])) {
+        if (!$startTls) {
+            $factory->startTls = 0;
+        } elseif (isset($query['crypto'])) {
             $factory->startTls = (int)$query['crypto'];
         }
 
