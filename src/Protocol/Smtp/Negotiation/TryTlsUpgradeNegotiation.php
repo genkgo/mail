@@ -11,6 +11,7 @@ use Genkgo\Mail\Protocol\Smtp\Client;
 use Genkgo\Mail\Protocol\Smtp\NegotiationInterface;
 use Genkgo\Mail\Protocol\Smtp\Request\EhloCommand;
 use Genkgo\Mail\Protocol\Smtp\Request\HeloCommand;
+use Genkgo\Mail\Protocol\Smtp\Request\RsetCommand;
 use Genkgo\Mail\Protocol\Smtp\Request\StartTlsCommand;
 use Genkgo\Mail\Protocol\Smtp\Response\EhloResponse;
 
@@ -75,6 +76,9 @@ final class TryTlsUpgradeNegotiation implements NegotiationInterface
             } catch (SecureConnectionUpgradeException $e) {
                 // apparently STARTTLS command is implemented
                 // but failed to start a secure connection
+                $client
+                    ->request(new RsetCommand())
+                    ->assertCompleted();
             }
         } else {
             $reply->assertCompleted();
@@ -90,6 +94,9 @@ final class TryTlsUpgradeNegotiation implements NegotiationInterface
                     $this->connection->upgrade($this->crypto);
                 } catch (SecureConnectionUpgradeException $e) {
                     // failed to start a secure connection
+                    $client
+                        ->request(new RsetCommand())
+                        ->assertCompleted();
                 }
             }
         }
