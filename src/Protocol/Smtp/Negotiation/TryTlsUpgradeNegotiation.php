@@ -86,7 +86,11 @@ final class TryTlsUpgradeNegotiation implements NegotiationInterface
                     ->request(new StartTlsCommand())
                     ->assertCompleted();
 
-                $this->connection->upgrade($this->crypto);
+                try {
+                    $this->connection->upgrade($this->crypto);
+                } catch (SecureConnectionUpgradeException $e) {
+                    // failed to start a secure connection
+                }
             }
         }
     }
