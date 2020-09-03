@@ -10,6 +10,7 @@ use Genkgo\Mail\Protocol\PlainTcpConnection;
 use Genkgo\Mail\Protocol\SecureConnection;
 use Genkgo\Mail\Protocol\SecureConnectionOptions;
 use Genkgo\Mail\Protocol\Smtp\Negotiation\AuthNegotiation;
+use Genkgo\Mail\Protocol\Smtp\Negotiation\EhloOnlyNegotiation;
 use Genkgo\Mail\Protocol\Smtp\Negotiation\ForceTlsUpgradeNegotiation;
 use Genkgo\Mail\Protocol\Smtp\Negotiation\TryTlsUpgradeNegotiation;
 
@@ -150,7 +151,9 @@ final class ClientFactory
     {
         $negotiators = [];
 
-        if ($this->startTls !== 0) {
+        if ($this->startTls === 0 && $this->authMethod === Client::AUTH_NONE) {
+            $negotiators[] = new EhloOnlyNegotiation($this->connection, $this->ehlo);
+        } elseif ($this->startTls !== 0) {
             if ($this->insecureConnectionAllowed) {
                 $negotiators[] = new TryTlsUpgradeNegotiation(
                     $this->connection,
