@@ -91,7 +91,7 @@ final class ClientFactoryTest extends AbstractTestCase
         $this->assertFalse($connection->getMetaData()['auth']['state']);
 
         $this->assertEquals(
-            FakeSmtpConnection::STATE_CONNECTED,
+            FakeSmtpConnection::STATE_EHLO,
             $connection->getMetaData()['state']
         );
     }

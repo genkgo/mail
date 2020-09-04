@@ -23,12 +23,9 @@ final class EhloOnlyNegotiation implements NegotiationInterface
     /**
      * @param ConnectionInterface $connection
      * @param string $ehlo
-     * @param int $crypto
      */
-    public function __construct(
-        ConnectionInterface $connection,
-        string $ehlo
-    ) {
+    public function __construct(ConnectionInterface $connection, string $ehlo)
+    {
         $this->connection = $connection;
         $this->ehlo = $ehlo;
     }
