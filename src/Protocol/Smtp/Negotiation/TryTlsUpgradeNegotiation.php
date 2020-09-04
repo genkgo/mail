@@ -73,12 +73,6 @@ final class TryTlsUpgradeNegotiation implements NegotiationInterface
             } catch (AssertionFailedException $e) {
                 // apparently HELO OR STARTTLS command is also not implemented
                 // but failure of STARTTLS is allowed
-            } catch (SecureConnectionUpgradeException $e) {
-                // apparently STARTTLS command is implemented
-                // but failed to start a secure connection
-                $client
-                    ->request(new RsetCommand())
-                    ->assertCompleted();
             }
         } else {
             $reply->assertCompleted();
@@ -90,14 +84,7 @@ final class TryTlsUpgradeNegotiation implements NegotiationInterface
                     ->request(new StartTlsCommand())
                     ->assertCompleted();
 
-                try {
-                    $this->connection->upgrade($this->crypto);
-                } catch (SecureConnectionUpgradeException $e) {
-                    // failed to start a secure connection
-                    $client
-                        ->request(new RsetCommand())
-                        ->assertCompleted();
-                }
+                $this->connection->upgrade($this->crypto);
             }
         }
     }
