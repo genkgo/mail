@@ -54,7 +54,7 @@ final class FlagsItem implements ItemInterface
      */
     public function getName(): string
     {
-        return $this->operator . $this->silent ? 'FLAGS.SILENT' : 'FLAGS';
+        return $this->operator . ($this->silent ? 'FLAGS.SILENT' : 'FLAGS');
     }
 
     /**
@@ -79,5 +79,58 @@ final class FlagsItem implements ItemInterface
         $bodySection = new self($flagParenthesizedList, $operator);
         $bodySection->silent = true;
         return $bodySection;
+    }
+
+    /**
+     * @param string $list
+     * @return FlagsItem
+     */
+    public static function fromString(string $list): self
+    {
+        if ($list === '') {
+            throw new \InvalidArgumentException('Cannot parse empty string');
+        }
+
+        $silent = false;
+        $operator = self::OPERATOR_REPLACE;
+        $flagStringList = [];
+
+        if (isset(self::OPERATORS[$list[0]])) {
+            $operator = $list[0];
+            $list = \substr($list, 1);
+        }
+
+        $index = 0;
+        $sequence = '';
+
+        while (isset($list[$index])) {
+            $char = $list[$index];
+            $sequence .= $char;
+
+            switch ($char) {
+                case ' ':
+                    $sequence = \trim($sequence);
+
+                    if ($sequence === 'FLAGS.SILENT') {
+                        $silent = true;
+                    } elseif ($sequence !== 'FLAGS') {
+                        throw new \UnexpectedValueException('Only expecting FLAGS or FLAGS.SILENT');
+                    }
+
+                    $sequence = '';
+                    break;
+                case '(':
+                    $flagStringList = \explode(' ', \substr($list, $index + 1, -1));
+                    break 2;
+            }
+
+            $index++;
+        }
+
+        if ($silent) {
+            return self::silent(new FlagParenthesizedList($flagStringList), $operator);
+        }
+
+        return new self(new FlagParenthesizedList($flagStringList), $operator);
     }
 }
