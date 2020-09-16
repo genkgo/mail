@@ -40,7 +40,7 @@ final class SubjectTest extends AbstractTestCase
     {
         $subject = new Subject('AAAAAAAAAAA - Aaaaaa aaa aaaaaaa: “Aaaa Aaaaaaaaa aaaaa aaaa aaaaaa aaaaaaaaa”');
         $this->assertEquals(
-            "=?UTF-8?Q?AAAAAAAAAAA_-_Aaaaaa_aaa_aaaaaaa:_=E2=80=9CAaaa_Aaaaaaaaa_aaaaa_aaa=?=\r\n =?UTF-8?Q?a_aaaaaa_aaaaaaaaa=E2=80=9D?=",
+            "=?UTF-8?Q?AAAAAAAAAAA_-_Aaaaaa_aaa_aaaaaaa:_=E2=80=9CAaaa_Aaaaaaaaa_aaaaa_aaa?=\r\n =?UTF-8?Q?a_aaaaaa_aaaaaaaaa=E2=80=9D?=",
             (string)$subject->getValue()
         );
     }
@@ -55,7 +55,7 @@ final class SubjectTest extends AbstractTestCase
         );
 
         $this->assertEquals(
-            "=?UTF-8?Q?Aaaaaaaaaaaaaaaaaa_=C3=A9n_aa_aaaa_aaaa_aaa_aaaaaa_(aaa)aaaa=3F_Aaaa_=?=\r\n =?UTF-8?Q?aaaa_aaaaaa!?=",
+            "=?UTF-8?Q?Aaaaaaaaaaaaaaaaaa_=C3=A9n_aa_aaaa_aaaa_aaa_aaaaaa_(aaa)aaaa=3F_Aaaa_?=\r\n =?UTF-8?Q?aaaa_aaaaaa!?=",
             (string)$subject->getValue()
         );
     }
@@ -70,7 +70,7 @@ final class SubjectTest extends AbstractTestCase
         );
 
         $this->assertEquals(
-            "=?UTF-8?Q?Aaaaaaaaaaaaaaaaaa_=C3=A9n_=5F_aa_aaaa_aaaa_aaa_aaaaaa_(aaa)aaaa=3F_Aaa=?=\r\n =?UTF-8?Q?a_aaaa_aaaaaa!?=",
+            "=?UTF-8?Q?Aaaaaaaaaaaaaaaaaa_=C3=A9n_=5F_aa_aaaa_aaaa_aaa_aaaaaa_(aaa)aaaa=3F_Aaa?=\r\n =?UTF-8?Q?a_aaaa_aaaaaa!?=",
             (string)$subject->getValue()
         );
     }

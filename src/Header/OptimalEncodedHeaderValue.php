@@ -46,7 +46,7 @@ final class OptimalEncodedHeaderValue
                 break;
             case 'quoted-printable':
                 $this->encoded = \str_replace(
-                    self::FOLDING,
+                    '=' . self::FOLDING,
                     '?=' . self::FOLDING . '=?UTF-8?Q?',
                     \sprintf('=?%s?Q?%s?=', 'UTF-8', \preg_replace(['/\?/', '/_/', '/(?<!^) /m'], ['=3F', '=5F', '_'], (string) $encoded))
                 );
