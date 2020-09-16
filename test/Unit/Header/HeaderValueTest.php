@@ -47,7 +47,7 @@ final class HeaderValueTest extends AbstractTestCase
             [
                 'Subject with not so many characters ë',
                 true,
-                "=?UTF-8?Q?Subject with not so many characters =C3=AB?="
+                "=?UTF-8?Q?Subject_with_not_so_many_characters_=C3=AB?="
             ],
         ];
     }

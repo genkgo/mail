@@ -40,7 +40,7 @@ final class SubjectTest extends AbstractTestCase
     {
         $subject = new Subject('AAAAAAAAAAA - Aaaaaa aaa aaaaaaa: “Aaaa Aaaaaaaaa aaaaa aaaa aaaaaa aaaaaaaaa”');
         $this->assertEquals(
-            "=?UTF-8?Q?AAAAAAAAAAA - Aaaaaa aaa aaaaaaa: =E2=80=9CAaaa Aaaaaaaaa aaaaa aaa=?=\r\n =?UTF-8?Q?a aaaaaa aaaaaaaaa=E2=80=9D?=",
+            "=?UTF-8?Q?AAAAAAAAAAA_-_Aaaaaa_aaa_aaaaaaa:_=E2=80=9CAaaa_Aaaaaaaaa_aaaaa_aaa=?=\r\n =?UTF-8?Q?a_aaaaaa_aaaaaaaaa=E2=80=9D?=",
             (string)$subject->getValue()
         );
     }
@@ -48,14 +48,29 @@ final class SubjectTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_encodes_a_question_mark_with_quoted_printable_encoding(): void
+    public function it_encodes_a_question_mark_and_spaces_as_underscore_with_quoted_printable_encoding(): void
     {
         $subject = new Subject(
             'Aaaaaaaaaaaaaaaaaa én aa aaaa aaaa aaa aaaaaa (aaa)aaaa? Aaaa aaaa aaaaaa!'
         );
 
         $this->assertEquals(
-            "=?UTF-8?Q?Aaaaaaaaaaaaaaaaaa =C3=A9n aa aaaa aaaa aaa aaaaaa (aaa)aaaa=3F Aaaa =?=\r\n =?UTF-8?Q?aaaa aaaaaa!?=",
+            "=?UTF-8?Q?Aaaaaaaaaaaaaaaaaa_=C3=A9n_aa_aaaa_aaaa_aaa_aaaaaa_(aaa)aaaa=3F_Aaaa_=?=\r\n =?UTF-8?Q?aaaa_aaaaaa!?=",
+            (string)$subject->getValue()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_encodes_underscores_with_quoted_printable_encoding(): void
+    {
+        $subject = new Subject(
+            'Aaaaaaaaaaaaaaaaaa én _ aa aaaa aaaa aaa aaaaaa (aaa)aaaa? Aaaa aaaa aaaaaa!'
+        );
+
+        $this->assertEquals(
+            "=?UTF-8?Q?Aaaaaaaaaaaaaaaaaa_=C3=A9n_=5F_aa_aaaa_aaaa_aaa_aaaaaa_(aaa)aaaa=3F_Aaa=?=\r\n =?UTF-8?Q?a_aaaa_aaaaaa!?=",
             (string)$subject->getValue()
         );
     }
