@@ -48,7 +48,7 @@ final class OptimalEncodedHeaderValue
                 $this->encoded = \str_replace(
                     self::FOLDING,
                     '?=' . self::FOLDING . '=?UTF-8?Q?',
-                    \sprintf('=?%s?Q?%s?=', 'UTF-8', \str_replace('?', '=3F', (string) $encoded))
+                    \sprintf('=?%s?Q?%s?=', 'UTF-8', \preg_replace(['/\?/', '/_/', '/(?<!^) /m'], ['=3F', '=5F', '_'], (string) $encoded))
                 );
                 break;
             default:
