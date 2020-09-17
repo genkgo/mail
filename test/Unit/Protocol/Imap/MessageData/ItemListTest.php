@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Genkgo\TestMail\Unit\Protocol\Imap\MessageData;
 
+use Genkgo\Mail\Protocol\Imap\MessageData\Item\FlagsItem;
 use Genkgo\Mail\Protocol\Imap\MessageData\Item\NameItem;
 use Genkgo\Mail\Protocol\Imap\MessageData\Item\PartialItem;
 use Genkgo\Mail\Protocol\Imap\MessageData\ItemList;
@@ -188,6 +189,18 @@ final class ItemListTest extends AbstractTestCase
     {
         $itemList = ItemList::fromString('BODY[]<0.100>');
         $this->assertInstanceOf(PartialItem::class, $itemList->getItem('BODY'));
+        $this->assertSame('BODY[]<0.100>', (string)$itemList->getItem('BODY'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_parses_flags_body_partial(): void
+    {
+        $itemList = ItemList::fromString('FLAGS (\Seen \Recent) BODY[]<0.100>');
+        $this->assertInstanceOf(FlagsItem::class, $itemList->getItem('FLAGS'));
+        $this->assertInstanceOf(PartialItem::class, $itemList->getItem('BODY'));
+        $this->assertSame('FLAGS (\Seen \Recent)', (string)$itemList->getItem('FLAGS'));
         $this->assertSame('BODY[]<0.100>', (string)$itemList->getItem('BODY'));
     }
 

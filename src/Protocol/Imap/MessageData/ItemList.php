@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Genkgo\Mail\Protocol\Imap\MessageData;
 
+use Genkgo\Mail\Protocol\Imap\FlagParenthesizedList;
+use Genkgo\Mail\Protocol\Imap\MessageData\Item\FlagsItem;
 use Genkgo\Mail\Protocol\Imap\MessageData\Item\NameItem;
 use Genkgo\Mail\Protocol\Imap\MessageData\Item\PartialItem;
 use Genkgo\Mail\Protocol\Imap\MessageData\Item\SectionItem;
@@ -10,14 +12,16 @@ use Genkgo\Mail\Protocol\Imap\MessageData\Item\SectionItem;
 final class ItemList
 {
     private const STATE_NONE = 0;
-    
+
     private const STATE_NAME = 1;
-    
+
     private const STATE_SECTION = 2;
-    
+
     private const STATE_PARTIAL = 3;
-    
+
     private const STATE_OCTET = 4;
+
+    private const STATE_FLAGS = 5;
 
     /**
      * @var array<string, ItemInterface>
@@ -167,8 +171,28 @@ final class ItemList
             $sequence .= $char;
 
             switch ($char) {
+                case '(':
+                    $sequence = '';
+                    if ($state === self::STATE_NONE) {
+                        $lastKey = \array_key_last($list->list);
+                        $sequence .= $list->list[$lastKey]->getName() . ' ';
+                        unset($list->list[$lastKey]);
+                    }
+
+                    $sequence .= '(';
+                    $state = self::STATE_FLAGS;
+                    break;
+                case ')':
+                    if ($state !== self::STATE_FLAGS) {
+                        throw new \InvalidArgumentException('Invalid character ) found');
+                    }
+
+                    $list = $list->withItem(FlagsItem::fromString($sequence));
+                    $sequence = '';
+                    $state = self::STATE_NAME;
+                    break;
                 case '[':
-                    if ($state !== self::STATE_NAME) {
+                    if ($state !== self::STATE_NAME && $state !== self::STATE_NONE) {
                         throw new \InvalidArgumentException('Invalid character [ found');
                     }
 
