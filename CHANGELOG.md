@@ -10,6 +10,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 
 
+## [2.7.1] - 2020-09-17
+
+### Fixed
+
+- Parsing headers with semiscolon that are unstructured, like a received header
+
+
 ## [2.7.0] - 2020-09-17
 
 ### Fixed
