@@ -73,4 +73,16 @@ final class HeaderLineTest extends AbstractTestCase
         $this->expectException(\InvalidArgumentException::class);
         HeaderLine::fromString('test');
     }
+
+    /**
+     * @test
+     */
+    public function it_parses_a_received_header(): void
+    {
+        $line = HeaderLine::fromString("Received: from [000.000.000.00] (helo=[000.000.00.00]) by aaaa.aaaa.aaaaaa.aaa\r\n with esmtpsa (TLSv1.3:TLS_AES_128_GCM_SHA256:128) (aaaa 0.00)\r\n (envelope-from <aaaaaaa@aaaaaa.aa>) id aaaaaa-000000-AA for\r\n aaaaaaa@aaaaaa.aa; Thu, 17 Sep 2020 09:22:46 +0000");
+        $this->assertEquals(
+            "from [000.000.000.00] (helo=[000.000.00.00]) by aaaa.aaaa.aaaaaa.aaa\r\n with esmtpsa (TLSv1.3:TLS_AES_128_GCM_SHA256:128) (aaaa 0.00)\r\n (envelope-from <aaaaaaa@aaaaaa.aa>) id aaaaaa-000000-AA for\r\n aaaaaaa@aaaaaa.aa; Thu, 17 Sep 2020 09:22:46 +0000",
+            (string)$line->getHeader()->getValue()
+        );
+    }
 }
