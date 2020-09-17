@@ -156,7 +156,7 @@ final class HeaderValue
     {
         $values = [];
 
-        $headerValueAsString = \str_replace("\r\n ", '', \trim($headerValueAsString));
+        $headerValueAsString = \str_replace("\r\n ", ' ', \trim($headerValueAsString));
 
         $length = \strlen($headerValueAsString) - 1;
         $n = -1;
@@ -204,14 +204,19 @@ final class HeaderValue
 
         $values[] = \trim($sequence);
 
-        $headerValue = new self($values[0]);
+        $primaryValue = $values[0];
 
         $parameters = [];
         foreach (\array_slice($values, 1) as $parameterString) {
-            $parameter = HeaderValueParameter::fromString($parameterString);
-            $parameters[$parameter->getName()] = $parameter;
+            try {
+                $parameter = HeaderValueParameter::fromString($parameterString);
+                $parameters[$parameter->getName()] = $parameter;
+            } catch (\InvalidArgumentException $e) {
+                $primaryValue .= '; ' . $parameterString;
+            }
         }
 
+        $headerValue = new self($primaryValue);
         $headerValue->parameters = $parameters;
         return $headerValue;
     }

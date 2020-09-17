@@ -119,7 +119,7 @@ final class HeaderValueTest extends AbstractTestCase
         $header1 = HeaderValue::fromString("Name \"Quoted Name\"\r\n <name@domain.com>");
         $header2 = HeaderValue::fromString("Name \"Quoted Name\"\r\n  <name@domain.com>");
 
-        $this->assertEquals('Name "Quoted Name"<name@domain.com>', $header1->getRaw());
-        $this->assertEquals('Name "Quoted Name" <name@domain.com>', $header2->getRaw());
+        $this->assertEquals('Name "Quoted Name" <name@domain.com>', $header1->getRaw());
+        $this->assertEquals('Name "Quoted Name"  <name@domain.com>', $header2->getRaw());
     }
 }
