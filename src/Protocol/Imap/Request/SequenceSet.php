@@ -80,6 +80,17 @@ final class SequenceSet
     }
 
     /**
+     * @param array<int, int> $numbers
+     * @return SequenceSet
+     */
+    public static function multiple(array $numbers): self
+    {
+        $set = new self();
+        $set->set = \array_map('strval', $numbers);
+        return $set;
+    }
+
+    /**
      * @param int $first
      * @param int $last
      * @return SequenceSet
