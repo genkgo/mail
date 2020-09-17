@@ -9,6 +9,59 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 
 
+
+## [2.7.0] - 2020-09-17
+
+### Fixed
+
+- When decoding a quoted message, the mime parts might require transfer decoding
+- Error when quoting a HTML message without a body t
+
+### Added
+
+- IMAP MOVE command
+
+
+## [2.6.6] - 2020-09-16
+
+### Fixed
+
+- Another Hotmail subject header fix
+
+
+## [2.6.5] - 2020-09-16
+
+### Fixed
+
+- Fix q encoding subject header for Hotmail
+
+
+## [2.6.4] - 2020-09-04
+
+### Fixed
+
+- Use smtp-starttls to completely disable starttls and use smtp+starttls to try upgrading to secure connection when advertised or when using legacy helo.
+
+
+## [2.6.3] - 2020-09-03
+
+### Fixed
+
+- Fix for missing try/catch
+
+
+## [2.6.2] - 2020-09-01
+
+### Fixed
+
+- Allow failure STARTTLS when using TryTls
+- Fix question mark in quoted printable encoded headers
+
+### Added
+
+- Context options to PlainTcpConnection
+
+
 ## [2.6.1] - 2020-04-19
 
 ### Fixed
