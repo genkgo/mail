@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Genkgo\Mail\Protocol\Imap\MessageData\Item;
 
+use Genkgo\Mail\Protocol\Imap\Flag;
 use Genkgo\Mail\Protocol\Imap\FlagParenthesizedList;
 use Genkgo\Mail\Protocol\Imap\MessageData\ItemInterface;
 
@@ -93,7 +94,7 @@ final class FlagsItem implements ItemInterface
 
         $silent = false;
         $operator = self::OPERATOR_REPLACE;
-        $flagStringList = [];
+        $flagList = [];
 
         if (isset(self::OPERATORS[$list[0]])) {
             $operator = $list[0];
@@ -120,7 +121,12 @@ final class FlagsItem implements ItemInterface
                     $sequence = '';
                     break;
                 case '(':
-                    $flagStringList = \explode(' ', \substr($list, $index + 1, -1));
+                    $flagList = \array_map(
+                        function (string $flagString) {
+                            return new Flag($flagString);
+                        },
+                        \explode(' ', \substr($list, $index + 1, -1))
+                    );
                     break 2;
             }
 
@@ -128,9 +134,9 @@ final class FlagsItem implements ItemInterface
         }
 
         if ($silent) {
-            return self::silent(new FlagParenthesizedList($flagStringList), $operator);
+            return self::silent(new FlagParenthesizedList($flagList), $operator);
         }
 
-        return new self(new FlagParenthesizedList($flagStringList), $operator);
+        return new self(new FlagParenthesizedList($flagList), $operator);
     }
 }
