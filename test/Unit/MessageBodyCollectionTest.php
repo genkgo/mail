@@ -459,17 +459,38 @@ final class MessageBodyCollectionTest extends AbstractTestCase
     public function it_creates_reply_headers(): void
     {
         $messageId = MessageId::newRandom('domain');
+        $subject = new Subject('Some Value');
 
         $message = (new GenericMessage())
-            ->withHeader($messageId);
+            ->withHeader($messageId)
+            ->withHeader($subject);
 
         $body = new MessageBodyCollection();
         $reply = $body->inReplyTo($message);
 
         $this->assertTrue($reply->hasHeader('In-Reply-To'));
         $this->assertTrue($reply->hasHeader('References'));
+        $this->assertTrue($reply->hasHeader('Subject'));
         $this->assertSame((string)$messageId->getValue(), (string)$reply->getHeader('References')[0]->getValue());
         $this->assertSame((string)$messageId->getValue(), (string)$reply->getHeader('In-Reply-To')[0]->getValue());
+        $this->assertSame('Re: Some Value', (string)$reply->getHeader('Subject')[0]->getValue());
+    }
+
+    /**
+     * @test
+     */
+    public function it_adds_re_to_subject_only_when_needed(): void
+    {
+        $subject = new Subject('Re: Some Value');
+
+        $message = (new GenericMessage())
+            ->withHeader($subject);
+
+        $body = new MessageBodyCollection();
+        $reply = $body->inReplyTo($message);
+
+        $this->assertTrue($reply->hasHeader('Subject'));
+        $this->assertSame('Re: Some Value', (string)$reply->getHeader('Subject')[0]->getValue());
     }
 
     /**
