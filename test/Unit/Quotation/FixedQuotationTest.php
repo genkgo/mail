@@ -30,7 +30,7 @@ final class FixedQuotationTest extends AbstractTestCase
         );
 
         $this->assertSame(
-            \file_get_contents(__DIR__ . '/../../Stub/Quote/html-and-text-quoted.html'),
+            \trim(\file_get_contents(__DIR__ . '/../../Stub/Quote/html-and-text-quoted.html')),
             $quotation->quote($reply, $original)->getHtml()
         );
         $this->assertSame(
@@ -111,6 +111,52 @@ final class FixedQuotationTest extends AbstractTestCase
         $this->assertSame(
             \file_get_contents(__DIR__ . '/../../Stub/Quote/deep-text-quoted.crlf.txt'),
             (string)$quotation->quote($reply, $original)->getText()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_quotes_without_body_element(): void
+    {
+        $quotation = new FixedQuotation();
+
+        $original = GenericMessage::fromString(
+            \file_get_contents(__DIR__ . '/../../Stub/Quote/no-body-tag.eml')
+        );
+
+        $reply = new MessageBodyCollection(
+            '<p>Hello Universe</p>'
+        );
+
+        $this->assertSame(
+            \trim(\file_get_contents(__DIR__ . '/../../Stub/Quote/no-body-tag-quoted.html')),
+            $quotation->quote($reply, $original)->getHtml()
+        );
+        $this->assertSame(
+            \file_get_contents(__DIR__ . '/../../Stub/Quote/no-body-tag-quoted.crlf.txt'),
+            (string)$quotation->quote($reply, $original)->getText()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_quotes_base64_content(): void
+    {
+        $quotation = new FixedQuotation();
+
+        $original = GenericMessage::fromString(
+            \file_get_contents(__DIR__ . '/../../Stub/Quote/base64.eml')
+        );
+
+        $reply = new MessageBodyCollection(
+            '<p>Hello Universe</p>'
+        );
+
+        $this->assertSame(
+            $this->replaceBoundaries(\file_get_contents(__DIR__ . '/../../Stub/Quote/base64-quoted.eml')),
+            $this->replaceBoundaries((string)$quotation->quote($reply, $original)->createMessage())
         );
     }
 }

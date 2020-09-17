@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Genkgo\Mail;
 
 use Genkgo\Mail\Header\Cc;
+use Genkgo\Mail\Header\ContentTransferEncoding;
 use Genkgo\Mail\Header\ContentType;
 use Genkgo\Mail\Header\GenericHeader;
 use Genkgo\Mail\Header\HeaderName;
@@ -18,6 +19,8 @@ use Genkgo\Mail\Mime\MultiPartInterface;
 use Genkgo\Mail\Mime\PartInterface;
 use Genkgo\Mail\Mime\PlainTextPart;
 use Genkgo\Mail\Mime\ResourceAttachment;
+use Genkgo\Mail\Stream\Base64DecodedStream;
+use Genkgo\Mail\Stream\QuotedPrintableDecodedStream;
 
 final class MessageBodyCollection
 {
@@ -334,11 +337,13 @@ final class MessageBodyCollection
             foreach ($message->getHeader('Content-Type') as $header) {
                 $contentType = $header->getValue()->getRaw();
                 if ($contentType === 'text/html') {
-                    $collection->html = \rtrim((string)$message->getBody());
+                    $collection->html = \rtrim((string)self::decodeMessageBody($message));
                 }
 
                 if ($contentType === 'text/plain') {
-                    $collection->text = new AlternativeText(\rtrim((string)$message->getBody()));
+                    $collection->text = new AlternativeText(
+                        \rtrim((string)self::decodeMessageBody($message))
+                    );
                 }
             }
         }
@@ -356,12 +361,12 @@ final class MessageBodyCollection
             $hasDisposition = $part->hasHeader('Content-Disposition');
 
             if (!$hasDisposition && $contentType === 'text/html') {
-                $this->html = (string)$part->getBody();
+                $this->html = (string)$this->decodeBodyPart($part);
                 continue;
             }
 
             if (!$hasDisposition && $contentType === 'text/plain') {
-                $this->text = new AlternativeText((string)$part->getBody());
+                $this->text = new AlternativeText((string)$this->decodeBodyPart($part));
                 continue;
             }
 
@@ -437,5 +442,57 @@ final class MessageBodyCollection
         }
 
         return $reply;
+    }
+
+    /**
+     * @param PartInterface $part
+     * @return StreamInterface
+     */
+    private static function decodeBodyPart(PartInterface $part): StreamInterface
+    {
+        if (!$part->hasHeader('Content-Transfer-Encoding')) {
+            return $part->getBody();
+        }
+
+        $encoding = $part->getHeader('Content-Transfer-Encoding')->getValue();
+        switch ($encoding) {
+            case 'quoted-printable':
+                return QuotedPrintableDecodedStream::fromString((string)$part->getBody());
+            case 'base64':
+                return Base64DecodedStream::fromString((string)$part->getBody());
+            case '7bit':
+            case '8bit':
+                return $part->getBody();
+            default:
+                throw new \UnexpectedValueException(
+                    'Cannot decode body of mime part, unknown transfer encoding ' . $encoding
+                );
+        }
+    }
+
+    /**
+     * @param MessageInterface $message
+     * @return StreamInterface
+     */
+    private static function decodeMessageBody(MessageInterface $message): StreamInterface
+    {
+        foreach ($message->getHeader('Content-Transfer-Encoding') as $header) {
+            $encoding = $header->getValue();
+            switch ($encoding) {
+                case 'quoted-printable':
+                    return QuotedPrintableDecodedStream::fromString((string)$message->getBody());
+                case 'base64':
+                    return Base64DecodedStream::fromString((string)$message->getBody());
+                case '7bit':
+                case '8bit':
+                    return $message->getBody();
+                default:
+                    throw new \UnexpectedValueException(
+                        'Cannot decode message body, unknown transfer encoding ' . $encoding
+                    );
+            }
+        }
+
+        return $message->getBody();
     }
 }

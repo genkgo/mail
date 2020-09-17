@@ -6,7 +6,7 @@ namespace Genkgo\TestMail\Unit\Stream;
 use Genkgo\TestMail\AbstractTestCase;
 use Genkgo\Mail\Stream\Base64EncodedStream;
 
-final class Base64StreamTest extends AbstractTestCase
+final class Base64EncodedStreamTest extends AbstractTestCase
 {
     /**
      * @test
