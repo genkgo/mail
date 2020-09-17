@@ -171,7 +171,7 @@ final class FixedQuotation implements QuotationInterface
             $body = $document->createElement('body');
             $html->appendChild($body);
             $body->appendChild($document->documentElement);
-            if ($document->documentElement) {
+            if ($document->documentElement instanceof \DOMElement) {
                 $document->removeChild($document->documentElement);
             }
             $document->appendChild($html);

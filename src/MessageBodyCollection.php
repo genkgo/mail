@@ -476,23 +476,23 @@ final class MessageBodyCollection
      */
     private static function decodeMessageBody(MessageInterface $message): StreamInterface
     {
-        if (!$message->hasHeader('Content-Transfer-Encoding')) {
-            return $message->getBody();
+        foreach ($message->getHeader('Content-Transfer-Encoding') as $header) {
+            $encoding = $header->getValue();
+            switch ($encoding) {
+                case 'quoted-printable':
+                    return QuotedPrintableDecodedStream::fromString((string)$message->getBody());
+                case 'base64':
+                    return Base64DecodedStream::fromString((string)$message->getBody());
+                case '7bit':
+                case '8bit':
+                    return $message->getBody();
+                default:
+                    throw new \UnexpectedValueException(
+                        'Cannot decode message body, unknown transfer encoding ' . $encoding
+                    );
+            }
         }
 
-        $encoding = $message->getHeader('Content-Transfer-Encoding')[0]->getValue();
-        switch ($encoding) {
-            case 'quoted-printable':
-                return QuotedPrintableDecodedStream::fromString((string)$message->getBody());
-            case 'base64':
-                return Base64DecodedStream::fromString((string)$message->getBody());
-            case '7bit':
-            case '8bit':
-                return $message->getBody();
-            default:
-                throw new \UnexpectedValueException(
-                    'Cannot decode message body, unknown transfer encoding ' . $encoding
-                );
-        }
+        return $message->getBody();
     }
 }
