@@ -240,9 +240,15 @@ final class MessageBodyCollection
      */
     private function newReply(MessageInterface $originalMessage, array $replyRecipientHeaderNames): MessageInterface
     {
+        $extractedSubject = $this->extractSubject($originalMessage);
+
         $reply = $this
             ->createReferencedMessage($originalMessage)
-            ->withHeader(new Subject('Re: ' . $this->extractSubject($originalMessage)));
+            ->withHeader(
+                new Subject(
+                    \substr($extractedSubject, 0, 3) === 'Re:' ? $extractedSubject : 'Re: ' . $extractedSubject
+                )
+            );
 
         foreach ($replyRecipientHeaderNames as $replyRecipientHeaderName) {
             foreach ($originalMessage->getHeader($replyRecipientHeaderName) as $recipientHeader) {
@@ -259,9 +265,15 @@ final class MessageBodyCollection
      */
     public function asForwardTo(MessageInterface $originalMessage): MessageInterface
     {
+        $extractedSubject = $this->extractSubject($originalMessage);
+
         return $this
             ->createReferencedMessage($originalMessage)
-            ->withHeader(new Subject('Fwd: ' . $this->extractSubject($originalMessage)));
+            ->withHeader(
+                new Subject(
+                    \substr($extractedSubject, 0, 4) === 'Fwd:' ? $extractedSubject : 'Fwd: ' . $extractedSubject
+                )
+            );
     }
 
     /**
