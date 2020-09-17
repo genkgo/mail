@@ -496,6 +496,40 @@ final class MessageBodyCollectionTest extends AbstractTestCase
     /**
      * @test
      */
+    public function it_adds_fwd_to_subject(): void
+    {
+        $subject = new Subject('Some Value');
+
+        $message = (new GenericMessage())
+            ->withHeader($subject);
+
+        $body = new MessageBodyCollection();
+        $forwarded = $body->asForwardTo($message);
+
+        $this->assertTrue($forwarded->hasHeader('Subject'));
+        $this->assertSame('Fwd: Some Value', (string)$forwarded->getHeader('Subject')[0]->getValue());
+    }
+
+    /**
+     * @test
+     */
+    public function it_adds_fwd_to_subject_only_when_needed(): void
+    {
+        $subject = new Subject('Fwd: Some Value');
+
+        $message = (new GenericMessage())
+            ->withHeader($subject);
+
+        $body = new MessageBodyCollection();
+        $forwarded = $body->asForwardTo($message);
+
+        $this->assertTrue($forwarded->hasHeader('Subject'));
+        $this->assertSame('Fwd: Some Value', (string)$forwarded->getHeader('Subject')[0]->getValue());
+    }
+
+    /**
+     * @test
+     */
     public function it_adds_reference(): void
     {
         $messageId = MessageId::newRandom('domain');

@@ -265,9 +265,15 @@ final class MessageBodyCollection
      */
     public function asForwardTo(MessageInterface $originalMessage): MessageInterface
     {
+        $extractedSubject = $this->extractSubject($originalMessage);
+
         return $this
             ->createReferencedMessage($originalMessage)
-            ->withHeader(new Subject('Fwd: ' . $this->extractSubject($originalMessage)));
+            ->withHeader(
+                new Subject(
+                    \substr($extractedSubject, 0, 4) === 'Fwd:' ? $extractedSubject : 'Fwd: ' . $extractedSubject
+                )
+            );
     }
 
     /**
