@@ -1,0 +1,32 @@
+MIME-Version: 1.0
+Content-Type: multipart/alternative; boundary=GenkgoMailV2Part09d54671f9f5
+
+This is a multipart message in MIME format.
+
+--GenkgoMailV2Part09d54671f9f5
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+Hello Universe
+
+me (Jan 1, 2017, 12:00:00 AM):
+>Lorem Ipsum
+>Lorem Ipsum
+>
+>me (Jan 1, 2015, 12:00:00 AM):
+>>Hello Universe
+>>
+>>me (Jan 1, 2017, 12:00:00 AM):
+>>>Hello World
+
+--GenkgoMailV2Part09d54671f9f5
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+<html><body><p>Hello Universe</p><p>me (Jan 1, 2017, 12:00:00 AM):</p><blockq=
+uote type=3D"cite"><p>Lorem Ipsum<br>Lorem
+Ipsum</p><p>me (Jan 1, 2015, 12:00:00 AM):</p><blockquote type=3D"cite">Hello
+Universe<p>me (Jan 1, 2017, 12:00:00 AM):</p><blockquote type=3D"cite"><p>Hel=
+lo
+World</p></blockquote></blockquote></blockquote></body></html>
+--GenkgoMailV2Part09d54671f9f5--

@@ -1,0 +1,33 @@
+Date: Sun, 01 Jan 2017 00:00:00 +0000
+Subject: Hello World
+From: me <me@example.com>
+To: you <you@example.com>
+Cc: other <other@example.com>
+MIME-Version: 1.0
+Content-Type: multipart/alternative; boundary=GenkgoMailV2Part09d54671f9f5
+
+This is a multipart message in MIME format.
+
+--GenkgoMailV2Part09d54671f9f5
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+Lorem Ipsum
+Lorem Ipsum
+
+me (Jan 1, 2015, 12:00:00 AM):
+>Hello Universe
+>
+>me (Jan 1, 2017, 12:00:00 AM):
+>>Hello World
+
+--GenkgoMailV2Part09d54671f9f5
+Content-Type: text/html; charset=us-ascii
+Content-Transfer-Encoding: base64
+
+PGh0bWw+PGhlYWQ+PHRpdGxlPlF1b3RlZCBRdW90ZWQ8L3RpdGxlPjwvaGVhZD48Ym9keT48cD5M
+b3JlbSBJcHN1bTxicj5Mb3JlbQpJcHN1bTwvcD48cD5tZSAoSmFuIDEsIDIwMTUsIDEyOjAwOjAw
+IEFNKTo8L3A+PGJsb2NrcXVvdGUgdHlwZT0iY2l0ZSI+SGVsbG8KVW5pdmVyc2U8cD5tZSAoSmFu
+IDEsIDIwMTcsIDEyOjAwOjAwIEFNKTo8L3A+PGJsb2NrcXVvdGUgdHlwZT0iY2l0ZSI+PHA+SGVs
+bG8KV29ybGQ8L3A+PC9ibG9ja3F1b3RlPjwvYmxvY2txdW90ZT48L2JvZHk+PC9odG1sPg==
+--GenkgoMailV2Part09d54671f9f5--
