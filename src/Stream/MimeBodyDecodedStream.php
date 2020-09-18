@@ -3,9 +3,10 @@ declare(strict_types=1);
 
 namespace Genkgo\Mail\Stream;
 
+use Genkgo\Mail\Mime\PartInterface;
 use Genkgo\Mail\StreamInterface;
 
-final class Base64DecodedStream implements StreamInterface
+final class MimeBodyDecodedStream implements StreamInterface
 {
     /**
      * @var StreamInterface
@@ -13,66 +14,48 @@ final class Base64DecodedStream implements StreamInterface
     private $decoratedStream;
 
     /**
-     * @var resource
+     * @param PartInterface $mimePart
      */
-    private $filter;
-
-    /**
-     * @param resource $resource
-     */
-    public function __construct($resource)
+    public function __construct(PartInterface $mimePart)
     {
-        $this->decoratedStream = new ResourceStream($resource);
-
-        $this->applyFilter();
+        $this->decoratedStream = $this->calculateOptimalStream($mimePart);
     }
 
     /**
-     * @param string $string
-     * @return Base64DecodedStream
+     * @param PartInterface $part
+     * @return StreamInterface
      */
-    public static function fromString(string $string): Base64DecodedStream
+    private function calculateOptimalStream(PartInterface $part): StreamInterface
     {
-        $resource = \fopen('php://memory', 'r+');
-        if ($resource === false) {
-            throw new \UnexpectedValueException('Cannot open php://memory for writing');
+        if (!$part->hasHeader('Content-Transfer-Encoding')) {
+            return $part->getBody();
         }
 
-        \fwrite($resource, $string);
-        return new self($resource);
-    }
-    
-    private function applyFilter(): void
-    {
-        $filter = \stream_filter_prepend(
-            $this->decoratedStream->detach(),
-            'convert.base64-decode',
-            STREAM_FILTER_READ
-        );
-
-        if ($filter === false) {
-            throw new \UnexpectedValueException('Cannot append filter to stream');
-        }
-
-        $this->filter = $filter;
-    }
-
-    private function removeFilter(): void
-    {
-        if ($this->filter !== null) {
-            \stream_filter_remove($this->filter);
+        $encoding = $part->getHeader('Content-Transfer-Encoding')->getValue();
+        switch ($encoding) {
+            case 'quoted-printable':
+                return QuotedPrintableDecodedStream::fromString((string)$part->getBody());
+            case 'base64':
+                return Base64DecodedStream::fromString((string)$part->getBody());
+            case '7bit':
+            case '8bit':
+                return $part->getBody();
+            default:
+                throw new \UnexpectedValueException(
+                    'Cannot decode body of mime part, unknown transfer encoding ' . $encoding
+                );
         }
     }
+
 
     /**
      * @return string
      */
     public function __toString(): string
     {
-        $this->rewind();
         return $this->decoratedStream->__toString();
     }
-    
+
     public function close(): void
     {
         $this->decoratedStream->close();
@@ -91,21 +74,7 @@ final class Base64DecodedStream implements StreamInterface
      */
     public function getSize(): ?int
     {
-        $this->removeFilter();
-        $contents = \preg_replace("/\r\n/", '', (string)$this->decoratedStream->getContents());
-        $lastCharacters = \substr($contents, -2);
-        $this->decoratedStream->rewind();
-        $this->applyFilter();
-
-        $padding = 0;
-        if ($lastCharacters[0] === '=') {
-            $padding++;
-        }
-        if ($lastCharacters[1] === '=') {
-            $padding++;
-        }
-
-        return (int) ((\strlen($contents) / 4) * 3) - $padding;
+        return $this->decoratedStream->getSize();
     }
 
     /**
@@ -130,7 +99,7 @@ final class Base64DecodedStream implements StreamInterface
      */
     public function isSeekable(): bool
     {
-        return false;
+        return $this->decoratedStream->isSeekable();
     }
 
     /**
@@ -140,7 +109,7 @@ final class Base64DecodedStream implements StreamInterface
      */
     public function seek(int $offset, int $whence = SEEK_SET): int
     {
-        return -1;
+        return $this->decoratedStream->seek($offset, $whence);
     }
 
     /**
@@ -148,13 +117,7 @@ final class Base64DecodedStream implements StreamInterface
      */
     public function rewind(): bool
     {
-        $this->removeFilter();
-        if (!$this->decoratedStream->rewind()) {
-            return false;
-        }
-
-        $this->applyFilter();
-        return true;
+        return $this->decoratedStream->rewind();
     }
 
     /**
@@ -162,7 +125,7 @@ final class Base64DecodedStream implements StreamInterface
      */
     public function isWritable(): bool
     {
-        return false;
+        return $this->decoratedStream->isWritable();
     }
 
     /**
@@ -171,7 +134,7 @@ final class Base64DecodedStream implements StreamInterface
      */
     public function write($string): int
     {
-        throw new \RuntimeException('Cannot write to stream');
+        return $this->decoratedStream->write($string);
     }
 
     /**
@@ -179,7 +142,7 @@ final class Base64DecodedStream implements StreamInterface
      */
     public function isReadable(): bool
     {
-        return true;
+        return $this->decoratedStream->isReadable();
     }
 
     /**
