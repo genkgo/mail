@@ -20,6 +20,7 @@ use Genkgo\Mail\Mime\PartInterface;
 use Genkgo\Mail\Mime\PlainTextPart;
 use Genkgo\Mail\Mime\ResourceAttachment;
 use Genkgo\Mail\Stream\Base64DecodedStream;
+use Genkgo\Mail\Stream\MimeBodyDecodedStream;
 use Genkgo\Mail\Stream\QuotedPrintableDecodedStream;
 
 final class MessageBodyCollection
@@ -373,12 +374,12 @@ final class MessageBodyCollection
             $hasDisposition = $part->hasHeader('Content-Disposition');
 
             if (!$hasDisposition && $contentType === 'text/html') {
-                $this->html = (string)$this->decodeBodyPart($part);
+                $this->html = (string)new MimeBodyDecodedStream($part);
                 continue;
             }
 
             if (!$hasDisposition && $contentType === 'text/plain') {
-                $this->text = new AlternativeText((string)$this->decodeBodyPart($part));
+                $this->text = new AlternativeText((string)new MimeBodyDecodedStream($part));
                 continue;
             }
 
@@ -454,32 +455,6 @@ final class MessageBodyCollection
         }
 
         return $reply;
-    }
-
-    /**
-     * @param PartInterface $part
-     * @return StreamInterface
-     */
-    private static function decodeBodyPart(PartInterface $part): StreamInterface
-    {
-        if (!$part->hasHeader('Content-Transfer-Encoding')) {
-            return $part->getBody();
-        }
-
-        $encoding = $part->getHeader('Content-Transfer-Encoding')->getValue();
-        switch ($encoding) {
-            case 'quoted-printable':
-                return QuotedPrintableDecodedStream::fromString((string)$part->getBody());
-            case 'base64':
-                return Base64DecodedStream::fromString((string)$part->getBody());
-            case '7bit':
-            case '8bit':
-                return $part->getBody();
-            default:
-                throw new \UnexpectedValueException(
-                    'Cannot decode body of mime part, unknown transfer encoding ' . $encoding
-                );
-        }
     }
 
     /**
