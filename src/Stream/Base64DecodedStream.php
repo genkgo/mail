@@ -92,7 +92,7 @@ final class Base64DecodedStream implements StreamInterface
     public function getSize(): ?int
     {
         $this->removeFilter();
-        $contents = \preg_replace("/\r\n/", '', (string)$this->decoratedStream->getContents());
+        $contents = (string)\preg_replace("/\r\n/", '', (string)$this->decoratedStream->getContents());
         $lastCharacters = \substr($contents, -2);
         $this->decoratedStream->rewind();
         $this->applyFilter();

@@ -47,7 +47,6 @@ final class MimeBodyDecodedStream implements StreamInterface
         }
     }
 
-
     /**
      * @return string
      */
