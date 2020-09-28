@@ -107,9 +107,12 @@ final class FixedQuotation implements QuotationInterface
             if ($removeItems instanceof \DOMNodeList) {
                 /** @var \DOMElement $removeItem */
                 foreach ($removeItems as $removeItem) {
-                    /** @var \DOMElement $parent */
-                    $parent = $removeItem->parentNode;
-                    $parent->removeChild($removeItem);
+                    try {
+                        /** @var \DOMElement $parent */
+                        $parent = $removeItem->parentNode;
+                        $parent->removeChild($removeItem);
+                    } catch (\DOMException $e) {
+                    }
                 }
             }
 
