@@ -67,4 +67,14 @@ final class HeaderValueParameterTest extends AbstractTestCase
         $this->expectException(\InvalidArgumentException::class);
         HeaderValueParameter::fromString('charset,utf-8');
     }
+
+    /**
+     * @test
+     */
+    public function it_parses_boundaries_with_equals_sign(): void
+    {
+        $parameter = HeaderValueParameter::fromString('boundary="=_eefbb4065a799f07713527ce1cd9db07"');
+        $this->assertEquals('boundary', $parameter->getName());
+        $this->assertEquals('=_eefbb4065a799f07713527ce1cd9db07', $parameter->getValue());
+    }
 }

@@ -88,7 +88,7 @@ final class HeaderValueParameter
      */
     public static function fromString(string $parameterString): HeaderValueParameter
     {
-        $nameValue = \explode('=', $parameterString);
+        $nameValue = \explode('=', $parameterString, 2);
         if (\count($nameValue) !== 2) {
             throw new \InvalidArgumentException(
                 \sprintf('Invalid parameter string value %s', $parameterString)
