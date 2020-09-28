@@ -62,7 +62,7 @@ final class FetchCommandResponse
     public static function fromString(string $response): self
     {
         $matches = [];
-        $result = \preg_match('/^([0-9]+) FETCH (.*?)$/s', $response, $matches);
+        $result = \preg_match('/^([0-9]+) FETCH (.*)$/s', $response, $matches);
         if ($result !== 1) {
             throw new \InvalidArgumentException('Not a fetch command');
         }
