@@ -67,6 +67,6 @@ final class FetchCommandResponse
             throw new \InvalidArgumentException('Not a fetch command');
         }
 
-        return new self((int)$matches[1], ItemList::fromString($matches[2]));
+        return new self((int)$matches[1], ItemList::fromString(\trim($matches[2])));
     }
 }
