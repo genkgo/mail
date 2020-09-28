@@ -28,9 +28,12 @@ final class HeaderDecodedStream implements StreamInterface
      */
     private function calculateOptimalStream(HeaderInterface $header): StreamInterface
     {
-        return new StringStream(
-            \iconv_mime_decode((string)$header->getValue(), \ICONV_MIME_DECODE_CONTINUE_ON_ERROR, 'UTF-8')
-        );
+        $decodedHeader = \iconv_mime_decode((string)$header->getValue(), \ICONV_MIME_DECODE_CONTINUE_ON_ERROR, 'UTF-8');
+        if ($decodedHeader === false) {
+            throw new \RuntimeException('Cannot decode header');
+        }
+
+        return new StringStream((string)$decodedHeader);
     }
 
     /**
