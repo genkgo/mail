@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace Genkgo\Mail;
 
 use Genkgo\Mail\Header\Cc;
-use Genkgo\Mail\Header\ContentTransferEncoding;
 use Genkgo\Mail\Header\ContentType;
 use Genkgo\Mail\Header\GenericHeader;
 use Genkgo\Mail\Header\HeaderName;
@@ -25,6 +24,8 @@ use Genkgo\Mail\Stream\QuotedPrintableDecodedStream;
 
 final class MessageBodyCollection
 {
+    private const DEFAULT_CHARSET = '<meta http-equiv="Content-Type" content="text/html; charset=%s"/>';
+
     /**
      * @var string
      */
@@ -50,8 +51,8 @@ final class MessageBodyCollection
      */
     public function __construct(string $html = '')
     {
-        $this->html = $html;
-        $this->text = AlternativeText::fromHtml($html);
+        $this->html = self::ensureHtmlCharset($html);
+        $this->text = AlternativeText::fromHtml($this->html);
     }
 
     /**
@@ -61,8 +62,8 @@ final class MessageBodyCollection
     public function withHtml(string $html): self
     {
         $clone = clone $this;
-        $clone->html = $html;
-        $clone->text = AlternativeText::fromHtml($html);
+        $clone->html = self::ensureHtmlCharset($html);
+        $clone->text = AlternativeText::fromHtml($clone->html);
         return $clone;
     }
 
@@ -317,7 +318,7 @@ final class MessageBodyCollection
     private function createMessageText(): PartInterface
     {
         if ($this->text->isEmpty() && $this->html === '') {
-            return new PlainTextPart('');
+            return new PlainTextPart('', 'us-ascii');
         }
 
         if ($this->text->isEmpty()) {
@@ -325,14 +326,14 @@ final class MessageBodyCollection
         }
 
         if ($this->html === '') {
-            return new PlainTextPart((string)$this->text);
+            return new PlainTextPart((string)$this->text, 'UTF-8');
         }
 
         return (new MultiPart(
             Boundary::newRandom(),
             new ContentType('multipart/alternative')
         ))
-            ->withPart(new PlainTextPart((string)$this->text))
+            ->withPart(new PlainTextPart((string)$this->text, 'UTF-8'))
             ->withPart(new HtmlPart($this->html));
     }
 
@@ -349,13 +350,23 @@ final class MessageBodyCollection
         } catch (\InvalidArgumentException $e) {
             foreach ($message->getHeader('Content-Type') as $header) {
                 $contentType = $header->getValue()->getRaw();
+                try {
+                    $charset = $header->getValue()->getParameter('charset')->getValue();
+                } catch (\UnexpectedValueException $e) {
+                    $charset = '';
+                }
+
                 if ($contentType === 'text/html') {
-                    $collection->html = \rtrim((string)self::decodeMessageBody($message));
+                    $collection->html = self::ensureHtmlCharset(
+                        \rtrim((string)self::decodeMessageBody($message)),
+                        $charset
+                    );
                 }
 
                 if ($contentType === 'text/plain') {
-                    $collection->text = new AlternativeText(
-                        \rtrim((string)self::decodeMessageBody($message))
+                    $collection->text = AlternativeText::fromEncodedText(
+                        \rtrim((string)self::decodeMessageBody($message)),
+                        $charset
                     );
                 }
             }
@@ -370,16 +381,27 @@ final class MessageBodyCollection
     private function extractFromMimePart(MultiPartInterface $parts): void
     {
         foreach ($parts->getParts() as $part) {
-            $contentType = $part->getHeader('Content-Type')->getValue()->getRaw();
+            $header = $part->getHeader('Content-Type');
+            $contentType = $header->getValue()->getRaw();
+
+            try {
+                $charset = $header->getValue()->getParameter('charset')->getValue();
+            } catch (\UnexpectedValueException $e) {
+                $charset = '';
+            }
+
             $hasDisposition = $part->hasHeader('Content-Disposition');
 
             if (!$hasDisposition && $contentType === 'text/html') {
-                $this->html = (string)new MimeBodyDecodedStream($part);
+                $this->html = self::ensureHtmlCharset(
+                    (string)new MimeBodyDecodedStream($part),
+                    $charset
+                );
                 continue;
             }
 
             if (!$hasDisposition && $contentType === 'text/plain') {
-                $this->text = new AlternativeText((string)new MimeBodyDecodedStream($part));
+                $this->text = AlternativeText::fromEncodedText((string)new MimeBodyDecodedStream($part), $charset);
                 continue;
             }
 
@@ -481,5 +503,33 @@ final class MessageBodyCollection
         }
 
         return $message->getBody();
+    }
+
+    /**
+     * @param string $html
+     * @param string $charset
+     * @return string
+     */
+    private static function ensureHtmlCharset(string $html, string $charset = 'UTF-8'): string
+    {
+        if ($html === '') {
+            return '';
+        }
+
+        if (\strpos($html, 'content="text/html') !== false || \strpos($html, 'charset="') !== false) {
+            return $html;
+        }
+
+        $headCloseStart = \strpos($html, '</head>');
+        if ($headCloseStart !== false) {
+            return \substr_replace($html, \sprintf(self::DEFAULT_CHARSET, $charset), $headCloseStart, 0);
+        }
+
+        $bodyOpenStart = \strpos($html, '<body');
+        if ($bodyOpenStart !== false) {
+            return \substr_replace($html, '<head>' . \sprintf(self::DEFAULT_CHARSET, $charset) . '</head>', $bodyOpenStart, 0);
+        }
+
+        return '<html><head>' . \sprintf(self::DEFAULT_CHARSET, $charset) . '</head><body>' . $html . '</body></html>';
     }
 }

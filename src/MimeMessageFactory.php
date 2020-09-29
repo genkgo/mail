@@ -132,15 +132,16 @@ final class MimeMessageFactory
                 return $part;
             }
         } catch (\UnexpectedValueException $e) {
+            return $part->withHeader(
+                new ParsedHeader(
+                    new HeaderName('Content-Type'),
+                    $contentTypeHeader->withParameter(
+                        new HeaderValueParameter('charset', 'us-ascii')
+                    )
+                )
+            );
         }
 
-        return $part->withHeader(
-            new ParsedHeader(
-                new HeaderName('Content-Type'),
-                $contentTypeHeader->withParameter(
-                    new HeaderValueParameter('charset', 'us-ascii')
-                )
-            )
-        );
+        return $part;
     }
 }

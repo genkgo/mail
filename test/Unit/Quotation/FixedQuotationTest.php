@@ -159,4 +159,56 @@ final class FixedQuotationTest extends AbstractTestCase
             $this->replaceBoundaries((string)$quotation->quote($reply, $original)->createMessage())
         );
     }
+
+    /**
+     * @test
+     */
+    public function it_quotes_special_characters_correct_encoding(): void
+    {
+        $quotation = new FixedQuotation();
+
+        $original = GenericMessage::fromString(
+            \file_get_contents(__DIR__ . '/../../Stub/Quote/correct-encoding.eml')
+        );
+
+        $reply = new MessageBodyCollection(
+            '<html><head><title>Universe Title</title></head><body>Hello Universe €</body>'
+        );
+
+        $this->assertSame(
+            \trim(\file_get_contents(__DIR__ . '/../../Stub/Quote/correct-encoding-quoted.html')),
+            $quotation->quote($reply, $original)->getHtml()
+        );
+
+        $this->assertSame(
+            \trim(\file_get_contents(__DIR__ . '/../../Stub/Quote/correct-encoding-quoted.crlf.txt')),
+            (string)$quotation->quote($reply, $original)->getText()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_quotes_non_utf8_encoding(): void
+    {
+        $quotation = new FixedQuotation();
+
+        $original = GenericMessage::fromString(
+            \file_get_contents(__DIR__ . '/../../Stub/Quote/non-utf8-encoding.eml')
+        );
+
+        $reply = new MessageBodyCollection(
+            '<html><head><title>Universe Title</title></head><body>Hello Universe €</body>'
+        );
+
+        $this->assertSame(
+            \trim(\file_get_contents(__DIR__ . '/../../Stub/Quote/non-utf8-encoding-quoted.crlf.html')),
+            $quotation->quote($reply, $original)->getHtml()
+        );
+
+        $this->assertSame(
+            \trim(\file_get_contents(__DIR__ . '/../../Stub/Quote/non-utf8-encoding-quoted.crlf.txt')),
+            (string)$quotation->quote($reply, $original)->getText()
+        );
+    }
 }

@@ -8,16 +8,17 @@ Content-Type: multipart/alternative; boundary=GenkgoMailV2Part1088cfc2cd8d
 
 
 --GenkgoMailV2Part1088cfc2cd8d
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 Reply text
 
 --GenkgoMailV2Part1088cfc2cd8d
-Content-Type: text/html; charset=us-ascii
+Content-Type: text/html; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-<html><body><p>Reply text</p></body></html>
+<html><head><meta http-equiv="Content-Type" content="text/html;
+charset=UTF-8"/></head><body><p>Reply text</p></body></html>
 --GenkgoMailV2Part1088cfc2cd8d--
 
 --GenkgoMailV2Partd00da1fe277a
@@ -30,9 +31,11 @@ PHlvdUBleGFtcGxlLmNvbT4NCkNjOiBvdGhlciA8b3RoZXJAZXhhbXBsZS5jb20+DQpNSU1FLVZl
 cnNpb246IDEuMA0KQ29udGVudC1UeXBlOiBtdWx0aXBhcnQvYWx0ZXJuYXRpdmU7IGJvdW5kYXJ5
 PUdlbmtnb01haWxWMlBhcnQxODdlMjhiZjNjYjQNCg0KVGhpcyBpcyBhIG11bHRpcGFydCBtZXNz
 YWdlIGluIE1JTUUgZm9ybWF0Lg0KDQotLUdlbmtnb01haWxWMlBhcnQxODdlMjhiZjNjYjQNCkNv
-bnRlbnQtVHlwZTogdGV4dC9wbGFpbjsgY2hhcnNldD11cy1hc2NpaQ0KQ29udGVudC1UcmFuc2Zl
-ci1FbmNvZGluZzogN2JpdA0KDQpIZWxsbyBXb3JsZA0KDQotLUdlbmtnb01haWxWMlBhcnQxODdl
-MjhiZjNjYjQNCkNvbnRlbnQtVHlwZTogdGV4dC9odG1sOyBjaGFyc2V0PXVzLWFzY2lpDQpDb250
-ZW50LVRyYW5zZmVyLUVuY29kaW5nOiA3Yml0DQoNCjxodG1sPjxib2R5PjxwPkhlbGxvIFdvcmxk
-PC9wPjwvYm9keT48L2h0bWw+DQotLUdlbmtnb01haWxWMlBhcnQxODdlMjhiZjNjYjQtLQ0K
+bnRlbnQtVHlwZTogdGV4dC9wbGFpbjsgY2hhcnNldD1VVEYtOA0KQ29udGVudC1UcmFuc2Zlci1F
+bmNvZGluZzogN2JpdA0KDQpIZWxsbyBXb3JsZA0KDQotLUdlbmtnb01haWxWMlBhcnQxODdlMjhi
+ZjNjYjQNCkNvbnRlbnQtVHlwZTogdGV4dC9odG1sOyBjaGFyc2V0PVVURi04DQpDb250ZW50LVRy
+YW5zZmVyLUVuY29kaW5nOiA3Yml0DQoNCjxodG1sPjxoZWFkPjxtZXRhIGh0dHAtZXF1aXY9IkNv
+bnRlbnQtVHlwZSIgY29udGVudD0idGV4dC9odG1sOw0KY2hhcnNldD1VVEYtOCIvPjwvaGVhZD48
+Ym9keT48cD5IZWxsbyBXb3JsZDwvcD48L2JvZHk+PC9odG1sPg0KLS1HZW5rZ29NYWlsVjJQYXJ0
+MTg3ZTI4YmYzY2I0LS0NCg==
 --GenkgoMailV2Partd00da1fe277a--

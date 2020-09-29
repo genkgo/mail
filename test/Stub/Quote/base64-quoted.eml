@@ -23,8 +23,9 @@ me (Jan 1, 2017, 12:00:00 AM):
 Content-Type: text/html; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-<html><body><p>Hello Universe</p><p>me (Jan 1, 2017, 12:00:00 AM):</p><blockq=
-uote type=3D"cite"><p>Lorem Ipsum<br>Lorem
+<html><head><meta http-equiv=3D"Content-Type" content=3D"text/html; charset=
+=3DUTF-8"></head><body><p>Hello Universe</p><p>me (Jan 1, 2017, 12:00:00 AM):=
+</p><blockquote type=3D"cite"><p>Lorem Ipsum<br>Lorem
 Ipsum</p><p>me (Jan 1, 2015, 12:00:00 AM):</p><blockquote type=3D"cite">Hello
 Universe<p>me (Jan 1, 2017, 12:00:00 AM):</p><blockquote type=3D"cite"><p>Hel=
 lo

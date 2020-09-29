@@ -18,7 +18,7 @@ final class AlternativeTextTest extends AbstractTestCase
         $text = \file_get_contents(__DIR__ . '/../Stub/AlternativeText/' . $txtFile);
 
         $alternativeText = AlternativeText::fromHtml($html);
-        $this->assertEquals($text, (string) $alternativeText);
+        $this->assertEquals(\trim($text), \trim((string) $alternativeText));
     }
 
     /**
@@ -42,6 +42,8 @@ final class AlternativeTextTest extends AbstractTestCase
             ['simple.html', 'simple.crlf.txt'],
             ['error.html', 'error.txt'],
             ['bug_59.html', 'bug_59.txt'],
+            ['encoding.html', 'encoding.txt'],
+            ['different-encoding.html', 'different-encoding.txt'],
         ];
     }
 }

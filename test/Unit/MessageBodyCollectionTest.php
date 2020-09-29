@@ -255,7 +255,7 @@ final class MessageBodyCollectionTest extends AbstractTestCase
         );
 
         $body = MessageBodyCollection::extract($message);
-        $this->assertSame('<html><body><p>Hello World</p></body></html>', $body->getHtml());
+        $this->assertSame("<html><head><meta http-equiv=\"Content-Type\" content=\"text/html;\r\ncharset=UTF-8\"/></head><body><p>Hello World</p></body></html>", $body->getHtml());
         $this->assertSame('Hello World', (string)$body->getText());
         $this->assertCount(1, $body->getEmbeddedImages());
         $this->assertCount(1, $body->getAttachments());
@@ -271,7 +271,7 @@ final class MessageBodyCollectionTest extends AbstractTestCase
         );
 
         $body = MessageBodyCollection::extract($message);
-        $this->assertSame('<html><body><p>Hello World</p></body></html>', $body->getHtml());
+        $this->assertSame("<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"/></head><body><p>Hello World</p></body></html>", $body->getHtml());
         $this->assertSame('', (string)$body->getText());
         $this->assertCount(0, $body->getEmbeddedImages());
         $this->assertCount(0, $body->getAttachments());
@@ -303,7 +303,7 @@ final class MessageBodyCollectionTest extends AbstractTestCase
         );
 
         $body = MessageBodyCollection::extract($message);
-        $this->assertSame('<html><body><p>Hello World</p></body></html>', $body->getHtml());
+        $this->assertSame("<html><head><meta http-equiv=\"Content-Type\" content=\"text/html;\r\ncharset=UTF-8\"/></head><body><p>Hello World</p></body></html>", $body->getHtml());
         $this->assertSame('Hello World', (string)$body->getText());
         $this->assertCount(0, $body->getEmbeddedImages());
         $this->assertCount(0, $body->getAttachments());

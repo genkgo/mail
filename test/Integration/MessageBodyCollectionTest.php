@@ -19,7 +19,7 @@ final class MessageBodyCollectionTest extends AbstractTestCase
     public function it_can_parse_a_formatted_message_string_into_a_generic_message(): void
     {
         $message = (new MessageBodyCollection())
-            ->withHtml('<html><body><p>Hello World</p></body></html>')
+            ->withHtml('<html><body><p>€ 0? Hello World?</p></body></html>')
             ->withAttachment(
                 ResourceAttachment::fromString(
                     'Attachment text',

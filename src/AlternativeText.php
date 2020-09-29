@@ -5,6 +5,8 @@ namespace Genkgo\Mail;
 
 final class AlternativeText
 {
+    private const DEFAULT_CHARSET = '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>';
+
     /**
      * @var string
      */
@@ -58,7 +60,33 @@ final class AlternativeText
     }
 
     /**
-     * @param string $html AlternativeText
+     * @param string $text
+     * @param string $charset
+     * @return AlternativeText
+     */
+    public static function fromEncodedText(string $text, string $charset): AlternativeText
+    {
+        if ($charset === '') {
+            return new self($text);
+        }
+
+        $charset = \strtoupper($charset);
+        if ($charset === 'UTF-8' || $charset === 'UTF8') {
+            return new self($text);
+        }
+
+        $converted = \iconv($charset, 'UTF-8', $text);
+        if ($converted === false) {
+            throw new \InvalidArgumentException(
+                'The encoded text cannot be converted to UTF-8. Is the charset ' . $charset . ' correct?'
+            );
+        }
+
+        return new self($converted);
+    }
+
+    /**
+     * @param string $html
      * @return AlternativeText
      */
     public static function fromHtml(string $html): AlternativeText
@@ -67,6 +95,7 @@ final class AlternativeText
             return new self($html);
         }
 
+        $html = self::ensureHtmlCharset($html);
         $html = \preg_replace('/\h\h+/', ' ', (string)$html);
         $html = \preg_replace('/\v/', '', (string)$html);
         $text = new self((string)$html);
@@ -373,5 +402,32 @@ final class AlternativeText
         }
 
         return \implode('', $result);
+    }
+
+    /**
+     * @param string $html
+     * @return string
+     */
+    private static function ensureHtmlCharset(string $html): string
+    {
+        if ($html === '') {
+            return '';
+        }
+
+        if (\strpos($html, 'content="text/html') !== false || \strpos($html, 'charset="') !== false) {
+            return $html;
+        }
+
+        $headCloseStart = \strpos($html, '</head>');
+        if ($headCloseStart !== false) {
+            return \substr_replace($html, self::DEFAULT_CHARSET, $headCloseStart, 0);
+        }
+
+        $bodyOpenStart = \strpos($html, '<body');
+        if ($bodyOpenStart !== false) {
+            return \substr_replace($html, '<head>' . self::DEFAULT_CHARSET . '</head>', $bodyOpenStart, 0);
+        }
+
+        return '<html><head>' . self::DEFAULT_CHARSET . '</head><body>' . $html . '</body></html>';
     }
 }
