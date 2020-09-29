@@ -75,7 +75,14 @@ final class AlternativeText
             return new self($text);
         }
 
-        return new self(\iconv($charset, 'UTF-8', $text));
+        $converted = \iconv($charset, 'UTF-8', $text);
+        if ($converted === false) {
+            throw new \InvalidArgumentException(
+                'The encoded text cannot be converted to UTF-8. Is the charset ' . $charset . ' correct?'
+            );
+        }
+
+        return new self($converted);
     }
 
     /**
