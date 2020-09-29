@@ -27,10 +27,10 @@ final class AggregateResponseTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_is_immutable(): void
+    public function it_is_mutable(): void
     {
         $response = new AggregateResponse(Tag::fromNonce(1));
-        $this->assertNotSame($response, $response->withLine('* Untagged'));
+        $this->assertSame($response, $response->withLine('* Untagged'));
     }
 
     /**
