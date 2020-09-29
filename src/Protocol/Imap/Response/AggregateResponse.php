@@ -106,41 +106,39 @@ final class AggregateResponse implements \IteratorAggregate
      */
     public function withLine(string $line): AggregateResponse
     {
-        $clone = clone $this;
-
         switch (\substr($line, 0, 2)) {
             case '+ ':
-                $clone->lines[] = new CommandContinuationRequestResponse(
+                $this->lines[] = new CommandContinuationRequestResponse(
                     \substr($line, 2)
                 );
                 break;
             case '* ':
-                $clone->lines[] = new UntaggedResponse(
+                $this->lines[] = new UntaggedResponse(
                     \substr($line, 2)
                 );
                 break;
             default:
                 try {
-                    $clone->lines[] = new TaggedResponse(
+                    $this->lines[] = new TaggedResponse(
                         $this->tag,
                         $this->tag->extractBodyFromLine($line)
                     );
                 } catch (\InvalidArgumentException $e) {
-                    if (empty($clone->lines)) {
+                    if (empty($this->lines)) {
                         throw new \UnexpectedValueException(
                             'Expected line to begin with +, * or tag. Got: ' . $line
                         );
                     }
 
-                    $keys = \array_keys($clone->lines);
+                    $keys = \array_keys($this->lines);
                     $lastKey = \end($keys);
-                    $clone->lines[$lastKey] = $clone->lines[$lastKey]->withAddedBody($line);
+                    $this->lines[$lastKey]->withAddedBody($line);
                 }
                 break;
 
         }
 
-        return $clone;
+        return $this;
     }
 
     /**

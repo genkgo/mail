@@ -35,9 +35,8 @@ final class CommandContinuationRequestResponse implements ResponseInterface
      */
     public function withAddedBody(string $data): ResponseInterface
     {
-        $clone = clone $this;
-        $clone->line .= $data;
-        return $clone;
+        $this->line .= $data;
+        return $this;
     }
 
     /**

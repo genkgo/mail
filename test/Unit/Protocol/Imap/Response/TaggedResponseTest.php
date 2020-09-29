@@ -25,10 +25,10 @@ final class TaggedResponseTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_is_immutable(): void
+    public function it_is_mutable(): void
     {
         $response = new TaggedResponse(Tag::fromNonce(1), 'OK successful');
-        $this->assertNotSame($response, $response->withAddedBody('body'));
+        $this->assertSame($response, $response->withAddedBody('body'));
     }
 
     /**
