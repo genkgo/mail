@@ -14,9 +14,10 @@ me (unknown):
 >Hello World
 
 --boundary
-Content-Type: text/html; charset=us-ascii
+Content-Type: text/html; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-<html><body><p>Reply text</p><p>me (unknown):</p><blockquote
+<html><head><meta http-equiv="Content-Type" content="text/html;
+charset=UTF-8"></head><body><p>Reply text</p><p>me (unknown):</p><blockquote
 type="cite"><p>Hello World</p></blockquote></body></html>
 --boundary--

@@ -1,3 +1,4 @@
+Date: Sun, 01 Jan 2017 00:00:00 +0000
 Subject: Hello World
 From: me <me@example.com>
 To: you <you@example.com>
@@ -8,15 +9,23 @@ Content-Type: multipart/alternative; boundary=GenkgoMailV2Part187e28bf3cb4
 This is a multipart message in MIME format.
 
 --GenkgoMailV2Part187e28bf3cb4
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=Shift-JIS
 Content-Transfer-Encoding: 7bit
 
-Hello World
+サーバリスト画面では、
 
 --GenkgoMailV2Part187e28bf3cb4
-Content-Type: text/html; charset=UTF-8
+Content-Type: text/html; charset=Shift-JIS
 Content-Transfer-Encoding: 7bit
 
-<html><head><meta http-equiv="Content-Type" content="text/html;
-charset=UTF-8"/></head><body><p>Hello World</p></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=shift_jis">
+    <title>Title</title>
+</head>
+<body>
+    <p>サーバリスト画面では、</p>
+</body>
+</html>
 --GenkgoMailV2Part187e28bf3cb4--
