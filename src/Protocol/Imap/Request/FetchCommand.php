@@ -63,7 +63,7 @@ final class FetchCommand extends AbstractCommand implements CommandResponseCanBe
     }
 
     /**
-     * @param \Iterator $lineIterator
+     * @param \Iterator<int, string> $lineIterator
      * @return ResponseInterface
      */
     public function createParsedResponse(\Iterator $lineIterator): ResponseInterface

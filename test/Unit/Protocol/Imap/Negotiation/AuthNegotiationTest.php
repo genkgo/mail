@@ -34,16 +34,11 @@ final class AuthNegotiationTest extends AbstractTestCase
 
         $connection
             ->expects($this->at(3))
-            ->method('receive')
-            ->willReturn('');
-
-        $connection
-            ->expects($this->at(4))
             ->method('send')
             ->with("AHVzZXJuYW1lAHBhc3N3b3Jk\r\n");
 
         $connection
-            ->expects($this->at(5))
+            ->expects($this->at(4))
             ->method('receive')
             ->willReturn('TAG1 OK');
 
@@ -80,38 +75,23 @@ final class AuthNegotiationTest extends AbstractTestCase
 
         $connection
             ->expects($this->at(4))
-            ->method('receive')
-            ->willReturn('');
-
-        $connection
-            ->expects($this->at(5))
             ->method('send')
             ->with("TAG2 AUTHENTICATE PLAIN\r\n");
 
         $connection
-            ->expects($this->at(6))
+            ->expects($this->at(5))
             ->method('receive')
             ->willReturn('+ Send password');
 
         $connection
-            ->expects($this->at(7))
-            ->method('receive')
-            ->willReturn('');
-
-        $connection
-            ->expects($this->at(8))
+            ->expects($this->at(6))
             ->method('send')
             ->with("AHVzZXJuYW1lAHBhc3N3b3Jk\r\n");
 
         $connection
-            ->expects($this->at(9))
+            ->expects($this->at(7))
             ->method('receive')
             ->willReturn('TAG2 OK');
-
-        $connection
-            ->expects($this->at(10))
-            ->method('receive')
-            ->willReturn('');
 
         $client = new Client($connection, new GeneratorTagFactory(), []);
 
@@ -146,24 +126,13 @@ final class AuthNegotiationTest extends AbstractTestCase
 
         $connection
             ->expects($this->at(4))
-            ->method('receive')
-            ->willReturn('');
-
-        $connection
-            ->expects($this->at(5))
             ->method('send')
             ->with("TAG2 LOGIN username password\r\n");
 
         $connection
-            ->expects($this->at(6))
+            ->expects($this->at(5))
             ->method('receive')
             ->willReturn('TAG2 OK');
-
-        $connection
-            ->expects($this->at(7))
-            ->method('receive')
-            ->willReturn('');
-
 
         $client = new Client($connection, new GeneratorTagFactory(), []);
 

@@ -51,11 +51,6 @@ final class ImapTransportTest extends AbstractTestCase
 
         $connection
             ->expects($this->at(++$at))
-            ->method('receive')
-            ->willReturn("");
-
-        $connection
-            ->expects($this->at(++$at))
             ->method('send')
             ->with("Subject: subject\r\n")
             ->willReturn(1);

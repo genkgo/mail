@@ -44,26 +44,16 @@ final class TryTlsUpgradeNegotiationTest extends AbstractTestCase
 
         $connection
             ->expects($this->at(5))
-            ->method('receive')
-            ->willReturn('');
-
-        $connection
-            ->expects($this->at(6))
             ->method('send')
             ->with("TAG2 STARTTLS\r\n");
 
         $connection
-            ->expects($this->at(7))
+            ->expects($this->at(6))
             ->method('receive')
             ->willReturn('TAG2 OK');
 
         $connection
-            ->expects($this->at(8))
-            ->method('receive')
-            ->willReturn('');
-
-        $connection
-            ->expects($this->at(9))
+            ->expects($this->at(7))
             ->method('upgrade');
 
         $client = new Client($connection, new GeneratorTagFactory(), []);

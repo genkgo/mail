@@ -78,6 +78,16 @@ final class UntaggedResponse implements ResponseInterface
     }
 
     /**
+     * @param string $className
+     * @return ResponseInterface
+     * @throws AssertionFailedException
+     */
+    public function assertParsed(string $className): ResponseInterface
+    {
+        throw new AssertionFailedException('An untagged response is never parsed');
+    }
+
+    /**
      * @return string
      */
     public function getBody(): string

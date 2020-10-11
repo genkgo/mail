@@ -21,7 +21,7 @@ final class ParsedFetchCommandResponse implements ResponseInterface
     private $itemList;
 
     /**
-     * @param \Iterator $lineIterator
+     * @param \Iterator<int, string> $lineIterator
      */
     public function __construct(\Iterator $lineIterator)
     {
@@ -92,6 +92,20 @@ final class ParsedFetchCommandResponse implements ResponseInterface
     }
 
     /**
+     * @param string $className
+     * @return ResponseInterface
+     * @throws AssertionFailedException
+     */
+    public function assertParsed(string $className): ResponseInterface
+    {
+        if ($className !== self::class) {
+            throw new AssertionFailedException(self::class . ' is not parsed as a ' . $className);
+        }
+
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function getBody(): string
@@ -119,4 +133,3 @@ final class ParsedFetchCommandResponse implements ResponseInterface
         return $this->itemList;
     }
 }
-

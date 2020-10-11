@@ -85,6 +85,16 @@ final class TaggedResponse implements ResponseInterface
     }
 
     /**
+     * @param string $className
+     * @return ResponseInterface
+     * @throws AssertionFailedException
+     */
+    public function assertParsed(string $className): ResponseInterface
+    {
+        throw new AssertionFailedException('A tagged response is never parsed');
+    }
+
+    /**
      * @return string
      */
     public function getBody(): string

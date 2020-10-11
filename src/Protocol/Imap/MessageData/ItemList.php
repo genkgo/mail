@@ -163,7 +163,7 @@ final class ItemList
     }
 
     /**
-     * @param \Iterator $bytes
+     * @param \Iterator<int, string> $bytes
      * @return ItemList
      */
     public static function fromBytes(\Iterator $bytes): self
@@ -282,13 +282,13 @@ final class ItemList
                             throw new \InvalidArgumentException('Invalid characters } found');
                         }
 
+                        $crlf = '';
                         $bytes->next();
-                        if ($bytes->current() !== "\r") {
-                            throw new \UnexpectedValueException('Octet is expected to be followed by a CRLF');
-                        }
+                        $crlf .= $bytes->current();
+                        $bytes->next();
+                        $crlf .= $bytes->current();
 
-                        $bytes->next();
-                        if ($bytes->current() !== "\n") {
+                        if ($crlf !== "\r\n") {
                             throw new \UnexpectedValueException('Octet is expected to be followed by a CRLF');
                         }
 

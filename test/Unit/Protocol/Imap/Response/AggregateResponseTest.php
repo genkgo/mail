@@ -22,10 +22,10 @@ final class AggregateResponseTest extends AbstractTestCase
      */
     public function it_can_be_iterated(): void
     {
-        $this->assertTrue(\is_iterable(new AggregateResponse(Tag::fromNonce(1))));
+        $this->assertTrue(\is_iterable(new AggregateResponse()));
         $this->assertInstanceOf(
             \Traversable::class,
-            (new AggregateResponse(Tag::fromNonce(1)))->getIterator()
+            (new AggregateResponse())->getIterator()
         );
     }
 
@@ -136,9 +136,9 @@ final class AggregateResponseTest extends AbstractTestCase
             (new AggregateResponse())->hasCompleted()
         );
 
-        $this->assertFalse(
+        $this->assertTrue(
             AggregateResponse::fromResponseLines(
-                new \ArrayIterator(["* TEST\r\n"]),
+                new \ArrayIterator(["TAG1 OK\r\n"]),
                 new NoopCommand(Tag::fromNonce(1))
             )->hasCompleted()
         );
@@ -164,7 +164,7 @@ final class AggregateResponseTest extends AbstractTestCase
     public function it_defines_an_untagged_response(): void
     {
         $response = AggregateResponse::fromResponseLines(
-            new \ArrayIterator(["* Untagged\r\n"]),
+            new \ArrayIterator(["* Untagged\r\n", "TAG1 OK"]),
             new NoopCommand(Tag::fromNonce(1))
         );
 
@@ -236,6 +236,7 @@ final class AggregateResponseTest extends AbstractTestCase
     {
         $fetch = \trim(\file_get_contents(__DIR__. '/../../../../Stub/Imap/fetch-response.crlf.txt'));
         $responseString = '* ' . $fetch;
+        /** @var array<int, string> $lines */
         $lines = \array_map(
             function (string $line) {
                 return $line . "\r\n";

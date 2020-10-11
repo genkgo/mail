@@ -123,7 +123,7 @@ final class AggregateResponse implements \IteratorAggregate
     }
 
     /**
-     * @param \Iterator $lines
+     * @param \Iterator<int, string> $lines
      * @param RequestInterface $request
      * @return static
      */
@@ -189,12 +189,12 @@ final class AggregateResponse implements \IteratorAggregate
                     }
                     break;
             }
+
+            if ($response->hasCompleted()) {
+                return $response;
+            }
         }
 
-        if ($currentLine) {
-            $response->lines[] = new UntaggedResponse(\implode('', $currentLine));
-        }
-
-        return $response;
+        throw new \UnexpectedValueException('Unexpected end of response');
     }
 }

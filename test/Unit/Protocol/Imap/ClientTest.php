@@ -113,11 +113,6 @@ final class ClientTest extends AbstractTestCase
             ->method('receive')
             ->willReturn("TAG1 OK\r\n");
 
-        $connection
-            ->expects($this->at(4))
-            ->method('receive')
-            ->willReturn('');
-
         $command
             ->expects($this->at(0))
             ->method('toStream')

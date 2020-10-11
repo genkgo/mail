@@ -6,7 +6,7 @@ namespace Genkgo\Mail\Protocol\Imap;
 interface CommandResponseCanBeParsedInterface
 {
     /**
-     * @param \Iterator $lineIterator
+     * @param \Iterator<int, string> $lineIterator
      * @return ResponseInterface
      */
     public function createParsedResponse(\Iterator $lineIterator): ResponseInterface;
