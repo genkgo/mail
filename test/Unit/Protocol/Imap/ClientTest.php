@@ -113,13 +113,18 @@ final class ClientTest extends AbstractTestCase
             ->method('receive')
             ->willReturn("TAG1 OK\r\n");
 
+        $connection
+            ->expects($this->at(4))
+            ->method('receive')
+            ->willReturn('');
+
         $command
             ->expects($this->at(0))
             ->method('toStream')
             ->willReturn(new StringStream("TAG1 OK COMMAND\r\nMORE DATA"));
 
         $command
-            ->expects($this->at(1))
+            ->expects($this->any())
             ->method('getTag')
             ->willReturn(Tag::fromNonce(1));
 

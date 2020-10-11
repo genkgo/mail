@@ -35,16 +35,6 @@ final class UntaggedResponse implements ResponseInterface
     }
 
     /**
-     * @param string $data
-     * @return ResponseInterface
-     */
-    public function withAddedBody(string $data): ResponseInterface
-    {
-        $this->line .= $data;
-        return $this;
-    }
-
-    /**
      * @param CompletionResult $expectedResult
      * @return ResponseInterface
      * @throws AssertionFailedException

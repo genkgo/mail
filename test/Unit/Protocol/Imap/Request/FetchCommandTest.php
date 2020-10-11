@@ -25,7 +25,7 @@ final class FetchCommandTest extends AbstractTestCase
             new ItemList([new SectionItem(new NameItem('BODY'), new SectionList())])
         );
 
-        $this->assertSame('TAG1 FETCH 1 BODY[]', (string)$command->toStream());
+        $this->assertSame('TAG1 FETCH 1 (BODY[])', (string)$command->toStream());
         $this->assertSame('TAG1', (string)$command->getTag());
     }
 }

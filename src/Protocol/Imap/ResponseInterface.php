@@ -28,12 +28,6 @@ interface ResponseInterface
     public function assertTagged(): ResponseInterface;
 
     /**
-     * @param string $data
-     * @return ResponseInterface
-     */
-    public function withAddedBody(string $data): ResponseInterface;
-
-    /**
      * @return string
      */
     public function getBody(): string;

@@ -26,17 +26,7 @@ final class CommandContinuationRequestResponse implements ResponseInterface
      */
     public function __toString(): string
     {
-        return \trim('+ ' . $this->line);
-    }
-
-    /**
-     * @param string $data
-     * @return ResponseInterface
-     */
-    public function withAddedBody(string $data): ResponseInterface
-    {
-        $this->line .= $data;
-        return $this;
+        return \sprintf('+ %s', $this->line);
     }
 
     /**

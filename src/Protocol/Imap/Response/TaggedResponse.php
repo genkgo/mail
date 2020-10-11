@@ -34,17 +34,7 @@ final class TaggedResponse implements ResponseInterface
      */
     public function __toString(): string
     {
-        return \implode(' ', [(string)$this->tag, $this->line]);
-    }
-
-    /**
-     * @param string $data
-     * @return ResponseInterface
-     */
-    public function withAddedBody(string $data): ResponseInterface
-    {
-        $this->line .= $data;
-        return $this;
+        return \sprintf('%s %s', (string)$this->tag, $this->line);
     }
 
     /**

@@ -73,6 +73,11 @@ final class ClientFactoryTest extends AbstractTestCase
 
         $connection
             ->expects($this->at(++$at))
+            ->method('receive')
+            ->willReturn('');
+
+        $connection
+            ->expects($this->at(++$at))
             ->method('getMetaData')
             ->willReturn([]);
 
@@ -93,6 +98,11 @@ final class ClientFactoryTest extends AbstractTestCase
 
         $connection
             ->expects($this->at(++$at))
+            ->method('receive')
+            ->willReturn('');
+
+        $connection
+            ->expects($this->at(++$at))
             ->method('send')
             ->with("TAG2 STARTTLS\r\n");
 
@@ -100,6 +110,11 @@ final class ClientFactoryTest extends AbstractTestCase
             ->expects($this->at(++$at))
             ->method('receive')
             ->willReturn('TAG2 OK');
+
+        $connection
+            ->expects($this->at(++$at))
+            ->method('receive')
+            ->willReturn('');
 
         $connection
             ->expects($this->at(++$at))
@@ -150,6 +165,11 @@ final class ClientFactoryTest extends AbstractTestCase
 
         $connection
             ->expects($this->at(++$at))
+            ->method('receive')
+            ->willReturn('');
+
+        $connection
+            ->expects($this->at(++$at))
             ->method('send')
             ->with("TAG1 CAPABILITY\r\n");
 
@@ -165,6 +185,11 @@ final class ClientFactoryTest extends AbstractTestCase
 
         $connection
             ->expects($this->at(++$at))
+            ->method('receive')
+            ->willReturn('');
+
+        $connection
+            ->expects($this->at(++$at))
             ->method('send')
             ->with("TAG2 AUTHENTICATE PLAIN\r\n");
 
@@ -175,6 +200,11 @@ final class ClientFactoryTest extends AbstractTestCase
 
         $connection
             ->expects($this->at(++$at))
+            ->method('receive')
+            ->willReturn('');
+
+        $connection
+            ->expects($this->at(++$at))
             ->method('send')
             ->with(\base64_encode("\0username\0password"). "\r\n");
 
@@ -182,6 +212,11 @@ final class ClientFactoryTest extends AbstractTestCase
             ->expects($this->at(++$at))
             ->method('receive')
             ->willReturn('TAG2 OK');
+
+        $connection
+            ->expects($this->at(++$at))
+            ->method('receive')
+            ->willReturn('');
 
         $factory = new ClientFactory($connection);
         $factory

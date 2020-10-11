@@ -49,7 +49,7 @@ final class FetchCommandResponse
     public function __toString(): string
     {
         return \sprintf(
-            "%s FETCH %s",
+            "%s FETCH %s\r\n",
             $this->number,
             (string)$this->dataItemList
         );

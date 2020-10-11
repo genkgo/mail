@@ -81,13 +81,7 @@ final class Client
             $this->connection->send($line);
         }
 
-        $response = new AggregateResponse($request->getTag());
-
-        while (!$response->hasCompleted()) {
-            $response = $response->withLine($this->connection->receive());
-        }
-
-        return $response;
+        return AggregateResponse::fromServerResponse($this->connection, $request);
     }
 
     /**

@@ -25,24 +25,6 @@ final class TaggedResponseTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_is_mutable(): void
-    {
-        $response = new TaggedResponse(Tag::fromNonce(1), 'OK successful');
-        $this->assertSame($response, $response->withAddedBody('body'));
-    }
-
-    /**
-     * @test
-     */
-    public function it_can_be_extended_with_more_body(): void
-    {
-        $response = new TaggedResponse(Tag::fromNonce(1), 'OK successful');
-        $this->assertSame('OK successful body', $response->withAddedBody(' body')->getBody());
-    }
-
-    /**
-     * @test
-     */
     public function it_can_assert_completion_result(): void
     {
         $response = new TaggedResponse(Tag::fromNonce(1), 'OK successful');

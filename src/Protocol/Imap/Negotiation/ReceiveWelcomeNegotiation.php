@@ -27,6 +27,8 @@ final class ReceiveWelcomeNegotiation implements NegotiationInterface
      */
     public function negotiate(Client $client): void
     {
-        $this->connection->receive();
+        while ($this->connection->receive()) {
+
+        }
     }
 }

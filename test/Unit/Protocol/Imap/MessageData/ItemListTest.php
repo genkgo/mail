@@ -70,7 +70,7 @@ final class ItemListTest extends AbstractTestCase
         $list = new ItemList();
         $list = $list->withItem(new NameItem('TEST'));
 
-        $this->assertSame('TEST', (string)$list);
+        $this->assertSame('(TEST)', (string)$list);
     }
 
     /**
@@ -82,7 +82,7 @@ final class ItemListTest extends AbstractTestCase
         $list = $list->withItem(new NameItem('TEST'));
         $list = $list->withOctet(100);
 
-        $this->assertSame('TEST {100}', (string)$list);
+        $this->assertSame('(TEST {100})', (string)$list);
     }
 
     /**
@@ -92,10 +92,10 @@ final class ItemListTest extends AbstractTestCase
     {
         $list = new ItemList();
         $list = $list->withItem(new NameItem('TEST'));
-        $list = $list->withOctet(100);
+        $list = $list->withOctet(12);
         $list = $list->withBody('Hello World.');
 
-        $this->assertSame("(TEST {100}\nHello World.)", (string)$list);
+        $this->assertSame("(TEST {12}\r\nHello World.)", (string)$list);
     }
 
     /**
@@ -103,7 +103,7 @@ final class ItemListTest extends AbstractTestCase
      */
     public function it_parses_string_to_list(): void
     {
-        $list = ItemList::fromString("(TEST[HEADER] {100}\nHello World.)");
+        $list = ItemList::fromString("(TEST[HEADER] {12}\r\nHello World.)");
 
         $this->assertSame('TEST[HEADER]', (string)$list->getItem('TEST'));
         $this->assertSame('Hello World.', $list->getBody());
@@ -124,7 +124,7 @@ final class ItemListTest extends AbstractTestCase
     public function it_throws_when_using_brackets_when_already_in_section(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        ItemList::fromString('BODY[HEADER[]');
+        ItemList::fromString('(BODY[HEADER[])');
     }
 
     /**
@@ -133,7 +133,7 @@ final class ItemListTest extends AbstractTestCase
     public function it_throws_when_using_brackets_not_in_section(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        ItemList::fromString('BODY]');
+        ItemList::fromString('(BODY])');
     }
 
     /**
@@ -142,7 +142,7 @@ final class ItemListTest extends AbstractTestCase
     public function it_throws_when_using_less_than_sign_when_in_section(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        ItemList::fromString('BODY[HEADER<]');
+        ItemList::fromString('(BODY[HEADER<])');
     }
 
     /**
@@ -151,7 +151,7 @@ final class ItemListTest extends AbstractTestCase
     public function it_throws_when_using_greater_than_sign_when_in_section(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        ItemList::fromString('BODY[HEADER>]');
+        ItemList::fromString('(BODY[HEADER>])');
     }
 
     /**
@@ -160,7 +160,7 @@ final class ItemListTest extends AbstractTestCase
     public function it_throws_when_using_left_curly_bracket_when_in_section(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        ItemList::fromString('BODY[HEADER{]');
+        ItemList::fromString('(BODY[HEADER{])');
     }
 
     /**
@@ -169,7 +169,7 @@ final class ItemListTest extends AbstractTestCase
     public function it_throws_when_using_right_curly_bracket_when_in_section(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        ItemList::fromString('BODY[HEADER}]');
+        ItemList::fromString('(BODY[HEADER}])');
     }
 
     /**
@@ -177,7 +177,7 @@ final class ItemListTest extends AbstractTestCase
      */
     public function it_separates_spaces(): void
     {
-        $itemList = ItemList::fromString('BODY HEADER');
+        $itemList = ItemList::fromString('(BODY HEADER)');
         $this->assertSame('BODY', (string)$itemList->getItem('BODY'));
         $this->assertSame('HEADER', (string)$itemList->getItem('HEADER'));
     }
@@ -187,7 +187,7 @@ final class ItemListTest extends AbstractTestCase
      */
     public function it_parses_partial(): void
     {
-        $itemList = ItemList::fromString('BODY[]<0.100>');
+        $itemList = ItemList::fromString('(BODY[]<0.100>)');
         $this->assertInstanceOf(PartialItem::class, $itemList->getItem('BODY'));
         $this->assertSame('BODY[]<0.100>', (string)$itemList->getItem('BODY'));
     }
@@ -197,7 +197,7 @@ final class ItemListTest extends AbstractTestCase
      */
     public function it_parses_flags_body_partial(): void
     {
-        $itemList = ItemList::fromString('FLAGS (\Seen \Recent) BODY[]<0.100>');
+        $itemList = ItemList::fromString('(FLAGS (\Seen \Recent) BODY[]<0.100>)');
         $this->assertInstanceOf(FlagsItem::class, $itemList->getItem('FLAGS'));
         $this->assertInstanceOf(PartialItem::class, $itemList->getItem('BODY'));
         $this->assertSame('FLAGS (\Seen \Recent)', (string)$itemList->getItem('FLAGS'));
@@ -210,6 +210,72 @@ final class ItemListTest extends AbstractTestCase
     public function it_throws_when_unknown_item(): void
     {
         $this->expectException(\UnexpectedValueException::class);
-        ItemList::fromString('BODY')->getItem('HEADER');
+        ItemList::fromString('(BODY)')->getItem('HEADER');
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_list_is_unfinished(): void
+    {
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionMessage('Unexpected end of item list, expecting ) to finish the list');
+
+        ItemList::fromString('(BODY');
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_with_invalid_octet(): void
+    {
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionMessage('Unexpected end of item list, expecting more bytes');
+
+        ItemList::fromString("(BODY {100}\r\nHello World.)");
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_with_extra_data_after_body(): void
+    {
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionMessage('List contains extra data after body, expecting )');
+
+        ItemList::fromString("(BODY {12}\r\nHello World. TEST)");
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_with_invalid_character_after_octet(): void
+    {
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionMessage('Octet is expected to be followed by a CRLF');
+
+        ItemList::fromString("(BODY {100}\rHello World.)");
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_with_another_invalid_character_after_octet(): void
+    {
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionMessage('Octet is expected to be followed by a CRLF');
+
+        ItemList::fromString("(BODY {100} Hello World.)");
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_with_another_invalid_start_character(): void
+    {
+        $this->expectException(\UnexpectedValueException::class);
+        $this->expectExceptionMessage('Expecting ( as start of item list');
+
+        ItemList::fromString("[BODY]");
     }
 }
