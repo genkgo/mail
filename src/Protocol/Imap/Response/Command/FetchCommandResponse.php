@@ -5,6 +5,9 @@ namespace Genkgo\Mail\Protocol\Imap\Response\Command;
 
 use Genkgo\Mail\Protocol\Imap\MessageData\ItemList;
 
+/**
+ * @deprecated With ParsedFetchCommandResponse fetch responses are parsed by default, leaving this class useless
+ */
 final class FetchCommandResponse
 {
     /**
