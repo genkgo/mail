@@ -26,17 +26,7 @@ final class CommandContinuationRequestResponse implements ResponseInterface
      */
     public function __toString(): string
     {
-        return \trim('+ ' . $this->line);
-    }
-
-    /**
-     * @param string $data
-     * @return ResponseInterface
-     */
-    public function withAddedBody(string $data): ResponseInterface
-    {
-        $this->line .= $data;
-        return $this;
+        return \sprintf('+ %s', $this->line);
     }
 
     /**
@@ -64,6 +54,16 @@ final class CommandContinuationRequestResponse implements ResponseInterface
     public function assertTagged(): ResponseInterface
     {
         throw new AssertionFailedException('A command continuous request is never tagged');
+    }
+
+    /**
+     * @param string $className
+     * @return ResponseInterface
+     * @throws AssertionFailedException
+     */
+    public function assertParsed(string $className): ResponseInterface
+    {
+        throw new AssertionFailedException('A command continuous response is never parsed');
     }
 
     /**

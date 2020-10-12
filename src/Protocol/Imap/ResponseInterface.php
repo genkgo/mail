@@ -28,10 +28,11 @@ interface ResponseInterface
     public function assertTagged(): ResponseInterface;
 
     /**
-     * @param string $data
+     * @param string $className
      * @return ResponseInterface
+     * @throws AssertionFailedException
      */
-    public function withAddedBody(string $data): ResponseInterface;
+    public function assertParsed(string $className): ResponseInterface;
 
     /**
      * @return string

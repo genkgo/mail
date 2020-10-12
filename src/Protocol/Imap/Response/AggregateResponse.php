@@ -4,8 +4,10 @@ declare(strict_types=1);
 namespace Genkgo\Mail\Protocol\Imap\Response;
 
 use Genkgo\Mail\Exception\AssertionFailedException;
+use Genkgo\Mail\Protocol\ConnectionInterface;
+use Genkgo\Mail\Protocol\Imap\CommandResponseCanBeParsedInterface;
+use Genkgo\Mail\Protocol\Imap\RequestInterface;
 use Genkgo\Mail\Protocol\Imap\ResponseInterface;
-use Genkgo\Mail\Protocol\Imap\Tag;
 
 /**
  * @implements \IteratorAggregate<int, ResponseInterface[]>
@@ -16,19 +18,6 @@ final class AggregateResponse implements \IteratorAggregate
      * @var array|ResponseInterface[]
      */
     private $lines = [];
-
-    /**
-     * @var Tag
-     */
-    private $tag;
-
-    /**
-     * @param Tag $tag
-     */
-    public function __construct(Tag $tag)
-    {
-        $this->tag = $tag;
-    }
 
     /**
      * @return \Iterator|ResponseInterface[]
@@ -101,53 +90,12 @@ final class AggregateResponse implements \IteratorAggregate
     }
 
     /**
-     * @param string $line
-     * @return AggregateResponse
-     */
-    public function withLine(string $line): AggregateResponse
-    {
-        switch (\substr($line, 0, 2)) {
-            case '+ ':
-                $this->lines[] = new CommandContinuationRequestResponse(
-                    \substr($line, 2)
-                );
-                break;
-            case '* ':
-                $this->lines[] = new UntaggedResponse(
-                    \substr($line, 2)
-                );
-                break;
-            default:
-                try {
-                    $this->lines[] = new TaggedResponse(
-                        $this->tag,
-                        $this->tag->extractBodyFromLine($line)
-                    );
-                } catch (\InvalidArgumentException $e) {
-                    if (empty($this->lines)) {
-                        throw new \UnexpectedValueException(
-                            'Expected line to begin with +, * or tag. Got: ' . $line
-                        );
-                    }
-
-                    $keys = \array_keys($this->lines);
-                    $lastKey = \end($keys);
-                    $this->lines[$lastKey]->withAddedBody($line);
-                }
-                break;
-
-        }
-
-        return $this;
-    }
-
-    /**
      * @return string
      */
     public function __toString(): string
     {
         return \implode(
-            "\r\n",
+            '',
             \array_map(
                 function (ResponseInterface $response) {
                     return (string)$response;
@@ -155,5 +103,98 @@ final class AggregateResponse implements \IteratorAggregate
                 $this->lines
             )
         );
+    }
+
+    /**
+     * @param RequestInterface $request
+     * @param ConnectionInterface $connection
+     * @return AggregateResponse
+     */
+    public static function fromServerResponse(ConnectionInterface $connection, RequestInterface $request): self
+    {
+        return self::fromResponseLines(
+            (function () use ($connection) {
+                while ($line = $connection->receive()) {
+                    yield $line;
+                }
+            })(),
+            $request
+        );
+    }
+
+    /**
+     * @param \Iterator<int, string> $lines
+     * @param RequestInterface $request
+     * @return static
+     */
+    public static function fromResponseLines(\Iterator $lines, RequestInterface $request): self
+    {
+        $response = new self();
+        $currentLine = [];
+
+        foreach ($lines as $line) {
+            switch (\substr($line, 0, 2)) {
+                case '+ ':
+                    if ($currentLine !== []) {
+                        $response->lines[] = new UntaggedResponse(\implode('', $currentLine));
+                        $currentLine = [];
+                    }
+
+                    $response->lines[] = new CommandContinuationRequestResponse(
+                        \substr($line, 2)
+                    );
+                    break;
+                case '* ':
+                    if ($currentLine !== []) {
+                        $response->lines[] = new UntaggedResponse(\implode('', $currentLine));
+                        $currentLine = [];
+                    }
+
+                    if ($request instanceof CommandResponseCanBeParsedInterface) {
+                        $response->lines[] = $request->createParsedResponse(
+                            (function () use ($line, $lines) {
+                                yield $line;
+
+                                while ($lines->valid()) {
+                                    $lines->next();
+                                    yield $lines->current();
+                                }
+                            })()
+                        );
+                    } else {
+                        $currentLine = [\substr($line, 2)];
+                    }
+                    break;
+                default:
+                    try {
+                        $taggedResponse = new TaggedResponse(
+                            $request->getTag(),
+                            $request->getTag()->extractBodyFromLine($line)
+                        );
+
+                        if ($currentLine !== []) {
+                            $response->lines[] = new UntaggedResponse(\implode('', $currentLine));
+                            $currentLine = [];
+                        }
+
+                        $response->lines[] = $taggedResponse;
+                    } catch (\InvalidArgumentException $e) {
+                        if ($response->lines === []) {
+                            throw new \UnexpectedValueException(
+                                'Expected line to begin with +, * or tag. Got: ' . $line
+                            );
+                        }
+
+                        $currentLine[] = $line;
+                    }
+                    break;
+            }
+
+            if ($response->hasCompleted()) {
+                return $response;
+            }
+        }
+
+        throw new \UnexpectedValueException('Unexpected end of response');
     }
 }

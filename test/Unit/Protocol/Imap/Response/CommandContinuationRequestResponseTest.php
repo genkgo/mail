@@ -24,24 +24,6 @@ final class CommandContinuationRequestResponseTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_is_mutable(): void
-    {
-        $response = new CommandContinuationRequestResponse('OK successful');
-        $this->assertSame($response, $response->withAddedBody('body'));
-    }
-
-    /**
-     * @test
-     */
-    public function it_can_be_extended_with_more_body(): void
-    {
-        $response = new CommandContinuationRequestResponse('OK successful');
-        $this->assertSame('OK successfully', $response->withAddedBody('ly')->getBody());
-    }
-
-    /**
-     * @test
-     */
     public function it_throws_when_asserting_completion(): void
     {
         $this->expectException(AssertionFailedException::class);

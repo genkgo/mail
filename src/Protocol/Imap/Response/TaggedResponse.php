@@ -34,17 +34,7 @@ final class TaggedResponse implements ResponseInterface
      */
     public function __toString(): string
     {
-        return \implode(' ', [(string)$this->tag, $this->line]);
-    }
-
-    /**
-     * @param string $data
-     * @return ResponseInterface
-     */
-    public function withAddedBody(string $data): ResponseInterface
-    {
-        $this->line .= $data;
-        return $this;
+        return \sprintf('%s %s', (string)$this->tag, $this->line);
     }
 
     /**
@@ -92,6 +82,16 @@ final class TaggedResponse implements ResponseInterface
     public function assertTagged(): ResponseInterface
     {
         return $this;
+    }
+
+    /**
+     * @param string $className
+     * @return ResponseInterface
+     * @throws AssertionFailedException
+     */
+    public function assertParsed(string $className): ResponseInterface
+    {
+        throw new AssertionFailedException('A tagged response is never parsed');
     }
 
     /**

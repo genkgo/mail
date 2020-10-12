@@ -3,7 +3,12 @@ declare(strict_types=1);
 
 namespace Genkgo\TestMail\Unit\Protocol\Imap\Response;
 
+use Genkgo\Mail\Protocol\Imap\MessageData\ItemList;
+use Genkgo\Mail\Protocol\Imap\Request\FetchCommand;
+use Genkgo\Mail\Protocol\Imap\Request\NoopCommand;
+use Genkgo\Mail\Protocol\Imap\Request\SequenceSet;
 use Genkgo\Mail\Protocol\Imap\Response\AggregateResponse;
+use Genkgo\Mail\Protocol\Imap\Response\Command\ParsedFetchCommandResponse;
 use Genkgo\Mail\Protocol\Imap\Response\CommandContinuationRequestResponse;
 use Genkgo\Mail\Protocol\Imap\Response\TaggedResponse;
 use Genkgo\Mail\Protocol\Imap\Response\UntaggedResponse;
@@ -17,30 +22,11 @@ final class AggregateResponseTest extends AbstractTestCase
      */
     public function it_can_be_iterated(): void
     {
-        $this->assertTrue(\is_iterable(new AggregateResponse(Tag::fromNonce(1))));
+        $this->assertTrue(\is_iterable(new AggregateResponse()));
         $this->assertInstanceOf(
             \Traversable::class,
-            (new AggregateResponse(Tag::fromNonce(1)))->getIterator()
+            (new AggregateResponse())->getIterator()
         );
-    }
-
-    /**
-     * @test
-     */
-    public function it_is_mutable(): void
-    {
-        $response = new AggregateResponse(Tag::fromNonce(1));
-        $this->assertSame($response, $response->withLine('* Untagged'));
-    }
-
-    /**
-     * @test
-     */
-    public function it_throws_when_first_with_empty_response(): void
-    {
-        $this->expectException(\OutOfBoundsException::class);
-
-        (new AggregateResponse(Tag::fromNonce(1)))->first();
     }
 
     /**
@@ -50,7 +36,7 @@ final class AggregateResponseTest extends AbstractTestCase
     {
         $this->expectException(\OutOfBoundsException::class);
 
-        (new AggregateResponse(Tag::fromNonce(1)))->last();
+        (new AggregateResponse())->last();
     }
 
     /**
@@ -60,7 +46,7 @@ final class AggregateResponseTest extends AbstractTestCase
     {
         $this->expectException(\OutOfBoundsException::class);
 
-        (new AggregateResponse(Tag::fromNonce(1)))->at(0);
+        (new AggregateResponse())->at(0);
     }
 
     /**
@@ -69,8 +55,11 @@ final class AggregateResponseTest extends AbstractTestCase
     public function it_can_return_the_first_line(): void
     {
         $this->assertInstanceOf(
-            UntaggedResponse::class,
-            (new AggregateResponse(Tag::fromNonce(1)))->withLine('* FETCH')->first()
+            TaggedResponse::class,
+            AggregateResponse::fromResponseLines(
+                new \ArrayIterator(["TAG1 OK\r\n"]),
+                new NoopCommand(Tag::fromNonce(1))
+            )->first()
         );
     }
 
@@ -80,11 +69,11 @@ final class AggregateResponseTest extends AbstractTestCase
     public function it_can_return_the_first_line_with_multiple_lines(): void
     {
         $this->assertInstanceOf(
-            TaggedResponse::class,
-            (new AggregateResponse(Tag::fromNonce(1)))
-                ->withLine('TAG1 FETCH')
-                ->withLine('* FETCH')
-                ->first()
+            UntaggedResponse::class,
+            AggregateResponse::fromResponseLines(
+                new \ArrayIterator(["* TEST\r\n", "TAG1 OK\r\n"]),
+                new NoopCommand(Tag::fromNonce(1))
+            )->first()
         );
     }
 
@@ -94,8 +83,11 @@ final class AggregateResponseTest extends AbstractTestCase
     public function it_can_return_the_last_line(): void
     {
         $this->assertInstanceOf(
-            UntaggedResponse::class,
-            (new AggregateResponse(Tag::fromNonce(1)))->withLine('* FETCH')->last()
+            TaggedResponse::class,
+            AggregateResponse::fromResponseLines(
+                new \ArrayIterator(["TAG1 OK\r\n"]),
+                new NoopCommand(Tag::fromNonce(1))
+            )->last()
         );
     }
 
@@ -105,11 +97,11 @@ final class AggregateResponseTest extends AbstractTestCase
     public function it_can_return_the_last_line_with_multiple_lines(): void
     {
         $this->assertInstanceOf(
-            UntaggedResponse::class,
-            (new AggregateResponse(Tag::fromNonce(1)))
-                ->withLine('TAG1 FETCH')
-                ->withLine('* FETCH')
-                ->last()
+            TaggedResponse::class,
+            AggregateResponse::fromResponseLines(
+                new \ArrayIterator(["* TEST\r\n", "TAG1 OK\r\n"]),
+                new NoopCommand(Tag::fromNonce(1))
+            )->last()
         );
     }
 
@@ -118,22 +110,20 @@ final class AggregateResponseTest extends AbstractTestCase
      */
     public function it_can_return_the_line_at_with_multiple_lines(): void
     {
-        $tag = Tag::fromNonce(1);
-
         $this->assertInstanceOf(
-            TaggedResponse::class,
-            (new AggregateResponse($tag))
-                ->withLine('TAG1 FETCH')
-                ->withLine('* FETCH')
-                ->at(0)
+            UntaggedResponse::class,
+            AggregateResponse::fromResponseLines(
+                new \ArrayIterator(["* TEST\r\n", "TAG1 OK\r\n"]),
+                new NoopCommand(Tag::fromNonce(1))
+            )->at(0)
         );
 
         $this->assertInstanceOf(
-            UntaggedResponse::class,
-            (new AggregateResponse($tag))
-                ->withLine('TAG1 FETCH')
-                ->withLine('* FETCH')
-                ->at(1)
+            TaggedResponse::class,
+            AggregateResponse::fromResponseLines(
+                new \ArrayIterator(["* TEST\r\n", "TAG1 OK\r\n"]),
+                new NoopCommand(Tag::fromNonce(1))
+            )->at(1)
         );
     }
 
@@ -142,30 +132,29 @@ final class AggregateResponseTest extends AbstractTestCase
      */
     public function it_knows_when_response_is_completed(): void
     {
-        $tag = Tag::fromNonce(1);
-
         $this->assertFalse(
-            (new AggregateResponse($tag))->hasCompleted()
-        );
-
-        $this->assertFalse(
-            (new AggregateResponse($tag))
-                ->withLine('TAG1 FETCH')
-                ->withLine('* FETCH')
-                ->hasCompleted()
+            (new AggregateResponse())->hasCompleted()
         );
 
         $this->assertTrue(
-            (new AggregateResponse($tag))
-                ->withLine('* FETCH')
-                ->withLine('TAG1 FETCH')
-                ->hasCompleted()
+            AggregateResponse::fromResponseLines(
+                new \ArrayIterator(["TAG1 OK\r\n"]),
+                new NoopCommand(Tag::fromNonce(1))
+            )->hasCompleted()
         );
 
         $this->assertTrue(
-            (new AggregateResponse($tag))
-                ->withLine('+ Continue')
-                ->hasCompleted()
+            AggregateResponse::fromResponseLines(
+                new \ArrayIterator(["* TEST\r\n", "TAG1 OK\r\n"]),
+                new NoopCommand(Tag::fromNonce(1))
+            )->hasCompleted()
+        );
+
+        $this->assertTrue(
+            AggregateResponse::fromResponseLines(
+                new \ArrayIterator(["+ continue\r\n"]),
+                new NoopCommand(Tag::fromNonce(1))
+            )->hasCompleted()
         );
     }
 
@@ -174,11 +163,13 @@ final class AggregateResponseTest extends AbstractTestCase
      */
     public function it_defines_an_untagged_response(): void
     {
-        $response = new AggregateResponse(Tag::fromNonce(1));
-        $line = $response->withLine('* Untagged')->first();
+        $response = AggregateResponse::fromResponseLines(
+            new \ArrayIterator(["* Untagged\r\n", "TAG1 OK"]),
+            new NoopCommand(Tag::fromNonce(1))
+        );
 
-        $this->assertInstanceOf(UntaggedResponse::class, $line);
-        $this->assertSame('Untagged', $line->getBody());
+        $this->assertInstanceOf(UntaggedResponse::class, $response->first());
+        $this->assertSame("Untagged\r\n", $response->first()->getBody());
     }
 
     /**
@@ -186,11 +177,13 @@ final class AggregateResponseTest extends AbstractTestCase
      */
     public function it_defines_a_tagged_response(): void
     {
-        $response = new AggregateResponse(Tag::fromNonce(1));
-        $line = $response->withLine('TAG1 OK')->first();
+        $response = AggregateResponse::fromResponseLines(
+            new \ArrayIterator(["TAG1 OK\r\n"]),
+            new NoopCommand(Tag::fromNonce(1))
+        );
 
-        $this->assertInstanceOf(TaggedResponse::class, $line);
-        $this->assertSame('OK', $line->getBody());
+        $this->assertInstanceOf(TaggedResponse::class, $response->first());
+        $this->assertSame("OK\r\n", $response->first()->getBody());
     }
 
     /**
@@ -198,11 +191,13 @@ final class AggregateResponseTest extends AbstractTestCase
      */
     public function it_defines_a_continuation_response(): void
     {
-        $response = new AggregateResponse(Tag::fromNonce(1));
-        $line = $response->withLine('+ Please continue')->first();
+        $response = AggregateResponse::fromResponseLines(
+            new \ArrayIterator(["+ Please continue\r\n"]),
+            new NoopCommand(Tag::fromNonce(1))
+        );
 
-        $this->assertInstanceOf(CommandContinuationRequestResponse::class, $line);
-        $this->assertSame('Please continue', $line->getBody());
+        $this->assertInstanceOf(CommandContinuationRequestResponse::class, $response->first());
+        $this->assertSame("Please continue\r\n", $response->first()->getBody());
     }
 
     /**
@@ -210,17 +205,26 @@ final class AggregateResponseTest extends AbstractTestCase
      */
     public function it_deals_with_multi_line_untagged_response(): void
     {
-        $response = new AggregateResponse(Tag::fromNonce(1));
-        $fetch = \file_get_contents(__DIR__. '/../../../../Stub/Imap/fetch-response.txt');
-
+        $fetch = \trim(\file_get_contents(__DIR__. '/../../../../Stub/Imap/fetch-response.crlf.txt'));
         $responseString = '* ' . $fetch;
-        foreach (\preg_split('/(\n)/', $responseString, -1, PREG_SPLIT_DELIM_CAPTURE) as $line) {
-            $response = $response->withLine($line);
-        }
+        $lines = \array_map(
+            function (string $line) {
+                return $line . "\r\n";
+            },
+            \preg_split('/(\r\n)/', $responseString),
+        );
+        $lines[] = "TAG1 OK FETCH complete\r\n";
 
-        $response = $response->withLine('TAG1 OK FETCH complete');
+        $response = AggregateResponse::fromResponseLines(
+            new \ArrayIterator($lines),
+            new FetchCommand(
+                Tag::fromNonce(1),
+                SequenceSet::infiniteRange(1),
+                ItemList::fromString('(BODY[])')
+            )
+        );
 
-        $this->assertInstanceOf(UntaggedResponse::class, $response->first());
+        $this->assertInstanceOf(ParsedFetchCommandResponse::class, $response->first());
         $this->assertInstanceOf(TaggedResponse::class, $response->last());
         $this->assertSame($fetch, $response->first()->getBody());
     }
@@ -228,31 +232,32 @@ final class AggregateResponseTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_can_be_casted_to_string(): void
+    public function it_deals_with_multi_fetch_response(): void
     {
-        $response = new AggregateResponse(Tag::fromNonce(1));
-        $fetch = \file_get_contents(__DIR__. '/../../../../Stub/Imap/fetch-response.txt');
-
+        $fetch = \trim(\file_get_contents(__DIR__. '/../../../../Stub/Imap/fetch-response.crlf.txt'));
         $responseString = '* ' . $fetch;
-        foreach (\preg_split('/(\n)/', $responseString, -1, PREG_SPLIT_DELIM_CAPTURE) as $line) {
-            $response = $response->withLine($line);
-        }
+        /** @var array<int, string> $lines */
+        $lines = \array_map(
+            function (string $line) {
+                return $line . "\r\n";
+            },
+            \preg_split('/(\r\n)/', $responseString),
+        );
+        $lines = \array_merge($lines, $lines);
+        $lines[] = "TAG1 OK FETCH complete\r\n";
 
-        $response = $response->withLine('TAG1 OK FETCH complete');
+        $response = AggregateResponse::fromResponseLines(
+            new \ArrayIterator($lines),
+            new FetchCommand(
+                Tag::fromNonce(1),
+                SequenceSet::infiniteRange(1),
+                ItemList::fromString('(BODY[])')
+            )
+        );
 
-        $this->assertInstanceOf(UntaggedResponse::class, $response->first());
+        $this->assertInstanceOf(ParsedFetchCommandResponse::class, $response->at(0));
+        $this->assertInstanceOf(ParsedFetchCommandResponse::class, $response->at(1));
         $this->assertInstanceOf(TaggedResponse::class, $response->last());
         $this->assertSame($fetch, $response->first()->getBody());
-        $this->assertSame($responseString."\r\nTAG1 OK FETCH complete", (string)$response);
-    }
-
-    /**
-     * @test
-     */
-    public function it_throws_when_adding_content_line_when_empty_response(): void
-    {
-        $this->expectException(\UnexpectedValueException::class);
-
-        (new AggregateResponse(Tag::fromNonce(1)))->withLine('content');
     }
 }

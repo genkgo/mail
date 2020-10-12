@@ -3,12 +3,15 @@ declare(strict_types=1);
 
 namespace Genkgo\Mail\Protocol\Imap\Request;
 
+use Genkgo\Mail\Protocol\Imap\CommandResponseCanBeParsedInterface;
 use Genkgo\Mail\Protocol\Imap\MessageData\ItemList;
+use Genkgo\Mail\Protocol\Imap\Response\Command\ParsedFetchCommandResponse;
+use Genkgo\Mail\Protocol\Imap\ResponseInterface;
 use Genkgo\Mail\Protocol\Imap\Tag;
 use Genkgo\Mail\Stream\StringStream;
 use Genkgo\Mail\StreamInterface;
 
-final class FetchCommand extends AbstractCommand
+final class FetchCommand extends AbstractCommand implements CommandResponseCanBeParsedInterface
 {
     /**
      * @var SequenceSet
@@ -57,5 +60,14 @@ final class FetchCommand extends AbstractCommand
     public function getTag(): Tag
     {
         return $this->tag;
+    }
+
+    /**
+     * @param \Iterator<int, string> $lineIterator
+     * @return ResponseInterface
+     */
+    public function createParsedResponse(\Iterator $lineIterator): ResponseInterface
+    {
+        return new ParsedFetchCommandResponse($lineIterator);
     }
 }

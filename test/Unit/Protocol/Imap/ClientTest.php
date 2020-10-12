@@ -119,7 +119,7 @@ final class ClientTest extends AbstractTestCase
             ->willReturn(new StringStream("TAG1 OK COMMAND\r\nMORE DATA"));
 
         $command
-            ->expects($this->at(1))
+            ->expects($this->any())
             ->method('getTag')
             ->willReturn(Tag::fromNonce(1));
 

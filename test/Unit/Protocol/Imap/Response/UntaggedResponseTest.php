@@ -24,24 +24,6 @@ final class UntaggedResponseTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_is_mutable(): void
-    {
-        $response = new UntaggedResponse('OK successful');
-        $this->assertSame($response, $response->withAddedBody('body'));
-    }
-
-    /**
-     * @test
-     */
-    public function it_can_be_extended_with_more_body(): void
-    {
-        $response = new UntaggedResponse('OK successful');
-        $this->assertSame('OK successfully', $response->withAddedBody('ly')->getBody());
-    }
-
-    /**
-     * @test
-     */
     public function it_can_assert_completion_result(): void
     {
         $response = new UntaggedResponse('OK successful');

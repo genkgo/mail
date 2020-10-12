@@ -1,4 +1,4 @@
-10588 FETCH (BODY[HEADER] {1344}
+10588 FETCH (BODY[HEADER] {829}
 Return-Path: <test_nospam@test.priv>
 Received: from ms1.busylog.priv (192.168.2.1) by ms2.busylog.priv
  id ADR9398458A00a for giovanni_nospam@busylog.net; Fri, 8 Jul 2016 19:37:33 +0200

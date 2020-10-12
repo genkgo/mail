@@ -134,7 +134,6 @@ final class AuthNegotiationTest extends AbstractTestCase
             ->method('receive')
             ->willReturn('TAG2 OK');
 
-
         $client = new Client($connection, new GeneratorTagFactory(), []);
 
         $negotiation = new AuthNegotiation(Client::AUTH_AUTO, 'username', 'password');

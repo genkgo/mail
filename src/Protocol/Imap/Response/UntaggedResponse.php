@@ -35,16 +35,6 @@ final class UntaggedResponse implements ResponseInterface
     }
 
     /**
-     * @param string $data
-     * @return ResponseInterface
-     */
-    public function withAddedBody(string $data): ResponseInterface
-    {
-        $this->line .= $data;
-        return $this;
-    }
-
-    /**
      * @param CompletionResult $expectedResult
      * @return ResponseInterface
      * @throws AssertionFailedException
@@ -85,6 +75,16 @@ final class UntaggedResponse implements ResponseInterface
     public function assertTagged(): ResponseInterface
     {
         throw new AssertionFailedException('An untagged response is never tagged');
+    }
+
+    /**
+     * @param string $className
+     * @return ResponseInterface
+     * @throws AssertionFailedException
+     */
+    public function assertParsed(string $className): ResponseInterface
+    {
+        throw new AssertionFailedException('An untagged response is never parsed');
     }
 
     /**
