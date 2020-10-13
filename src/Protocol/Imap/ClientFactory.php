@@ -174,9 +174,10 @@ final class ClientFactory
 
     /**
      * @param string $dataSourceName
+     * @param array<string, array<string, mixed>> $contextOptions
      * @return ClientFactory
      */
-    public static function fromString(string $dataSourceName):ClientFactory
+    public static function fromString(string $dataSourceName, array $contextOptions = []):ClientFactory
     {
         $components = \parse_url($dataSourceName);
         if ($components === false || !isset($components['scheme'], $components['host'])) {
@@ -190,11 +191,15 @@ final class ClientFactory
         }
 
         $insecureConnectionAllowed = false;
+        $startTls = true;
+
         switch ($components['scheme']) {
             case 'imap':
                 $connection = new PlainTcpConnection(
                     $components['host'],
-                    $components['port'] ?? 143
+                    $components['port'] ?? 143,
+                    1.0,
+                    $contextOptions
                 );
                 break;
             case 'imaps':
@@ -202,15 +207,32 @@ final class ClientFactory
                     $components['host'],
                     $components['port'] ?? 993,
                     new SecureConnectionOptions(
-                        (int)($query['crypto'] ?? CryptoConstant::getDefaultMethod(PHP_VERSION))
+                        (int)($query['crypto'] ?? CryptoConstant::getDefaultMethod(PHP_VERSION)),
+                        10,
+                        $contextOptions
                     )
                 );
                 break;
             case 'imap-starttls':
                 $insecureConnectionAllowed = true;
+                $startTls = false;
+
                 $connection = new PlainTcpConnection(
                     $components['host'],
-                    $components['port'] ?? 143
+                    $components['port'] ?? 143,
+                    1.0,
+                    $contextOptions
+                );
+                break;
+            case 'imap+starttls':
+                $insecureConnectionAllowed = true;
+                $startTls = true;
+
+                $connection = new PlainTcpConnection(
+                    $components['host'],
+                    $components['port'] ?? 143,
+                    1.0,
+                    $contextOptions
                 );
                 break;
             default:
@@ -237,7 +259,9 @@ final class ClientFactory
             $factory->reconnectAfter = $query['reconnectAfter'];
         }
 
-        if (isset($query['crypto'])) {
+        if (!$startTls) {
+            $factory->startTls = 0;
+        } elseif (isset($query['crypto'])) {
             $factory->startTls = (int)$query['crypto'];
         }
 
