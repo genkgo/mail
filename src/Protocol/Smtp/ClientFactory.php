@@ -189,9 +189,10 @@ final class ClientFactory
 
     /**
      * @param string $dataSourceName
+     * @param array<string, array<string, mixed>> $contextOptions
      * @return ClientFactory
      */
-    public static function fromString(string $dataSourceName):ClientFactory
+    public static function fromString(string $dataSourceName, array $contextOptions = []):ClientFactory
     {
         $components = \parse_url($dataSourceName);
         if ($components === false || !isset($components['scheme']) || !isset($components['host'])) {
@@ -210,7 +211,9 @@ final class ClientFactory
             case 'smtp':
                 $connection = new PlainTcpConnection(
                     $components['host'],
-                    $components['port'] ?? 587
+                    $components['port'] ?? 587,
+                    1.0,
+                    $contextOptions
                 );
                 break;
             case 'smtps':
@@ -218,7 +221,9 @@ final class ClientFactory
                     $components['host'],
                     $components['port'] ?? 465,
                     new SecureConnectionOptions(
-                        (int)($query['crypto'] ?? CryptoConstant::getDefaultMethod(PHP_VERSION))
+                        (int)($query['crypto'] ?? CryptoConstant::getDefaultMethod(PHP_VERSION)),
+                        10,
+                        $contextOptions
                     )
                 );
                 break;
@@ -228,7 +233,9 @@ final class ClientFactory
 
                 $connection = new PlainTcpConnection(
                     $components['host'],
-                    $components['port'] ?? 25
+                    $components['port'] ?? 25,
+                    1.0,
+                    $contextOptions
                 );
                 break;
             case 'smtp+starttls':
@@ -237,7 +244,9 @@ final class ClientFactory
 
                 $connection = new PlainTcpConnection(
                     $components['host'],
-                    $components['port'] ?? 25
+                    $components['port'] ?? 25,
+                    1.0,
+                    $contextOptions
                 );
                 break;
             default:
