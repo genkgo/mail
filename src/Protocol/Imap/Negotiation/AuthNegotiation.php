@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Genkgo\Mail\Protocol\Imap\Negotiation;
 
+use Genkgo\Mail\Exception\AssertionFailedException;
 use Genkgo\Mail\Exception\ImapAuthenticationException;
 use Genkgo\Mail\Protocol\Imap\Client;
 use Genkgo\Mail\Protocol\Imap\NegotiationInterface;
@@ -88,7 +89,7 @@ final class AuthNegotiation implements NegotiationInterface
                     ->first()
                     ->assertContinuation();
 
-                $client
+                $taggedResponse = $client
                     ->emit(
                         new AuthPlainCredentialsRequest(
                             $tag,
@@ -97,16 +98,29 @@ final class AuthNegotiation implements NegotiationInterface
                         )
                     )
                     ->last()
-                    ->assertCompletion(CompletionResult::ok())
                     ->assertTagged();
+
+                try {
+                    $taggedResponse->assertCompletion(CompletionResult::ok());
+                } catch (AssertionFailedException $e) {
+                    throw new ImapAuthenticationException(
+                        'Failed to authenticate: ' . $taggedResponse->getBody()
+                    );
+                }
                 break;
             case Client::AUTH_LOGIN:
-                $tag = $client->newTag();
-                $client
-                    ->emit(new LoginCommand($tag, $this->username, $this->password))
+                $taggedResponse = $client
+                    ->emit(new LoginCommand($client->newTag(), $this->username, $this->password))
                     ->last()
-                    ->assertTagged()
-                    ->assertCompletion(CompletionResult::ok());
+                    ->assertTagged();
+
+                try {
+                    $taggedResponse->assertCompletion(CompletionResult::ok());
+                } catch (AssertionFailedException $e) {
+                    throw new ImapAuthenticationException(
+                        'Failed to authenticate: ' . $taggedResponse->getBody()
+                    );
+                }
                 break;
         }
     }

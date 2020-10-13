@@ -172,4 +172,92 @@ final class AuthNegotiationTest extends AbstractTestCase
         $negotiation = new AuthNegotiation(Client::AUTH_AUTO, 'username', 'password');
         $negotiation->negotiate($client);
     }
+
+    /**
+     * @test
+     */
+    public function it_throws_auth_exception_when_plain_auth_fails(): void
+    {
+        $this->expectException(ImapAuthenticationException::class);
+        $this->expectExceptionMessage('Failed to authenticate: NO [AUTHENTICATIONFAILED] Authentication failed.');
+
+        $connection = $this->createMock(ConnectionInterface::class);
+        $connection
+            ->expects($this->at(0))
+            ->method('addListener');
+
+        $connection
+            ->expects($this->at(1))
+            ->method('send')
+            ->with("TAG1 AUTHENTICATE PLAIN\r\n");
+
+        $connection
+            ->expects($this->at(2))
+            ->method('receive')
+            ->willReturn('+ Send password');
+
+        $connection
+            ->expects($this->at(3))
+            ->method('send')
+            ->with("AHVzZXJuYW1lAHBhc3N3b3Jk\r\n");
+
+        $connection
+            ->expects($this->at(4))
+            ->method('receive')
+            ->willReturn('TAG1 NO [AUTHENTICATIONFAILED] Authentication failed.');
+
+        $client = new Client($connection, new GeneratorTagFactory(), []);
+
+        $negotiation = new AuthNegotiation(Client::AUTH_PLAIN, 'username', 'password');
+        $negotiation->negotiate($client);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_auth_exception_when_login_fails(): void
+    {
+        $this->expectException(ImapAuthenticationException::class);
+        $this->expectExceptionMessage('Failed to authenticate: NO [AUTHENTICATIONFAILED] Authentication failed.');
+
+        $connection = $this->createMock(ConnectionInterface::class);
+        $connection
+            ->expects($this->at(0))
+            ->method('addListener');
+
+        $connection
+            ->expects($this->at(1))
+            ->method('send')
+            ->with("TAG1 CAPABILITY\r\n");
+
+        $connection
+            ->expects($this->at(2))
+            ->method('receive')
+            ->willReturn('* CAPABILITY IMAP4rev1 STARTTLS');
+
+        $connection
+            ->expects($this->at(3))
+            ->method('receive')
+            ->willReturn('TAG1 OK');
+
+        $connection
+            ->expects($this->at(4))
+            ->method('send')
+            ->with("TAG2 LOGIN username password\r\n");
+
+        $connection
+            ->expects($this->at(5))
+            ->method('receive')
+            ->willReturn('TAG2 NO [AUTHENTICATIONFAILED] Authentication failed.');
+
+        $client = new Client($connection, new GeneratorTagFactory(), []);
+
+        $negotiation = new AuthNegotiation(Client::AUTH_AUTO, 'username', 'password');
+        $negotiation->negotiate($client);
+
+        $client = new Client($connection, new GeneratorTagFactory(), []);
+
+        $negotiation = new AuthNegotiation(Client::AUTH_PLAIN, 'username', 'password');
+        $negotiation->negotiate($client);
+    }
 }
