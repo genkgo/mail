@@ -264,6 +264,22 @@ final class MessageBodyCollectionTest extends AbstractTestCase
     /**
      * @test
      */
+    public function it_extracts_body_from_full_formatted_messages_with_content_disposition(): void
+    {
+        $message = GenericMessage::fromString(
+            \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollection/full-formatted-message-content-disposition.eml')
+        );
+
+        $body = MessageBodyCollection::extract($message);
+        $this->assertSame("<html><head><meta http-equiv=\"Content-Type\" content=\"text/html;\r\ncharset=UTF-8\"/></head><body><p>Hello World</p></body></html>", $body->getHtml());
+        $this->assertSame('Hello World', (string)$body->getText());
+        $this->assertCount(1, $body->getEmbeddedImages());
+        $this->assertCount(1, $body->getAttachments());
+    }
+
+    /**
+     * @test
+     */
     public function it_extracts_body_from_html_only_messages(): void
     {
         $message = GenericMessage::fromString(
