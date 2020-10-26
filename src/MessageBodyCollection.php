@@ -390,9 +390,13 @@ final class MessageBodyCollection
                 $charset = '';
             }
 
-            $hasDisposition = $part->hasHeader('Content-Disposition');
+            try {
+                $disposition = $part->getHeader('Content-Disposition')->getValue()->getRaw();
+            } catch (\UnexpectedValueException $e) {
+                $disposition = 'inline';
+            }
 
-            if (!$hasDisposition && $contentType === 'text/html') {
+            if ($contentType === 'text/html' && $disposition === 'inline') {
                 $this->html = self::ensureHtmlCharset(
                     (string)new MimeBodyDecodedStream($part),
                     $charset
@@ -400,23 +404,19 @@ final class MessageBodyCollection
                 continue;
             }
 
-            if (!$hasDisposition && $contentType === 'text/plain') {
+            if ($contentType === 'text/plain' && $disposition === 'inline') {
                 $this->text = AlternativeText::fromEncodedText((string)new MimeBodyDecodedStream($part), $charset);
                 continue;
             }
 
-            if ($hasDisposition) {
-                $disposition = $part->getHeader('Content-Disposition')->getValue()->getRaw();
+            if ($disposition === 'attachment') {
+                $this->attachments[] = $part;
+                continue;
+            }
 
-                if ($disposition === 'attachment') {
-                    $this->attachments[] = $part;
-                    continue;
-                }
-
-                if ($disposition === 'inline' && \substr($contentType, 0, 6) === 'image/' && $part->hasHeader('Content-ID')) {
-                    $this->embedImages[] = $part;
-                    continue;
-                }
+            if ($disposition === 'inline' && \substr($contentType, 0, 6) === 'image/' && $part->hasHeader('Content-ID')) {
+                $this->embedImages[] = $part;
+                continue;
             }
 
             if ($part instanceof MultiPartInterface) {
