@@ -67,6 +67,7 @@ final class CapabilityCommandResponse
             \array_fill(0, \count($advertisements), true)
         );
 
+        /** @var array<string, bool>|false $list */
         if ($list === false) {
             throw new \UnexpectedValueException('Cannot create capability list');
         }
