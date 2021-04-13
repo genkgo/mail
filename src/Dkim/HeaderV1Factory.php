@@ -14,7 +14,7 @@ final class HeaderV1Factory
     public const HEADER_NAME = 'DKIM-Signature';
 
     /**
-     * @var array
+     * @var array<string, bool>
      */
     private const HEADERS_IGNORED = [
         'return-path' => true,

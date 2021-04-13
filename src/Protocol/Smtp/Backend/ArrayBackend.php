@@ -10,7 +10,7 @@ use Genkgo\Mail\Protocol\Smtp\BackendInterface;
 final class ArrayBackend implements BackendInterface
 {
     /**
-     * @var array<string, string>
+     * @var array<string, bool>
      */
     private $addresses;
 

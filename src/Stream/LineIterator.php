@@ -5,6 +5,10 @@ namespace Genkgo\Mail\Stream;
 
 use Genkgo\Mail\StreamInterface;
 
+/**
+ * @template T
+ * @extends \IteratorIterator<int, string, \Generator>
+ */
 final class LineIterator extends \IteratorIterator
 {
     /**

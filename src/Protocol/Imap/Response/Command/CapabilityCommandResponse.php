@@ -6,12 +6,12 @@ namespace Genkgo\Mail\Protocol\Imap\Response\Command;
 final class CapabilityCommandResponse
 {
     /**
-     * @var array<int, string>
+     * @var array<string, bool>
      */
     private $advertisements = [];
 
     /**
-     * @param array<int, string> $list
+     * @param array<string, bool> $list
      */
     public function __construct(array $list)
     {
@@ -22,7 +22,7 @@ final class CapabilityCommandResponse
      * @param string $command
      * @return bool
      */
-    public function isAdvertising(string $command)
+    public function isAdvertising(string $command): bool
     {
         if ($command === '') {
             return false;
