@@ -21,7 +21,7 @@ final class Sha256Signer implements SignInterface
      */
     public function __construct($key)
     {
-        if (!\is_resource($key) || \get_resource_type($key) !== 'OpenSSL key') {
+        if (!$key instanceof \OpenSSLAsymmetricKey && (!\is_resource($key) || \get_resource_type($key) !== 'OpenSSL key')) {
             throw new \InvalidArgumentException('Expected a private key resource');
         }
 
