@@ -2,10 +2,7 @@
 
 
 [![Latest Version](https://img.shields.io/github/release/genkgo/mail.svg?style=flat-square)](https://github.com/genkgo/mail/releases)
-[![Build Status](https://travis-ci.org/genkgo/mail.svg)](https://travis-ci.org/genkgo/mail)
-[![Build Status](https://ci.appveyor.com/api/projects/status/k4y0wqm8dp32pbo1?svg=true)](https://ci.appveyor.com/project/frederikbosch/mail)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/genkgo/mail/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/genkgo/mail/)
-[![Code Coverage](https://scrutinizer-ci.com/g/genkgo/mail/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/genkgo/mail/)
+![workflow code check](https://github.com/genkgo/mail/workflows/code%20check/badge.svg)
 
 While analyzing what mail library to use when refactoring a code base, we discovered that the available ones are mostly
 legacy libraries. Some do not use namespaces and every library we encountered was merely a collection of scalar

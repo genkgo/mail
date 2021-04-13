@@ -10,7 +10,7 @@ use Genkgo\Mail\Protocol\Smtp\BackendInterface;
 final class ArrayBackend implements BackendInterface
 {
     /**
-     * @var array<string, string>
+     * @var array<string, bool>
      */
     private $addresses;
 
@@ -30,6 +30,7 @@ final class ArrayBackend implements BackendInterface
             \array_fill(0, \count($addresses), true)
         );
 
+        /** @var array<string, bool>|false $addresses */
         if ($addresses === false) {
             throw new \UnexpectedValueException('Cannot combine arrays');
         }

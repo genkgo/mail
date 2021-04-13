@@ -12,16 +12,16 @@ final class Sha256Signer implements SignInterface
     private const HASH_ALGORITHM = 'sha256';
 
     /**
-     * @var resource
+     * @var mixed
      */
     private $privateKey;
 
     /**
-     * @param resource $key
+     * @param mixed $key
      */
     public function __construct($key)
     {
-        if (!\is_resource($key) || \get_resource_type($key) !== 'OpenSSL key') {
+        if (!\is_a($key, 'OpenSSLAsymmetricKey') && (!\is_resource($key) || \get_resource_type($key) !== 'OpenSSL key')) {
             throw new \InvalidArgumentException('Expected a private key resource');
         }
 

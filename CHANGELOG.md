@@ -8,6 +8,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 
 
+## [2.7.16] - 2021-04-13
+
+### Fixed
+
+- Support PHP 8.0
+
+
+## [2.7.15 - 2.7.3]
+
+### Fixed
+
+- Multiple parsing and IMAP fixes
 
 
 ## [2.7.2] - 2020-09-17
