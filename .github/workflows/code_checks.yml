@@ -20,7 +20,7 @@ jobs:
       - uses: shivammathur/setup-php@v1
         with:
           php-version: ${{ matrix.php }}
-          extensions: intl, iconv
+          extensions: intl, iconv, openssl
           coverage: none
 
       - name: Download dependencies
