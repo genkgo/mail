@@ -13,6 +13,11 @@ final class AlternativeText
     private $text;
 
     /**
+     * @var bool
+     */
+    private $shouldNormalizeSpace = true;
+
+    /**
      * @param string $text
      */
     public function __construct(string $text)
@@ -41,7 +46,11 @@ final class AlternativeText
      */
     public function __toString(): string
     {
-        return $this->normalizeSpace($this->text);
+        if ($this->shouldNormalizeSpace) {
+            return $this->normalizeSpace($this->text);
+        }
+
+        return $this->text;
     }
 
     /**
@@ -83,6 +92,17 @@ final class AlternativeText
         }
 
         return new self($converted);
+    }
+
+    /**
+     * @param string $text
+     * @return AlternativeText
+     */
+    public static function fromRawString(string $text): AlternativeText
+    {
+        $self = new self($text);
+        $self->shouldNormalizeSpace = false;
+        return $self;
     }
 
     /**
