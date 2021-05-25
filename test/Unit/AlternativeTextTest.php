@@ -34,6 +34,16 @@ final class AlternativeTextTest extends AbstractTestCase
     }
 
     /**
+     * @test
+     */
+    public function it_does_not_normalize_space_for_raw_strings(): void
+    {
+        $text = '  test  ';
+        $alternativeText = AlternativeText::fromRawString($text);
+        $this->assertEquals($text, (string) $alternativeText);
+    }
+
+    /**
      * @return array
      */
     public function provideHtmlFiles(): array
