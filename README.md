@@ -1,4 +1,4 @@
-# Genkgo/Mail - Modern PHP 7.3+ Mail Library
+# Genkgo/Mail - Modern PHP 7.4+ Mail Library
 
 
 [![Latest Version](https://img.shields.io/github/release/genkgo/mail.svg?style=flat-square)](https://github.com/genkgo/mail/releases)
