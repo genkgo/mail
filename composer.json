@@ -11,7 +11,7 @@
         "phpunit/phpunit": "^8.5.3",
         "phpstan/phpstan": "^0.12.48",
         "phpstan/phpstan-phpunit": "^0.12.6",
-        "friendsofphp/php-cs-fixer": "^2.9",
+        "friendsofphp/php-cs-fixer": "^3.0",
         "predis/predis": "^1.0",
         "psr/log": "^1.0",
         "ext-openssl": "*"
@@ -38,11 +38,11 @@
     },
     "scripts": {
         "lint": [
-            "./vendor/bin/php-cs-fixer fix --verbose --config .php_cs.dist ./src ./test"
+            "./vendor/bin/php-cs-fixer fix --verbose --config .php-cs-fixer.dist.php ./src ./test"
         ],
         "test": [
             "./vendor/bin/phpunit -c phpunit.xml",
-            "./vendor/bin/php-cs-fixer fix --verbose --dry-run --config .php_cs.dist ./src ./test",
+            "./vendor/bin/php-cs-fixer fix --verbose --dry-run --config .php-cs-fixer.dist.php ./src ./test",
             "./vendor/bin/phpstan analyse -l max src",
             "./vendor/bin/phpstan analyse -l 5 -c .phpstan.test.neon test"
         ]
