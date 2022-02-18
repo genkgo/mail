@@ -150,24 +150,18 @@ final class GenericMessage implements MessageInterface
             throw new \UnexpectedValueException('Cannot parse from string, cannot split lines');
         }
 
-        for ($n = 0, $length = \count($lines); $n < $length; $n++) {
-            $line = $lines[$n];
+        while (($firstKey = \array_key_first($lines)) !== null) {
+            $line = $lines[$firstKey];
+            unset($lines[$firstKey]);
 
             if ($line === '') {
-                $message = $message->withBody(
-                    new StringStream(
-                        \implode(
-                            "\r\n",
-                            \array_slice($lines, $n + 1)
-                        )
-                    )
-                );
+                $message = $message->withBody(new StringStream(\implode("\r\n", $lines)));
                 break;
             }
 
-            while (isset($lines[$n + 1]) && $lines[$n + 1] !== '' && \trim($lines[$n + 1][0]) === '') {
-                $line .= ' ' . \ltrim($lines[$n + 1]);
-                $n++;
+            while (($firstKey = \array_key_first($lines)) !== null && isset($lines[$firstKey]) && $lines[$firstKey] !== '' && \trim($lines[$firstKey][0]) === '') {
+                $line .= ' ' . \ltrim($lines[$firstKey]);
+                unset($lines[$firstKey]);
             }
 
             $message = $message->withHeader(HeaderLine::fromString($line)->getHeader());
