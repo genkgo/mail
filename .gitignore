@@ -2,5 +2,5 @@
 /vendor/
 /composer.lock
 /example/config.php
-/.php_cs.cache
+/.php-cs-fixer.cache
 /.phpunit.result.cache
