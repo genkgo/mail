@@ -52,8 +52,8 @@ final class OptimalEncodedHeaderValue
                         '=?%s?Q?%s?=',
                         'UTF-8',
                         \preg_replace(
-                            ['/\?/', '/_/', '/(?<!^) /m'],
-                            ['=3F', '=5F', '_'],
+                            ['/\?/', '/_/', '/&/', '/(?<!^) /m'],
+                            ['=3F', '=5F', '=26', '_'],
                             (string) $encoded
                         )
                     )

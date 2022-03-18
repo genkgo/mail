@@ -76,6 +76,21 @@ final class SubjectTest extends AbstractTestCase
     }
 
     /**
+     * @test
+     */
+    public function it_encodes_ampersand_with_quoted_printable_encoding(): void
+    {
+        $subject = new Subject(
+            'Aaaaaaaaaaa 20 aaaaa Aaaaaaaaaaa ‘Aaaaaaaaaaaaaa Aaaaaaaa & Aaaaaaaaa’'
+        );
+
+        $this->assertEquals(
+            "=?UTF-8?Q?Aaaaaaaaaaa_20_aaaaa_Aaaaaaaaaaa_=E2=80=98Aaaaaaaaaaaaaa_Aaaaaaaa_=26?=\r\n =?UTF-8?Q?_Aaaaaaaaa=E2=80=99?=",
+            (string)$subject->getValue()
+        );
+    }
+
+    /**
      * @return array
      */
     public function provideValues(): array
