@@ -8,6 +8,40 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 
 
+
+## [2.9.2] - 2022-06-06
+
+### Fixed
+
+- Fix AddressList::getIterator for PHP 8.1
+
+
+## [2.9.1] - 2022-03-18
+
+### Fixed
+
+- Fix ampersand bug with quoted printable subjects
+
+
+## [2.9.0] - 2022-02-18
+
+### Added
+
+- Added PHP 8.1 support
+- Make GenericMessage::fromString more memory efficient
+
+### Changed
+
+- Drop PHP 7.3
+
+
+## [2.8.0] - 2021-05-25
+
+### Added
+
+- Added AlternativeText::fromRawString
+
+
 ## [2.7.16] - 2021-04-13
 
 ### Added
