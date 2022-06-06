@@ -1,4 +1,4 @@
-Genkgo/Mail - Modern PHP 7.1+ Mail Library
+Genkgo/Mail - Modern PHP 7.4+ Mail Library
 ==========================================
 
 Library to send e-mails over different transports and protocols (like SMTP) using immutable messages and streams. Also
