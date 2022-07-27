@@ -396,7 +396,7 @@ final class MessageBodyCollection
                 $disposition = 'inline';
             }
 
-            if ($contentType === 'text/html' && $disposition === 'inline') {
+            if ($this->html === '' && $contentType === 'text/html' && $disposition === 'inline') {
                 $this->html = self::ensureHtmlCharset(
                     (string)new MimeBodyDecodedStream($part),
                     $charset

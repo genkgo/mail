@@ -617,4 +617,26 @@ final class MessageBodyCollectionTest extends AbstractTestCase
             $this->replaceBoundaries((string)$body->createMessage())
         );
     }
+
+    /**
+     * @test
+     */
+    public function it_should_extract_the_first_html_part(): void
+    {
+        $messageBodyCollection = MessageBodyCollection::extract(
+            GenericMessage::fromString(
+                \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollection/double-html.eml')
+            )
+        );
+
+        $this->assertStringNotContainsString(
+            'Another Text',
+            $messageBodyCollection->getHtml()
+        );
+
+        $this->assertStringContainsString(
+            'Hello World',
+            $messageBodyCollection->getHtml()
+        );
+    }
 }
