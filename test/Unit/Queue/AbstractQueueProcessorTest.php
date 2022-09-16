@@ -28,28 +28,22 @@ abstract class AbstractQueueProcessorTest extends AbstractTestCase
 
         $transport = $this->createMock(TransportInterface::class);
         $transport
-            ->expects($this->at(0))
+            ->expects($this->exactly(3))
             ->method('send')
-            ->with($this->callback(function (GenericMessage $message) {
-                $this->assertEquals('Test 1', $message->getHeader('subject')[0]->getValue());
-                return true;
-            }));
-
-        $transport
-            ->expects($this->at(1))
-            ->method('send')
-            ->with($this->callback(function (GenericMessage $message) {
-                $this->assertEquals('Test 2', $message->getHeader('subject')[0]->getValue());
-                return true;
-            }));
-
-        $transport
-            ->expects($this->at(2))
-            ->method('send')
-            ->with($this->callback(function (GenericMessage $message) {
-                $this->assertEquals('Test 3', $message->getHeader('subject')[0]->getValue());
-                return true;
-            }));
+            ->withConsecutive(
+                [$this->callback(function (GenericMessage $message) {
+                    $this->assertEquals('Test 1', $message->getHeader('subject')[0]->getValue());
+                    return true;
+                })],
+                [$this->callback(function (GenericMessage $message) {
+                    $this->assertEquals('Test 2', $message->getHeader('subject')[0]->getValue());
+                    return true;
+                })],
+                [$this->callback(function (GenericMessage $message) {
+                    $this->assertEquals('Test 3', $message->getHeader('subject')[0]->getValue());
+                    return true;
+                })]
+            );
 
         $processor = $this->getQueueProcessor($transport, [$queue]);
         $count = $processor->process();

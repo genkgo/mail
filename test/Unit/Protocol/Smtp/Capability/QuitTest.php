@@ -28,12 +28,12 @@ final class QuitTest extends AbstractTestCase
         $connection = $this->createMock(ConnectionInterface::class);
 
         $connection
-            ->expects($this->at(0))
+            ->expects($this->exactly(1))
             ->method('send')
             ->with('221 Thank you for listening');
 
         $connection
-            ->expects($this->at(1))
+            ->expects($this->exactly(1))
             ->method('disconnect');
 
         $capability = new QuitCapability();

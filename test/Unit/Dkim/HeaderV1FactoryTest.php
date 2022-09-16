@@ -27,27 +27,27 @@ final class HeaderV1FactoryTest extends AbstractTestCase
     public function it_creates_a_dkim_signature(): void
     {
         $signer = $this->createMock(SignInterface::class);
-        $signer->expects($this->at(0))
+        $signer->expects($this->any())
             ->method('hashBody')
             ->willReturn('hash');
 
-        $signer->expects($this->at(1))
+        $signer->expects($this->any())
             ->method('name')
             ->willReturn('rsa-sha256');
 
-        $signer->expects($this->at(2))
+        $signer->expects($this->any())
             ->method('signHeaders')
             ->willReturn('signature');
 
         $headerCanonicalize = $this->createMock(CanonicalizeHeaderInterface::class);
         $headerCanonicalize
-            ->expects($this->at(0))
+            ->expects($this->any())
             ->method('name')
             ->willReturn('relaxed');
 
         $bodyCanonicalize = $this->createMock(CanonicalizeBodyInterface::class);
         $bodyCanonicalize
-            ->expects($this->at(0))
+            ->expects($this->any())
             ->method('name')
             ->willReturn('relaxed');
 
@@ -73,27 +73,27 @@ final class HeaderV1FactoryTest extends AbstractTestCase
     public function it_skips_bcc_header_signing_signature(): void
     {
         $signer = $this->createMock(SignInterface::class);
-        $signer->expects($this->at(0))
+        $signer->expects($this->any())
             ->method('hashBody')
             ->willReturn('hash');
 
-        $signer->expects($this->at(1))
+        $signer->expects($this->any())
             ->method('name')
             ->willReturn('rsa-sha256');
 
-        $signer->expects($this->at(2))
+        $signer->expects($this->any())
             ->method('signHeaders')
             ->willReturn('signature');
 
         $headerCanonicalize = $this->createMock(CanonicalizeHeaderInterface::class);
         $headerCanonicalize
-            ->expects($this->at(0))
+            ->expects($this->any())
             ->method('name')
             ->willReturn('relaxed');
 
         $bodyCanonicalize = $this->createMock(CanonicalizeBodyInterface::class);
         $bodyCanonicalize
-            ->expects($this->at(0))
+            ->expects($this->any())
             ->method('name')
             ->willReturn('relaxed');
 

@@ -88,10 +88,6 @@ final class ResourceStream implements StreamInterface
     public function isSeekable(): bool
     {
         $metaData = \stream_get_meta_data($this->resource);
-        if (!isset($metaData['seekable'])) {
-            return false;
-        }
-
         return $metaData['seekable'];
     }
 
@@ -119,10 +115,6 @@ final class ResourceStream implements StreamInterface
     public function isWritable(): bool
     {
         $metaData = \stream_get_meta_data($this->resource);
-        if (!isset($metaData['uri'])) {
-            return false;
-        }
-
         return \is_writable($metaData['uri']) || $metaData['uri'] === 'php://memory';
     }
 
@@ -149,7 +141,7 @@ final class ResourceStream implements StreamInterface
     }
 
     /**
-     * @param int $length
+     * @param int<0, max> $length
      * @return string
      */
     public function read(int $length): string

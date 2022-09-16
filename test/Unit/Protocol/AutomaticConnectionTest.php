@@ -18,19 +18,15 @@ final class AutomaticConnectionTest extends AbstractTestCase
         $decorated = $this->createMock(ConnectionInterface::class);
 
         $decorated
-            ->expects($this->at(0))
+            ->expects($this->exactly(2))
             ->method('connect');
 
         $decorated
-            ->expects($this->at(1))
+            ->expects($this->any())
             ->method('disconnect');
 
         $decorated
-            ->expects($this->at(2))
-            ->method('connect');
-
-        $decorated
-            ->expects($this->at(3))
+            ->expects($this->any())
             ->method('send')
             ->with('xyz');
 
@@ -99,12 +95,7 @@ final class AutomaticConnectionTest extends AbstractTestCase
         $decorated = $this->createMock(ConnectionInterface::class);
 
         $decorated
-            ->expects($this->at(0))
-            ->method('connect')
-            ->willThrowException(new ConnectionRefusedException());
-
-        $decorated
-            ->expects($this->at(1))
+            ->expects($this->exactly(2))
             ->method('connect')
             ->willThrowException(new ConnectionRefusedException());
 

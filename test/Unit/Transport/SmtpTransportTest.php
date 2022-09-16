@@ -26,7 +26,6 @@ final class SmtpTransportTest extends AbstractTestCase
      */
     public function it_sends_messages(): void
     {
-        $at = -1;
         $connection = $this->createMock(ConnectionInterface::class);
 
         $message = (new GenericMessage())
@@ -36,77 +35,45 @@ final class SmtpTransportTest extends AbstractTestCase
             ->withBody(new AsciiEncodedStream("test\r\ntest"));
 
         $connection
-            ->expects($this->at(++$at))
+            ->expects($this->exactly(1))
             ->method('addListener');
 
-        $connection
-            ->expects($this->at(++$at))
-            ->method('send')
-            ->with("MAIL FROM:<from@localhost>\r\n")
-            ->willReturn(1);
-
-        $connection
-            ->expects($this->at(++$at))
-            ->method('receive')
-            ->willReturn("250 OK\r\n");
-
-        $connection
-            ->expects($this->at(++$at))
-            ->method('send')
-            ->with("RCPT TO:<to@localhost>\r\n")
-            ->willReturn(1);
-
-        $connection
-            ->expects($this->at(++$at))
-            ->method('receive')
-            ->willReturn("250 OK\r\n");
-
-        $connection
-            ->expects($this->at(++$at))
-            ->method('send')
-            ->with("DATA\r\n")
-            ->willReturn(1);
-
-        $connection
-            ->expects($this->at(++$at))
-            ->method('receive')
-            ->willReturn("354 Send message content; end with CRLF\r\n");
+        $sendCalls = [
+            ["MAIL FROM:<from@localhost>\r\n"],
+            ["RCPT TO:<to@localhost>\r\n"],
+            ["DATA\r\n"]
+        ];
 
         foreach ($message->getHeaders() as $headers) {
             /** @var HeaderInterface $header */
             foreach ($headers as $header) {
-                $connection
-                    ->expects($this->at(++$at))
-                    ->method('send')
-                    ->with(\sprintf("%s\r\n", (string)(new HeaderLine($header))))
-                    ->willReturn(1);
+                $sendCalls[] = [\sprintf("%s\r\n", (string)(new HeaderLine($header)))];
             }
         }
 
-        $connection
-            ->expects($this->at(++$at))
-            ->method('send')
-            ->with("\r\n")
-            ->willReturn(1);
+        $sendCalls[] = ["\r\n"];
 
         foreach (\explode("\r\n", (string)$message->getBody()) as $line) {
-            $connection
-                ->expects($this->at(++$at))
-                ->method('send')
-                ->with(\sprintf("%s\r\n", $line))
-                ->willReturn(1);
+            $sendCalls[] = [\sprintf("%s\r\n", $line)];
         }
 
+        $sendCalls[] = [".\r\n"];
+
         $connection
-            ->expects($this->at(++$at))
+            ->expects($this->any())
             ->method('send')
-            ->with(".\r\n")
+            ->withConsecutive(...$sendCalls)
             ->willReturn(1);
 
         $connection
-            ->expects($this->at(++$at))
+            ->expects($this->any())
             ->method('receive')
-            ->willReturn("250 OK\r\n");
+            ->willReturnOnConsecutiveCalls(
+                "250 OK\r\n",
+                "250 OK\r\n",
+                "354 Send message content; end with CRLF\r\n",
+                "250 OK\r\n"
+            );
 
         $transport = new SmtpTransport(
             new Client($connection),

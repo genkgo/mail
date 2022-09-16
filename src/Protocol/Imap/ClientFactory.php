@@ -35,6 +35,7 @@ final class ClientFactory
 
     /**
      * @var float
+     * @phpstan-ignore-next-line
      */
     private $timeout = 1;
 

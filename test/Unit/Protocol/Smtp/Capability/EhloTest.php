@@ -30,14 +30,12 @@ final class EhloTest extends AbstractTestCase
         $connection = $this->createMock(ConnectionInterface::class);
 
         $connection
-            ->expects($this->at(0))
+            ->expects($this->exactly(2))
             ->method('send')
-            ->with('250-localhost Hello localhost');
-
-        $connection
-            ->expects($this->at(1))
-            ->method('send')
-            ->with('250 AUTH LOGIN');
+            ->withConsecutive(
+                ['250-localhost Hello localhost'],
+                ['250 AUTH LOGIN']
+            );
 
         $capability = new EhloCapability('localhost', [new AuthLoginCapability(new ArrayAuthentication([]))]);
 

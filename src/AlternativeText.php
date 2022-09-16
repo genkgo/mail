@@ -241,7 +241,12 @@ final class AlternativeText
             /** @var \DOMElement $element */
             foreach ($query as $element) {
                 $itemPath = new \DOMXPath($document);
-                $itemNumber = (int)$itemPath->evaluate('string(count(preceding-sibling::li))', $element) + 1;
+                $listCount = $itemPath->evaluate('string(count(preceding-sibling::li))', $element);
+                if (!\is_string($listCount)) {
+                    throw new \UnexpectedValueException('Expecting list item number');
+                }
+
+                $itemNumber = (int)$listCount + 1;
                 $text = \sprintf("\t%d. ", $itemNumber);
 
                 if ($element->firstChild !== null) {
@@ -380,6 +385,8 @@ final class AlternativeText
 
         $iterator = \IntlBreakIterator::createCharacterInstance(\Locale::getDefault());
         $iterator->setText($unwrappedText);
+
+        /** @var string $char */
         foreach ($iterator->getPartsIterator() as $char) {
             if ($char === "\r\n") {
                 $lineChars = -1;

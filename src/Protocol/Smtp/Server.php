@@ -54,6 +54,7 @@ final class Server
     
     public function start(): void
     {
+        /** @phpstan-ignore-next-line */
         while ($connection = $this->listener->listen()) {
             $connection = new TrimCrlfConnection(new AppendCrlfConnection($connection));
             $connection->send('220 Welcome to Genkgo Mail Server');

@@ -19,28 +19,24 @@ final class AuthNegotiationTest extends AbstractTestCase
     {
         $connection = $this->createMock(ConnectionInterface::class);
         $connection
-            ->expects($this->at(0))
+            ->expects($this->exactly(1))
             ->method('addListener');
 
         $connection
-            ->expects($this->at(1))
+            ->expects($this->exactly(2))
             ->method('send')
-            ->with("TAG1 AUTHENTICATE PLAIN\r\n");
+            ->withConsecutive(
+                ["TAG1 AUTHENTICATE PLAIN\r\n"],
+                ["AHVzZXJuYW1lAHBhc3N3b3Jk\r\n"]
+            );
 
         $connection
-            ->expects($this->at(2))
+            ->expects($this->exactly(2))
             ->method('receive')
-            ->willReturn('+ Send password');
-
-        $connection
-            ->expects($this->at(3))
-            ->method('send')
-            ->with("AHVzZXJuYW1lAHBhc3N3b3Jk\r\n");
-
-        $connection
-            ->expects($this->at(4))
-            ->method('receive')
-            ->willReturn('TAG1 OK');
+            ->willReturnOnConsecutiveCalls(
+                '+ Send password',
+                'TAG1 OK'
+            );
 
         $client = new Client($connection, new GeneratorTagFactory(), []);
 
@@ -55,43 +51,27 @@ final class AuthNegotiationTest extends AbstractTestCase
     {
         $connection = $this->createMock(ConnectionInterface::class);
         $connection
-            ->expects($this->at(0))
+            ->expects($this->exactly(1))
             ->method('addListener');
 
         $connection
-            ->expects($this->at(1))
+            ->expects($this->exactly(3))
             ->method('send')
-            ->with("TAG1 CAPABILITY\r\n");
+            ->withConsecutive(
+                ["TAG1 CAPABILITY\r\n"],
+                ["TAG2 AUTHENTICATE PLAIN\r\n"],
+                ["AHVzZXJuYW1lAHBhc3N3b3Jk\r\n"]
+            );
 
         $connection
-            ->expects($this->at(2))
+            ->expects($this->exactly(4))
             ->method('receive')
-            ->willReturn('* CAPABILITY IMAP4rev1 STARTTLS AUTH=PLAIN');
-
-        $connection
-            ->expects($this->at(3))
-            ->method('receive')
-            ->willReturn('TAG1 OK');
-
-        $connection
-            ->expects($this->at(4))
-            ->method('send')
-            ->with("TAG2 AUTHENTICATE PLAIN\r\n");
-
-        $connection
-            ->expects($this->at(5))
-            ->method('receive')
-            ->willReturn('+ Send password');
-
-        $connection
-            ->expects($this->at(6))
-            ->method('send')
-            ->with("AHVzZXJuYW1lAHBhc3N3b3Jk\r\n");
-
-        $connection
-            ->expects($this->at(7))
-            ->method('receive')
-            ->willReturn('TAG2 OK');
+            ->willReturnOnConsecutiveCalls(
+                '* CAPABILITY IMAP4rev1 STARTTLS AUTH=PLAIN',
+                'TAG1 OK',
+                '+ Send password',
+                'TAG2 OK'
+            );
 
         $client = new Client($connection, new GeneratorTagFactory(), []);
 
@@ -106,33 +86,25 @@ final class AuthNegotiationTest extends AbstractTestCase
     {
         $connection = $this->createMock(ConnectionInterface::class);
         $connection
-            ->expects($this->at(0))
+            ->expects($this->exactly(1))
             ->method('addListener');
 
         $connection
-            ->expects($this->at(1))
+            ->expects($this->exactly(2))
             ->method('send')
-            ->with("TAG1 CAPABILITY\r\n");
+            ->withConsecutive(
+                ["TAG1 CAPABILITY\r\n"],
+                ["TAG2 LOGIN username password\r\n"],
+            );
 
         $connection
-            ->expects($this->at(2))
+            ->expects($this->exactly(3))
             ->method('receive')
-            ->willReturn('* CAPABILITY IMAP4rev1 STARTTLS');
-
-        $connection
-            ->expects($this->at(3))
-            ->method('receive')
-            ->willReturn('TAG1 OK');
-
-        $connection
-            ->expects($this->at(4))
-            ->method('send')
-            ->with("TAG2 LOGIN username password\r\n");
-
-        $connection
-            ->expects($this->at(5))
-            ->method('receive')
-            ->willReturn('TAG2 OK');
+            ->willReturnOnConsecutiveCalls(
+                '* CAPABILITY IMAP4rev1 STARTTLS',
+                'TAG1 OK',
+                'TAG2 OK'
+            );
 
         $client = new Client($connection, new GeneratorTagFactory(), []);
 
@@ -149,24 +121,21 @@ final class AuthNegotiationTest extends AbstractTestCase
 
         $connection = $this->createMock(ConnectionInterface::class);
         $connection
-            ->expects($this->at(0))
+            ->expects($this->exactly(1))
             ->method('addListener');
 
         $connection
-            ->expects($this->at(1))
+            ->expects($this->exactly(1))
             ->method('send')
             ->with("TAG1 CAPABILITY\r\n");
 
         $connection
-            ->expects($this->at(2))
+            ->expects($this->exactly(2))
             ->method('receive')
-            ->willReturn('* CAPABILITY IMAP4rev1 STARTTLS LOGINDISABLED');
-
-        $connection
-            ->expects($this->at(3))
-            ->method('receive')
-            ->willReturn('TAG1 OK');
-
+            ->willReturnOnConsecutiveCalls(
+                '* CAPABILITY IMAP4rev1 STARTTLS LOGINDISABLED',
+                'TAG1 OK'
+            );
         $client = new Client($connection, new GeneratorTagFactory(), []);
 
         $negotiation = new AuthNegotiation(Client::AUTH_AUTO, 'username', 'password');
@@ -183,28 +152,24 @@ final class AuthNegotiationTest extends AbstractTestCase
 
         $connection = $this->createMock(ConnectionInterface::class);
         $connection
-            ->expects($this->at(0))
+            ->expects($this->exactly(1))
             ->method('addListener');
 
         $connection
-            ->expects($this->at(1))
+            ->expects($this->exactly(2))
             ->method('send')
-            ->with("TAG1 AUTHENTICATE PLAIN\r\n");
+            ->withConsecutive(
+                ["TAG1 AUTHENTICATE PLAIN\r\n"],
+                ["AHVzZXJuYW1lAHBhc3N3b3Jk\r\n"]
+            );
 
         $connection
-            ->expects($this->at(2))
+            ->expects($this->exactly(2))
             ->method('receive')
-            ->willReturn('+ Send password');
-
-        $connection
-            ->expects($this->at(3))
-            ->method('send')
-            ->with("AHVzZXJuYW1lAHBhc3N3b3Jk\r\n");
-
-        $connection
-            ->expects($this->at(4))
-            ->method('receive')
-            ->willReturn('TAG1 NO [AUTHENTICATIONFAILED] Authentication failed.');
+            ->willReturnOnConsecutiveCalls(
+                '+ Send password',
+                'TAG1 NO [AUTHENTICATIONFAILED] Authentication failed.'
+            );
 
         $client = new Client($connection, new GeneratorTagFactory(), []);
 
@@ -222,33 +187,25 @@ final class AuthNegotiationTest extends AbstractTestCase
 
         $connection = $this->createMock(ConnectionInterface::class);
         $connection
-            ->expects($this->at(0))
+            ->expects($this->exactly(1))
             ->method('addListener');
 
         $connection
-            ->expects($this->at(1))
+            ->expects($this->exactly(2))
             ->method('send')
-            ->with("TAG1 CAPABILITY\r\n");
+            ->withConsecutive(
+                ["TAG1 CAPABILITY\r\n"],
+                ["TAG2 LOGIN username password\r\n"]
+            );
 
         $connection
-            ->expects($this->at(2))
+            ->expects($this->exactly(3))
             ->method('receive')
-            ->willReturn('* CAPABILITY IMAP4rev1 STARTTLS');
-
-        $connection
-            ->expects($this->at(3))
-            ->method('receive')
-            ->willReturn('TAG1 OK');
-
-        $connection
-            ->expects($this->at(4))
-            ->method('send')
-            ->with("TAG2 LOGIN username password\r\n");
-
-        $connection
-            ->expects($this->at(5))
-            ->method('receive')
-            ->willReturn('TAG2 NO [AUTHENTICATIONFAILED] Authentication failed.');
+            ->willReturnOnConsecutiveCalls(
+                '* CAPABILITY IMAP4rev1 STARTTLS',
+                'TAG1 OK',
+                'TAG2 NO [AUTHENTICATIONFAILED] Authentication failed.'
+            );
 
         $client = new Client($connection, new GeneratorTagFactory(), []);
 

@@ -11,22 +11,15 @@ use Genkgo\Mail\Protocol\Smtp\Request\EhloCommand;
 final class EhloOnlyNegotiation implements NegotiationInterface
 {
     /**
-     * @var ConnectionInterface
-     */
-    private $connection;
-
-    /**
      * @var string
      */
     private $ehlo;
 
     /**
-     * @param ConnectionInterface $connection
      * @param string $ehlo
      */
-    public function __construct(ConnectionInterface $connection, string $ehlo)
+    public function __construct(string $ehlo)
     {
-        $this->connection = $connection;
         $this->ehlo = $ehlo;
     }
 

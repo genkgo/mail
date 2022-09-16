@@ -9,6 +9,7 @@ use Genkgo\Mail\EmailAddress;
 use Genkgo\Mail\Header\From;
 use Genkgo\Mail\Header\GenericHeader;
 use Genkgo\Mail\Header\Sender;
+use Genkgo\Mail\MessageInterface;
 use Genkgo\Mail\Transport\InjectSenderHeaderTransport;
 use Genkgo\TestMail\AbstractTestCase;
 use Genkgo\Mail\GenericMessage;
@@ -32,6 +33,7 @@ final class InjectSenderHeaderTransportTest extends AbstractTestCase
                 )
             );
 
+        /** @var \ArrayObject<int, MessageInterface> $storage */
         $storage = new \ArrayObject();
 
         $transport = new InjectSenderHeaderTransport(
@@ -52,6 +54,7 @@ final class InjectSenderHeaderTransportTest extends AbstractTestCase
     {
         $message = (new GenericMessage());
 
+        /** @var \ArrayObject<int, MessageInterface> $storage */
         $storage = new \ArrayObject();
 
         $transport = new InjectSenderHeaderTransport(
@@ -73,6 +76,7 @@ final class InjectSenderHeaderTransportTest extends AbstractTestCase
         $message = (new GenericMessage())
             ->withHeader(new From(new Address(new EmailAddress('example@domain.com'))));
 
+        /** @var \ArrayObject<int, MessageInterface> $storage */
         $storage = new \ArrayObject();
 
         $transport = new InjectSenderHeaderTransport(

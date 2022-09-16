@@ -10,6 +10,7 @@ use Genkgo\Mail\Header\Date;
 use Genkgo\Mail\Header\GenericHeader;
 use Genkgo\Mail\Header\MessageId;
 use Genkgo\Mail\Header\Sender;
+use Genkgo\Mail\MessageInterface;
 use Genkgo\Mail\Transport\InjectStandardHeadersTransport;
 use Genkgo\TestMail\AbstractTestCase;
 use Genkgo\Mail\GenericMessage;
@@ -33,6 +34,7 @@ final class InjectStandardHeaderTransportTest extends AbstractTestCase
                 )
             );
 
+        /** @var \ArrayObject<int, MessageInterface> $storage */
         $storage = new \ArrayObject();
 
         $transport = new InjectStandardHeadersTransport(

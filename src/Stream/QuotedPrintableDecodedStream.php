@@ -44,8 +44,11 @@ final class QuotedPrintableDecodedStream implements StreamInterface
     
     private function applyFilter(): void
     {
+        /** @var resource $detached */
+        $detached = $this->decoratedStream->detach();
+
         $filter = \stream_filter_prepend(
-            $this->decoratedStream->detach(),
+            $detached,
             'convert.quoted-printable-decode',
             STREAM_FILTER_READ
         );

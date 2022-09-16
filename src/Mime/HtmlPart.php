@@ -27,6 +27,8 @@ final class HtmlPart implements PartInterface
         }
 
         $stream = new OptimalTransferEncodedTextStream($html);
+
+        /** @var string $encoding */
         $encoding = $stream->getMetadata(['transfer-encoding'])['transfer-encoding'];
 
         $this->decoratedPart = (new GenericPart())

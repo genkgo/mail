@@ -21,6 +21,8 @@ final class HtmlOnlyMessage implements MessageInterface
     public function __construct(string $html, string $charset = 'UTF-8')
     {
         $stream = new OptimalTransferEncodedTextStream($html);
+
+        /** @var string $encoding */
         $encoding = $stream->getMetadata(['transfer-encoding'])['transfer-encoding'];
 
         if ($encoding === '7bit') {

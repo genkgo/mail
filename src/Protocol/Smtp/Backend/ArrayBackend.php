@@ -15,13 +15,13 @@ final class ArrayBackend implements BackendInterface
     private $addresses;
 
     /**
-     * @var \ArrayAccess<string, mixed>
+     * @var \ArrayAccess<string, array<string, array<int, MessageInterface>>>
      */
     private $backend;
 
     /**
      * @param array<int, string> $addresses
-     * @param \ArrayAccess<string, mixed> $backend
+     * @param \ArrayAccess<string, array<string, array<int, MessageInterface>>> $backend
      */
     public function __construct(array $addresses, \ArrayAccess $backend)
     {

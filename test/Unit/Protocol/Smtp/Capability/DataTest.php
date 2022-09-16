@@ -38,28 +38,21 @@ final class DataTest extends AbstractTestCase
         $connection = $this->createMock(ConnectionInterface::class);
 
         $connection
-            ->expects($this->at(0))
-            ->method('send');
-
-        $connection
-            ->expects($this->at(1))
-            ->method('receive')
-            ->willReturn("Subject: test\r\n");
-
-        $connection
-            ->expects($this->at(2))
-            ->method('receive')
-            ->willReturn("\r\n");
-
-        $connection
-            ->expects($this->at(3))
-            ->method('receive')
-            ->willReturn(".");
-
-        $connection
-            ->expects($this->at(4))
+            ->expects($this->exactly(2))
             ->method('send')
-            ->with('250 Message received, queue for delivering');
+            ->withConsecutive(
+                [],
+                ['250 Message received, queue for delivering']
+            );
+
+        $connection
+            ->expects($this->exactly(3))
+            ->method('receive')
+            ->willReturnOnConsecutiveCalls(
+                "Subject: test\r\n",
+                "\r\n",
+                "."
+            );
 
         $capability = new DataCapability(
             new ArrayBackend(['test@genkgo.nl'], new \ArrayObject()),
@@ -80,28 +73,21 @@ final class DataTest extends AbstractTestCase
         $connection = $this->createMock(ConnectionInterface::class);
 
         $connection
-            ->expects($this->at(0))
-            ->method('send');
-
-        $connection
-            ->expects($this->at(1))
-            ->method('receive')
-            ->willReturn(" Subject: test\r\n");
-
-        $connection
-            ->expects($this->at(2))
-            ->method('receive')
-            ->willReturn("\r\n");
-
-        $connection
-            ->expects($this->at(3))
-            ->method('receive')
-            ->willReturn(".");
-
-        $connection
-            ->expects($this->at(4))
+            ->expects($this->exactly(2))
             ->method('send')
-            ->with('500 Malformed message');
+            ->withConsecutive(
+                [],
+                ['500 Malformed message']
+            );
+
+        $connection
+            ->expects($this->exactly(3))
+            ->method('receive')
+            ->willReturnOnConsecutiveCalls(
+                " Subject: test\r\n",
+                "\r\n",
+                "."
+            );
 
         $capability = new DataCapability(
             new ArrayBackend(['test@genkgo.nl'], new \ArrayObject()),
@@ -122,33 +108,22 @@ final class DataTest extends AbstractTestCase
         $connection = $this->createMock(ConnectionInterface::class);
 
         $connection
-            ->expects($this->at(0))
-            ->method('send');
-
-        $connection
-            ->expects($this->at(1))
-            ->method('receive')
-            ->willReturn("Subject: test\r\n");
-
-        $connection
-            ->expects($this->at(2))
-            ->method('receive')
-            ->willReturn("\r\n");
-
-        $connection
-            ->expects($this->at(3))
-            ->method('receive')
-            ->willReturn("word word word");
-
-        $connection
-            ->expects($this->at(4))
-            ->method('receive')
-            ->willReturn(".");
-
-        $connection
-            ->expects($this->at(5))
+            ->expects($this->exactly(2))
             ->method('send')
-            ->with('421 Please try again later');
+            ->withConsecutive(
+                [],
+                ['421 Please try again later']
+            );
+
+        $connection
+            ->expects($this->exactly(4))
+            ->method('receive')
+            ->willReturnOnConsecutiveCalls(
+                "Subject: test\r\n",
+                "\r\n",
+                "word word word",
+                "."
+            );
 
         $capability = new DataCapability(
             new ArrayBackend(['test@genkgo.nl'], new \ArrayObject()),
@@ -169,33 +144,22 @@ final class DataTest extends AbstractTestCase
         $connection = $this->createMock(ConnectionInterface::class);
 
         $connection
-            ->expects($this->at(0))
-            ->method('send');
-
-        $connection
-            ->expects($this->at(1))
-            ->method('receive')
-            ->willReturn("Subject: test\r\n");
-
-        $connection
-            ->expects($this->at(2))
-            ->method('receive')
-            ->willReturn("\r\n");
-
-        $connection
-            ->expects($this->at(3))
-            ->method('receive')
-            ->willReturn("word word word word word word");
-
-        $connection
-            ->expects($this->at(4))
-            ->method('receive')
-            ->willReturn(".");
-
-        $connection
-            ->expects($this->at(5))
+            ->expects($this->exactly(2))
             ->method('send')
-            ->with('550 Message discarded as high-probability spam');
+            ->withConsecutive(
+                [],
+                ['550 Message discarded as high-probability spam']
+            );
+
+        $connection
+            ->expects($this->exactly(4))
+            ->method('receive')
+            ->willReturnOnConsecutiveCalls(
+                "Subject: test\r\n",
+                "\r\n",
+                "word word word word word word",
+                "."
+            );
 
         $capability = new DataCapability(
             new ArrayBackend(['test@genkgo.nl'], new \ArrayObject()),
@@ -222,28 +186,22 @@ final class DataTest extends AbstractTestCase
             $session = (new Session())->withRecipient(new EmailAddress('test@genkgo.nl'));
 
             $connection
-                ->expects($this->at(0))
-                ->method('send');
+                ->expects($this->exactly(2))
+                ->method('send')
+                ->withConsecutive(
+                    ['354 Enter message, ending with "." on a line by itself'],
+                    [$i === 0 ? '421 Please try again later' : '250 Message received, queue for delivering'],
+                );
 
             $connection
-                ->expects($this->at(1))
+                ->expects($this->exactly(4))
                 ->method('receive')
-                ->willReturn("Subject: test\r\n");
-
-            $connection
-                ->expects($this->at(2))
-                ->method('receive')
-                ->willReturn("\r\n");
-
-            $connection
-                ->expects($this->at(3))
-                ->method('receive')
-                ->willReturn("word word word");
-
-            $connection
-                ->expects($this->at(4))
-                ->method('receive')
-                ->willReturn(".");
+                ->willReturnOnConsecutiveCalls(
+                    "Subject: test\r\n",
+                    "\r\n",
+                    "word word word",
+                    "."
+                );
 
             $capability = new DataCapability(
                 $backend,
@@ -254,11 +212,6 @@ final class DataTest extends AbstractTestCase
 
             switch ($i) {
                 case 0:
-                    $connection
-                        ->expects($this->at(5))
-                        ->method('send')
-                        ->with('421 Please try again later');
-
                     $session = $capability->manifest($connection, $session);
 
                     $this->assertSame(Session::STATE_MESSAGE, $session->getState());
@@ -266,17 +219,11 @@ final class DataTest extends AbstractTestCase
                     break;
 
                 case 1:
-                    $connection
-                        ->expects($this->at(5))
-                        ->method('send')
-                        ->with('250 Message received, queue for delivering');
-
                     $session = $capability->manifest($connection, $session);
 
                     $this->assertSame(Session::STATE_MESSAGE_RECEIVED, $session->getState());
                     $this->assertCount(1, $messages);
                     break;
-
             }
         }
     }

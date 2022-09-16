@@ -25,7 +25,6 @@ final class ImapTransportTest extends AbstractTestCase
      */
     public function it_sends_messages(): void
     {
-        $at = -1;
         $connection = $this->createMock(ConnectionInterface::class);
 
         $message = (new GenericMessage())
@@ -35,66 +34,31 @@ final class ImapTransportTest extends AbstractTestCase
             ->withBody(new AsciiEncodedStream("test\r\ntest"));
 
         $connection
-            ->expects($this->at(++$at))
+            ->expects($this->exactly(1))
             ->method('addListener');
 
         $connection
-            ->expects($this->at(++$at))
+            ->expects($this->exactly(8))
             ->method('send')
-            ->with("TAG1 APPEND INBOX {103}\r\n")
+            ->withConsecutive(
+                ["TAG1 APPEND INBOX {103}\r\n"],
+                ["Subject: subject\r\n"],
+                ["From: name <from@localhost>\r\n"],
+                ["To: name <to@localhost>\r\n"],
+                ["MIME-Version: 1.0\r\n"],
+                ["\r\n"],
+                ["test\r\n"],
+                ["test\r\n"]
+            )
             ->willReturn(1);
 
         $connection
-            ->expects($this->at(++$at))
+            ->expects($this->exactly(2))
             ->method('receive')
-            ->willReturn("+ Send message\r\n");
-
-        $connection
-            ->expects($this->at(++$at))
-            ->method('send')
-            ->with("Subject: subject\r\n")
-            ->willReturn(1);
-
-        $connection
-            ->expects($this->at(++$at))
-            ->method('send')
-            ->with("From: name <from@localhost>\r\n")
-            ->willReturn(1);
-
-        $connection
-            ->expects($this->at(++$at))
-            ->method('send')
-            ->with("To: name <to@localhost>\r\n")
-            ->willReturn(1);
-
-        $connection
-            ->expects($this->at(++$at))
-            ->method('send')
-            ->with("MIME-Version: 1.0\r\n")
-            ->willReturn(1);
-
-        $connection
-            ->expects($this->at(++$at))
-            ->method('send')
-            ->with("\r\n")
-            ->willReturn(1);
-
-        $connection
-            ->expects($this->at(++$at))
-            ->method('send')
-            ->with("test\r\n")
-            ->willReturn(1);
-
-        $connection
-            ->expects($this->at(++$at))
-            ->method('send')
-            ->with("test\r\n")
-            ->willReturn(1);
-
-        $connection
-            ->expects($this->at(++$at))
-            ->method('receive')
-            ->willReturn("TAG1 OK\r\n");
+            ->willReturnOnConsecutiveCalls(
+                "+ Send message\r\n",
+                "TAG1 OK\r\n"
+            );
 
         $transport = new ImapTransport(
             new Client($connection, new GeneratorTagFactory()),

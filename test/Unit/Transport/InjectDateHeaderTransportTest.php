@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Genkgo\TestMail\Unit\Transport;
 
+use Genkgo\Mail\MessageInterface;
 use Genkgo\TestMail\AbstractTestCase;
 use Genkgo\Mail\GenericMessage;
 use Genkgo\Mail\Header\Date;
@@ -17,6 +18,7 @@ final class InjectDateHeaderTransportTest extends AbstractTestCase
     public function it_injects_date_header_in_message(): void
     {
         $message = new GenericMessage();
+        /** @var \ArrayObject<int, MessageInterface> $storage */
         $storage = new \ArrayObject();
 
         $transport = new InjectDateHeaderTransport(

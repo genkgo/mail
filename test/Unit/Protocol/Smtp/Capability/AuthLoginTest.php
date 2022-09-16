@@ -31,27 +31,18 @@ final class AuthLoginTest extends AbstractTestCase
         $connection = $this->createMock(ConnectionInterface::class);
 
         $connection
-            ->expects($this->at(0))
-            ->method('send');
-
-        $connection
-            ->expects($this->at(1))
-            ->method('receive')
-            ->willReturn(\base64_encode('test'));
-
-        $connection
-            ->expects($this->at(2))
-            ->method('send');
-
-        $connection
-            ->expects($this->at(3))
-            ->method('receive')
-            ->willReturn(\base64_encode('test'));
-
-        $connection
-            ->expects($this->at(4))
+            ->expects($this->exactly(3))
             ->method('send')
-            ->with('235 Authentication succeeded');
+            ->withConsecutive(
+                ['330 Please send me your username'],
+                ['330 Please send me your password'],
+                ['235 Authentication succeeded']
+            );
+
+        $connection
+            ->expects($this->exactly(2))
+            ->method('receive')
+            ->willReturn(\base64_encode('test'), );
 
         $capability = new AuthLoginCapability(
             new ArrayAuthentication(['test' => 'test'])
@@ -69,27 +60,18 @@ final class AuthLoginTest extends AbstractTestCase
         $connection = $this->createMock(ConnectionInterface::class);
 
         $connection
-            ->expects($this->at(0))
-            ->method('send');
-
-        $connection
-            ->expects($this->at(1))
-            ->method('receive')
-            ->willReturn(\base64_encode('test'));
-
-        $connection
-            ->expects($this->at(2))
-            ->method('send');
-
-        $connection
-            ->expects($this->at(3))
-            ->method('receive')
-            ->willReturn(\base64_encode('test'));
-
-        $connection
-            ->expects($this->at(4))
+            ->expects($this->exactly(3))
             ->method('send')
-            ->with('535 Authentication failed');
+            ->withConsecutive(
+                ['330 Please send me your username'],
+                ['330 Please send me your password'],
+                ['535 Authentication failed']
+            );
+
+        $connection
+            ->expects($this->exactly(2))
+            ->method('receive')
+            ->willReturn(\base64_encode('test'));
 
         $capability = new AuthLoginCapability(
             new ArrayAuthentication(['x' => 'y'])

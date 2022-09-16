@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Genkgo\TestMail\Unit\Protocol\Smtp\Backend;
 
 use Genkgo\Mail\EmailAddress;
+use Genkgo\Mail\MessageInterface;
 use Genkgo\Mail\PlainTextMessage;
 use Genkgo\Mail\Protocol\Smtp\Backend\ArrayBackend;
 use Genkgo\TestMail\AbstractTestCase;
@@ -29,6 +30,7 @@ final class ArrayBackendTest extends AbstractTestCase
      */
     public function it_stores_messages(): void
     {
+        /** @var \ArrayAccess<string, array<string, array<int, MessageInterface>>> $messages */
         $messages = new \ArrayObject();
 
         $backend = new ArrayBackend(

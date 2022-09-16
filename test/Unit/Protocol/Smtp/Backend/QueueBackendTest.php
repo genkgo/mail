@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Genkgo\TestMail\Unit\Protocol\Smtp\Backend;
 
 use Genkgo\Mail\EmailAddress;
+use Genkgo\Mail\MessageInterface;
 use Genkgo\Mail\PlainTextMessage;
 use Genkgo\Mail\Protocol\Smtp\Backend\QueueBackend;
 use Genkgo\Mail\Queue\ArrayObjectQueue;
@@ -27,6 +28,7 @@ final class QueueBackendTest extends AbstractTestCase
      */
     public function it_stores_messages(): void
     {
+        /** @var \ArrayObject<int, string> $messages */
         $messages = new \ArrayObject();
         $backend = new QueueBackend(new ArrayObjectQueue($messages));
 

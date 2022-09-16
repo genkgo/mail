@@ -25,11 +25,11 @@ final class ClientTest extends AbstractTestCase
         $negotiator = $this->createMock(NegotiationInterface::class);
 
         $negotiator
-            ->expects($this->at(0))
+            ->expects($this->exactly(1))
             ->method('negotiate');
 
         $connection
-            ->expects($this->at(0))
+            ->expects($this->exactly(1))
             ->method('addListener')
             ->with(
                 'connect',
@@ -53,7 +53,7 @@ final class ClientTest extends AbstractTestCase
         $factory = $this->createMock(TagFactoryInterface::class);
 
         $factory
-            ->expects($this->at(0))
+            ->expects($this->exactly(1))
             ->method('newTag')
             ->willReturn(Tag::fromNonce(1));
 
@@ -69,16 +69,16 @@ final class ClientTest extends AbstractTestCase
         $connection = $this->createMock(ConnectionInterface::class);
 
         $connection
-            ->expects($this->at(0))
+            ->expects($this->exactly(1))
             ->method('addListener');
 
         $connection
-            ->expects($this->at(1))
+            ->expects($this->exactly(1))
             ->method('send')
             ->with("TAG1 NOOP\r\n");
 
         $connection
-            ->expects($this->at(2))
+            ->expects($this->exactly(1))
             ->method('receive')
             ->willReturn("TAG1 OK\r\n");
 
@@ -95,26 +95,24 @@ final class ClientTest extends AbstractTestCase
         $command = $this->createMock(RequestInterface::class);
 
         $connection
-            ->expects($this->at(0))
+            ->expects($this->exactly(1))
             ->method('addListener');
 
         $connection
-            ->expects($this->at(1))
+            ->expects($this->exactly(2))
             ->method('send')
-            ->with("TAG1 OK COMMAND\r\n");
+            ->withConsecutive(
+                ["TAG1 OK COMMAND\r\n"],
+                ["MORE DATA\r\n"]
+            );
 
         $connection
-            ->expects($this->at(2))
-            ->method('send')
-            ->with("MORE DATA\r\n");
-
-        $connection
-            ->expects($this->at(3))
+            ->expects($this->exactly(1))
             ->method('receive')
             ->willReturn("TAG1 OK\r\n");
 
         $command
-            ->expects($this->at(0))
+            ->expects($this->exactly(1))
             ->method('toStream')
             ->willReturn(new StringStream("TAG1 OK COMMAND\r\nMORE DATA"));
 
