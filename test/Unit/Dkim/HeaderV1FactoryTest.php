@@ -14,6 +14,7 @@ use Genkgo\Mail\EmailAddress;
 use Genkgo\Mail\Header\Bcc;
 use Genkgo\Mail\Header\Date;
 use Genkgo\Mail\Header\From;
+use Genkgo\Mail\Header\GenericHeader;
 use Genkgo\Mail\Header\MessageId;
 use Genkgo\Mail\Header\To;
 use Genkgo\Mail\PlainTextMessage;
@@ -106,6 +107,53 @@ final class HeaderV1FactoryTest extends AbstractTestCase
 
         $factory = new HeaderV1Factory($signer, $headerCanonicalize, $bodyCanonicalize);
         $header = $factory->factory($message, new Parameters('x', 'example.com'));
+
+        $this->assertEquals(
+            \file_get_contents(__DIR__.'/../../Stub/Dkim/dkim_factory_test_header.eml'),
+            (string)$header->getValue()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_skips_another_custom_header(): void
+    {
+        $signer = $this->createMock(SignInterface::class);
+        $signer->expects($this->any())
+            ->method('hashBody')
+            ->willReturn('hash');
+
+        $signer->expects($this->any())
+            ->method('name')
+            ->willReturn('rsa-sha256');
+
+        $signer->expects($this->any())
+            ->method('signHeaders')
+            ->willReturn('signature');
+
+        $headerCanonicalize = $this->createMock(CanonicalizeHeaderInterface::class);
+        $headerCanonicalize
+            ->expects($this->any())
+            ->method('name')
+            ->willReturn('relaxed');
+
+        $bodyCanonicalize = $this->createMock(CanonicalizeBodyInterface::class);
+        $bodyCanonicalize
+            ->expects($this->any())
+            ->method('name')
+            ->willReturn('relaxed');
+
+        $message = (new PlainTextMessage('Hello World'))
+            ->withHeader(new Date(new \DateTimeImmutable('1/1/2017')))
+            ->withHeader(new From(new Address(new EmailAddress('sender@genkgodev.com'))))
+            ->withHeader(new To(new AddressList([new Address(new EmailAddress('recipient@genkgodev.com'))])))
+            ->withHeader(new Bcc(new AddressList([new Address(new EmailAddress('bcc@genkgodev.com'))])))
+            ->withHeader(new MessageId('testing', 'genkgodev.com'))
+            ->withHeader(new GenericHeader('X-ABC', 'YYZ'));
+
+        $factory = new HeaderV1Factory($signer, $headerCanonicalize, $bodyCanonicalize);
+        $header = $factory->factory($message, new Parameters('x', 'example.com'), ['X-ABC']);
 
         $this->assertEquals(
             \file_get_contents(__DIR__.'/../../Stub/Dkim/dkim_factory_test_header.eml'),

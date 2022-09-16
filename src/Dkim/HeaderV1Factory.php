@@ -58,19 +58,23 @@ final class HeaderV1Factory
     /**
      * @param MessageInterface $message
      * @param Parameters $parameters
+     * @param array<int, string> $ignoreHeaders
      * @return HeaderInterface
      */
     public function factory(
         MessageInterface $message,
-        Parameters $parameters
+        Parameters $parameters,
+        array $ignoreHeaders = []
     ): HeaderInterface {
+        $ignoreHeaders = \array_map('strtolower', $ignoreHeaders);
+
         $headerCanonicalized = [];
         $headerNames = [];
         foreach ($message->getHeaders() as $headers) {
             /** @var HeaderInterface $header */
             foreach ($headers as $header) {
                 $headerName = \strtolower((string)$header->getName());
-                if (isset(self::HEADERS_IGNORED[$headerName])) {
+                if (isset(self::HEADERS_IGNORED[$headerName]) || \in_array($headerName, $ignoreHeaders, true)) {
                     break;
                 }
 
