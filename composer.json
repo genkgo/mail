@@ -8,7 +8,7 @@
         "ext-iconv": "*"
     },
     "require-dev": {
-        "phpunit/phpunit": "^8.5.3",
+        "phpunit/phpunit": "^9.5.24",
         "phpstan/phpstan": "^0.12.48",
         "phpstan/phpstan-phpunit": "^0.12.6",
         "friendsofphp/php-cs-fixer": "^3.0",

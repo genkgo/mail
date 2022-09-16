@@ -21,16 +21,11 @@ final class EhloOnlyNegotiationTest extends AbstractTestCase
         $connection = $this->createMock(ConnectionInterface::class);
 
         $connection
-            ->expects($this->at(0))
+            ->expects($this->exactly(1))
             ->method('addListener');
 
         $connection
-            ->expects($this->at(1))
-            ->method('getMetaData')
-            ->willReturn([]);
-
-        $connection
-            ->expects($this->at(2))
+            ->expects($this->exactly(1))
             ->method('receive')
             ->willReturn("250 OK\r\n");
 

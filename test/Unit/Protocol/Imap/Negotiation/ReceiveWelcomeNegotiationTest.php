@@ -18,11 +18,11 @@ final class ReceiveWelcomeNegotiationTest extends AbstractTestCase
     {
         $connection = $this->createMock(ConnectionInterface::class);
         $connection
-            ->expects($this->at(0))
+            ->expects($this->exactly(1))
             ->method('addListener');
 
         $connection
-            ->expects($this->at(1))
+            ->expects($this->exactly(1))
             ->method('receive')
             ->willReturn("* OK IMAP4rev1 Service Ready\r\n");
 

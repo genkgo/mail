@@ -23,35 +23,30 @@ final class ServerTest extends AbstractTestCase
 
         $connection = $this->createMock(ConnectionInterface::class);
         $connection
-            ->expects($this->at(0))
+            ->expects($this->exactly(3))
             ->method('send')
-            ->with("220 Welcome to Genkgo Mail Server\r\n");
+            ->withConsecutive(
+                ["220 Welcome to Genkgo Mail Server\r\n"],
+                ["250 localhost Hello localhost\r\n"],
+                ["221 Thank you for listening\r\n"]
+            );
 
         $connection
-            ->expects($this->at(1))
+            ->expects($this->exactly(2))
             ->method('receive')
-            ->willReturn("EHLO localhost\r\n");
-
-        $connection
-            ->expects($this->at(2))
-            ->method('send')
-            ->with("250 localhost Hello localhost\r\n");
-
-        $connection
-            ->expects($this->at(3))
-            ->method('receive')
-            ->willReturn("QUIT\r\n");
+            ->willReturnOnConsecutiveCalls(
+                "EHLO localhost\r\n",
+                "QUIT\r\n",
+            );
 
         $listener = $this->createMock(ConnectionListenerInterface::class);
         $listener
-            ->expects($this->at(0))
+            ->expects($this->exactly(2))
             ->method('listen')
-            ->willReturn($connection);
-
-        $listener
-            ->expects($this->at(1))
-            ->method('listen')
-            ->willThrowException(new ConnectionListenerException());
+            ->willReturnOnConsecutiveCalls(
+                $connection,
+                $this->throwException(new ConnectionListenerException())
+            );
 
         $server = new Server($listener, [], 'localhost');
         $server->start();
@@ -66,35 +61,30 @@ final class ServerTest extends AbstractTestCase
 
         $connection = $this->createMock(ConnectionInterface::class);
         $connection
-            ->expects($this->at(0))
+            ->expects($this->exactly(3))
             ->method('send')
-            ->with("220 Welcome to Genkgo Mail Server\r\n");
+            ->withConsecutive(
+                ["220 Welcome to Genkgo Mail Server\r\n"],
+                ["500 unrecognized command\r\n"],
+                ["221 Thank you for listening\r\n"]
+            );
 
         $connection
-            ->expects($this->at(1))
+            ->expects($this->exactly(2))
             ->method('receive')
-            ->willReturn("UNKNOWN\r\n");
-
-        $connection
-            ->expects($this->at(2))
-            ->method('send')
-            ->with("500 unrecognized command\r\n");
-
-        $connection
-            ->expects($this->at(3))
-            ->method('receive')
-            ->willReturn("QUIT\r\n");
+            ->willReturnOnConsecutiveCalls(
+                "UNKNOWN\r\n",
+                "QUIT\r\n"
+            );
 
         $listener = $this->createMock(ConnectionListenerInterface::class);
         $listener
-            ->expects($this->at(0))
+            ->expects($this->exactly(2))
             ->method('listen')
-            ->willReturn($connection);
-
-        $listener
-            ->expects($this->at(1))
-            ->method('listen')
-            ->willThrowException(new ConnectionListenerException());
+            ->willReturnOnConsecutiveCalls(
+                $connection,
+                $this->throwException(new ConnectionListenerException())
+            );
 
         $server = new Server($listener, [], 'localhost');
         $server->start();
@@ -109,34 +99,30 @@ final class ServerTest extends AbstractTestCase
 
         $connection = $this->createMock(ConnectionInterface::class);
         $connection
-            ->expects($this->at(0))
+            ->expects($this->exactly(2))
             ->method('send')
-            ->with("220 Welcome to Genkgo Mail Server\r\n");
+            ->withConsecutive(
+                ["220 Welcome to Genkgo Mail Server\r\n"],
+                ["421 command timeout - closing connection\r\n"]
+            );
 
         $connection
-            ->expects($this->at(1))
+            ->expects($this->exactly(1))
             ->method('receive')
             ->willThrowException(new ConnectionTimeoutException());
 
         $connection
-            ->expects($this->at(2))
-            ->method('send')
-            ->with("421 command timeout - closing connection\r\n");
-
-        $connection
-            ->expects($this->at(3))
+            ->expects($this->exactly(1))
             ->method('disconnect');
 
         $listener = $this->createMock(ConnectionListenerInterface::class);
         $listener
-            ->expects($this->at(0))
+            ->expects($this->exactly(2))
             ->method('listen')
-            ->willReturn($connection);
-
-        $listener
-            ->expects($this->at(1))
-            ->method('listen')
-            ->willThrowException(new ConnectionListenerException());
+            ->willReturnOnConsecutiveCalls(
+                $connection,
+                $this->throwException(new ConnectionListenerException())
+            );
 
         $server = new Server($listener, [], 'localhost');
         $server->start();
@@ -151,29 +137,27 @@ final class ServerTest extends AbstractTestCase
 
         $connection = $this->createMock(ConnectionInterface::class);
         $connection
-            ->expects($this->at(0))
+            ->expects($this->exactly(1))
             ->method('send')
             ->with("220 Welcome to Genkgo Mail Server\r\n");
 
         $connection
-            ->expects($this->at(1))
+            ->expects($this->exactly(1))
             ->method('receive')
             ->willThrowException(new ConnectionClosedException());
 
         $connection
-            ->expects($this->at(2))
+            ->expects($this->exactly(1))
             ->method('disconnect');
 
         $listener = $this->createMock(ConnectionListenerInterface::class);
         $listener
-            ->expects($this->at(0))
+            ->expects($this->exactly(2))
             ->method('listen')
-            ->willReturn($connection);
-
-        $listener
-            ->expects($this->at(1))
-            ->method('listen')
-            ->willThrowException(new ConnectionListenerException());
+            ->willReturnOnConsecutiveCalls(
+                $connection,
+                $this->throwException(new ConnectionListenerException())
+            );
 
         $server = new Server($listener, [], 'localhost');
         $server->start();
@@ -188,34 +172,30 @@ final class ServerTest extends AbstractTestCase
 
         $connection = $this->createMock(ConnectionInterface::class);
         $connection
-            ->expects($this->at(0))
+            ->expects($this->exactly(2))
             ->method('send')
-            ->with("220 Welcome to Genkgo Mail Server\r\n");
+            ->withConsecutive(
+                ["220 Welcome to Genkgo Mail Server\r\n"],
+                ["554 transaction failed, unexpected value - closing connection\r\n"]
+            );
 
         $connection
-            ->expects($this->at(1))
+            ->expects($this->exactly(1))
             ->method('receive')
             ->willThrowException(new ConnectionBrokenException());
 
         $connection
-            ->expects($this->at(2))
-            ->method('send')
-            ->with("554 transaction failed, unexpected value - closing connection\r\n");
-
-        $connection
-            ->expects($this->at(3))
+            ->expects($this->exactly(1))
             ->method('disconnect');
 
         $listener = $this->createMock(ConnectionListenerInterface::class);
         $listener
-            ->expects($this->at(0))
+            ->expects($this->exactly(2))
             ->method('listen')
-            ->willReturn($connection);
-
-        $listener
-            ->expects($this->at(1))
-            ->method('listen')
-            ->willThrowException(new ConnectionListenerException());
+            ->willReturnOnConsecutiveCalls(
+                $connection,
+                $this->throwException(new ConnectionListenerException())
+            );
 
         $server = new Server($listener, [], 'localhost');
         $server->start();
@@ -230,35 +210,34 @@ final class ServerTest extends AbstractTestCase
 
         $connection = $this->createMock(ConnectionInterface::class);
         $connection
-            ->expects($this->at(0))
+            ->expects($this->exactly(2))
             ->method('send')
-            ->with("220 Welcome to Genkgo Mail Server\r\n");
+            ->withConsecutive(
+                ["220 Welcome to Genkgo Mail Server\r\n"],
+                ["554 transaction failed, unexpected value - closing connection\r\n"]
+            )
+            ->willReturnOnConsecutiveCalls(
+                1,
+                $this->throwException(new \UnexpectedValueException('Some unknown exception'))
+            );
 
         $connection
-            ->expects($this->at(1))
+            ->expects($this->exactly(1))
             ->method('receive')
             ->willThrowException(new ConnectionBrokenException());
 
         $connection
-            ->expects($this->at(2))
-            ->method('send')
-            ->with("554 transaction failed, unexpected value - closing connection\r\n")
-            ->willThrowException(new \UnexpectedValueException('Some unknown exception'));
-
-        $connection
-            ->expects($this->at(3))
+            ->expects($this->exactly(1))
             ->method('disconnect');
 
         $listener = $this->createMock(ConnectionListenerInterface::class);
         $listener
-            ->expects($this->at(0))
+            ->expects($this->exactly(2))
             ->method('listen')
-            ->willReturn($connection);
-
-        $listener
-            ->expects($this->at(1))
-            ->method('listen')
-            ->willThrowException(new ConnectionListenerException());
+            ->willReturnOnConsecutiveCalls(
+                $connection,
+                $this->throwException(new ConnectionListenerException())
+            );
 
         $server = new Server($listener, [], 'localhost');
         $server->start();

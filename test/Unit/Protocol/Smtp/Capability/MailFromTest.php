@@ -28,7 +28,7 @@ final class MailFromTest extends AbstractTestCase
         $connection = $this->createMock(ConnectionInterface::class);
 
         $connection
-            ->expects($this->at(0))
+            ->expects($this->exactly(1))
             ->method('send')
             ->with('250 OK');
 
@@ -46,7 +46,7 @@ final class MailFromTest extends AbstractTestCase
         $connection = $this->createMock(ConnectionInterface::class);
 
         $connection
-            ->expects($this->at(0))
+            ->expects($this->exactly(1))
             ->method('send')
             ->with('501 Invalid envelope');
 

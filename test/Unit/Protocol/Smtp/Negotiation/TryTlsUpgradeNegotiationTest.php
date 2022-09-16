@@ -75,46 +75,32 @@ final class TryTlsUpgradeNegotiationTest extends AbstractTestCase
         $connection = $this->createMock(ConnectionInterface::class);
 
         $connection
-            ->expects($this->at(0))
+            ->expects($this->exactly(1))
             ->method('addListener');
 
         $connection
-            ->expects($this->at(1))
+            ->expects($this->exactly(1))
             ->method('getMetaData')
             ->willReturn([]);
 
         $connection
-            ->expects($this->at(2))
+            ->expects($this->exactly(3))
             ->method('send')
-            ->with("EHLO hostname\r\n")
+            ->withConsecutive(
+                ["EHLO hostname\r\n"],
+                ["HELO hostname\r\n"],
+                ["STARTTLS\r\n"]
+            )
             ->willReturn(16);
 
         $connection
-            ->expects($this->at(3))
+            ->expects($this->exactly(3))
             ->method('receive')
-            ->willReturn("502 Not implemented\r\n");
-
-        $connection
-            ->expects($this->at(4))
-            ->method('send')
-            ->with("HELO hostname\r\n")
-            ->willReturn(16);
-
-        $connection
-            ->expects($this->at(5))
-            ->method('receive')
-            ->willReturn("220 Hello\r\n");
-
-        $connection
-            ->expects($this->at(6))
-            ->method('send')
-            ->with("STARTTLS\r\n")
-            ->willReturn(16);
-
-        $connection
-            ->expects($this->at(7))
-            ->method('receive')
-            ->willReturn("502 Not implemented\r\n");
+            ->willReturnOnConsecutiveCalls(
+                "502 Not implemented\r\n",
+                "220 Hello\r\n",
+                "502 Not implemented\r\n"
+            );
 
         $negotiator = new TryTlsUpgradeNegotiation(
             $connection,
@@ -132,11 +118,11 @@ final class TryTlsUpgradeNegotiationTest extends AbstractTestCase
         $connection = $this->createMock(ConnectionInterface::class);
 
         $connection
-            ->expects($this->at(0))
+            ->expects($this->exactly(1))
             ->method('addListener');
 
         $connection
-            ->expects($this->at(1))
+            ->expects($this->exactly(1))
             ->method('getMetaData')
             ->willReturn(['crypto' => []]);
 
@@ -156,43 +142,34 @@ final class TryTlsUpgradeNegotiationTest extends AbstractTestCase
         $connection = $this->createMock(ConnectionInterface::class);
 
         $connection
-            ->expects($this->at(0))
+            ->expects($this->exactly(1))
             ->method('addListener');
 
         $connection
-            ->expects($this->at(1))
+            ->expects($this->exactly(1))
             ->method('getMetaData')
             ->willReturn([]);
 
         $connection
-            ->expects($this->at(2))
+            ->expects($this->exactly(2))
             ->method('send')
-            ->with("EHLO hostname\r\n")
+            ->withConsecutive(
+                ["EHLO hostname\r\n"],
+                ["STARTTLS\r\n"]
+            )
             ->willReturn(16);
 
         $connection
-            ->expects($this->at(3))
+            ->expects($this->exactly(3))
             ->method('receive')
-            ->willReturn("250-Welcome\r\n");
+            ->willReturnOnConsecutiveCalls(
+                "250-Welcome\r\n",
+                "250 STARTTLS\r\n",
+                "250 OK\r\n"
+            );
 
         $connection
-            ->expects($this->at(4))
-            ->method('receive')
-            ->willReturn("250 STARTTLS\r\n");
-
-        $connection
-            ->expects($this->at(5))
-            ->method('send')
-            ->with("STARTTLS\r\n")
-            ->willReturn(16);
-
-        $connection
-            ->expects($this->at(6))
-            ->method('receive')
-            ->willReturn("250 OK\r\n");
-
-        $connection
-            ->expects($this->at(7))
+            ->expects($this->exactly(1))
             ->method('upgrade')
             ->willThrowException(new SecureConnectionUpgradeException());
 
@@ -214,49 +191,35 @@ final class TryTlsUpgradeNegotiationTest extends AbstractTestCase
         $connection = $this->createMock(ConnectionInterface::class);
 
         $connection
-            ->expects($this->at(0))
+            ->expects($this->exactly(1))
             ->method('addListener');
 
         $connection
-            ->expects($this->at(1))
+            ->expects($this->exactly(1))
             ->method('getMetaData')
             ->willReturn([]);
 
         $connection
-            ->expects($this->at(2))
+            ->expects($this->exactly(3))
             ->method('send')
-            ->with("EHLO hostname\r\n")
+            ->withConsecutive(
+                ["EHLO hostname\r\n"],
+                ["HELO hostname\r\n"],
+                ["STARTTLS\r\n"]
+            )
             ->willReturn(16);
 
         $connection
-            ->expects($this->at(3))
+            ->expects($this->exactly(3))
             ->method('receive')
-            ->willReturn("502 Not implemented\r\n");
+            ->willReturnOnConsecutiveCalls(
+                "502 Not implemented\r\n",
+                "220 Hello\r\n",
+                "250 OK\r\n"
+            );
 
         $connection
-            ->expects($this->at(4))
-            ->method('send')
-            ->with("HELO hostname\r\n")
-            ->willReturn(16);
-
-        $connection
-            ->expects($this->at(5))
-            ->method('receive')
-            ->willReturn("220 Hello\r\n");
-
-        $connection
-            ->expects($this->at(6))
-            ->method('send')
-            ->with("STARTTLS\r\n")
-            ->willReturn(16);
-
-        $connection
-            ->expects($this->at(7))
-            ->method('receive')
-            ->willReturn("250 OK\r\n");
-
-        $connection
-            ->expects($this->at(8))
+            ->expects($this->exactly(1))
             ->method('upgrade')
             ->willThrowException(new SecureConnectionUpgradeException());
 

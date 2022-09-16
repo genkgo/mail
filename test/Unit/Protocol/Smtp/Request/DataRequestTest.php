@@ -17,14 +17,12 @@ final class DataRequestTest extends AbstractTestCase
     {
         $connection = $this->createMock(ConnectionInterface::class);
         $connection
-            ->expects($this->at(0))
+            ->expects($this->exactly(2))
             ->method('send')
-            ->with("test");
-
-        $connection
-            ->expects($this->at(1))
-            ->method('send')
-            ->with(".");
+            ->withConsecutive(
+                ["test"],
+                ['.']
+            );
 
         $command = new DataRequest(new StringStream('test'));
         $command->execute($connection);
@@ -37,14 +35,12 @@ final class DataRequestTest extends AbstractTestCase
     {
         $connection = $this->createMock(ConnectionInterface::class);
         $connection
-            ->expects($this->at(0))
+            ->expects($this->exactly(2))
             ->method('send')
-            ->with("..test");
-
-        $connection
-            ->expects($this->at(1))
-            ->method('send')
-            ->with(".");
+            ->withConsecutive(
+                ["..test"],
+                ['.']
+            );
 
         $command = new DataRequest(new StringStream('.test'));
         $command->execute($connection);
@@ -57,14 +53,12 @@ final class DataRequestTest extends AbstractTestCase
     {
         $connection = $this->createMock(ConnectionInterface::class);
         $connection
-            ->expects($this->at(0))
+            ->expects($this->exactly(2))
             ->method('send')
-            ->with("test");
-
-        $connection
-            ->expects($this->at(1))
-            ->method('send')
-            ->with(".");
+            ->withConsecutive(
+                ["test"],
+                ['.']
+            );
 
         $command = new DataRequest(new StringStream("test\r"));
         $command->execute($connection);
@@ -77,34 +71,16 @@ final class DataRequestTest extends AbstractTestCase
     {
         $connection = $this->createMock(ConnectionInterface::class);
         $connection
-            ->expects($this->at(0))
+            ->expects($this->exactly(6))
             ->method('send')
-            ->with("test");
-
-        $connection
-            ->expects($this->at(1))
-            ->method('send')
-            ->with("test");
-
-        $connection
-            ->expects($this->at(2))
-            ->method('send')
-            ->with("test");
-
-        $connection
-            ->expects($this->at(3))
-            ->method('send')
-            ->with("test");
-
-        $connection
-            ->expects($this->at(4))
-            ->method('send')
-            ->with("");
-
-        $connection
-            ->expects($this->at(5))
-            ->method('send')
-            ->with(".");
+            ->withConsecutive(
+                ["test"],
+                ["test"],
+                ["test"],
+                ["test"],
+                [""],
+                ['.']
+            );
 
         $command = new DataRequest(new StringStream(\str_repeat("test\r\ntest\r\n", 2)));
         $command->execute($connection);
@@ -131,24 +107,14 @@ final class DataRequestTest extends AbstractTestCase
     {
         $connection = $this->createMock(ConnectionInterface::class);
         $connection
-            ->expects($this->at(0))
+            ->expects($this->exactly(4))
             ->method('send')
-            ->with("test");
-
-        $connection
-            ->expects($this->at(1))
-            ->method('send')
-            ->with(".");
-
-        $connection
-            ->expects($this->at(2))
-            ->method('send')
-            ->with("test");
-
-        $connection
-            ->expects($this->at(3))
-            ->method('send')
-            ->with(".");
+            ->withConsecutive(
+                ["test"],
+                ['.'],
+                ['test'],
+                ['.']
+            );
 
         $stream = new StringStream('test');
 

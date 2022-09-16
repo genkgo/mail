@@ -20,47 +20,37 @@ final class ForceTlsUpgradeNegotiationTest extends AbstractTestCase
     {
         $connection = $this->createMock(ConnectionInterface::class);
         $connection
-            ->expects($this->at(0))
+            ->expects($this->exactly(1))
             ->method('addListener');
 
         $connection
-            ->expects($this->at(1))
+            ->expects($this->exactly(2))
             ->method('getMetaData')
-            ->willReturn([]);
+            ->willReturnOnConsecutiveCalls(
+                [],
+                ['crypto' => []]
+            );
 
         $connection
-            ->expects($this->at(2))
+            ->expects($this->exactly(2))
             ->method('send')
-            ->with("TAG1 CAPABILITY\r\n");
+            ->withConsecutive(
+                ["TAG1 CAPABILITY\r\n"],
+                ["TAG2 STARTTLS\r\n"]
+            );
 
         $connection
-            ->expects($this->at(3))
+            ->expects($this->exactly(3))
             ->method('receive')
-            ->willReturn('* CAPABILITY IMAP4rev1 STARTTLS AUTH=PLAIN');
+            ->willReturnOnConsecutiveCalls(
+                '* CAPABILITY IMAP4rev1 STARTTLS AUTH=PLAIN',
+                'TAG1 OK',
+                'TAG2 OK'
+            );
 
         $connection
-            ->expects($this->at(4))
-            ->method('receive')
-            ->willReturn('TAG1 OK');
-
-        $connection
-            ->expects($this->at(5))
-            ->method('send')
-            ->with("TAG2 STARTTLS\r\n");
-
-        $connection
-            ->expects($this->at(6))
-            ->method('receive')
-            ->willReturn('TAG2 OK');
-
-        $connection
-            ->expects($this->at(7))
+            ->expects($this->exactly(1))
             ->method('upgrade');
-
-        $connection
-            ->expects($this->at(8))
-            ->method('getMetaData')
-            ->willReturn(['crypto' => []]);
 
         $client = new Client($connection, new GeneratorTagFactory(), []);
 
@@ -80,33 +70,26 @@ final class ForceTlsUpgradeNegotiationTest extends AbstractTestCase
 
         $connection = $this->createMock(ConnectionInterface::class);
         $connection
-            ->expects($this->at(0))
+            ->expects($this->exactly(1))
             ->method('addListener');
 
         $connection
-            ->expects($this->at(1))
+            ->expects($this->exactly(2))
             ->method('getMetaData')
             ->willReturn([]);
 
         $connection
-            ->expects($this->at(2))
+            ->expects($this->exactly(1))
             ->method('send')
             ->with("TAG1 CAPABILITY\r\n");
 
         $connection
-            ->expects($this->at(3))
+            ->expects($this->exactly(2))
             ->method('receive')
-            ->willReturn('* CAPABILITY IMAP4rev1 AUTH=PLAIN');
-
-        $connection
-            ->expects($this->at(4))
-            ->method('receive')
-            ->willReturn('TAG1 OK');
-
-        $connection
-            ->expects($this->at(5))
-            ->method('getMetaData')
-            ->willReturn([]);
+            ->willReturnOnConsecutiveCalls(
+                '* CAPABILITY IMAP4rev1 AUTH=PLAIN',
+                'TAG1 OK'
+            );
 
         $client = new Client($connection, new GeneratorTagFactory(), []);
 
@@ -124,11 +107,11 @@ final class ForceTlsUpgradeNegotiationTest extends AbstractTestCase
     {
         $connection = $this->createMock(ConnectionInterface::class);
         $connection
-            ->expects($this->at(0))
+            ->expects($this->exactly(1))
             ->method('addListener');
 
         $connection
-            ->expects($this->at(1))
+            ->expects($this->exactly(1))
             ->method('getMetaData')
             ->willReturn(['crypto' => []]);
 

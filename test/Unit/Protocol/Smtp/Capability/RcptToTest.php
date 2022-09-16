@@ -29,7 +29,7 @@ final class RcptToTest extends AbstractTestCase
         $connection = $this->createMock(ConnectionInterface::class);
 
         $connection
-            ->expects($this->at(0))
+            ->expects($this->exactly(1))
             ->method('send')
             ->with('250 OK');
 
@@ -47,7 +47,7 @@ final class RcptToTest extends AbstractTestCase
         $connection = $this->createMock(ConnectionInterface::class);
 
         $connection
-            ->expects($this->at(0))
+            ->expects($this->exactly(1))
             ->method('send')
             ->with('501 Invalid recipient');
 
@@ -65,7 +65,7 @@ final class RcptToTest extends AbstractTestCase
         $connection = $this->createMock(ConnectionInterface::class);
 
         $connection
-            ->expects($this->at(0))
+            ->expects($this->exactly(1))
             ->method('send')
             ->with('550 Unknown mailbox');
 

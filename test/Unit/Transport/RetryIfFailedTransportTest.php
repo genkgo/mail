@@ -34,13 +34,12 @@ final class RetryIfFailedTransportTest extends AbstractTestCase
         $decoratedTransport = $this->createMock(TransportInterface::class);
 
         $decoratedTransport
-            ->expects($this->at(0))
+            ->expects($this->exactly(2))
             ->method('send')
-            ->willThrowException(new ConnectionRefusedException());
-
-        $decoratedTransport
-            ->expects($this->at(1))
-            ->method('send');
+            ->willReturnOnConsecutiveCalls(
+                $this->throwException(new ConnectionRefusedException()),
+                null
+            );
 
         $sender = new RetryIfFailedTransport($decoratedTransport, 3);
         $sender->send(new GenericMessage());
@@ -54,18 +53,13 @@ final class RetryIfFailedTransportTest extends AbstractTestCase
         $decoratedTransport = $this->createMock(TransportInterface::class);
 
         $decoratedTransport
-            ->expects($this->at(0))
+            ->expects($this->exactly(3))
             ->method('send')
-            ->willThrowException(new ConnectionRefusedException());
-
-        $decoratedTransport
-            ->expects($this->at(1))
-            ->method('send')
-            ->willThrowException(new ConnectionRefusedException());
-
-        $decoratedTransport
-            ->expects($this->at(2))
-            ->method('send');
+            ->willReturnOnConsecutiveCalls(
+                $this->throwException(new ConnectionRefusedException()),
+                $this->throwException(new ConnectionRefusedException()),
+                null
+            );
 
         $sender = new RetryIfFailedTransport($decoratedTransport, 3);
         $sender->send(new GenericMessage());
@@ -81,17 +75,7 @@ final class RetryIfFailedTransportTest extends AbstractTestCase
         $decoratedTransport = $this->createMock(TransportInterface::class);
 
         $decoratedTransport
-            ->expects($this->at(0))
-            ->method('send')
-            ->willThrowException(new ConnectionRefusedException());
-
-        $decoratedTransport
-            ->expects($this->at(1))
-            ->method('send')
-            ->willThrowException(new ConnectionRefusedException());
-
-        $decoratedTransport
-            ->expects($this->at(2))
+            ->expects($this->exactly(3))
             ->method('send')
             ->willThrowException(new ConnectionRefusedException());
 

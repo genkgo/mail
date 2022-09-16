@@ -17,7 +17,7 @@ final class EhloCommandTest extends AbstractTestCase
         $connection = $this->createMock(ConnectionInterface::class);
 
         $connection
-            ->expects($this->at(0))
+            ->expects($this->exactly(1))
             ->method('send')
             ->with("EHLO host.example.com");
 

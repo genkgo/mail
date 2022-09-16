@@ -23,7 +23,7 @@ final class PsrLogExceptionTransportTest extends AbstractTestCase
         $logger = $this->createMock(LoggerInterface::class);
 
         $logger
-            ->expects($this->at(0))
+            ->expects($this->exactly(1))
             ->method('log')
             ->with(LogLevel::INFO, 'Failed to send e-mail message. Exception class always throws an exception', [
                 'exception' => [

@@ -45,15 +45,16 @@ final class RedisQueueTest extends AbstractTestCase
         $client = $this->createMock(ClientInterface::class);
 
         $client
-            ->expects($this->at(0))
+            ->expects($this->exactly(2))
             ->method('__call')
-            ->with('rpush', ['queue', [(string)$message]]);
-
-        $client
-            ->expects($this->at(1))
-            ->method('__call')
-            ->with('lpop', ['queue'])
-            ->willReturn((string)$message);
+            ->withConsecutive(
+                ['rpush', ['queue', [(string)$message]]],
+                ['lpop', ['queue']]
+            )
+            ->willReturnOnConsecutiveCalls(
+                null,
+                (string)$message
+            );
 
         $queue = new RedisQueue($client, 'queue');
         $queue->store($message);
@@ -77,21 +78,18 @@ final class RedisQueueTest extends AbstractTestCase
         $client = $this->createMock(ClientInterface::class);
 
         $client
-            ->expects($this->at(0))
+            ->expects($this->exactly(3))
             ->method('__call')
-            ->with('rpush', ['queue', [(string)$message]]);
-
-        $client
-            ->expects($this->at(1))
-            ->method('__call')
-            ->with('lpop', ['queue'])
-            ->willReturn((string)$message);
-
-        $client
-            ->expects($this->at(2))
-            ->method('__call')
-            ->with('lpop', ['queue'])
-            ->willThrowException(new EmptyQueueException());
+            ->withConsecutive(
+                ['rpush', ['queue', [(string)$message]]],
+                ['lpop', ['queue']],
+                ['lpop', ['queue']]
+            )
+            ->willReturnOnConsecutiveCalls(
+                [],
+                (string)$message,
+                $this->throwException(new EmptyQueueException())
+            );
 
         $queue = new RedisQueue($client, 'queue');
         $queue->store($message);
@@ -108,16 +106,13 @@ final class RedisQueueTest extends AbstractTestCase
         $client = $this->createMock(ClientInterface::class);
 
         $client
-            ->expects($this->at(0))
+            ->expects($this->exactly(2))
             ->method('__call')
-            ->with('llen', ['queue'])
-            ->willReturn(0);
-
-        $client
-            ->expects($this->at(1))
-            ->method('__call')
-            ->with('llen', ['queue'])
-            ->willReturn(2);
+            ->withConsecutive(
+                ['llen', ['queue']],
+                ['llen', ['queue']]
+            )
+            ->willReturnOnConsecutiveCalls(0, 2);
 
         $queue = new RedisQueue($client, 'queue');
 

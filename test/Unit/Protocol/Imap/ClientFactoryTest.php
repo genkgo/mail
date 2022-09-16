@@ -46,11 +46,10 @@ final class ClientFactoryTest extends AbstractTestCase
     {
         $callback = function () {
         };
-        $at = -1;
 
         $connection = $this->createMock(ConnectionInterface::class);
         $connection
-            ->expects($this->at(++$at))
+            ->expects($this->any())
             ->method('addListener')
             ->with(
                 'connect',
@@ -63,52 +62,35 @@ final class ClientFactoryTest extends AbstractTestCase
             );
 
         $connection
-            ->expects($this->at(++$at))
+            ->expects($this->exactly(1))
             ->method('connect');
 
         $connection
-            ->expects($this->at(++$at))
+            ->expects($this->exactly(4))
             ->method('receive')
-            ->willReturn('* CAPABILITY STARTTLS');
+            ->willReturnOnConsecutiveCalls(
+                '* CAPABILITY STARTTLS',
+                '* CAPABILITY IMAP4rev1 STARTTLS AUTH=PLAIN',
+                'TAG1 OK',
+                'TAG2 OK'
+            );
 
         $connection
-            ->expects($this->at(++$at))
+            ->expects($this->exactly(2))
             ->method('getMetaData')
-            ->willReturn([]);
+            ->willReturnOnConsecutiveCalls([], ['crypto' => []]);
 
         $connection
-            ->expects($this->at(++$at))
+            ->expects($this->exactly(2))
             ->method('send')
-            ->with("TAG1 CAPABILITY\r\n");
+            ->withConsecutive(
+                ["TAG1 CAPABILITY\r\n"],
+                ["TAG2 STARTTLS\r\n"]
+            );
 
         $connection
-            ->expects($this->at(++$at))
-            ->method('receive')
-            ->willReturn('* CAPABILITY IMAP4rev1 STARTTLS AUTH=PLAIN');
-
-        $connection
-            ->expects($this->at(++$at))
-            ->method('receive')
-            ->willReturn('TAG1 OK');
-
-        $connection
-            ->expects($this->at(++$at))
-            ->method('send')
-            ->with("TAG2 STARTTLS\r\n");
-
-        $connection
-            ->expects($this->at(++$at))
-            ->method('receive')
-            ->willReturn('TAG2 OK');
-
-        $connection
-            ->expects($this->at(++$at))
+            ->expects($this->once())
             ->method('upgrade');
-
-        $connection
-            ->expects($this->at(++$at))
-            ->method('getMetaData')
-            ->willReturn(['crypto' => []]);
 
         $factory = new ClientFactory($connection);
         $factory->newClient();
@@ -123,11 +105,10 @@ final class ClientFactoryTest extends AbstractTestCase
     {
         $callback = function () {
         };
-        $at = -1;
 
         $connection = $this->createMock(ConnectionInterface::class);
         $connection
-            ->expects($this->at(++$at))
+            ->expects($this->any())
             ->method('addListener')
             ->with(
                 'connect',
@@ -140,48 +121,28 @@ final class ClientFactoryTest extends AbstractTestCase
             );
 
         $connection
-            ->expects($this->at(++$at))
+            ->expects($this->exactly(1))
             ->method('connect');
 
         $connection
-            ->expects($this->at(++$at))
+            ->expects($this->any())
             ->method('receive')
-            ->willReturn('* CAPABILITY STARTTLS');
+            ->willReturnOnConsecutiveCalls(
+                '* CAPABILITY STARTTLS',
+                '* CAPABILITY IMAP4rev1 STARTTLS AUTH=PLAIN',
+                'TAG1 OK',
+                '+ Continue',
+                'TAG2 OK',
+            );
 
         $connection
-            ->expects($this->at(++$at))
+            ->expects($this->any())
             ->method('send')
-            ->with("TAG1 CAPABILITY\r\n");
-
-        $connection
-            ->expects($this->at(++$at))
-            ->method('receive')
-            ->willReturn('* CAPABILITY IMAP4rev1 STARTTLS AUTH=PLAIN');
-
-        $connection
-            ->expects($this->at(++$at))
-            ->method('receive')
-            ->willReturn('TAG1 OK');
-
-        $connection
-            ->expects($this->at(++$at))
-            ->method('send')
-            ->with("TAG2 AUTHENTICATE PLAIN\r\n");
-
-        $connection
-            ->expects($this->at(++$at))
-            ->method('receive')
-            ->willReturn('+ Continue');
-
-        $connection
-            ->expects($this->at(++$at))
-            ->method('send')
-            ->with(\base64_encode("\0username\0password"). "\r\n");
-
-        $connection
-            ->expects($this->at(++$at))
-            ->method('receive')
-            ->willReturn('TAG2 OK');
+            ->withConsecutive(
+                ["TAG1 CAPABILITY\r\n"],
+                ["TAG2 AUTHENTICATE PLAIN\r\n"],
+                [\base64_encode("\0username\0password"). "\r\n"],
+            );
 
         $factory = new ClientFactory($connection);
         $factory
@@ -199,11 +160,10 @@ final class ClientFactoryTest extends AbstractTestCase
     {
         $callback = function () {
         };
-        $at = -1;
 
         $connection = $this->createMock(ConnectionInterface::class);
         $connection
-            ->expects($this->at(++$at))
+            ->expects($this->any())
             ->method('addListener')
             ->with(
                 'connect',
@@ -216,11 +176,11 @@ final class ClientFactoryTest extends AbstractTestCase
             );
 
         $connection
-            ->expects($this->at(++$at))
+            ->expects($this->exactly(1))
             ->method('connect');
 
         $connection
-            ->expects($this->at(++$at))
+            ->expects($this->exactly(1))
             ->method('receive')
             ->willReturn('* CAPABILITY STARTTLS');
 
