@@ -98,7 +98,7 @@ final class FlagsItem implements ItemInterface
 
         if (isset(self::OPERATORS[$list[0]])) {
             $operator = $list[0];
-            $list = \substr($list, 1);
+            $list = (string)\substr($list, 1);
         }
 
         $index = 0;
