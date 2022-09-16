@@ -21,7 +21,7 @@ final class Sha256Signer implements SignInterface
      */
     public function __construct($key)
     {
-        if (!\is_a($key, 'OpenSSLAsymmetricKey') && (!\is_resource($key) || \get_resource_type($key) !== 'OpenSSL key')) {
+        if ((!\is_resource($key) || \get_resource_type($key) !== 'OpenSSL key') && (!\is_object($key) || !\is_a($key, 'OpenSSLAsymmetricKey'))) {
             throw new \InvalidArgumentException('Expected a private key resource');
         }
 
@@ -44,6 +44,7 @@ final class Sha256Signer implements SignInterface
      */
     public function signHeaders(string $canonicalizedHeaders): string
     {
+        /** @phpstan-ignore-next-line */
         if (\openssl_sign($canonicalizedHeaders, $signature, $this->privateKey, self::SIGN_ALGORITHM)) {
             return $signature;
         }

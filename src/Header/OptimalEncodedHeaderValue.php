@@ -28,13 +28,13 @@ final class OptimalEncodedHeaderValue
     {
         if ($phrase === true) {
             $encoded = new OptimalTransferEncodedPhraseStream($value, 68, self::FOLDING);
-
-            $this->encoding = $encoded->getMetadata(['transfer-encoding'])['transfer-encoding'];
         } else {
             $encoded = new OptimalTransferEncodedTextStream($value, 68, self::FOLDING);
-
-            $this->encoding = $encoded->getMetadata(['transfer-encoding'])['transfer-encoding'];
         }
+
+        /** @var string $encoding */
+        $encoding = $encoded->getMetadata(['transfer-encoding'])['transfer-encoding'];
+        $this->encoding = $encoding;
 
         switch ($this->encoding) {
             case '7bit':

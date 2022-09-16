@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Genkgo\Mail\Transport;
 
+use Genkgo\Mail\MessageInterface;
+
 final class FileTransportOptions
 {
     /**
@@ -11,13 +13,13 @@ final class FileTransportOptions
     private $directory;
 
     /**
-     * @var \Closure
+     * @var \Closure(MessageInterface): string
      */
     private $fileNameGenerator;
 
     /**
      * @param string $directory
-     * @param \Closure $fileNameGenerator
+     * @param \Closure(MessageInterface): string $fileNameGenerator
      */
     public function __construct(string $directory, \Closure $fileNameGenerator)
     {
@@ -34,7 +36,7 @@ final class FileTransportOptions
     }
 
     /**
-     * @return \Closure
+     * @return \Closure(MessageInterface): string
      */
     public function getFileNameGenerator(): \Closure
     {

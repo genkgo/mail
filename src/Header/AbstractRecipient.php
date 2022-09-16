@@ -54,7 +54,7 @@ abstract class AbstractRecipient implements HeaderInterface
     }
 
     /**
-     * @param array<mixed> $array pairs of email address and name
+     * @param array<array{0: string, 1?: string}> $array pairs of email address and name
      * @return AbstractRecipient
      */
     final public static function fromArray(array $array): AbstractRecipient
@@ -63,10 +63,6 @@ abstract class AbstractRecipient implements HeaderInterface
             new AddressList(
                 \array_map(
                     function (array $pair) {
-                        $count = \count($pair);
-                        if ($count !== 1 && $count !== 2) {
-                            throw new \InvalidArgumentException('Each recipient should have one or two elements: [<EmailAddress>] or [<EmailAddress>, <Name>]');
-                        }
                         [$emailAddress, $name] = $pair + [1 => ''];
                         return new Address(
                             new EmailAddress($emailAddress),

@@ -100,6 +100,7 @@ final class PhpMailTransport implements TransportInterface
             $headers = \iterator_to_array($headers);
         }
 
+        /** @var array<array<HeaderInterface>> $headers */
         return \implode(
             "\r\n",
             \array_values(

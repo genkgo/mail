@@ -23,6 +23,8 @@ final class PlainTextPart implements PartInterface
     public function __construct(string $text, string $charset = '')
     {
         $stream = new OptimalTransferEncodedTextStream($text);
+
+        /** @var string $encoding */
         $encoding = $stream->getMetadata(['transfer-encoding'])['transfer-encoding'];
 
         $this->decoratedPart = (new GenericPart())

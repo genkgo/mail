@@ -45,6 +45,14 @@ final class EhloResponse
     }
 
     /**
+     * @return string
+     */
+    public function getGreeting(): string
+    {
+        return $this->greeting;
+    }
+
+    /**
      * @param string $command
      * @return bool
      */

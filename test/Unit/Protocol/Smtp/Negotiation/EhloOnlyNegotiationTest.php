@@ -29,7 +29,7 @@ final class EhloOnlyNegotiationTest extends AbstractTestCase
             ->method('receive')
             ->willReturn("250 OK\r\n");
 
-        $negotiator = new EhloOnlyNegotiation($connection, 'hostname');
+        $negotiator = new EhloOnlyNegotiation('hostname');
         $negotiator->negotiate(new Client($connection));
     }
 }

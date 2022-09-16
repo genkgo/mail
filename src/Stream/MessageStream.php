@@ -25,6 +25,7 @@ final class MessageStream implements StreamInterface
             $headers = \iterator_to_array($headers);
         }
 
+        /** @var array<array<HeaderInterface>> $headers */
         $this->decoratedStream = new LazyStream(function () use ($headers, $message) {
             $headerString = \implode(
                 "\r\n",

@@ -30,6 +30,7 @@ final class ClientFactory
 
     /**
      * @var float
+     * @phpstan-ignore-next-line
      */
     private $timeout = 1;
 
@@ -152,7 +153,7 @@ final class ClientFactory
         $negotiators = [];
 
         if ($this->startTls === 0 && $this->authMethod === Client::AUTH_NONE) {
-            $negotiators[] = new EhloOnlyNegotiation($this->connection, $this->ehlo);
+            $negotiators[] = new EhloOnlyNegotiation($this->ehlo);
         } elseif ($this->startTls !== 0) {
             if ($this->insecureConnectionAllowed) {
                 $negotiators[] = new TryTlsUpgradeNegotiation(

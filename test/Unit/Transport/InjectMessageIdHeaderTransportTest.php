@@ -5,6 +5,7 @@ namespace Genkgo\TestMail\Unit\Transport;
 
 use Genkgo\Mail\Header\MessageId;
 use Genkgo\Mail\HeaderInterface;
+use Genkgo\Mail\MessageInterface;
 use Genkgo\Mail\Transport\InjectMessageIdHeaderTransport;
 use Genkgo\TestMail\AbstractTestCase;
 use Genkgo\Mail\GenericMessage;
@@ -18,6 +19,7 @@ final class InjectMessageIdHeaderTransportTest extends AbstractTestCase
     public function it_injects_message_id_header_in_message(): void
     {
         $message = new GenericMessage();
+        /** @var \ArrayObject<int, MessageInterface> $storage */
         $storage = new \ArrayObject();
 
         $transport = new InjectMessageIdHeaderTransport(
@@ -39,6 +41,7 @@ final class InjectMessageIdHeaderTransportTest extends AbstractTestCase
         $message = (new GenericMessage())
             ->withHeader(new MessageId('left', 'right'));
 
+        /** @var \ArrayObject<int, MessageInterface> $storage */
         $storage = new \ArrayObject();
 
         $transport = new InjectMessageIdHeaderTransport(

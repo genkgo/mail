@@ -43,7 +43,9 @@ final class EnvelopeFactory
     public function make(MessageInterface $message): EmailAddress
     {
         try {
-            return $this->callback->call($this, $message);
+            /** @var EmailAddress $address */
+            $address = $this->callback->call($this, $message);
+            return $address;
         } catch (EnvelopeException $e) {
             if ($this->fallback === null) {
                 throw $e;

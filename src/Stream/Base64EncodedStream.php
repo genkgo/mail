@@ -60,8 +60,11 @@ final class Base64EncodedStream implements StreamInterface
     
     private function applyFilter(): void
     {
+        /** @var resource $detached */
+        $detached = $this->decoratedStream->detach();
+
         $filter = \stream_filter_prepend(
-            $this->decoratedStream->detach(),
+            $detached,
             'convert.base64-encode',
             STREAM_FILTER_READ,
             [

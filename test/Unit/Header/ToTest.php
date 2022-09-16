@@ -74,13 +74,4 @@ final class ToTest extends AbstractTestCase
         $header = To::fromArray([['bob@example.com', 'Bob'], ['john@example.com', 'John'], ['noname@example.com']]);
         $this->assertEquals("Bob <bob@example.com>,\r\n John <john@example.com>,\r\n noname@example.com", (string)$header->getValue());
     }
-
-    /**
-     * @test
-     */
-    public function it_cannot_be_easier_constructed_with_invalid_entry(): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        To::fromArray([['bob@example.com', 'Bob'], ['john@example.com', 'John'], ['invalid@example.com', 'Foo', 'Bar']]);
-    }
 }

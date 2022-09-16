@@ -21,6 +21,8 @@ final class PlainTextMessage implements MessageInterface
     public function __construct(string $text, string $charset = 'UTF-8')
     {
         $stream = new OptimalTransferEncodedTextStream($text);
+
+        /** @var string $encoding */
         $encoding = $stream->getMetadata(['transfer-encoding'])['transfer-encoding'];
 
         if ($encoding === '7bit') {

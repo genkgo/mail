@@ -14,11 +14,6 @@ final class UntaggedResponse implements ResponseInterface
     private $line;
 
     /**
-     * @var string
-     */
-    private $command;
-
-    /**
      * @param string $line
      */
     public function __construct(string $line)
@@ -31,7 +26,7 @@ final class UntaggedResponse implements ResponseInterface
      */
     public function __toString(): string
     {
-        return '* ' . \trim(\implode(' ', [$this->command, $this->line]));
+        return '* ' . \trim($this->line);
     }
 
     /**
