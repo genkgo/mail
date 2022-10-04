@@ -15,6 +15,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Option to ignore headers during DKIM signing 
 
+### Changed
+
+- Upgraded PHPUnit to v9
+- Upgraded PHPStan to v1
+
 
 ## [2.9.3] - 2022-07-27
 
