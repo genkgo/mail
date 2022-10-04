@@ -140,6 +140,8 @@ final class AlternativeText
             $text->text = \strip_tags($text->text);
         }
 
+        $text->text = (string)\preg_replace('/^ */m', '', $text->text);
+        $text->text = (string)\preg_replace('/^\v+/m', "\n", $text->text);
         return $text;
     }
 
@@ -194,6 +196,13 @@ final class AlternativeText
         if ($query) {
             /** @var \DOMElement $element */
             foreach ($query as $element) {
+                if ($element->parentNode && $element->nodeName[0] === 'h') {
+                    $element->parentNode->insertBefore(
+                        $document->createTextNode("\n\n"),
+                        $element
+                    );
+                }
+
                 $element->appendChild(
                     $document->createTextNode($wrap[$element->nodeName])
                 );
