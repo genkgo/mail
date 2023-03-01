@@ -15,17 +15,20 @@ Use this if you want to send e-mails over different transports and protocols usi
 ## Send message quick and easy
 
 ```php
-$message = (new MessageBodyCollection('<html><body><p>Hello World</p></body></html>'))
-    ->withAttachment(new FileAttachment('/order1.pdf', new ContentType('application/pdf')))
-    ->createMessage()
-    ->withHeader(new Subject('Hello World'))
-    ->withHeader(From::fromEmailAddress('from@example.com'))
-    ->withHeader(To::fromSingleRecipient('to@example.com', 'name'))
-    ->withHeader(Cc::fromSingleRecipient('cc@example.com', 'name'));
 
-$transport = new SmtpTransport(
-    ClientFactory::fromString('smtp://user:pass@host/')->newClient(),
-    EnvelopeFactory::useExtractedHeader()
+use Genkgo\Mail;
+
+$message = (new Mail\MessageBodyCollection('<html><body><p>Hello World</p></body></html>'))
+    ->withAttachment(new Mail\Mime\FileAttachment('/order1.pdf', new Mail\Header\ContentType('application/pdf')))
+    ->createMessage()
+    ->withHeader(new Mail\Header\Subject('Hello World'))
+    ->withHeader(Mail\Header\From::fromEmailAddress('from@example.com'))
+    ->withHeader(Mail\Header\To::fromSingleRecipient('to@example.com', 'name'))
+    ->withHeader(Mail\Header\Cc::fromSingleRecipient('cc@example.com', 'name'));
+
+$transport = new Mail\Transport\SmtpTransport(
+    Mail\Protocol\Smtp\ClientFactory::fromString('smtp://user:pass@host/')->newClient(),
+    Mail\Transport\EnvelopeFactory::useExtractedHeader()
 );
 
 $transport->send($message);
