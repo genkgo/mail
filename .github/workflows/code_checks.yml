@@ -16,7 +16,7 @@ jobs:
 
     name: PHP ${{ matrix.php }} tests
     env:
-      PHP_CS_FIXER_IGNORE_ENV=1
+      PHP_CS_FIXER_IGNORE_ENV: 1
     steps:
       - uses: actions/checkout@v2
       - uses: shivammathur/setup-php@v2
