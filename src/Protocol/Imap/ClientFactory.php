@@ -256,7 +256,7 @@ final class ClientFactory
             $factory->timeout = (float)$query['timeout'];
         }
 
-        if (isset($query['reconnectAfter'])) {
+        if (isset($query['reconnectAfter']) && \is_string($query['reconnectAfter'])) {
             $factory->reconnectAfter = $query['reconnectAfter'];
         }
 

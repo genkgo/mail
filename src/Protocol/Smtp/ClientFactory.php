@@ -266,7 +266,7 @@ final class ClientFactory
             $factory->password = \urldecode($components['pass']);
         }
 
-        if (isset($query['ehlo'])) {
+        if (isset($query['ehlo']) && \is_string($query['ehlo'])) {
             $factory->ehlo = $query['ehlo'];
         }
 
@@ -274,7 +274,7 @@ final class ClientFactory
             $factory->timeout = (float)$query['timeout'];
         }
 
-        if (isset($query['reconnectAfter'])) {
+        if (isset($query['reconnectAfter']) && \is_string($query['reconnectAfter'])) {
             $factory->reconnectAfter = $query['reconnectAfter'];
         }
 

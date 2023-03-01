@@ -43,7 +43,7 @@ final class FixedQuotation implements QuotationInterface
                     \IntlDateFormatter::MEDIUM
                 );
 
-                if ($formatter === false) {
+                if ($formatter === null) {
                     throw new \UnexpectedValueException('Cannot create date formatter');
                 }
 
