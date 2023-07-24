@@ -404,7 +404,7 @@ final class MessageBodyCollection
                 continue;
             }
 
-            if ($contentType === 'text/plain' && $disposition === 'inline') {
+            if ((!$this->text || $this->text->isEmpty()) && $contentType === 'text/plain' && $disposition === 'inline') {
                 $this->text = AlternativeText::fromEncodedText((string)new MimeBodyDecodedStream($part), $charset);
                 continue;
             }
