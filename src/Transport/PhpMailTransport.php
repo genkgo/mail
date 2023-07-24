@@ -56,7 +56,7 @@ final class PhpMailTransport implements TransportInterface
                 $headers,
                 $parameters
             );
-        // @codeCoverageIgnoreEnd
+            // @codeCoverageIgnoreEnd
         } else {
             $callback = $this->replacedMailMethod;
             $callback(
