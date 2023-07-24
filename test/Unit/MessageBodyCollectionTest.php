@@ -639,4 +639,26 @@ final class MessageBodyCollectionTest extends AbstractTestCase
             $messageBodyCollection->getHtml()
         );
     }
+
+    /**
+     * @test
+     */
+    public function it_should_extract_the_first_text_part(): void
+    {
+        $messageBodyCollection = MessageBodyCollection::extract(
+            GenericMessage::fromString(
+                \file_get_contents(__DIR__ . '/../Stub/MessageBodyCollection/double-text.eml')
+            )
+        );
+
+        $this->assertStringNotContainsString(
+            'Another Text',
+            $messageBodyCollection->getText()->getRaw()
+        );
+
+        $this->assertStringContainsString(
+            'Hello World',
+            $messageBodyCollection->getText()->getRaw()
+        );
+    }
 }

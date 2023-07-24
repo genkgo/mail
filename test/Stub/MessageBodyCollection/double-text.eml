@@ -1,0 +1,23 @@
+Subject: Hello World
+To: me <me@example.com>
+Cc: other <other@example.com>
+MIME-Version: 1.0
+Content-Type:
+ multipart/mixed; boundary=Apple-Mail-E26EA4FA-4B4F-4801-BEB2-43B254B76FDF
+Content-Transfer-Encoding: 7bit
+
+--Apple-Mail-E26EA4FA-4B4F-4801-BEB2-43B254B76FDF
+Content-Type: text/plain;
+	charset=us-ascii
+Content-Transfer-Encoding: quoted-printable
+
+Hello World
+
+--Apple-Mail-E26EA4FA-4B4F-4801-BEB2-43B254B76FDF
+Content-Type: text/plain;
+	charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+Another Text
+
+--Apple-Mail-E26EA4FA-4B4F-4801-BEB2-43B254B76FDF--
