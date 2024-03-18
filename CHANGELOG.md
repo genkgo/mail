@@ -9,6 +9,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 
 
+## [2.12.0] - 2024-03-18
+
+### Added
+
+- PHP 8.3 support
+
+### Changed
+
+- Dropped PHP 8.0
+- Folding header lines after header name
+
+
 ## [2.11.0] - 2023-03-01
 
 ### Added
