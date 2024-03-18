@@ -48,17 +48,19 @@ final class OptimalTransferEncodedPhraseStream implements StreamInterface
      */
     private function calculateOptimalStream(string $text): StreamInterface
     {
-        if (\strcspn($text, self::NON_7BIT_CHARS) === \strlen($text)) {
+        $length = \strlen($text);
+
+        if (\strcspn($text, self::NON_7BIT_CHARS) === $length) {
             $this->encoding = '7bit';
             return new AsciiEncodedStream($text, $this->lineLength, $this->lineBreak);
         }
 
-        if (\strcspn($text, HeaderValueParameter::RFC_822_T_SPECIAL) !== \strlen($text)) {
+        if (\strcspn($text, HeaderValueParameter::RFC_822_T_SPECIAL) !== $length) {
             $this->encoding = 'base64';
             return Base64EncodedStream::fromString($text, $this->lineLength, $this->lineBreak);
         }
 
-        if (\preg_match_all('/[\000-\010\013\014\016-\037\177-\377]/', $text) > (\strlen($text) / 3)) {
+        if (\preg_match_all('/[\000-\010\013\014\016-\037\177-\377]/', $text) > ($length / 3)) {
             $this->encoding = 'base64';
             return Base64EncodedStream::fromString($text, $this->lineLength, $this->lineBreak);
         }
