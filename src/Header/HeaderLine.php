@@ -36,12 +36,7 @@ final class HeaderLine
         $headerName = (string)$this->header->getName();
         $headerValue = (string)$this->header->getValue();
 
-        $firstFoldingAt = \strpos($headerValue, "\r\n");
-        if ($firstFoldingAt === false) {
-            $firstFoldingAt = \strlen($headerValue);
-        }
-
-        if (\strlen($headerName) + $firstFoldingAt > 76) {
+        if (\strlen($headerName) > 60) {
             return \sprintf("%s:\r\n %s", $headerName, $headerValue);
         }
 
