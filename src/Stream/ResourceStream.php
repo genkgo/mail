@@ -115,6 +115,10 @@ final class ResourceStream implements StreamInterface
     public function isWritable(): bool
     {
         $metaData = \stream_get_meta_data($this->resource);
+        if (!\array_key_exists('uri', $metaData)) {
+            throw new \UnexpectedValueException('Cannot determine whether resource is writable, meta data does not contain the `uri` key');
+        }
+
         return \is_writable($metaData['uri']) || $metaData['uri'] === 'php://memory';
     }
 
@@ -141,7 +145,7 @@ final class ResourceStream implements StreamInterface
     }
 
     /**
-     * @param int<0, max> $length
+     * @param int<1, max> $length
      * @return string
      */
     public function read(int $length): string
