@@ -31,20 +31,15 @@ final class MimeBodyDecodedStream implements StreamInterface
             return $part->getBody();
         }
 
-        $encoding = $part->getHeader('Content-Transfer-Encoding')->getValue();
-        switch ($encoding) {
-            case 'quoted-printable':
-                return QuotedPrintableDecodedStream::fromString((string)$part->getBody());
-            case 'base64':
-                return Base64DecodedStream::fromString((string)$part->getBody());
-            case '7bit':
-            case '8bit':
-                return $part->getBody();
-            default:
-                throw new \UnexpectedValueException(
-                    'Cannot decode body of mime part, unknown transfer encoding ' . $encoding
-                );
-        }
+        $encoding = \strtolower((string)$part->getHeader('Content-Transfer-Encoding')->getValue());
+        return match ($encoding) {
+            'quoted-printable' => QuotedPrintableDecodedStream::fromString((string)$part->getBody()),
+            'base64' => Base64DecodedStream::fromString((string)$part->getBody()),
+            '7bit', '8bit' => $part->getBody(),
+            default => throw new \UnexpectedValueException(
+                'Cannot decode body of mime part, unknown transfer encoding ' . $encoding
+            ),
+        };
     }
 
     /**
