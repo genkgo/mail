@@ -36,6 +36,7 @@ final class EmailAddress
             throw new \InvalidArgumentException('Invalid e-mail address: ' . $address);
         }
 
+        /** @var array{0: non-empty-string, 1: non-empty-string, 2: non-empty-string} $matches */
         [$this->address, $this->localPart, $this->domain] = $matches;
     }
 
@@ -68,11 +69,23 @@ final class EmailAddress
      */
     public function getPunyCode(): string
     {
-        return \sprintf(
-            '%s@%s',
-            \idn_to_ascii($this->localPart, 0, INTL_IDNA_VARIANT_UTS46) ?: $this->localPart,
-            \idn_to_ascii($this->domain, 0, INTL_IDNA_VARIANT_UTS46) ?: $this->domain
-        );
+        return \sprintf('%s@%s', $this->getPunyCodeLocalPart(), $this->getPunyCodeDomain());
+    }
+
+    /**
+     * @return string
+     */
+    public function getPunyCodeLocalPart(): string
+    {
+        return \idn_to_ascii($this->localPart, 0, INTL_IDNA_VARIANT_UTS46) ?: $this->localPart;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPunyCodeDomain(): string
+    {
+        return \idn_to_ascii($this->domain, 0, INTL_IDNA_VARIANT_UTS46) ?: $this->domain;
     }
 
     /**

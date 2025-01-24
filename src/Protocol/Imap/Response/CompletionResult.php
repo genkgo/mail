@@ -77,6 +77,7 @@ final class CompletionResult
             return new self($line);
         }
 
+        /** @var array{0: non-empty-string, 1: non-empty-string} $matches */
         return new self($matches[1]);
     }
 
