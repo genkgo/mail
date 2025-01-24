@@ -36,6 +36,7 @@ final class EmailAddress
             throw new \InvalidArgumentException('Invalid e-mail address: ' . $address);
         }
 
+        /** @var array{0: non-empty-string, 1: non-empty-string, 2: non-empty-string} $matches */
         [$this->address, $this->localPart, $this->domain] = $matches;
     }
 
