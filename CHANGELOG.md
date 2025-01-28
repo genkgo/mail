@@ -7,6 +7,20 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 
+## [2.12.3] - 2025-01-28
+
+### Fixed
+
+- Add ReturnPath class for the Return-Path header
+
+
+## [2.12.2] - 2025-01-24
+
+### Fixed
+
+- Fix missing methods getPunyCodeLocalPart and getPunyCodeDomain
+
+
 ## [2.12.1] - 2024-05-31
 
 ### Fixed
