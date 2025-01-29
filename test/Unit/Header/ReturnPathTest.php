@@ -15,7 +15,7 @@ final class ReturnPathTest extends AbstractTestCase
      */
     public function it_produces_correct_values($recipientEmail, $headerName, $headerValue): void
     {
-        $header = new ReturnPath(new EmailAddress($recipientEmail));
+        $header = new ReturnPath($recipientEmail);
         $this->assertEquals($headerName, (string)$header->getName());
         $this->assertEquals($headerValue, (string)$header->getValue());
     }
@@ -26,7 +26,8 @@ final class ReturnPathTest extends AbstractTestCase
     public function provideValues(): array
     {
         return [
-            ['me@example.com', 'Return-Path', 'me@example.com'],
+            [new EmailAddress('me@example.com'), 'Return-Path', '<me@example.com>'],
+            [null, 'Return-Path', '<>'],
         ];
     }
 }

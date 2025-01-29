@@ -9,14 +9,14 @@ use Genkgo\Mail\HeaderInterface;
 final class ReturnPath implements HeaderInterface
 {
     /**
-     * @var EmailAddress
+     * @var ?EmailAddress
      */
     private $reversePath;
 
     /**
-     * @param EmailAddress $reversePath
+     * @param ?EmailAddress $reversePath
      */
-    public function __construct(EmailAddress $reversePath)
+    public function __construct(?EmailAddress $reversePath = null)
     {
         $this->reversePath = $reversePath;
     }
@@ -34,6 +34,10 @@ final class ReturnPath implements HeaderInterface
      */
     public function getValue(): HeaderValue
     {
-        return HeaderValue::fromEncodedString((string)$this->reversePath);
+        if ($this->reversePath === null) {
+            return new HeaderValue('<>');
+        }
+
+        return HeaderValue::fromEncodedString('<' . $this->reversePath . '>');
     }
 }
