@@ -3,7 +3,7 @@
     "description": "Library to send e-mails over different transports and protocols (like SMTP and IMAP) using immutable messages and streams. Also includes SMTP server.",
     "license": "MIT",
     "require": {
-        "php": "~8.1.0 || ~8.2.0 || ~8.3.0",
+        "php": "~8.1.0 || ~8.2.0 || ~8.3.0 || ~8.4.0",
         "ext-intl": "*",
         "ext-iconv": "*"
     },
