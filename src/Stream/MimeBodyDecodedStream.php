@@ -14,10 +14,16 @@ final class MimeBodyDecodedStream implements StreamInterface
     private $decoratedStream;
 
     /**
+     * @var string
+     */
+    private $charset;
+
+    /**
      * @param PartInterface $mimePart
      */
-    public function __construct(PartInterface $mimePart)
+    public function __construct(PartInterface $mimePart, string $charset = 'UTF-8')
     {
+        $this->charset = $charset;
         $this->decoratedStream = $this->calculateOptimalStream($mimePart);
     }
 
@@ -33,8 +39,8 @@ final class MimeBodyDecodedStream implements StreamInterface
 
         $encoding = \strtolower((string)$part->getHeader('Content-Transfer-Encoding')->getValue());
         return match ($encoding) {
-            'quoted-printable' => QuotedPrintableDecodedStream::fromString((string)$part->getBody()),
-            'base64' => Base64DecodedStream::fromString((string)$part->getBody()),
+            'quoted-printable' => QuotedPrintableDecodedStream::fromString((string)$part->getBody(), $this->charset),
+            'base64' => Base64DecodedStream::fromString((string)$part->getBody(), $this->charset),
             '7bit', '8bit' => $part->getBody(),
             default => throw new \UnexpectedValueException(
                 'Cannot decode body of mime part, unknown transfer encoding ' . $encoding

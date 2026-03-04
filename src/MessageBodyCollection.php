@@ -358,14 +358,14 @@ final class MessageBodyCollection
 
                 if ($contentType === 'text/html') {
                     $collection->html = self::ensureHtmlCharset(
-                        \rtrim((string)self::decodeMessageBody($message)),
+                        \rtrim((string)self::decodeMessageBody($message, $charset)),
                         $charset
                     );
                 }
 
                 if ($contentType === 'text/plain') {
                     $collection->text = AlternativeText::fromEncodedText(
-                        \rtrim((string)self::decodeMessageBody($message)),
+                        \rtrim((string)self::decodeMessageBody($message, $charset)),
                         $charset
                     );
                 }
@@ -398,7 +398,7 @@ final class MessageBodyCollection
 
             if ($this->html === '' && $contentType === 'text/html' && $disposition === 'inline') {
                 $this->html = self::ensureHtmlCharset(
-                    (string)new MimeBodyDecodedStream($part),
+                    (string)new MimeBodyDecodedStream($part, $charset),
                     $charset
                 );
                 continue;
@@ -483,15 +483,15 @@ final class MessageBodyCollection
      * @param MessageInterface $message
      * @return StreamInterface
      */
-    private static function decodeMessageBody(MessageInterface $message): StreamInterface
+    private static function decodeMessageBody(MessageInterface $message, string $charset = 'UTF-8'): StreamInterface
     {
         foreach ($message->getHeader('Content-Transfer-Encoding') as $header) {
             $encoding = $header->getValue();
             switch ($encoding) {
                 case 'quoted-printable':
-                    return QuotedPrintableDecodedStream::fromString((string)$message->getBody());
+                    return QuotedPrintableDecodedStream::fromString((string)$message->getBody(), $charset);
                 case 'base64':
-                    return Base64DecodedStream::fromString((string)$message->getBody());
+                    return Base64DecodedStream::fromString((string)$message->getBody(), $charset);
                 case '7bit':
                 case '8bit':
                     return $message->getBody();
