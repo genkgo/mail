@@ -88,4 +88,16 @@ final class Base64DecodedStreamTest extends AbstractTestCase
 
         $stream->write('x');
     }
+
+    /**
+     * @test
+     */
+    public function it_applies_correct_charset(): void
+    {
+        $encoded = 'TmFt6Q==';
+
+        $stream = Base64DecodedStream::fromString($encoded, 'iso-8859-1');
+
+        $this->assertEquals('Namé', (string)$stream);
+    }
 }

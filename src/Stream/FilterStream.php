@@ -5,7 +5,7 @@ namespace Genkgo\Mail\Stream;
 
 use Genkgo\Mail\StreamInterface;
 
-final class QuotedPrintableDecodedStream implements StreamInterface
+final class FilterStream implements StreamInterface
 {
     /**
      * @var StreamInterface
@@ -13,47 +13,62 @@ final class QuotedPrintableDecodedStream implements StreamInterface
     private $decoratedStream;
 
     /**
-     * @param resource $resource
+     * @var array
      */
-    public function __construct($resource, string $charset = 'UTF-8')
-    {
-        if ($charset === 'UTF-8') {
-            $filters = [
-                'convert.quoted-printable-decode'
-            ];
-        } else {
-            $filters = [
-                'convert.iconv.' . $charset . '/UTF-8',
-                'convert.quoted-printable-decode',
-            ];
-        }
-
-        $this->decoratedStream = new FilterStream(new ResourceStream($resource), $filters);
-    }
+    private $filters;
 
     /**
-     * @param string $string
-     * @return QuotedPrintableDecodedStream
+     * @var array
      */
-    public static function fromString(string $string, string $charset = 'UTF-8'): QuotedPrintableDecodedStream
+    private $filterNames;
+
+    public function __construct(StreamInterface $decoratedStream, array $filterNames)
     {
-        $resource = \fopen('php://memory', 'r+');
-        if ($resource === false) {
-            throw new \UnexpectedValueException('Cannot open php://memory for writing');
+        $this->decoratedStream = $decoratedStream;
+        $this->filterNames = $filterNames;
+
+        $this->applyFilter();
+    }
+
+    private function applyFilter(): void
+    {
+        /** @var resource $detached */
+        $detached = $this->decoratedStream->detach();
+
+        foreach ($this->filterNames as $filterName) {
+            $filter = \stream_filter_prepend(
+                $detached,
+                $filterName,
+                STREAM_FILTER_READ
+            );
+
+            if ($filter === false) {
+                throw new \UnexpectedValueException('Cannot append filter to stream');
+            }
+
+            $this->filters[] = $filter;
         }
 
-        \fwrite($resource, $string);
-        return new self($resource, $charset);
     }
-    
+
+    private function removeFilter(): void
+    {
+        foreach ($this->filters as $filter) {
+            \stream_filter_remove($filter);
+        }
+
+        $this->filters = [];
+    }
+
     /**
      * @return string
      */
     public function __toString(): string
     {
+        $this->rewind();
         return $this->decoratedStream->__toString();
     }
-    
+
     public function close(): void
     {
         $this->decoratedStream->close();
@@ -72,7 +87,7 @@ final class QuotedPrintableDecodedStream implements StreamInterface
      */
     public function getSize(): ?int
     {
-        return $this->decoratedStream->getSize();
+        return null;
     }
 
     /**
@@ -97,7 +112,7 @@ final class QuotedPrintableDecodedStream implements StreamInterface
      */
     public function isSeekable(): bool
     {
-        return $this->decoratedStream->isSeekable();
+        return false;
     }
 
     /**
@@ -107,7 +122,7 @@ final class QuotedPrintableDecodedStream implements StreamInterface
      */
     public function seek(int $offset, int $whence = SEEK_SET): int
     {
-        return $this->decoratedStream->seek($offset, $whence);
+        return -1;
     }
 
     /**
@@ -115,7 +130,13 @@ final class QuotedPrintableDecodedStream implements StreamInterface
      */
     public function rewind(): bool
     {
-        return $this->decoratedStream->rewind();
+        $this->removeFilter();
+        if (!$this->decoratedStream->rewind()) {
+            return false;
+        }
+
+        $this->applyFilter();
+        return true;
     }
 
     /**
@@ -123,7 +144,7 @@ final class QuotedPrintableDecodedStream implements StreamInterface
      */
     public function isWritable(): bool
     {
-        return $this->decoratedStream->isWritable();
+        return false;
     }
 
     /**
@@ -132,7 +153,7 @@ final class QuotedPrintableDecodedStream implements StreamInterface
      */
     public function write($string): int
     {
-        return $this->decoratedStream->write($string);
+        throw new \RuntimeException('Cannot write to stream');
     }
 
     /**
@@ -140,7 +161,7 @@ final class QuotedPrintableDecodedStream implements StreamInterface
      */
     public function isReadable(): bool
     {
-        return $this->decoratedStream->isReadable();
+        return true;
     }
 
     /**

@@ -13,25 +13,29 @@ final class Base64DecodedStream implements StreamInterface
     private $decoratedStream;
 
     /**
-     * @var resource
-     */
-    private $filter;
-
-    /**
      * @param resource $resource
      */
-    public function __construct($resource)
+    public function __construct($resource, string $charset = 'UTF-8')
     {
-        $this->decoratedStream = new ResourceStream($resource);
+        if ($charset === 'UTF-8') {
+            $filters = [
+                'convert.base64-decode',
+            ];
+        } else {
+            $filters = [
+                'convert.iconv.' . $charset . '/UTF-8',
+                'convert.base64-decode',
+            ];
+        }
 
-        $this->applyFilter();
+        $this->decoratedStream = new FilterStream(new ResourceStream($resource), $filters);
     }
 
     /**
      * @param string $string
      * @return Base64DecodedStream
      */
-    public static function fromString(string $string): Base64DecodedStream
+    public static function fromString(string $string, string $charset = 'UTF-8'): Base64DecodedStream
     {
         $resource = \fopen('php://memory', 'r+');
         if ($resource === false) {
@@ -39,32 +43,7 @@ final class Base64DecodedStream implements StreamInterface
         }
 
         \fwrite($resource, $string);
-        return new self($resource);
-    }
-    
-    private function applyFilter(): void
-    {
-        /** @var resource $detached */
-        $detached = $this->decoratedStream->detach();
-
-        $filter = \stream_filter_prepend(
-            $detached,
-            'convert.base64-decode',
-            STREAM_FILTER_READ
-        );
-
-        if ($filter === false) {
-            throw new \UnexpectedValueException('Cannot append filter to stream');
-        }
-
-        $this->filter = $filter;
-    }
-
-    private function removeFilter(): void
-    {
-        if ($this->filter !== null) {
-            \stream_filter_remove($this->filter);
-        }
+        return new self($resource, $charset);
     }
 
     /**
@@ -72,7 +51,6 @@ final class Base64DecodedStream implements StreamInterface
      */
     public function __toString(): string
     {
-        $this->rewind();
         return $this->decoratedStream->__toString();
     }
     
@@ -91,21 +69,10 @@ final class Base64DecodedStream implements StreamInterface
 
     public function getSize(): int
     {
-        $this->removeFilter();
-        $contents = (string)\preg_replace("/\r\n/", '', (string)$this->decoratedStream->getContents());
-        $lastCharacters = \substr($contents, -2);
-        $this->decoratedStream->rewind();
-        $this->applyFilter();
-
-        $padding = 0;
-        if ($lastCharacters[0] === '=') {
-            $padding++;
-        }
-        if ($lastCharacters[1] === '=') {
-            $padding++;
-        }
-
-        return (int) ((\strlen($contents) / 4) * 3) - $padding;
+        $tell = $this->decoratedStream->tell();
+        $size = \strlen((string)$this->decoratedStream);
+        $this->decoratedStream->seek($tell);
+        return $size;
     }
 
     /**
@@ -148,13 +115,7 @@ final class Base64DecodedStream implements StreamInterface
      */
     public function rewind(): bool
     {
-        $this->removeFilter();
-        if (!$this->decoratedStream->rewind()) {
-            return false;
-        }
-
-        $this->applyFilter();
-        return true;
+        return $this->decoratedStream->rewind();
     }
 
     /**
@@ -162,7 +123,7 @@ final class Base64DecodedStream implements StreamInterface
      */
     public function isWritable(): bool
     {
-        return false;
+        return $this->decoratedStream->isWritable();
     }
 
     /**
@@ -171,7 +132,7 @@ final class Base64DecodedStream implements StreamInterface
      */
     public function write($string): int
     {
-        throw new \RuntimeException('Cannot write to stream');
+        return $this->decoratedStream->write($string);
     }
 
     /**
@@ -179,7 +140,7 @@ final class Base64DecodedStream implements StreamInterface
      */
     public function isReadable(): bool
     {
-        return true;
+        return $this->decoratedStream->isReadable();
     }
 
     /**

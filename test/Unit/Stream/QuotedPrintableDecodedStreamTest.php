@@ -98,4 +98,16 @@ final class QuotedPrintableDecodedStreamTest extends AbstractTestCase
         $this->assertFalse($stream->isWritable());
         $stream->write('x');
     }
+
+    /**
+     * @test
+     */
+    public function it_applies_correct_charset(): void
+    {
+        $encoded = 'Nam=E9';
+
+        $stream = QuotedPrintableDecodedStream::fromString($encoded, 'iso-8859-1');
+
+        $this->assertEquals('Namé', (string)$stream);
+    }
 }
