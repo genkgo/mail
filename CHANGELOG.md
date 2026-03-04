@@ -7,6 +7,18 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 
+## [2.12.6] - 2026-03-04
+
+### Fixed
+
+- Parsing partially/multi encoded header values
+
+### Added
+
+- Add PHP 8.5 support
+- Upgraded to PHPStan 2.x
+
+
 ## [2.12.5] - 2025-03-15
 
 ### Fixed
