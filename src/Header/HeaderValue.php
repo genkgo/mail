@@ -9,6 +9,12 @@ final class HeaderValue
     
     private const PARSE_QUOTE = 2;
 
+    private const PARSE_CHARSET = 3;
+
+    private const PARSE_ENCODING = 4;
+
+    private const PARSE_VALUE = 5;
+
     /**
      * @var string
      */
@@ -219,5 +225,121 @@ final class HeaderValue
         $headerValue = new self($primaryValue);
         $headerValue->parameters = $parameters;
         return $headerValue;
+    }
+
+    public static function parse(string $value): self
+    {
+        $decoded = \array_map(
+            function (array $decodable) {
+                if ($decodable['encoding'] === '') {
+                    return $decodable['value'];
+                }
+
+                if ($decodable['encoding'] === 'B') {
+                    return \base64_decode($decodable['value']);
+                }
+
+                return \iconv_mime_decode(
+                    \sprintf(
+                        '=?%s?%s?%s?=',
+                        $decodable['charset'],
+                        $decodable['encoding'],
+                        $decodable['value']
+                    ),
+                    \ICONV_MIME_DECODE_CONTINUE_ON_ERROR,
+                    $decodable['charset']
+                );
+            },
+            self::createMimeDecodableValue($value)
+        );
+
+        $value = \implode('', $decoded);
+
+        return self::fromString($value);
+    }
+
+    /**
+     * @return array<int, array{charset: string, encoding: string, value: string}>
+     */
+    private static function createMimeDecodableValue(string $value): array
+    {
+        $sequence = '';
+        $charset = '';
+        $encoding = '';
+        $unparsedValue = '';
+        $result = [];
+        $n = -1;
+        $length = \strlen($value) - 1;
+        $state = self::PARSE_START;
+
+        while ($n < $length) {
+            $n++;
+
+            $char = $value[$n];
+
+            if ($state === self::PARSE_START && $char === '=') {
+                if (\trim($sequence) !== '') {
+                    $result[] = [
+                        'charset' => '',
+                        'encoding' => '',
+                        'value' => $sequence,
+                    ];
+                }
+
+                $sequence = '';
+            }
+
+            if ($state === self::PARSE_CHARSET && $char === '?') {
+                $state = self::PARSE_ENCODING;
+                continue;
+            }
+
+            if ($state === self::PARSE_ENCODING && $char === '?') {
+                $state = self::PARSE_VALUE;
+                continue;
+            }
+
+            if ($state === self::PARSE_VALUE && $char === '?' && $value[$n + 1] === '=') {
+                $thisResult = [
+                    'charset' => $charset,
+                    'encoding' => $encoding,
+                    'value' => $unparsedValue,
+                ];
+
+                $remaining = \substr($value, $n + 2);
+                if ($remaining === '') {
+                    return [...$result, $thisResult];
+                }
+
+                $next = self::createMimeDecodableValue($remaining);
+                if (\array_key_exists(0, $next)) {
+                    $nextValue = $next[0];
+                    if ($nextValue['encoding'] === $encoding && $nextValue['charset'] === $charset) {
+                        $thisResult['value'] .= $nextValue['value'];
+                        unset($next[0]);
+                    }
+                }
+
+                return [...$result, $thisResult, ...$next];
+            }
+
+            match ($state) {
+                self::PARSE_START => $sequence .= $char,
+                self::PARSE_CHARSET => $charset .= $char,
+                self::PARSE_ENCODING => $encoding .= $char,
+                self::PARSE_VALUE => $unparsedValue .= $char,
+                default => throw new \InvalidArgumentException('Unknown parsing state: ' . $state),
+            };
+
+            if ($state === self::PARSE_START && $sequence === '=?') {
+                $state = self::PARSE_CHARSET;
+            }
+        }
+
+        return [...$result, [
+            'charset' => $charset,
+            'encoding' => $encoding,
+            'value' => $unparsedValue ?: $sequence,
+        ]];
     }
 }
