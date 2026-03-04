@@ -13,15 +13,18 @@ final class FilterStream implements StreamInterface
     private $decoratedStream;
 
     /**
-     * @var array
+     * @var array<int, resource>
      */
     private $filters;
 
     /**
-     * @var array
+     * @var array<int, string>
      */
     private $filterNames;
 
+    /**
+     * @param array<int, string> $filterNames
+     */
     public function __construct(StreamInterface $decoratedStream, array $filterNames)
     {
         $this->decoratedStream = $decoratedStream;
