@@ -11,9 +11,9 @@ final class HeaderValueTest extends AbstractTestCase
 {
     /**
      * @test
-     * @dataProvider provideValues
+     * @dataProvider provideEncodeValues
      */
-    public function it_validates_values_and_produces_correct_output(string $value, bool $expected, string $expectedOutput): void
+    public function it_validates_values_and_encodes_correctly(string $value, bool $expected, string $expectedOutput): void
     {
         if ($expected) {
             $header = new HeaderValue($value);
@@ -27,7 +27,7 @@ final class HeaderValueTest extends AbstractTestCase
     /**
      * @return array
      */
-    public function provideValues(): array
+    public function provideEncodeValues(): array
     {
         return [
             ['Ascii', true, 'Ascii'],
@@ -48,6 +48,55 @@ final class HeaderValueTest extends AbstractTestCase
                 'Subject with not so many characters ë',
                 true,
                 "=?UTF-8?Q?Subject_with_not_so_many_characters_=C3=AB?="
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider provideParseValues
+     */
+    public function it_parses_values_correctly(string $value, bool $expected, string $expectedOutput): void
+    {
+        if ($expected) {
+            $header = HeaderValue::parse($value);
+            $this->assertEquals($expectedOutput, $header->getRaw());
+        } else {
+            $this->expectException(\InvalidArgumentException::class);
+            HeaderValue::parse($value);
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public function provideParseValues(): array
+    {
+        return [
+            [
+                "=?UTF-8?Q?Subject_with_not_so_many_characters_=C3=AB?=",
+                true,
+                'Subject with not so many characters ë'
+            ],
+            [
+                "=?UTF-8?Q?Structureren_van_Genkgo=E2=80=91pagina=E2=80=99s_voor_betere_AI=E2?= =?UTF-8?Q?=80=91leesbaarheid?=",
+                true,
+                'Structureren van Genkgo‑pagina’s voor betere AI‑leesbaarheid'
+            ],
+            [
+                "=?UTF-8?B?U3ViamVjdCB3aXRoIHNwZWNpYWwgY2hhcmFjdGVycyDDq8Orw6vDq8Orw6vDq8Orw6vD\r\n q8Orw6vDq8Orw6sgVmFsdWUgVmFsdWUgVmFsdWUg?=",
+                true,
+                'Subject with special characters ëëëëëëëëëëëëëëë Value Value Value'
+            ],
+            [
+                "=?UTF-8?Q?Structureren_van_Genkgo=E2=80=91pagina=E2=80=99s_voor_betere_AI=E2?= =?UTF-8?Q?=80=91leesbaarheid",
+                true,
+                'Structureren van Genkgo‑pagina’s voor betere AI‑leesbaarheid'
+            ],
+            [
+                "=?UTF-8?B?U3ViamVjdCB3aXRoIHNwZWNpYWwgY2hhcmFjdGVycyDDq8Orw6vDq8Orw6vDq8Orw6vD\r\n q8O",
+                true,
+                "Subject with special characters \u{00EB}\u{00EB}\u{00EB}\u{00EB}\u{00EB}\u{00EB}\u{00EB}\u{00EB}\u{00EB}\u{00EB}". \chr(195)
             ],
         ];
     }

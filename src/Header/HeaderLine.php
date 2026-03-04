@@ -57,17 +57,10 @@ final class HeaderLine
 
         [$name, $value] = $parts;
 
-        if (\substr($value, 0, 2) === '=?' && \substr($value, -2, 2) === '?=') {
-            $value = \iconv_mime_decode($value);
-            if ($value === false) {
-                throw new \UnexpectedValueException('Cannot iconv decode header line');
-            }
-        }
-
         return new self(
             new ParsedHeader(
                 new HeaderName($name),
-                HeaderValue::fromString($value)
+                HeaderValue::parse($value)
             )
         );
     }

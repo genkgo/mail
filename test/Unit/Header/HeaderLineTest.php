@@ -58,11 +58,11 @@ final class HeaderLineTest extends AbstractTestCase
     {
         $line = HeaderLine::fromString('X: =?UTF-8?Q?t=C3=ABst?= <local-part@domain.com>');
         $this->assertEquals('X', (string) $line->getHeader()->getName());
-        $this->assertEquals('=?UTF-8?Q?t=C3=ABst?= <local-part@domain.com>', $line->getHeader()->getValue()->getRaw());
+        $this->assertEquals('tëst <local-part@domain.com>', $line->getHeader()->getValue()->getRaw());
 
         $line = HeaderLine::fromString('X: =?UTF-8?B?bMOkc3QgbmFtZSwgZsOvcnN0IG5hbWU=?= <local-part@domain.com>');
         $this->assertEquals('X', (string) $line->getHeader()->getName());
-        $this->assertEquals('=?UTF-8?B?bMOkc3QgbmFtZSwgZsOvcnN0IG5hbWU=?= <local-part@domain.com>', $line->getHeader()->getValue()->getRaw());
+        $this->assertEquals('läst name, fïrst name <local-part@domain.com>', $line->getHeader()->getValue()->getRaw());
     }
 
     /**
