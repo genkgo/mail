@@ -73,6 +73,7 @@ final class PlainTcpConnection extends AbstractConnection
         );
 
         if ($resource === false) {
+            /** @var int $errorCode */
             throw new ConnectionRefusedException(
                 \sprintf('Could not create plain tcp connection. %s.', $errorMessage),
                 $errorCode

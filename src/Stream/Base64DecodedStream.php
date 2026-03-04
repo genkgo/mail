@@ -89,10 +89,7 @@ final class Base64DecodedStream implements StreamInterface
         return $this->decoratedStream->detach();
     }
 
-    /**
-     * @return int|null
-     */
-    public function getSize(): ?int
+    public function getSize(): int
     {
         $this->removeFilter();
         $contents = (string)\preg_replace("/\r\n/", '', (string)$this->decoratedStream->getContents());

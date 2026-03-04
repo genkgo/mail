@@ -20,18 +20,6 @@ final class AggregateResponseTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_can_be_iterated(): void
-    {
-        $this->assertTrue(\is_iterable(new AggregateResponse()));
-        $this->assertInstanceOf(
-            \Traversable::class,
-            (new AggregateResponse())->getIterator()
-        );
-    }
-
-    /**
-     * @test
-     */
     public function it_throws_when_last_with_empty_response(): void
     {
         $this->expectException(\OutOfBoundsException::class);

@@ -30,11 +30,6 @@ final class ArrayBackend implements BackendInterface
             \array_fill(0, \count($addresses), true)
         );
 
-        /** @var array<string, bool>|false $addresses */
-        if ($addresses === false) {
-            throw new \UnexpectedValueException('Cannot combine arrays');
-        }
-
         $this->addresses = $addresses;
         $this->backend = $backend;
     }

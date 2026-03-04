@@ -9,8 +9,7 @@
     },
     "require-dev": {
         "phpunit/phpunit": "^9.5.24",
-        "phpstan/phpstan": "^1.8.5",
-        "phpstan/phpstan-phpunit": "^1.1.1",
+        "phpstan/phpstan": "^2.0",
         "friendsofphp/php-cs-fixer": "^3.0",
         "predis/predis": "^1.0",
         "psr/log": "^1.0",
@@ -38,13 +37,13 @@
     },
     "scripts": {
         "lint": [
-            "./vendor/bin/php-cs-fixer fix --verbose --config .php-cs-fixer.dist.php ./src ./test"
+            "@php ./vendor/bin/php-cs-fixer fix --verbose --config .php-cs-fixer.dist.php ./src ./test"
         ],
         "test": [
-            "./vendor/bin/phpunit -c phpunit.xml",
-            "./vendor/bin/php-cs-fixer fix --verbose --dry-run --config .php-cs-fixer.dist.php ./src ./test",
-            "./vendor/bin/phpstan analyse -l max src",
-            "./vendor/bin/phpstan analyse -l 5 -c .phpstan.test.neon test"
+            "@php ./vendor/bin/phpunit -c phpunit.xml",
+            "@php ./vendor/bin/php-cs-fixer fix --verbose --dry-run --config .php-cs-fixer.dist.php ./src ./test",
+            "@php ./vendor/bin/phpstan analyse -l max src",
+            "@php ./vendor/bin/phpstan analyse -l 5 test"
         ]
     }
 }

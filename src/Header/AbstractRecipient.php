@@ -59,19 +59,18 @@ abstract class AbstractRecipient implements HeaderInterface
      */
     final public static function fromArray(array $array): AbstractRecipient
     {
-        return new static(
-            new AddressList(
-                \array_map(
-                    function (array $pair) {
-                        [$emailAddress, $name] = $pair + [1 => ''];
-                        return new Address(
-                            new EmailAddress($emailAddress),
-                            $name
-                        );
-                    },
-                    $array
-                )
-            )
+        /** @var array<int, Address> $map */
+        $map = \array_map(
+            function (array $pair) {
+                [$emailAddress, $name] = $pair + [1 => ''];
+                return new Address(
+                    new EmailAddress($emailAddress),
+                    $name
+                );
+            },
+            $array
         );
+
+        return new static(new AddressList($map));
     }
 }

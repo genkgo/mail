@@ -154,6 +154,7 @@ final class LazyStream implements StreamInterface
     private function getStream(): StreamInterface
     {
         if ($this->decoratedStream === null) {
+            /** @var callable(): StreamInterface $callback */
             $callback = $this->callback;
             $this->decoratedStream = $callback();
         }

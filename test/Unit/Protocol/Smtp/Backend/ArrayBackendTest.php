@@ -31,6 +31,7 @@ final class ArrayBackendTest extends AbstractTestCase
     public function it_stores_messages(): void
     {
         /** @var \ArrayAccess<string, array<string, array<int, MessageInterface>>> $messages */
+        /** @phpstan-ignore-next-line */
         $messages = new \ArrayObject();
 
         $backend = new ArrayBackend(

@@ -34,6 +34,6 @@ final class DevNullBackendTest extends AbstractTestCase
             'INBOX'
         );
 
-        $this->assertTrue(true);
+        $this->addToAssertionCount(1);
     }
 }

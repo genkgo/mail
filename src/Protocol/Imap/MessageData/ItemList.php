@@ -202,121 +202,123 @@ final class ItemList
                 continue;
             }
 
-            if ($state !== self::STATE_BODY) {
-                switch ($char) {
-                    case '(':
+            switch ($char) {
+                case '(':
+                    $sequence = '';
+                    if ($state === self::STATE_NONE) {
+                        $lastKey = \array_key_last($list->list);
+                        if ($lastKey === null) {
+                            throw new \UnexpectedValueException('Empty list');
+                        }
+
+                        $sequence .= $list->list[$lastKey]->getName() . ' ';
+                        unset($list->list[$lastKey]);
+                    }
+
+                    $sequence .= '(';
+                    $state = self::STATE_FLAGS;
+                    break;
+                case ')':
+                    if ($state === self::STATE_FLAGS) {
+                        $flagsItem = FlagsItem::fromString($sequence);
+                        $list->list[$flagsItem->getName()] = $flagsItem;
                         $sequence = '';
-                        if ($state === self::STATE_NONE) {
-                            $lastKey = \array_key_last($list->list);
-                            $sequence .= $list->list[$lastKey]->getName() . ' ';
-                            unset($list->list[$lastKey]);
-                        }
-
-                        $sequence .= '(';
-                        $state = self::STATE_FLAGS;
+                        $state = self::STATE_NAME;
                         break;
-                    case ')':
-                        if ($state === self::STATE_FLAGS) {
-                            $flagsItem = FlagsItem::fromString($sequence);
-                            $list->list[$flagsItem->getName()] = $flagsItem;
-                            $sequence = '';
-                            $state = self::STATE_NAME;
-                            break;
-                        }
+                    }
 
-                        if ($sequence) {
-                            $nameItem = new NameItem(\substr($sequence, 0, -1));
-                            $list->list[$nameItem->getName()] = $nameItem;
-                        }
+                    if ($sequence) {
+                        $nameItem = new NameItem(\substr($sequence, 0, -1));
+                        $list->list[$nameItem->getName()] = $nameItem;
+                    }
 
-                        return $list;
-                    case '[':
-                        if ($state !== self::STATE_NAME && $state !== self::STATE_NONE) {
-                            throw new \InvalidArgumentException('Invalid character [ found');
-                        }
+                    return $list;
+                case '[':
+                    if ($state !== self::STATE_NAME && $state !== self::STATE_NONE) {
+                        throw new \InvalidArgumentException('Invalid character [ found');
+                    }
 
+                    $nameItem = new NameItem(\substr($sequence, 0, -1));
+                    $list->list[$nameItem->getName()] = $nameItem;
+
+                    $sequence = '[';
+                    $state = self::STATE_SECTION;
+                    break;
+                case ']':
+                    if ($state !== self::STATE_SECTION) {
+                        throw new \InvalidArgumentException('Invalid character ] found');
+                    }
+
+                    $sectionItem = new SectionItem($list->last(), SectionList::fromString($sequence));
+                    $list->list[$sectionItem->getName()] = $sectionItem;
+
+                    $sequence = '';
+                    $state = self::STATE_NAME;
+                    break;
+                case '<':
+                    if ($state !== self::STATE_NAME) {
+                        throw new \InvalidArgumentException('Invalid character < found');
+                    }
+
+                    $state = self::STATE_PARTIAL;
+                    break;
+                case '>':
+                    if ($state !== self::STATE_PARTIAL) {
+                        throw new \InvalidArgumentException('Invalid character > found');
+                    }
+
+                    $partialItem = new PartialItem($list->last(), Partial::fromString($sequence));
+                    $list->list[$partialItem->getName()] = $partialItem;
+
+                    $sequence = '';
+                    $state = self::STATE_NAME;
+                    break;
+                case '{':
+                    if ($state !== self::STATE_NONE) {
+                        throw new \InvalidArgumentException('Invalid character { found');
+                    }
+
+                    $state = self::STATE_OCTET;
+                    break;
+                case '}':
+                    if ($state !== self::STATE_OCTET) {
+                        throw new \InvalidArgumentException('Invalid characters } found');
+                    }
+
+                    $crlf = '';
+                    $bytes->next();
+                    $crlf .= $bytes->current();
+                    $bytes->next();
+                    $crlf .= $bytes->current();
+
+                    if ($crlf !== "\r\n") {
+                        throw new \UnexpectedValueException('Octet is expected to be followed by a CRLF');
+                    }
+
+                    $list->size = (int)\substr($sequence, 1, -1);
+                    $sequence = '';
+
+                    $remainingBodyBytes = $list->size;
+                    $state = self::STATE_BODY;
+                    break;
+                case ' ':
+                    if ($sequence === ' ') {
+                        $state = self::STATE_NONE;
+                    }
+
+                    if ($state === self::STATE_NONE) {
+                        $sequence = '';
+                    }
+
+                    if ($state === self::STATE_NAME) {
                         $nameItem = new NameItem(\substr($sequence, 0, -1));
                         $list->list[$nameItem->getName()] = $nameItem;
 
-                        $sequence = '[';
-                        $state = self::STATE_SECTION;
-                        break;
-                    case ']':
-                        if ($state !== self::STATE_SECTION) {
-                            throw new \InvalidArgumentException('Invalid character ] found');
-                        }
-
-                        $sectionItem = new SectionItem($list->last(), SectionList::fromString($sequence));
-                        $list->list[$sectionItem->getName()] = $sectionItem;
-
                         $sequence = '';
-                        $state = self::STATE_NAME;
-                        break;
-                    case '<':
-                        if ($state !== self::STATE_NAME) {
-                            throw new \InvalidArgumentException('Invalid character < found');
-                        }
+                        $state = self::STATE_NONE;
+                    }
 
-                        $state = self::STATE_PARTIAL;
-                        break;
-                    case '>':
-                        if ($state !== self::STATE_PARTIAL) {
-                            throw new \InvalidArgumentException('Invalid character > found');
-                        }
-
-                        $partialItem = new PartialItem($list->last(), Partial::fromString($sequence));
-                        $list->list[$partialItem->getName()] = $partialItem;
-
-                        $sequence = '';
-                        $state = self::STATE_NAME;
-                        break;
-                    case '{':
-                        if ($state !== self::STATE_NONE) {
-                            throw new \InvalidArgumentException('Invalid character { found');
-                        }
-
-                        $state = self::STATE_OCTET;
-                        break;
-                    case '}':
-                        if ($state !== self::STATE_OCTET) {
-                            throw new \InvalidArgumentException('Invalid characters } found');
-                        }
-
-                        $crlf = '';
-                        $bytes->next();
-                        $crlf .= $bytes->current();
-                        $bytes->next();
-                        $crlf .= $bytes->current();
-
-                        if ($crlf !== "\r\n") {
-                            throw new \UnexpectedValueException('Octet is expected to be followed by a CRLF');
-                        }
-
-                        $list->size = (int)\substr($sequence, 1, -1);
-                        $sequence = '';
-
-                        $remainingBodyBytes = $list->size;
-                        $state = self::STATE_BODY;
-                        break;
-                    case ' ':
-                        if ($sequence === ' ') {
-                            $state = self::STATE_NONE;
-                        }
-
-                        if ($state === self::STATE_NONE) {
-                            $sequence = '';
-                        }
-
-                        if ($state === self::STATE_NAME) {
-                            $nameItem = new NameItem(\substr($sequence, 0, -1));
-                            $list->list[$nameItem->getName()] = $nameItem;
-
-                            $sequence = '';
-                            $state = self::STATE_NONE;
-                        }
-
-                        break;
-                }
+                    break;
             }
         }
 

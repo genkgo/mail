@@ -52,18 +52,11 @@ final class StringStream implements StreamInterface
         return $handle;
     }
 
-    /**
-     * @return int|null
-     */
-    public function getSize(): ?int
+    public function getSize(): int
     {
         return \strlen($this->text);
     }
 
-    /**
-     * @return int
-     * @throws \RuntimeException
-     */
     public function tell(): int
     {
         return $this->position;
