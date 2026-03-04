@@ -116,6 +116,22 @@ final class AddressList implements \Countable, \IteratorAggregate
     }
 
     /**
+     * @return string
+     */
+    public function toReadableString(): string
+    {
+        return \implode(
+            ', ',
+            \array_map(
+                function (Address $addressAndName) {
+                    return $addressAndName->toReadableString();
+                },
+                $this->addresses
+            )
+        );
+    }
+
+    /**
      * @param string $addressListAsString
      * @return AddressList
      */
