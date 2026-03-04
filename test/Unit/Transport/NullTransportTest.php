@@ -19,6 +19,6 @@ final class NullTransportTest extends AbstractTestCase
         $transport = new NullTransport();
         $transport->send($message);
 
-        $this->assertTrue(true);
+        $this->addToAssertionCount(1);
     }
 }

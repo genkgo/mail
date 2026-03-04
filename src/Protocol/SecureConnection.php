@@ -59,6 +59,7 @@ final class SecureConnection extends AbstractConnection
         );
 
         if ($resource === false) {
+            /** @var int $errorCode */
             throw new ConnectionRefusedException(
                 \sprintf('Could not create secure connection. %s.', $errorMessage),
                 $errorCode

@@ -174,6 +174,7 @@ final class FixedQuotation implements QuotationInterface
             $body = $document->createElement('body');
             $html->appendChild($body);
             $body->appendChild($document->documentElement);
+            /** @phpstan-ignore-next-line */
             if ($document->documentElement instanceof \DOMElement) {
                 $document->removeChild($document->documentElement);
             }

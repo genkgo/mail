@@ -109,10 +109,7 @@ final class Base64EncodedStream implements StreamInterface
         return $this->decoratedStream->detach();
     }
 
-    /**
-     * @return int|null
-     */
-    public function getSize(): ?int
+    public function getSize(): int
     {
         return (int) \ceil($this->decoratedStream->getSize() / 3) * 4;
     }

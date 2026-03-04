@@ -47,10 +47,7 @@ final class ResourceStream implements StreamInterface
         return $this->resource;
     }
 
-    /**
-     * @return int|null
-     */
-    public function getSize(): ?int
+    public function getSize(): int
     {
         $stat = \fstat($this->resource);
         if ($stat === false) {

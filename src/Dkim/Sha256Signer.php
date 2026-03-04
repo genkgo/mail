@@ -46,6 +46,7 @@ final class Sha256Signer implements SignInterface
     {
         /** @phpstan-ignore-next-line */
         if (\openssl_sign($canonicalizedHeaders, $signature, $this->privateKey, self::SIGN_ALGORITHM)) {
+            /** @var string $signature */
             return $signature;
         }
 

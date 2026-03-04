@@ -54,7 +54,7 @@ final class InjectMessageIdHeaderTransportTest extends AbstractTestCase
         $this->assertTrue($storage[0]->hasHeader('message-id'));
         $this->assertInstanceOf(MessageId::class, $storage[0]->getHeader('message-id')[0]);
 
-        /** @var HeaderInterface $header */
+        /** @var MessageId $header */
         $header = $storage[0]->getHeader('message-id')[0];
         $this->assertEquals('<left@right>', (string)$header->getValue());
     }

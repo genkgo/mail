@@ -18,11 +18,12 @@ final class AddressList implements \Countable, \IteratorAggregate
     private $addresses = [];
 
     /**
-     * @param array<int, mixed> $recipients
+     * @param array<int, Address> $recipients
      */
     public function __construct(array $recipients = [])
     {
         foreach ($recipients as $recipient) {
+            /** @phpstan-ignore-next-line */
             if ($recipient instanceof Address === false) {
                 throw new \InvalidArgumentException('Recipient must be Address object');
             }

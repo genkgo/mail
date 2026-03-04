@@ -106,6 +106,8 @@ final class AddressListTest extends AbstractTestCase
     public function it_throws_when_providing_incorrect_array(): void
     {
         $this->expectException(\InvalidArgumentException::class);
+
+        /** @phpstan-ignore-next-line */
         new AddressList(['']);
     }
 

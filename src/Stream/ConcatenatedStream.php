@@ -90,7 +90,6 @@ final class ConcatenatedStream implements StreamInterface
 
     /**
      * @return int
-     * @throws \RuntimeException
      */
     public function tell(): int
     {

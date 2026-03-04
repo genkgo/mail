@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php: ['8.1', '8.2', '8.3', '8.4']
+        php: ['8.1', '8.2', '8.3', '8.4', '8.5']
 
     name: PHP ${{ matrix.php }} tests
     env:
@@ -33,6 +33,6 @@ jobs:
       - name: Static analysis for source
         run: ./vendor/bin/phpstan analyse -l max src
       - name: Static analysis for tests
-        run: ./vendor/bin/phpstan analyse -l 5 -c .phpstan.test.neon test
+        run: ./vendor/bin/phpstan analyse -l 5 test
       - name: Code Style
         run: ./vendor/bin/php-cs-fixer fix --dry-run --verbose --config .php-cs-fixer.dist.php ./src ./test
