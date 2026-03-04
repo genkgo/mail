@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Genkgo\Mail;
 
+use Genkgo\Mail\Header\HeaderValue;
 use Genkgo\Mail\Header\OptimalEncodedHeaderValue;
 
 final class Address
@@ -203,11 +204,7 @@ final class Address
             $name = \substr($name, 1, -1);
         }
 
-        $name = @\iconv_mime_decode($name);
-        if ($name === false) {
-            throw new \InvalidArgumentException('Failed to mime decode the name');
-        }
-
+        $name = HeaderValue::parse($name)->getRaw();
         return new self(new EmailAddress($email), $name);
     }
 }

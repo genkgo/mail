@@ -157,6 +157,7 @@ final class AddressTest extends AbstractTestCase
             ['=?UTF-8?Q?t=C3=ABst?= <local-part@domain.com>', true, 'local-part@domain.com', 'tëst'],
             ['=?UTF-8?B?dMOrc3Q=?= <local-part@domain.com>', true, 'local-part@domain.com', 'tëst'],
             ['=?UTF-8?B?bMOkc3QgbmFtZSwgZsOvcnN0IG5hbWU=?= <local-part@domain.com>', true, 'local-part@domain.com', 'läst name, fïrst name'],
+            ['Namé <name@domain.com>', true, 'name@domain.com', 'Namé'],
         ];
     }
 }

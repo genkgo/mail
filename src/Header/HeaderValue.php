@@ -247,7 +247,7 @@ final class HeaderValue
                         $decodable['value']
                     ),
                     \ICONV_MIME_DECODE_CONTINUE_ON_ERROR,
-                    $decodable['charset']
+                    'UTF-8',
                 );
             },
             self::createMimeDecodableValue($value)

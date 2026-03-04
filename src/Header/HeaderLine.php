@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Genkgo\Mail\Header;
 
+use Genkgo\Mail\Address;
+use Genkgo\Mail\AddressList;
 use Genkgo\Mail\HeaderInterface;
 
 final class HeaderLine
@@ -57,11 +59,15 @@ final class HeaderLine
 
         [$name, $value] = $parts;
 
-        return new self(
-            new ParsedHeader(
-                new HeaderName($name),
-                HeaderValue::parse($value)
-            )
-        );
+        $header = match (\strtolower($name)) {
+            'from' => new From(Address::fromString($value)),
+            'to' => new To(AddressList::fromString($value)),
+            'cc' => new Cc(AddressList::fromString($value)),
+            'bcc' => new Bcc(AddressList::fromString($value)),
+            'reply-to' => new ReplyTo(AddressList::fromString($value)),
+            default => new ParsedHeader(new HeaderName($name), HeaderValue::parse($value))
+        };
+
+        return new self($header);
     }
 }
