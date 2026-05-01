@@ -2,9 +2,8 @@
 declare(strict_types=1);
 
 namespace Genkgo\Mail;
-use Stringable;
 
-final class EmailAddress implements Stringable
+final class EmailAddress implements \Stringable
 {
     /**
      * @var string
