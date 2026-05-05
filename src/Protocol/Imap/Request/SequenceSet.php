@@ -6,10 +6,10 @@ namespace Genkgo\Mail\Protocol\Imap\Request;
 final class SequenceSet
 {
     /**
-     * @var array<int, mixed>
+     * @var array<int, string>
      */
     private $set = [];
-    
+
     private function __construct()
     {
         // this constructor is protected in order to force
@@ -23,7 +23,7 @@ final class SequenceSet
     public function withSingle(int $number): self
     {
         $set = clone $this;
-        $set->set[] = $number;
+        $set->set[] = (string)$number;
         return $set;
     }
 
@@ -86,7 +86,7 @@ final class SequenceSet
     public static function multiple(array $numbers): self
     {
         $set = new self();
-        $set->set = \array_map('strval', $numbers);
+        $set->set = \array_map(\strval(...), $numbers);
         return $set;
     }
 

@@ -12,7 +12,7 @@ final class GeneratorTagFactory implements TagFactoryInterface
      * @var \Generator|Tag[]
      */
     private $iterator;
-    
+
     public function __construct()
     {
         $this->iterator = $this->newList();
@@ -37,7 +37,6 @@ final class GeneratorTagFactory implements TagFactoryInterface
     {
         $i = 0;
 
-        /** @phpstan-ignore-next-line */
         while (true) {
             yield Tag::fromNonce(++$i);
         }
