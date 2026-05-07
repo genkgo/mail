@@ -41,7 +41,7 @@ final class EmailAddress implements \Stringable
     }
 
     /**
-     * @return string
+     * @return non-empty-string
      */
     public function getAddress(): string
     {
@@ -49,7 +49,7 @@ final class EmailAddress implements \Stringable
     }
 
     /**
-     * @return string
+     * @return non-empty-string
      */
     public function getLocalPart(): string
     {
@@ -57,7 +57,7 @@ final class EmailAddress implements \Stringable
     }
 
     /**
-     * @return string
+     * @return non-empty-string
      */
     public function getDomain(): string
     {
@@ -98,7 +98,7 @@ final class EmailAddress implements \Stringable
     }
 
     /**
-     * @return string
+     * @return non-empty-string
      */
     public function __toString(): string
     {
