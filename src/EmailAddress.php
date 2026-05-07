@@ -5,10 +5,19 @@ namespace Genkgo\Mail;
 
 final class EmailAddress implements \Stringable
 {
+    /**
+     * @var non-empty-string
+     */
     private string $address;
 
+    /**
+     * @var non-empty-string
+     */
     private string $localPart;
 
+    /**
+     * @var non-empty-string
+     */
     private string $domain;
 
     public function __construct(string $address)
