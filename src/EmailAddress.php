@@ -6,23 +6,20 @@ namespace Genkgo\Mail;
 final class EmailAddress implements \Stringable
 {
     /**
-     * @var string
+     * @var non-empty-string
      */
-    private $address;
+    private string $address;
 
     /**
-     * @var string
+     * @var non-empty-string
      */
-    private $localPart;
+    private string $localPart;
 
     /**
-     * @var string
+     * @var non-empty-string
      */
-    private $domain;
+    private string $domain;
 
-    /**
-     * @param string $address
-     */
     public function __construct(string $address)
     {
         if (\preg_match('/\v/u', $address, $matches) !== 0) {
@@ -41,7 +38,7 @@ final class EmailAddress implements \Stringable
     }
 
     /**
-     * @return string
+     * @return non-empty-string
      */
     public function getAddress(): string
     {
@@ -49,7 +46,7 @@ final class EmailAddress implements \Stringable
     }
 
     /**
-     * @return string
+     * @return non-empty-string
      */
     public function getLocalPart(): string
     {
@@ -57,7 +54,7 @@ final class EmailAddress implements \Stringable
     }
 
     /**
-     * @return string
+     * @return non-empty-string
      */
     public function getDomain(): string
     {
@@ -98,7 +95,7 @@ final class EmailAddress implements \Stringable
     }
 
     /**
-     * @return string
+     * @return non-empty-string
      */
     public function __toString(): string
     {
