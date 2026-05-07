@@ -5,24 +5,12 @@ namespace Genkgo\Mail;
 
 final class EmailAddress implements \Stringable
 {
-    /**
-     * @var string
-     */
-    private $address;
+    private string $address;
 
-    /**
-     * @var string
-     */
-    private $localPart;
+    private string $localPart;
 
-    /**
-     * @var string
-     */
-    private $domain;
+    private string $domain;
 
-    /**
-     * @param string $address
-     */
     public function __construct(string $address)
     {
         if (\preg_match('/\v/u', $address, $matches) !== 0) {
