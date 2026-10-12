@@ -23,10 +23,8 @@ final class ArrayObjectQueueTest extends AbstractTestCase
         $queue = new ArrayObjectQueue($storage);
         $queue->store($message);
 
-        $this->assertEquals(
-            (string) $message,
-            $storage[0]
-        );
+        /** @phpstan-ignore-next-line */
+        $this->assertEquals((string) $message, $storage[0]);
     }
 
     /**
