@@ -393,6 +393,10 @@ final class AlternativeText
         $quoteLength = 0;
 
         $iterator = \IntlBreakIterator::createCharacterInstance(\Locale::getDefault());
+        if (!$iterator) {
+            throw new \UnexpectedValueException('Failed to create IntlBreakIterator from default locale');
+        }
+
         $iterator->setText($unwrappedText);
 
         /** @var string $char */
