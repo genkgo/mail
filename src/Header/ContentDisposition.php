@@ -41,12 +41,7 @@ final class ContentDisposition implements HeaderInterface
     public function getValue(): HeaderValue
     {
         return (new HeaderValue($this->value))
-            ->withParameter(
-                new HeaderValueParameter(
-                    'filename',
-                    (string)OptimalEncodedHeaderValue::forPhrase($this->filename)
-                )
-            );
+            ->withAsciiCompatibleExtendedParameter(new HeaderValueParameter('filename', $this->filename));
     }
 
     /**

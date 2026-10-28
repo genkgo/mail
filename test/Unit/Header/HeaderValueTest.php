@@ -163,6 +163,28 @@ final class HeaderValueTest extends AbstractTestCase
     /**
      * @test
      */
+    public function it_can_parse_rfc2047_encoded_parameters(): void
+    {
+        $header = HeaderValue::parse('attachment; filename="=?UTF-8?Q?Scherm=C2=ADafbeelding_2026=2D10=2D22_om_16=2E00=2E25=2Epng?="');
+
+        $this->assertEquals('attachment; filename*="UTF-8\'\'Scherm%C2%ADafbeelding%202026-10-22%20om%2016.00.25.png"', (string)$header);
+        $this->assertEquals('Scherm­afbeelding 2026-10-22 om 16.00.25.png', $header->getParameter('filename')->getValue());
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_parse_rfc2231_encoded_parameters(): void
+    {
+        $header = HeaderValue::parse('attachment; filename*="UTF-8\'\'Scherm%C2%ADafbeelding%202026-10-22%20om%2016.00.25.png"');
+
+        $this->assertEquals('attachment; filename*="UTF-8\'\'Scherm%C2%ADafbeelding%202026-10-22%20om%2016.00.25.png"', (string)$header);
+        $this->assertEquals('Scherm­afbeelding 2026-10-22 om 16.00.25.png', $header->getParameter('filename')->getValue());
+    }
+
+    /**
+     * @test
+     */
     public function it_can_parse_a_string_with_more_than_one_line(): void
     {
         $header1 = HeaderValue::fromString("Name \"Quoted Name\"\r\n <name@domain.com>");
@@ -170,5 +192,24 @@ final class HeaderValueTest extends AbstractTestCase
 
         $this->assertEquals('Name "Quoted Name" <name@domain.com>', $header1->getRaw());
         $this->assertEquals('Name "Quoted Name"  <name@domain.com>', $header2->getRaw());
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_add_extended_parameters(): void
+    {
+        $header = (new HeaderValue('value'))
+            ->withAsciiCompatibleExtendedParameter(
+                new HeaderValueParameter(
+                    'filename',
+                    'Scherm­afbeelding 2026-10-22 om 16.00.25.png'
+                )
+            );
+
+        $this->assertEquals(
+            "value;\r\n filename=\"Scherm_afbeelding 2026-10-22 om 16.00.25.png\";\r\n filename*=\"UTF-8''Scherm%C2%ADafbeelding%202026-10-22%20om%2016.00.25.png\"",
+            (string)$header
+        );
     }
 }

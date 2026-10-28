@@ -244,7 +244,7 @@ final class MessageBodyCollectionTest extends AbstractTestCase
             $this->replaceBoundaries((string) $message)
         );
     }
-    
+
     /**
      * @test
      */
@@ -615,6 +615,38 @@ final class MessageBodyCollectionTest extends AbstractTestCase
         $this->assertSame(
             $this->replaceBoundaries($expectedMessage),
             $this->replaceBoundaries((string)$body->createMessage())
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_extract_attachments_with_filenames(): void
+    {
+        $message = GenericMessage::fromString(\file_get_contents(__DIR__ . '/../Stub/MessageBodyCollection/attachment-long-filename.eml'));
+        $body = MessageBodyCollection::extract($message);
+
+        $this->assertCount(1, $body->getAttachments());
+        $this->assertEquals('attachment', $body->getAttachments()[0]->getHeader('Content-Disposition')->getValue()->getRaw());
+        $this->assertEquals(
+            'AAAAAAAA-AAAAAAAAAAAA-AAA_AAAA AAAAAAA AAAAA AAAAA AAAAAAAAAAAA AAAAAAAAAAAAAAAAAA.pdf',
+            $body->getAttachments()[0]->getHeader('Content-Disposition')->getValue()->getParameter('filename')->getValue()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_extract_attachments_with_rfc2047_filenames_bug(): void
+    {
+        $message = GenericMessage::fromString(\file_get_contents(__DIR__ . '/../Stub/MessageBodyCollection/attachment-bug-content-disposition.eml'));
+        $body = MessageBodyCollection::extract($message);
+
+        $this->assertCount(1, $body->getAttachments());
+        $this->assertEquals('attachment', $body->getAttachments()[0]->getHeader('Content-Disposition')->getValue()->getRaw());
+        $this->assertEquals(
+            'Scherm­afbeelding 2026-10-22 om 16.00.25.png',
+            $body->getAttachments()[0]->getHeader('Content-Disposition')->getValue()->getParameter('filename')->getValue()
         );
     }
 

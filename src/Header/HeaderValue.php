@@ -6,7 +6,7 @@ namespace Genkgo\Mail\Header;
 final class HeaderValue
 {
     private const PARSE_START = 1;
-    
+
     private const PARSE_QUOTE = 2;
 
     private const PARSE_CHARSET = 3;
@@ -29,6 +29,11 @@ final class HeaderValue
      * @var array<string, bool>
      */
     private $parametersForceNewLine = [];
+
+    /**
+     * @var array<string, bool>
+     */
+    private $asciiCompatibleExtended = [];
 
     /**
      * @var bool
@@ -59,6 +64,20 @@ final class HeaderValue
     }
 
     /**
+     * @param HeaderValueParameter $parameter
+     * @param bool $forceNewLine
+     * @return HeaderValue
+     */
+    public function withAsciiCompatibleExtendedParameter(HeaderValueParameter $parameter, bool $forceNewLine = false): HeaderValue
+    {
+        $clone = clone $this;
+        $clone->parameters[$parameter->getName()] = $parameter;
+        $clone->parametersForceNewLine[$parameter->getName()] = $forceNewLine;
+        $clone->asciiCompatibleExtended[$parameter->getName()] = true;
+        return $clone;
+    }
+
+    /**
      * @return string
      */
     public function getRaw(): string
@@ -80,9 +99,15 @@ final class HeaderValue
         $parameters = [];
 
         foreach ($this->parameters as $name => $parameter) {
+            $needsCompatibility = $parameter->needsRfc2231Encoding() && \array_key_exists($name, $this->asciiCompatibleExtended);
+
+            if ($needsCompatibility) {
+                $parameters[] =  ";\r\n " . $parameter->asAsciiCompatible();
+            }
+
             $parameters[] = \sprintf(
                 ';%s%s',
-                empty($this->parametersForceNewLine[$name]) ? ' ' : "\r\n ",
+                (!$needsCompatibility && empty($this->parametersForceNewLine[$name])) ? ' ' : "\r\n ",
                 (string) $parameter
             );
         }

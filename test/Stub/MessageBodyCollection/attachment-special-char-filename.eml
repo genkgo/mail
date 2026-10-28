@@ -11,7 +11,9 @@ Content-Transfer-Encoding: 7bit
 --GenkgoMailV2Partfd6a87d339fb
 Content-Type: text/txt; charset=UTF-8
 Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="=?UTF-8?B?w7MueHl6?="
+Content-Disposition: attachment;
+ filename="_.xyz";
+ filename*="UTF-8''%C3%B3.xyz"
 
 dGVzdA==
 --GenkgoMailV2Partfd6a87d339fb--

@@ -6,8 +6,10 @@ namespace Genkgo\Mail\Header;
 final class HeaderValueParameter
 {
     public const RFC_822_T_SPECIAL = "\x28\x29\x3C\x3E\x40\x2C\x3B\x3A\x5C\x22\x5B\x5D\x2E";
-    
+
     private const ANY_ASCII_EXCEPT_SPACE_CTL = "\x00\x01\x02\x03\x04\x05\x06\x07\x08\x09\x0A\x0B\x0C\x0D\x0E\x0F\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1A\x1B\x1C\x1D\x1E\x1F\x7F\x80\x81\x82\x83\x84\x85\x86\x87\x88\x89\x8A\x8B\x8C\x8D\x8E\x8F\x90\x91\x92\x93\x94\x95\x96\x97\x98\x99\x9A\x9B\x9C\x9D\x9E\x9F\xA0\xA1\xA2\xA3\xA4\xA5\xA6\xA7\xA8\xA9\xAA\xAB\xAC\xAD\xAE\xAF\xB0\xB1\xB2\xB3\xB4\xB5\xB6\xB7\xB8\xB9\xBA\xBB\xBC\xBD\xBE\xBF\xC0\xC1\xC2\xC3\xC4\xC5\xC6\xC7\xC8\xC9\xCA\xCB\xCC\xCD\xCE\xCF\xD0\xD1\xD2\xD3\xD4\xD5\xD6\xD7\xD8\xD9\xDA\xDB\xDC\xDD\xDE\xDF\xE0\xE1\xE2\xE3\xE4\xE5\xE6\xE7\xE8\xE9\xEA\xEB\xEC\xED\xEE\xEF\xF0\xF1\xF2\xF3\xF4\xF5\xF6\xF7\xF8\xF9\xFA\xFB\xFC\xFD\xFE\xFF";
+
+    private const RFC2231_PREFIX = "UTF-8''";
 
     /**
      * @var string
@@ -25,6 +27,11 @@ final class HeaderValueParameter
     private $specials = self::RFC_822_T_SPECIAL;
 
     /**
+     * @var bool
+     */
+    private $needsRfc2231Encoding = true;
+
+    /**
      * @param string $name
      * @param string $value
      */
@@ -34,13 +41,9 @@ final class HeaderValueParameter
             throw new \InvalidArgumentException('Parameters contains incorrect name: ' . $name);
         }
 
-        $decoded = \str_replace(OptimalEncodedHeaderValue::FOLDING, '', $value);
-        if (\strcspn($decoded, self::ANY_ASCII_EXCEPT_SPACE_CTL) !== \strlen($decoded)) {
-            throw new \InvalidArgumentException('Parameters contains incorrect value: ' . $value);
-        }
-
         $this->name = $name;
         $this->value = $value;
+        $this->needsRfc2231Encoding = \strcspn($value, self::ANY_ASCII_EXCEPT_SPACE_CTL) !== \strlen($value);
     }
 
     /**
@@ -71,15 +74,50 @@ final class HeaderValueParameter
     }
 
     /**
+     * @return bool
+     */
+    public function needsRfc2231Encoding(): bool
+    {
+        return $this->needsRfc2231Encoding;
+    }
+
+    /**
      * @return string
      */
     public function __toString(): string
     {
-        if ($this->value !== '' && ($this->value[0] === '=' || \strcspn($this->value, $this->specials) !== \strlen($this->value))) {
-            return \sprintf('%s="%s"', $this->name, $this->value);
+        $name = $this->name;
+        $value = $this->value;
+
+        if ($this->needsRfc2231Encoding) {
+            $name .= '*';
+            $value = self::RFC2231_PREFIX . \rawurlencode($value);
+        } else {
+            $value = (string)OptimalEncodedHeaderValue::forPhrase($value);
         }
 
-        return \sprintf('%s=%s', $this->name, $this->value);
+        if ($value !== '' && ($value[0] === '=' || \strcspn($value, $this->specials) !== \strlen($value))) {
+            return \sprintf('%s="%s"', $name, $value);
+        }
+
+        return \sprintf('%s=%s', $name, $value);
+    }
+
+    /**
+     * @return self
+     */
+    public function asAsciiCompatible(): self
+    {
+        if (!$this->needsRfc2231Encoding) {
+            return $this;
+        }
+
+        $value = (string)\preg_replace('/_+/', '_', (string)\preg_replace('/[' . self::ANY_ASCII_EXCEPT_SPACE_CTL . ']/', '_', $this->value));
+
+        $clone = clone $this;
+        $clone->value = $value;
+        $clone->needsRfc2231Encoding = false;
+        return $clone;
     }
 
     /**
@@ -99,6 +137,11 @@ final class HeaderValueParameter
 
         if ($value[0] === '"' && $value[-1] === '"') {
             $value = \substr($value, 1, -1);
+        }
+
+        if (\str_ends_with($name, '*') && \str_starts_with($value, self::RFC2231_PREFIX)) {
+            $name = \substr($name, 0, -1);
+            $value = \rawurldecode(\substr($value, \strlen(self::RFC2231_PREFIX)));
         }
 
         return new self($name, $value);
