@@ -11,19 +11,19 @@ final class HeaderValueParameterTest extends AbstractTestCase
     /**
      * @test
      */
-    public function it_throws_with_wrong_values(): void
+    public function it_allows_special_characters(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
-        new HeaderValueParameter('test', 'ë');
+        $parameter = new HeaderValueParameter('test', 'ë');
+        $this->assertEquals('test*=UTF-8\'\'%C3%AB', (string)$parameter);
     }
 
     /**
      * @test
      */
-    public function it_throws_with_new_line(): void
+    public function it_allows_new_lines(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
-        new HeaderValueParameter('test', "\n");
+        $parameter = new HeaderValueParameter('test', "\n");
+        $this->assertEquals('test*=UTF-8\'\'%0A', (string)$parameter);
     }
 
     /**
