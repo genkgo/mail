@@ -31,7 +31,7 @@ final class HeaderValue
     private $parametersForceNewLine = [];
 
     /**
-     * @var array<string, bool>
+     * @var array<string, HeaderValueParameter>
      */
     private $asciiCompatibleExtended = [];
 
@@ -68,18 +68,21 @@ final class HeaderValue
      * @param bool $forceNewLine
      * @return HeaderValue
      */
-    public function withAsciiCompatibleExtendedParameter(HeaderValueParameter $parameter, bool $forceNewLine = false): HeaderValue
-    {
+    public function withAsciiCompatibleExtendedParameter(
+        HeaderValueParameter $parameter,
+        ?HeaderValueParameter $compatibleParameter = null,
+        bool $forceNewLine = false
+    ): HeaderValue {
         $clone = clone $this;
         $clone->parameters[$parameter->getName()] = $parameter;
         $clone->parametersForceNewLine[$parameter->getName()] = $forceNewLine;
-        $clone->asciiCompatibleExtended[$parameter->getName()] = true;
+        $clone->asciiCompatibleExtended[$parameter->getName()] = $compatibleParameter ?? $parameter->asAsciiCompatible();
         return $clone;
     }
 
     public function isAsciiCompatibleExtendedParameter(string $name): bool
     {
-        return $this->asciiCompatibleExtended[$name] ?? false;
+        return \array_key_exists($name, $this->asciiCompatibleExtended);
     }
 
     /**
@@ -107,7 +110,7 @@ final class HeaderValue
             $needsCompatibility = $parameter->needsRfc2231Encoding() && \array_key_exists($name, $this->asciiCompatibleExtended);
 
             if ($needsCompatibility) {
-                $parameters[] =  ";\r\n " . $parameter->asAsciiCompatible();
+                $parameters[] =  ";\r\n " . $this->asciiCompatibleExtended[$name];
             }
 
             $parameters[] = \sprintf(
@@ -251,10 +254,15 @@ final class HeaderValue
                 $alreadyAdded = $parameters[$paramName] ?? null;
 
                 if ($alreadyAdded) {
-                    $asciiCompatibleExtended[$paramName] = match ([$parameter->needsRfc2231Encoding(), $alreadyAdded->needsRfc2231Encoding()]) {
-                        [true, false], [false, true] => true,
-                        default => false,
+                    [$parameter, $asciiCompatible] = match ([$alreadyAdded->needsRfc2231Encoding(), $parameter->needsRfc2231Encoding()]) {
+                        [true, false] => [$alreadyAdded, $parameter],
+                        [false, true] => [$parameter, $alreadyAdded],
+                        default => [$parameter, null],
                     };
+
+                    if ($asciiCompatible) {
+                        $asciiCompatibleExtended[$paramName] = $asciiCompatible;
+                    }
                 }
 
                 $parameters[$paramName] = $parameter;
