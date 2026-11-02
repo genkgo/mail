@@ -7,6 +7,21 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 
+## [2.14.1] - 2026-11-02
+
+### Added
+
+- Parse value of the ASCII compatibile RFC 2231 fallback header value parameters
+
+
+## [2.14.0] - 2026-10-28
+
+### Added
+
+- Add RFC 2231 compatibility and thereby for unicode/special characters in header value parameters.
+- Drop support for PHP 8.1 and 8.2.
+
+
 ## [2.13.0] - 2026-05-05
 
 ### Added
