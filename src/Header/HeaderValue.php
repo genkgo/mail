@@ -77,6 +77,11 @@ final class HeaderValue
         return $clone;
     }
 
+    public function isAsciiCompatibleExtendedParameter(string $name): bool
+    {
+        return $this->asciiCompatibleExtended[$name] ?? false;
+    }
+
     /**
      * @return string
      */
@@ -238,17 +243,29 @@ final class HeaderValue
         $primaryValue = $values[0];
 
         $parameters = [];
+        $asciiCompatibleExtended = [];
         foreach (\array_slice($values, 1) as $parameterString) {
             try {
                 $parameter = HeaderValueParameter::fromString($parameterString);
-                $parameters[$parameter->getName()] = $parameter;
-            } catch (\InvalidArgumentException $e) {
+                $paramName = $parameter->getName();
+                $alreadyAdded = $parameters[$paramName] ?? null;
+
+                if ($alreadyAdded) {
+                    $asciiCompatibleExtended[$paramName] = match ([$parameter->needsRfc2231Encoding(), $alreadyAdded->needsRfc2231Encoding()]) {
+                        [true, false], [false, true] => true,
+                        default => false,
+                    };
+                }
+
+                $parameters[$paramName] = $parameter;
+            } catch (\InvalidArgumentException) {
                 $primaryValue .= '; ' . $parameterString;
             }
         }
 
         $headerValue = new self($primaryValue);
         $headerValue->parameters = $parameters;
+        $headerValue->asciiCompatibleExtended = $asciiCompatibleExtended;
         return $headerValue;
     }
 

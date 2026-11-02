@@ -180,6 +180,19 @@ final class HeaderValueTest extends AbstractTestCase
 
         $this->assertEquals('attachment; filename*="UTF-8\'\'Scherm%C2%ADafbeelding%202026-10-22%20om%2016.00.25.png"', (string)$header);
         $this->assertEquals('Scherm­afbeelding 2026-10-22 om 16.00.25.png', $header->getParameter('filename')->getValue());
+        $this->assertFalse($header->isAsciiCompatibleExtendedParameter('filename'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_parse_rfc2231_encoded_parameters_with_ascii_fallback(): void
+    {
+        $header = HeaderValue::parse('attachment; filename=alternative_filename.png; filename*="UTF-8\'\'Scherm%C2%ADafbeelding%202026-10-22%20om%2016.00.25.png"');
+
+        $this->assertEquals("attachment;\r\n filename=\"Scherm_afbeelding 2026-10-22 om 16.00.25.png\";\r\n filename*=\"UTF-8''Scherm%C2%ADafbeelding%202026-10-22%20om%2016.00.25.png\"", (string)$header);
+        $this->assertEquals('Scherm­afbeelding 2026-10-22 om 16.00.25.png', $header->getParameter('filename')->getValue());
+        $this->assertTrue($header->isAsciiCompatibleExtendedParameter('filename'));
     }
 
     /**
